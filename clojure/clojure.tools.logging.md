@@ -11,26 +11,26 @@ clojure `logging` 宏封装不同 log 库的实现细节，如 slf4j, Apache com
 
 自下而上依次为：
 
-. trace
-. debug 
-. info
-. warn
-. error
-. fatal
+1. trace
+2. debug 
+3. info
+4. warn
+5. error
+6. fatal
 
 ## 基本操作
 
 log 实现应该有以下方法：
 
-. 各个级别日志是否启用 ( enabled? )
-. 各个级别有独立的 write! 接口 
+* 各个级别日志是否启用 ( enabled? )
+* 各个级别有独立的 write! 接口 
 
 # 分类
 
 查看 `clojure.tools.logging.impl.clj` 代码，发现四种 log 库 API 上两两分类：
 
-. slf4j 和 [cl](org.apache.commons.logging.Log) 相似
-. log4j 和 [jul](java.util.logging.Logger) 相似
+* slf4j 和 cl (org.apache.commons.logging.Log) 相似
+* log4j 和 jul (java.util.logging.Logger) 相似
 
 从封装角度来看，感觉 slf4j 接口比较友好
 
