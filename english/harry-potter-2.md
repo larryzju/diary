@@ -1559,3 +1559,1032 @@ But it was a subdued group that headed back to the fireside in the Leaky Cauldro
 	subdue UK: [səb'djuː], US: [səb'du]
 	  Word Explanation:
 	     * vt. 征服；抑制；减轻
+
+---
+THE WHOMPING WILLOW
+
+	whomp UK: [wɒmp], US: [hwɔmp]
+	  Word Explanation:
+	     * n. 打，击；敲；敲打声；击打声
+	     * vt. [象声词]；打；敲；击：
+	     * vi. 发出砰砰声；轰的一声击中；啪的一声落下：
+---
+On their last evening, Mrs. Weasley conjured up a sumptuous dinner that included all of Harry’s favorite things, ending with a mouthwatering treacle pudding.
+
+	conjure UK: ['kʌndʒə], US: ['kʌndʒɚ]
+	  Word Explanation:
+	     * vt. 念咒召唤；用魔法驱赶；提出，想象；恳求
+	     * vi. 施魔法；变魔术
+
+	sumptuous UK: ['sʌm(p)tjʊəs], US: ['sʌmptʃuəs]
+	  Word Explanation:
+	     * adj. 华丽的，豪华的；奢侈的
+
+
+	treacle UK: ['triːk(ə)l], US: ['tri:kl]
+	  Word Explanation:
+	     * n. 糖蜜；过分甜蜜的声调
+---
+Then it was time for a last mug of hot chocolate and bed.  
+
+	mug UK: [mʌg], US: [mʌɡ]
+	  Word Explanation:
+	     * n. 杯子；脸；苦读者
+	     * vt. 行凶抢劫
+	     * vi. 扮鬼脸，做怪相
+---
+Mrs. Weasley dashed about in a bad mood looking for spare socks and quills; people kept colliding on the stairs, half-dressed with bits of toast in their hands; and Mr. Weasley nearly broke his neck, tripping over a stray chicken as he crossed the yard carrying Ginny’s trunk to the car.  
+
+	dash UK: [dæʃ], US: [dæʃ]
+	  Word Explanation:
+	     * n. 破折号；冲撞
+	     * vi. 猛冲；撞击
+	     * vt. 使…破灭；猛撞；泼溅
+	     * n. (Dash)人名；(英、印)达什；(蒙)达希
+
+	spare UK: [speə], US: [spɛr]
+	  Word Explanation:
+	     * n. 剩余；备用零件
+	     * vt. 节约，吝惜；饶恕；分出，分让
+	     * adj. 多余的；瘦的；少量的
+	     * vi. 饶恕，宽恕；节约
+
+
+	quill UK: [kwɪl], US: [kwɪl]
+	  Word Explanation:
+	     * n. 大翎毛；羽茎；（豪猪、刺猬的）刚毛
+	     * n. (Quill)人名；(英)奎尔
+	     * vt. 刺穿
+
+
+	stray UK: [streɪ], US: [stre]
+	  Word Explanation:
+	     * n. 走失的家畜；流浪者
+	     * adj. 迷路的；离群的；偶遇的
+	     * vi. 流浪；迷路；偏离
+	     * n. (Stray)人名；(挪)斯特雷
+
+---
+Harry couldn’t see how eight people, six large trunks, two owls, and a rat were going to fit into one small Ford Anglia.
+
+	Anglia UK: ['æŋɡliə], US: ['æŋɡliə]
+	  Word Explanation:
+	     * n. 英格兰的拉丁名称
+---
+Mr. Weasley started up the engine and they trundled out of the yard, Harry turning back for a last look at the house.
+
+	trundle UK: ['trʌnd(ə)l], US: ['trʌndl]
+	  Word Explanation:
+	     * n. 滚动；小脚轮
+	     * vt. 使滚动；运送
+	     * vi. 滚动；移动
+
+---
+By the time she had clambered back into the car, they were running very late, and tempers were running high.  
+
+	clamber UK: ['klæmbə], US: ['klæmbɚ]
+	  Word Explanation:
+	     * vt. 爬，攀登
+	     * vi. 攀登，爬上
+	     * n. 攀登，爬上
+
+---
+“No one would see — this little button here is an Invisibility Booster I installed — that’d get us up in the air — then we fly above the clouds. We’d be there in ten minutes and no one would be any the wiser —”
+
+	booster UK: ['buːstə], US: ['bustɚ]
+	  Word Explanation:
+	     * n. 升压机；支持者；扩爆器
+
+
+---
+They reached King’s Cross at a quarter to eleven. Mr. Weasley dashed across the road to get trolleys for their trunks and they all hurried into the station.
+
+	trolley UK: ['trɒlɪ], US: ['trɑli]
+	  Word Explanation:
+	     * n. 手推车；（美）有轨电车（等于trolley car）；（英）无轨电车（等于trolleybus）；空中吊运车
+	     * vt. 用手推车运
+	     * vi. 乘电车
+	     * 
+	     * n. (Trolley)人名；(英)特罗利
+---
+Harry made sure that Hedwig’s cage was safely wedged on top of his trunk and wheeled his trolley around to face the barrier.
+
+	wedge UK: [wedʒ], US: [wɛdʒ]
+	  Word Explanation:
+	     * n. 楔子；楔形物；导致分裂的东西
+	     * vt. 楔入；挤进；楔住
+	     * vi. 楔入；挤进
+	     * n. (Wedge)人名；(英)韦奇
+---
+Both trolleys hit the barrier and bounced backward; Ron’s trunk fell off with a loud thump, Harry was knocked off his feet, and Hedwig’s cage bounced onto the shiny floor, and she rolled away, shrieking indignantly; people all around them stared and a guard nearby yelled, “What in blazes d’you think you’re doing?” 
+
+	thump UK: [θʌmp], US: [θʌmp]
+	  Word Explanation:
+	     * n. 重打；重击声
+	     * vi. 重击；狠打；砰然地响
+	     * vt. 重击；用拳头打；砰地撞到
+
+	shiny UK: ['ʃaɪnɪ], US: ['ʃaɪni]
+	  Word Explanation:
+	     * adj. 有光泽的，擦亮的；闪耀的；晴朗的；磨损的
+
+	blaze UK: [bleɪz], US: [blez]
+	  Word Explanation:
+	     * n. 火焰，烈火；光辉；情感爆发
+	     * vt. 在树皮上刻路标；公开宣布
+	     * vi. 燃烧；照耀，发光；激发
+	     * n. (Blaze)人名；(法)布拉兹；(马其)布拉热
+---
+Ron ran to pick up Hedwig, who was causing such a scene that there was a lot of muttering about cruelty to animals from the surrounding crowd.  
+
+	scene UK: [siːn], US: [sin]
+	  Word Explanation:
+	     * n. 场面；情景；景象；事件
+
+	cruelty UK: ['krʊəltɪ], US: ['krʊəlti]
+	  Word Explanation:
+	     * n. 残酷；残忍；残酷的行为
+---
+“It’s gone,” said Ron, sounding stunned.
+
+	stunned UK: [stʌnd], US: [stʌnd]
+	  Word Explanation:
+	     * v. 使震惊；使不知所措（stun的过去式及过去分词形式）
+	     * adj. 受惊的
+---
+They looked around. People were still watching them, mainly because of Hedwig’s continuing screeches.
+
+	screech UK: [skriːtʃ], US: [skritʃ]
+	  Word Explanation:
+	     * vi. 发出尖锐的声音；发出恐惧或痛苦的叫喊声
+	     * n. 尖叫声，尖利刺耳的声音；尖声喊叫
+	     * vt. 尖着声音讲或喊
+---
+Ron unlocked the cavernous trunk with a series of taps from his wand.
+
+	cavernous UK: ['kævənəs], US: ['kævɚnəs]
+	  Word Explanation:
+	     * adj. 似巨穴的；洞穴状的；凹状的；瓮声的
+---
+“Check that no one’s watching,” said Ron, starting the ignition with another tap of his wand. Harry stuck his head out of the window: Traffic was rumbling along the main road ahead, but their street was empty.
+
+	ignition UK: [ɪg'nɪʃ(ə)n], US: [ɪɡ'nɪʃən]
+	  Word Explanation:
+	     * n. 点火，点燃；着火，燃烧；点火开关，点火装置
+
+	rumbling UK: ['rʌmblɪŋ], US: ['rʌmblɪŋ]
+	  Word Explanation:
+	     * n. 隆隆声；辘辘声
+	     * v. 隆隆作响；喃喃地讲话（rumble的ing形式）
+---
+Harry could feel the seat vibrating beneath him, hear the engine, feel his hands on his knees and his glasses on his nose, but for all he could see, he had become a pair of eyeballs, floating a few feet above the ground in a dingy street full of parked cars.  
+
+	dingy UK: ['dɪn(d)ʒɪ], US: ['dɪndʒi]
+	  Word Explanation:
+	     * adj. 昏暗的；肮脏的
+---
+Both of them pummeled it. The car vanished. Then it flickered back again.
+
+	pummel UK: ['pʌm(ə)l], US: ['pʌml]
+	  Word Explanation:
+	     * vt. 击；打；用拳头连续揍
+	     * n. （马鞍的）前鞍桥；球壮末端；（刀把或剑柄的）圆头（等于pommel）
+
+	flicker UK: ['flɪkə], US: ['flɪkɚ]
+	  Word Explanation:
+	     * n. 闪烁；闪光；电影
+	     * vi. 闪烁；摇曳；颤动；扑动翅膀；假装昏倒
+	     * vt. 使闪烁；使摇曳
+	     * n. (Flicker)人名；(英)弗利克
+---
+“Hold on!” Ron yelled, and he slammed his foot on the accelerator; they shot straight into the low, woolly clouds and everything turned dull and foggy.
+
+	slam UK: [slæm], US: [slæm]
+	  Word Explanation:
+	     * n. 猛击；砰然声
+	     * vi. 砰地关上；猛力抨击
+	     * vt. 砰地关上；猛力抨击
+	     * n. (Slam)人名；(阿拉伯)萨拉姆；(罗)斯拉姆
+
+	woolly UK: ['wʊlɪ], US: ['wʊli]
+	  Word Explanation:
+	     * adj. 羊毛的；模糊的；似羊毛的
+	     * n. 羊；毛织衣服
+---
+They dropped back beneath the clouds and twisted around in their seats, squinting at the ground.
+
+	squinting
+	  Word Explanation:
+	     * n. [眼科][电讯] 斜视
+	     * v. 眯着眼看；[眼科][电讯] 斜视（squint的ing形式）
+---
+The Hogwarts Express was streaking along below them like a scarlet snake.
+
+	streak UK: [striːk], US: [strik]
+	  Word Explanation:
+	     * n. 条纹，线条；倾向
+	     * vi. 飞跑，疾驶；加上条纹
+	     * vt. 飞跑，疾驰；加条纹于
+---
+The wheels of the car skimmed the sea of fluffy cloud, the sky a bright, endless blue under the blinding white sun.  
+
+	fluffy UK: ['flʌfɪ], US: ['flʌfi]
+	  Word Explanation:
+	     * adj. 蓬松的；松软的；毛茸茸的；无内容的
+---
+It was as though they had been plunged into a fabulous dream.
+
+	plunged
+	  Word Explanation:
+	     * 投入
+	     * 跳进
+	     * 使陷入
+	     * 使投入（plunge的过去式和过去分词）
+
+	fabulous UK: ['fæbjʊləs], US: ['fæbjələs]
+	  Word Explanation:
+	     * adj. 难以置信的；传说的，寓言中的；极好的
+---
+This, thought Harry, was surely the only way to travel — past swirls and turrets of snowy cloud, in a car full of hot, bright sunlight, with a fat pack of toffees in the glove compartment, and the prospect of seeing Fred’s and George’s jealous faces when they landed smoothly and spectacularly on the sweeping lawn in front of Hogwarts castle.  
+
+	swirl UK: [swɜːl], US: [swɝl]
+	  Word Explanation:
+	     * n. 漩涡；打旋；涡状形
+	     * vi. 盘绕；打旋；眩晕；大口喝酒
+	     * vt. 使成漩涡
+
+	turret UK: ['tʌrɪt], US: [ˈtərɪt]
+	  Word Explanation:
+	     * n. 炮塔；角楼；小塔；攻城用仰冲车
+
+
+	toffee UK: ['tɒfɪ], US: ['tɔfi]
+	  Word Explanation:
+	     * n. 乳脂糖，太妃糖
+
+
+	prospect UK: ['prɒspekt], US: ['prɑspɛkt]
+	  Word Explanation:
+	     * n. 前途；预期；景色
+	     * vt. 勘探，勘察
+	     * vi. 勘探，找矿
+
+
+	spectacularly UK: [spekˈtækjʊlə(r)li], US: [spɛkˈtækjəlɚli]
+	  Word Explanation:
+	     * adv. 壮观地；引人注目地
+
+
+	sweeping UK: ['swiːpɪŋ], US: ['swipɪŋ]
+	  Word Explanation:
+	     * n. 扫除；垃圾
+	     * adj. 彻底的；广泛的；扫荡的
+	     * v. 打扫；扫除（sweep的现在分词形式）
+---
+London was soon far behind them, replaced by neat green fields that gave way in turn to wide, purplish moors, a great city alive with cars like multicolored ants, villages with tiny toy churches.  
+
+	purplish UK: ['pɜːplɪʃ], US: ['pɝplɪʃ]
+	  Word Explanation:
+	     * adj. 略带紫色的
+
+	moor UK: [mɔː; mʊə], US: [muə, mɔ:]
+	  Word Explanation:
+	     * n. 沼泽；荒野
+	     * vt. 系住；使停泊
+---
+He had stopped noticing the fantastic cloud shapes now and was thinking longingly of the train miles below, where you could buy ice-cold pumpkin juice from a trolley pushed by a plump witch. 
+
+	longingly UK: ['lɔ:ŋiŋli], US: ['lɔ:ŋiŋli]
+	  Word Explanation:
+	     * adv. 渴望地
+
+	plump UK: [plʌmp], US: [plʌmp]
+	  Word Explanation:
+	     * n. 扑通声
+	     * n. (Plump)人名；(德)普伦普
+	     * adj. 圆胖的，丰满的；鼓起的
+	     * vt. 使丰满；使鼓起；突然放下
+	     * adv. 沉重地；突然地
+	     * vi. 变丰满；鼓起
+---
+“Can’t be much further, can it?” croaked Ron, hours later still, as the sun started to sink into their floor of cloud, staining it a deep pink. “Ready for another check on the train?”
+
+	croak UK: [krəʊk], US: [krok]
+	  Word Explanation:
+	     * n. 呱呱叫声；低沉沙哑的说话声
+	     * vt. 用嘶哑的声音说；死亡
+	     * vi. 呱呱地叫；发牢骚；死
+
+	stain UK: [steɪn], US: [sten]
+	  Word Explanation:
+	     * n. 污点；瑕疵；着色剂
+	     * vt. 沾污；败坏；给…着色
+	     * vi. 污染；被沾污；被染污
+	     * n. (Stain)人名；(德)施泰因；(塞、瑞典)斯泰因
+---
+It was still right below them, winding its way past a snowcapped mountain. It was much darker beneath the canopy of clouds.
+
+	canopy UK: ['kænəpɪ], US: ['kænəpi]
+	  Word Explanation:
+	     * n. 天篷；华盖；遮篷；苍穹
+	     * vt. 用天蓬遮盖；遮盖
+
+---
+Ron put his foot on the accelerator and drove them upward again, but as he did so, the engine began to whine.
+
+	whine UK: [waɪn], US: [waɪn]
+	  Word Explanation:
+	     * n. 抱怨；牢骚；哀鸣
+	     * vt. 哀诉
+	     * vi. 发牢骚；哭诉；嘎嘎响；发呜呜声
+---
+And they both pretended not to notice the whining growing louder and louder as the sky became steadily darker. Stars were blossoming in the blackness. Harry pulled his sweater back on, trying to ignore the way the windshield wipers were now waving feebly, as though in protest.
+
+	whining
+	  Word Explanation:
+	     * v. 抱怨（whine的ing形式）；发牢骚
+
+
+	blossoming
+	  Word Explanation:
+	     * n. 开花；绽放；成功发展
+
+
+	windshield UK: ['wɪn(d)ʃiːld], US: ['wɪndʃild]
+	  Word Explanation:
+	     * n. 挡风玻璃
+
+
+	wiper UK: ['waɪpə], US: ['waɪpɚ]
+	  Word Explanation:
+	     * n. 擦拭之物；[通信] 弧刷；滑动片；擦拭者；手帕
+
+
+	feebly UK: ['fi:bli], US: ['fi:bli]
+	  Word Explanation:
+	     * adv. 无力地；微弱地；柔弱地
+
+
+	protest UK: ['prəʊtest], US: [ˈproʊtest]
+	  Word Explanation:
+	     * n. 抗议
+	     * adj. 表示抗议的；抗议性的
+	     * vt. 抗议；断言
+	     * vi. 抗议；断言
+---
+When they flew back beneath the clouds a little while later, they had to squint through the darkness for a landmark they knew.
+
+	squint UK: [skwɪnt], US: [skwɪnt]
+	  Word Explanation:
+	     * n. 斜视；斜孔小窗；一瞥
+	     * adj. 斜视的；斜的
+	     * vt. 使斜眼；眯眼看
+	     * vi. 眯眼看；斜视；窥视；偏移
+---
+Silhouetted on the dark horizon, high on the cliff over the lake, stood the many turrets and towers of Hogwarts castle.
+
+	silhouetted UK: [,silu:'etid], US: [,silu:'etid]
+	  Word Explanation:
+	     * adj. 显出轮廓的；显示影像的
+	     * v. 把…用侧影显示；使现出轮廓（silhouette的过去分词）
+
+	turret UK: ['tʌrɪt], US: [ˈtərɪt]
+	  Word Explanation:
+	     * n. 炮塔；角楼；小塔；攻城用仰冲车
+---
+But the car had begun to shudder and was losing speed.
+
+	shudder UK: ['ʃʌdə], US: ['ʃʌdɚ]
+	  Word Explanation:
+	     * n. 发抖；战栗；震动
+	     * vi. 发抖；战栗
+---
+“Come on,” Ron said cajolingly, giving the steering wheel a little shake, “nearly there, come on —”
+
+	cajole UK: [kə'dʒəʊl], US: [kə'dʒol]
+	  Word Explanation:
+	     * vt. 以甜言蜜语哄骗；勾引
+---
+Narrow jets of steam were issuing from under the hood. Harry found himself gripping the edges of his seat very hard as they flew toward the lake.
+
+	narrow UK: ['nærəʊ], US: ['næro]
+	  Word Explanation:
+	     * n. 海峡；狭窄部分，隘路
+	     * adj. 狭窄的，有限的；勉强的；精密的；度量小的
+	     * vt. 使变狭窄
+	     * vi. 变窄
+
+
+	jet UK: [jɛt], US: [dʒɛt]
+	  Word Explanation:
+	     * n. 喷射，喷嘴；喷气式飞机；黑玉
+	     * adj. 墨黑的
+	     * vt. 射出
+	     * vi. 射出；[航] 乘喷气式飞机
+---
+The car gave a nasty wobble. Glancing out of his window, Harry saw the smooth, black, glassy surface of the water, a mile below. Ron’s knuckles were white on the steering wheel. The car wobbled again.
+
+	wobble UK: ['wɒb(ə)l], US: ['wɑbl]
+	  Word Explanation:
+	     * n. 摆动；摇晃；不稳定
+	     * vt. 使摇摆；使颤动；摇动
+	     * vi. 摇晃；摇摆；游移不定
+
+
+	knuckles
+	  Word Explanation:
+	     * n. 压关节，指关节（knuckle复数形式）
+	     * n. (Knuckles)人名；(英)纳克尔兹
+	     * v. 以指节打；以手指射（knuckle的第三人称单数形式）
+---
+There was a loud clunk, a splutter, and the engine died completely.
+
+	clunk UK: [klʌŋk], US: [klʌŋk]
+	  Word Explanation:
+	     * n. 沉闷的金属声
+	     * vt. 用力地敲打；发出沉闷声
+	     * vi. 发出咚咚的声音
+
+	splutter UK: ['splʌtə], US: ['splʌtɚ]
+	  Word Explanation:
+	     * n. 劈啪声；急忙说出的话；杂乱的声音
+	     * vt. 喷溅；气急败坏地说
+	     * vi. 喷溅唾沫；语无伦次地说
+---
+“STOP! STOP!” he yelled, whacking the dashboard and the windshield, but they were still plummeting, the ground flying up toward them —
+
+	whack UK: [wæk], US: [wæk]
+	  Word Explanation:
+	     * n. 重击；尝试；份儿；机会
+	     * vt. 重打；猛击；击败；削减
+	     * vi. 重击
+
+
+	plummet UK: ['plʌmɪt], US: ['plʌmɪt]
+	  Word Explanation:
+	     * n. [测] 铅锤，坠子
+	     * vi. 垂直落下；（价格、水平等）骤然下跌
+---
+“WATCH OUT FOR THAT TREE!” Harry bellowed, lunging for the steering wheel, but too late —
+
+	bellow UK: ['beləʊ], US: ['bɛlo]
+	  Word Explanation:
+	     * n. 吼叫声；轰鸣声
+	     * vi. 吼叫；怒吼；咆哮
+	     * vt. 大声喊叫；大声发出
+	     * n. (Bellow)人名；(英)贝洛
+
+
+	lunging
+	  Word Explanation:
+	     * v. （用剑等）刺；扑（lunge的ing形式）
+---
+With an earsplitting bang of metal on wood, they hit the thick tree trunk and dropped to the ground with a heavy jolt. Steam was billowing from under the crumpled hood; Hedwig was shrieking in terror; a golf-ball-sized lump was throbbing on Harry’s head where he had hit the windshield; and to his right, Ron let out a low, despairing groan.  
+
+	jolt UK: [dʒəʊlt; dʒɒlt], US: [dʒolt]
+	  Word Explanation:
+	     * n. 颠簸；摇晃；震惊；严重挫折
+	     * vt. 使颠簸；使震惊；使摇动
+	     * vi. 摇晃；颠簸而行
+
+
+	billow UK: ['bɪləʊ], US: ['bɪlo]
+	  Word Explanation:
+	     * vt. 使翻腾
+	     * vi. 翻腾
+	     * n. 巨浪
+	     * n. (Billow)人名；(瑞典)比洛
+
+
+	crumpled UK: ['krʌmpld], US: ['krʌmpld]
+	  Word Explanation:
+	     * adj. 摺皱的，弄皱的
+	     * v. 弄皱（crumple的过去分词）
+
+
+	hood UK: [hʊd], US: [hud]
+	  Word Explanation:
+	     * n. 头巾；覆盖；兜帽
+	     * vt. 罩上；以头巾覆盖
+	     * n. (Hood)人名；(英)胡德；(德、荷)霍德
+
+
+	throb UK: [θrɒb], US: [θrɑb]
+	  Word Explanation:
+	     * n. 悸动；脉搏
+	     * vi. 悸动；抽动；颤动；跳动着作痛；充满活力
+
+
+	despairing UK: [dɪ'speərɪŋ], US: [di'spεəriŋ]
+	  Word Explanation:
+	     * adj. 感到绝望的；表现绝望的；无望的
+	     * v. 绝望；失望（despair的ing形式）
+---
+It had snapped, almost in two; the tip was dangling limply, held on by a few splinters.
+
+	limply UK: ['limpli], US: ['limpli]
+	  Word Explanation:
+	     * adv. 柔软地；四肢无力地，软绵绵地
+
+	splinter UK: ['splɪntə], US: ['splɪntɚ]
+	  Word Explanation:
+	     * n. 碎片；微小的东西；极瘦的人
+	     * vi. 分裂；裂成碎片
+	     * vt. 使分裂；使裂成碎片
+	     * n. (Splinter)人名；(瑞典)斯普林特
+---
+At that very moment, something hit his side of the car with the force of a charging bull, sending him lurching sideways into Ron, just as an equally heavy blow hit the roof.  
+
+	lurch UK: [lɜːtʃ], US: [lɝtʃ]
+	  Word Explanation:
+	     * n. 突然倾斜；蹒跚；挫折
+	     * vt. 击败
+	     * vi. 倾斜；蹒跚
+	     * n. (Lurch)人名；(德)卢尔希
+---
+Ron gasped, staring through the windshield, and Harry looked around just in time to see a branch as thick as a python smash into it.
+
+	smash UK: [smæʃ], US: [smæʃ]
+	  Word Explanation:
+	     * n. 破碎；扣球；冲突；大败
+	     * vt. 粉碎；使破产；溃裂
+	     * adj. 了不起的；非常轰动的；出色的
+	     * vi. 粉碎；打碎
+---
+Its trunk was bent almost double, and its gnarled boughs were pummeling every inch of the car it could reach.  
+
+	gnarled UK: [nɑːld], US: [nɑ:ld]
+	  Word Explanation:
+	     * adj. [木] 多节的；粗糙的；多瘤的
+	     * v. 把…扭曲；长木瘤（gnarl的过去分词）
+
+	pummel UK: ['pʌm(ə)l], US: ['pʌml]
+	  Word Explanation:
+	     * n. （马鞍的）前鞍桥；球壮末端；（刀把或剑柄的）圆头（等于pommel）
+	     * vt. 击；打；用拳头连续揍
+---
+“Aaargh!” said Ron as another twisted limb punched a large dent into his door; the windshield was now trembling under a hail of blows from knuckle-like twigs and a branch as thick as a battering ram was pounding furiously on the roof, which seemed to be caving — 
+
+	dent UK: [dent], US: [dɛnt]
+	  Word Explanation:
+	     * n. 凹痕；削弱；减少；齿
+	     * vt. 削弱；使产生凹痕
+	     * vi. 产生凹陷；凹进去；削减
+	     * n. (Dent)人名；(英、葡)登特
+
+	trembling UK: [tremblɪŋ], US: ['trɛmblɪŋ]
+	  Word Explanation:
+	     * adj. 发抖的；战栗的；哆嗦的
+	     * n. 发抖；战栗；担心
+	     * v. 颤抖（tremble的ing形式）；战悚
+
+	blows
+	  Word Explanation:
+	     * n. 吹；管乐器声；疾风（blow的复数）
+	     * v. 吹动（blow的第三人称单数形式）；撞击
+
+	knuckle UK: ['nʌk(ə)l], US: ['nʌkl]
+	  Word Explanation:
+	     * n. 关节；指关节；指节；膝关节；肘
+	     * vi. 开始认真工作
+	     * vt. 用指关节敲打
+
+	twig UK: [twɪg], US: [twɪɡ]
+	  Word Explanation:
+	     * n. 小枝；嫩枝；末梢
+	     * vt. 理解
+	     * vi. 理解
+
+	ram UK: [ræm], US: [ræm]
+	  Word Explanation:
+	     * abbr. 随机存取存储器（random access memory的缩写）；随机访问内存（random-access memory的缩写）
+	     * n. 公羊；撞锤；撞击装置；有撞角的军舰；（水压机的）[机] 活塞
+	     * v. 撞击；填塞；强迫通过或接受
+	     * n. (Ram)人名；(英、印、尼、不丹、瑞典)拉姆
+---
+“Run for it!” Ron shouted, throwing his full weight against his door, but next second he had been knocked backward into Harry’s lap by a vicious uppercut from another branch.
+
+	vicious UK: ['vɪʃəs], US: ['vɪʃəs]
+	  Word Explanation:
+	     * adj. 恶毒的；恶意的；堕落的；有错误的；品性不端的；剧烈的
+	     * n. (Vicious)人名；(英)维舍斯
+
+
+	uppercut UK: ['ʌpəkʌt], US: ['ʌpɚ'kʌt]
+	  Word Explanation:
+	     * n. 上钩拳
+	     * vt. 用上钩拳击
+	     * vi. 击上钩拳，用上钩拳击
+---
+“We’re done for!” he moaned as the ceiling sagged, but suddenly the floor of the car was vibrating — the engine had restarted.
+
+	sag UK: [sæg], US: [sɑɡ]
+	  Word Explanation:
+	     * n. 松弛；下跌；漂流；萧条
+	     * vt. 使下垂
+	     * vi. 下垂；下降；萎靡
+---
+“Reverse!” Harry yelled, and the car shot backward; the tree was still trying to hit them; they could hear its roots creaking as it almost ripped itself up, lashing out at them as they sped out of reach.
+
+	lash UK: [læʃ], US: [læʃ]
+	  Word Explanation:
+	     * n. 鞭打；睫毛；鞭子；责骂；讽刺
+	     * vi. 鞭打；猛击；急速甩动
+	     * vt. 鞭打；冲击；摆动；扎捆；煽动；讽刺
+	     * n. (Lash)人名；(英)拉希
+---
+The car, however, had reached the end of its tether.
+
+	tether UK: ['teðə], US: [ˈteðər]
+	  Word Explanation:
+	     * n. 范围；系链；拴绳
+	     * vt. 用绳或链拴住
+	     * n. (Tether)人名；(英)特瑟
+---
+With two sharp clunks, the doors flew open and Harry felt his seat tip sideways: Next thing he knew he was sprawled on the damp ground.
+
+	clunk UK: [klʌŋk], US: [klʌŋk]
+	  Word Explanation:
+	     * n. 沉闷的金属声
+	     * vt. 用力地敲打；发出沉闷声
+	     * vi. 发出咚咚的声音
+
+	sprawled UK: [sprɔ:ld], US: [sprɔld]
+	  Word Explanation:
+	     * adj. 四肢伸开的
+	     * v. 躺卧；蔓生（sprawl的过去式和过去分词）
+---
+Then, dented, scratched, and steaming, the car rumbled off into the darkness, its rear lights blazing angrily.  
+
+	dent UK: [dent], US: [dɛnt]
+	  Word Explanation:
+	     * n. 凹痕；削弱；减少；齿
+	     * vt. 削弱；使产生凹痕
+	     * vi. 产生凹陷；凹进去；削减
+	     * n. (Dent)人名；(英、葡)登特
+
+
+	scratch UK: [skrætʃ], US: [skrætʃ]
+	  Word Explanation:
+	     * n. 擦伤；抓痕；刮擦声；乱写
+	     * vt. 抓；刮；挖出；乱涂
+	     * adj. 打草稿用的；凑合的；碰巧的
+	     * vi. 抓；搔；发刮擦声；勉强糊口；退出比赛
+
+
+	steam UK: [stiːm], US: [stim]
+	  Word Explanation:
+	     * n. 蒸汽；精力
+	     * adj. 蒸汽的
+	     * vt. 蒸，散发；用蒸汽处理
+	     * vi. 蒸，冒水汽
+
+
+	rumble UK: ['rʌmb(ə)l], US: ['rʌmbl]
+	  Word Explanation:
+	     * n. 隆隆声；抱怨声
+	     * vi. 隆隆作响
+	     * vt. 使隆隆响；低沉地说
+	     * n. (Rumble)人名；(英)朗布尔
+
+
+	rear UK: [rɪə], US: [rɪr]
+	  Word Explanation:
+	     * n. 后面；屁股；后方部队
+	     * adj. 后方的；后面的；背面的
+	     * vt. 培养；树立；栽种
+	     * adv. 向后；在后面
+	     * vi. 暴跳；高耸
+---
+
+“Come back!” Ron yelled after it, brandishing his broken wand. “Dad’ll kill me!”
+
+	brandish UK: ['brændɪʃ], US: ['brændɪʃ]
+	  Word Explanation:
+	     * n. 挥舞
+	     * vt. 挥舞；炫耀
+---
+But the car disappeared from view with one last snort from its exhaust.
+
+	snort UK: [snɔːt], US: [snɔrt]
+	  Word Explanation:
+	     * n. 喷鼻息；一小杯酒
+	     * vt. 喷出；发哼声；吸毒品
+	     * vi. 轻蔑或愤怒地发出哼声；喷出蒸汽声
+---
+He glanced over his shoulder at the ancient tree, which was still flailing its branches threateningly.
+
+	flail UK: [fleɪl], US: [flel]
+	  Word Explanation:
+	     * vt. 打；用连枷打
+	     * vi. 打；用连枷打
+	     * n. 连枷（打谷物用的工具）
+---
+Innumerable candles were hovering in midair over four long, crowded tables, making the golden plates and goblets sparkle.
+
+	goblet UK: ['gɒblɪt], US: ['ɡɑblət]
+	  Word Explanation:
+	     * n. 酒杯；高脚杯
+	     * n. (Goblet)人名；(法)戈布莱；(德)戈布勒特
+
+	sparkle UK: ['spɑːk(ə)l], US: ['spɑrkl]
+	  Word Explanation:
+	     * n. 闪耀；火花；活力
+	     * vt. 使闪耀；使发光
+	     * vi. 闪耀；发泡；活跃
+---
+Meanwhile, Professor McGonagall, a bespectacled witch with her hair in a tight bun, was placing the famous Hogwarts Sorting Hat on a stool before the newcomers.  
+
+	bespectacled UK: [bɪ'spektək(ə)ld], US: [bi'spektəkld]
+	  Word Explanation:
+	     * adj. 戴眼镜的
+
+	bun UK: [bʌn], US: [bʌn]
+	  Word Explanation:
+	     * n. 小圆面包
+	     * 屁股
+	     * 圆髻
+
+	stool UK: [stuːl], US: [stʊl]
+	  Word Explanation:
+	     * n. 凳子；粪便；厕所
+	     * vt. 引诱，诱捕
+	     * vi. 长新枝；分檗
+---
+Every year, this aged old hat, patched, frayed, and dirty, sorted new students into the four Hogwarts Houses (Gryffindor, Hufflepuff, Ravenclaw, and Slytherin).
+
+	fray UK: [freɪ], US: [fre]
+	  Word Explanation:
+	     * n. 争论；打架；磨损处
+	     * vt. 使磨损；变得令人紧张、急躁
+	     * vi. 被磨损
+	     * n. (Fray)人名；(法)弗雷；(德)弗赖；(匈)弗劳伊
+---
+Harry well remembered putting it on, exactly one year ago, and waiting, petrified, for its decision as it muttered aloud in his ear.
+
+	petrify UK: ['petrɪfaɪ], US: ['pɛtrɪfaɪ]
+	  Word Explanation:
+	     * vt. 使…石化；使…惊呆
+	     * vi. 石化；惊呆
+---
+A very small, mousy-haired boy had been called forward to place the hat on his head.
+
+	mousy UK: ['maʊsɪ], US: ['maʊsi]
+	  Word Explanation:
+	     * adj. 胆小如鼠的；灰褐色的；像老鼠的
+---
+Several seats along, Harry saw Gilderoy Lockhart, dressed in robes of aquamarine.
+
+	aquamarine UK: [,ækwəmə'riːn], US: [,ækwəmə'rin]
+	  Word Explanation:
+	     * n. [宝] 海蓝宝石；碧绿色，浅绿色
+---
+Cruel, sarcastic, and disliked by everybody except the students from his own House (Slytherin), Snape taught Potions.  
+
+	sarcastic UK: [sɑː'kæstɪk], US: [sɑr'kæstɪk]
+	  Word Explanation:
+	     * adj. 挖苦的；尖刻的，辛辣的
+---
+Harry spun around. There, his black robes rippling in a cold breeze, stood Severus Snape.
+
+	ripple UK: ['rɪp(ə)l], US: ['rɪpl]
+	  Word Explanation:
+	     * n. 波纹；涟漪；[物] 涟波
+	     * vt. 在…上形成波痕
+	     * vi. 起潺潺声
+	     * n. (Ripple)人名；(英)里普尔
+---
+He was a thin man with sallow skin, a hooked nose, and greasy, shoulder-length black hair, and at this moment, he was smiling in a way that told Harry he and Ron were in very deep trouble.
+
+	sallow UK: ['sæləʊ], US: ['sælo]
+	  Word Explanation:
+	     * n. 黄华柳；黄华柳细枝
+	     * adj. 气色不好的；灰黄色的
+	     * vt. 成土色
+	     * vi. 使……变成土色
+---
+A delicious smell of food was wafting from the Great Hall, but Snape led them away from the warmth and light, down a narrow stone staircase that led into the dungeons.  
+
+	waft UK: [wɒft; wɑːft], US: [wɑft]
+	  Word Explanation:
+	     * n. 飘荡；吹拂
+	     * vt. 使飘荡；吹送
+	     * vi. 飘荡
+
+	dungeons
+	  Word Explanation:
+	     * n. 地下城（dungeon复数）
+---
+The shadowy walls were lined with shelves of large glass jars, in which floated all manner of revolting things Harry didn’t really want to know the name of at the moment.
+
+	revolt UK: [rɪ'vəʊlt], US: [rɪ'volt]
+	  Word Explanation:
+	     * n. 反抗；叛乱；反感
+	     * vt. 使反感；使恶心
+	     * vi. 反抗；反叛；反感，厌恶
+---
+“So,” he said softly, “the train isn’t good enough for the famous Harry Potter and his faithful sidekick Weasley.
+
+	sidekick UK: ['saɪdkɪk], US: ['saidkik]
+	  Word Explanation:
+	     * n. 伙伴，老朋友；插袋
+---
+Ron gulped. This wasn’t the first time Snape had given Harry the impression of being able to read minds.
+
+	gulp UK: [gʌlp], US: [ɡʌlp]
+	  Word Explanation:
+	     * n. 一大口（尤指液体）；吞咽
+	     * vi. 哽住；喘不过气
+	     * vt. 狼吞虎咽地吃；大口地吸
+---
+“You were seen,” he hissed, showing them the headline: FLYING FORD ANGLIA MYSTIFIES MUGGLES.
+
+	mystifies
+	  Translation:
+	     * 在困扰着
+---
+Harry felt as though he’d just been walloped in the stomach by one of the mad tree’s larger branches.
+
+	wallop UK: ['wɒləp], US: ['wɑləp]
+	  Word Explanation:
+	     * vt. 猛击；痛打；击溃
+	     * vi. 猛冲；颠簸；沸腾
+	     * n. 冲击力；重击；快感
+	     * n. (Wallop)人名；(泰)旺洛；(英)沃洛普
+---
+“That tree did more damage to us than we —” Ron blurted out.
+
+	blurt UK: [blɜːt], US: [blɝt]
+	  Word Explanation:
+	     * vt. 未加思索地冲口说出；突然说出
+---
+He tried not to look at a large, slimy something suspended in green liquid on a shelf behind Snape’s desk.
+
+	slimy UK: ['slaɪmɪ], US: ['slaɪmi]
+	  Word Explanation:
+	     * adj. 黏滑的；泥泞的；谄媚的，虚伪的
+---
+She raised her wand the moment she entered; Harry and Ron both flinched, but she merely pointed it at the empty fireplace, where flames suddenly erupted.  
+
+	flinch UK: ['flɪn(t)ʃ], US: [flɪntʃ]
+	  Word Explanation:
+	     * n. 退缩；畏惧
+	     * vi. 退缩；畏惧
+
+	erupted
+	  Word Explanation:
+	     * v. 爆发；长出（erupt的过去分词）
+---
+“Explain,” she said, her glasses glinting ominously.
+
+	ominously UK: ['ɔminəsli], US: ['ɑmənəsli]
+	  Word Explanation:
+	     * adv. 恶兆地；不吉利地
+---
+Harry’s whole body went numb. Dumbledore was looking unusually grave. He stared down his very crooked nose at them, and Harry suddenly found himself wishing he and Ron were still being beaten up by the Whomping Willow.  
+
+	numb UK: [nʌm], US: [nʌm]
+	  Word Explanation:
+	     * adj. 麻木的；发愣的
+	     * vt. 使麻木；使发愣；使失去感觉
+
+	grave UK: [greɪv], US: [ɡrev]
+	  Word Explanation:
+	     * n. 墓穴，坟墓；死亡
+	     * adj. 重大的；严肃的；黯淡的
+	     * vt. 雕刻；铭记
+	     * n. (Grave)人名；(英)格雷夫；(德、瑞典)格拉弗；(法)格拉夫；(俄、葡)格拉韦
+---
+“What are you talking about, Weasley?” barked Professor McGonagall.
+
+	bark UK: [bɑːk], US: [bɑrk]
+	  Word Explanation:
+	     * n. 树皮；深青棕色；毛皮；皮肤；狗叫
+	     * vt. 狗叫；尖叫；剥皮
+	     * n. (Bark)人名；(英、西、德、捷、法、芬、瑞典)巴克；(阿拉伯、俄)巴尔克
+---
+Snape looked as though Christmas had been canceled. He cleared his throat and said, “Professor Dumbledore, these boys have flouted the Decree for the Restriction of Underage Wizardry, caused serious damage to an old and valuable tree — surely acts of this nature —” 
+
+	flout UK: [flaʊt], US: [flaʊt]
+	  Word Explanation:
+	     * n. 嘲笑；轻视；愚弄
+	     * vt. 嘲笑；藐视；愚弄
+	     * vi. 嘲笑；表示轻蔑
+---
+He turned to Professor McGonagall. “I must go back to the feast, Minerva, I’ve got to give out a few notices. Come, Severus, there’s a delicious-looking custard tart I want to sample —” 
+
+	custard UK: ['kʌstəd], US: ['kʌstɚd]
+	  Word Explanation:
+	     * n. 奶油冻；奶油蛋羹
+	     * n. (Custard)人名；(英)卡斯塔德
+
+	tart UK: [tɑːt], US: [tɑrt]
+	  Word Explanation:
+	     * n. 果馅饼；妓女
+	     * adj. 酸的；锋利的；尖刻的
+	     * vt. 打扮
+	     * n. (Tart)人名；(英)塔特
+---
+Snape shot a look of pure venom at Harry and Ron as he allowed himself to be swept out of his office, leaving them alone with Professor McGonagall, who was still eyeing them like a wrathful eagle.  
+
+	venom UK: ['venəm], US: ['vɛnəm]
+	  Word Explanation:
+	     * n. 毒液；恶意
+	     * vt. 使有毒；放毒
+
+	wrathful UK: ['rɒθfʊl; -f(ə)l; 'rɔːθ-], US: ['ræθfʊl]
+	  Word Explanation:
+	     * adj. 愤怒的；激怒的
+---
+Professor McGonagall gave him a piercing look, but he was sure she had almost smiled. Her mouth looked less thin, anyway.  
+
+	piercing UK: ['pɪəsɪŋ], US: ['pɪrsɪŋ]
+	  Word Explanation:
+	     * n. 熔化穿孔
+	     * v. 刺穿；感动；洞察（pierce的ing形式）
+	     * adj. 刺穿的；敏锐的；尖刻的；打动人心的
+---
+Harry shrugged. “We’ll have to watch our step from now on, though,” he said, taking a grateful swig of pumpkin juice.
+
+	shrug UK: [ʃrʌg], US: [ʃrʌɡ]
+	  Word Explanation:
+	     * n. 耸肩
+	     * vi. 耸肩
+	     * vt. 耸肩，耸肩表示
+
+	swig UK: [swɪg], US: [swɪɡ]
+	  Word Explanation:
+	     * n. 痛饮，大喝；牛饮
+	     * vt. 牛饮；大喝特喝，豪饮
+	     * vi. 牛饮；大喝特喝
+---
+The castle was quiet; it seemed that the feast was over. They walked past muttering portraits and creaking suits of armor, and climbed narrow flights of stone stairs, until at last they reached the passage where the secret entrance to Gryffindor Tower was hidden, behind an oil painting of a very fat woman in a pink silk dress.  
+
+	creak UK: [kriːk], US: [krik]
+	  Word Explanation:
+	     * n. 嘎吱嘎吱声
+	     * n. (Creak)人名；(英)克里克
+	     * vt. 使咯吱咯吱响
+	     * vi. 发出咯吱咯吱声；勉强运转
+---
+“It’s ‘wattlebird,’” said Hermione impatiently, “but that’s not the point —”
+
+	wattlebird ['wɒtlbɜːd]
+	  Word Explanation:
+	     * 食蜜鸟
+---
+Her words were cut short, however, as the portrait of the fat lady swung open and there was a sudden storm of clapping. It looked as though the whole of Gryffindor House was still awake, packed into the circular common room, standing on the lopsided tables and squashy armchairs, waiting for them to arrive. Arms reached through the portrait hole to pull Harry and Ron inside, leaving Hermione to scramble in after them.
+
+	lopside
+	  Word Explanation:
+	     * n. 倾向一方
+
+	squashy UK: ['skwɒʃɪ], US: ['skwɔʃi]
+	  Word Explanation:
+	     * adj. 熟透的；柔软的；容易压坏的；又湿又软的
+
+	scramble UK: ['skræmb(ə)l], US: ['skræmbl]
+	  Word Explanation:
+	     * n. 抢夺，争夺；混乱，混乱的一团；爬行，攀登
+	     * vi. 爬行，攀登；不规则地生长；仓促行动
+	     * vt. 攀登；使混杂，仓促凑成；扰乱
+---
+Harry nudged Ron in the ribs and nodded in Percy’s direction. Ron got the point at once.  
+
+	nudge UK: [nʌdʒ], US: [nʌdʒ]
+	  Word Explanation:
+	     * vt. 推进；用肘轻推；向…不停地唠叨
+	     * n. 推动；用肘轻推；没完没了抱怨的人
+	     * vi. 轻推；推进；唠叨
+---
+“’Night,” Harry called back to Hermione, who was wearing a scowl just like Percy’s.
+
+	scowl UK: [skaʊl], US: [skaʊl]
+	  Word Explanation:
+	     * n. 愁容；怒容；阴沉沉的样子
+	     * vt. 皱眉表示；对…沉下脸
+	     * vi. 皱眉；怒视
+---
+The dormitory door flew open and in came the other second year Gryffindor boys, Seamus Finnigan, Dean Thomas, and Neville Longbottom.
+
+“Unbelievable!” beamed Seamus.
+
+“Cool,” said Dean.
+
+“Amazing,” said Neville, awestruck.
+
+Harry couldn’t help it. He grinned, too.
+
+
+	beam UK: [biːm], US: [bim]
+	  Word Explanation:
+	     * n. 横梁；光线；电波；船宽；[计量] 秤杆
+	     * vt. 发送；以梁支撑；用…照射；流露
+	     * vi. 照射；堆满笑容
+	     * n. (Beam)人名；(阿拉伯)贝亚姆；(英)比姆
+
+
+	awestruck UK: ['ɔ:strʌk], US: ['ɔstrʌk]
+	  Word Explanation:
+	     * adj. 敬畏的；惊奇不已的（等于awestricken）
+
