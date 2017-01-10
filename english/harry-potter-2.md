@@ -1308,4 +1308,254 @@ The bag of gold, silver, and bronze jangling cheerfully in Harry's pocket was cl
 	     * n. 吃的声音；啜食声
 	     * vt. 出声地吃或喝
 	     * vi. 出声地吃或喝
+---
+Ron gazed longingly at a full set of Chudley Can non robes in the windows of Quality Quidditch Supplies until Hermione dragged them off to buy ink and parchment next door.  
 
+	longingly UK: ['lɔ:ŋiŋli], US: ['lɔ:ŋiŋli]
+	  Word Explanation:
+	     * adv. 渴望地
+---
+Wet-Start, No-Heat Fireworks, and in a tiny junk shop full of broken wands, lopsided brass scales, and old cloaks covered in potion stains they found Percy, deeply immersed in a small and deeply boring book called Prefects Who Gained Power.
+
+	junk UK: [dʒʌŋk], US: [dʒʌŋk]
+	  Word Explanation:
+	     * n. 垃圾，废物；舢板
+	     * n. (Junk)人名；(德、捷)容克
+
+	lopsided UK: [lɒp'saɪdɪd], US: [,lɑp'saɪdɪd]
+	  Word Explanation:
+	     * adj. 不平衡的，倾向一方的
+
+	brass UK: [brɑːs], US: [bræs]
+	  Word Explanation:
+	     * n. 黄铜；黄铜制品；铜管乐器；厚脸皮
+	     * n. (Brass)人名；(英、法、德)布拉斯
+
+
+	stain UK: [steɪn], US: [sten]
+	  Word Explanation:
+	     * n. 污点；瑕疵；着色剂
+	     * vt. 沾污；败坏；给…着色
+	     * vi. 污染；被沾污；被染污
+	     * n. (Stain)人名；(德)施泰因；(塞、瑞典)斯泰因
+
+
+	immerse UK: [ɪ'mɜːs], US: [ɪ'mɝs]
+	  Word Explanation:
+	     * vt. 沉浸；使陷入
+---
+As they approached it, they saw to their surprise a large crowd jostling outside the doors, trying to get in. 
+
+	jostling UK: ['dʒɔsliŋ], US: ['dʒɔsliŋ]
+	  Word Explanation:
+	     * n. 冲撞别人的马；推撞
+---
+“We can actually meet him!” Hermione squealed. “I mean, he’s written almost the whole booklist!”
+
+	squeal UK: [skwiːl], US: [skwil]
+	  Word Explanation:
+	     * vt. 告密；长声尖叫
+	     * vi. 告密；尖声地说
+	     * n. 尖叫声
+---
+A harassed-looking wizard stood at the door, saying, “Calmly, please, ladies. . . . Don’t push, there . . . mind the books, now. . . .”
+
+	harassed UK: ['hærəst; hə'ræst], US: [hə'ræst]
+	  Word Explanation:
+	     * adj. 疲倦的；厌烦的
+
+---
+They each grabbed a copy of The Standard Book of Spells, Grade 2 and sneaked up the line to where the rest of the Weasleys were standing with Mr. and Mrs. Granger.  
+
+	sneak UK: [sniːk], US: [snik]
+	  Word Explanation:
+	     * n. 鬼鬼祟祟的人；偷偷摸摸的行为；告密者
+	     * adj. 暗中进行的
+	     * vi. 溜；鬼鬼祟祟做事；向老师打小报告
+	     * vt. 偷偷地做；偷偷取得
+
+	sneak up
+	  Word Explanation:
+	     * 悄悄地靠近
+---
+his pointed wizard’s hat was set at a jaunty angle on his wavy hair.
+
+	jaunty UK: ['dʒɔːntɪ], US: ['dʒɔnti]
+	  Word Explanation:
+	     * adj. 快活的；活泼的；洋洋得意的；感到自信和自满的
+
+	ange UK: [ɑ̃:ʒ], US: [ɑ̃:ʒ]
+	  Word Explanation:
+	     * n. (法）昂热（品牌名字）；法国一乐队名
+---
+A short, irritable-looking man was dancing around taking photographs with a large black camera that emitted puffs of purple smoke with every blinding flash.
+
+	puff UK: [pʌf], US: [pʌf]
+	  Word Explanation:
+	     * n. 粉扑；泡芙；蓬松；一阵喷烟；肿块；吹嘘，宣传广告
+	     * vt. 喷出，张开；使膨胀；夸张；使骄傲自满
+	     * vi. 膨胀；张开；鼓吹；夸张
+	     * n. (Puff)人名；(德)普夫
+
+
+---
+“Out of the way, there,” he snarled at Ron, moving back to get a better shot. “This is for the Daily Prophet —”
+
+	snarled UK: [sna:rld], US: [sna:rld]
+	  Word Explanation:
+	     * adj. 纠缠不清的
+	     * v. 咆哮（snarl的过去分词）；缠结；使混乱
+---
+Harry’s face burned as Lockhart shook his hand for the photographer, who was clicking away madly, wafting thick smoke over the Weasleys.
+
+	waft UK: [wɒft; wɑːft], US: [wɑft]
+	  Word Explanation:
+	     * n. 飘荡；吹拂
+	     * vt. 使飘荡；吹送
+	     * vi. 飘荡
+
+---
+When he finally let go of Harry’s hand, Harry could hardly feel his fingers. He tried to sidle back over to the Weasleys, but Lockhart threw an arm around his shoulders and clamped him tightly to his side.  
+
+	sidle UK: ['saɪd(ə)l], US: ['saɪdl]
+	  Word Explanation:
+	     * n. 侧走；挨近
+	     * vt. 侧身而行；悄悄贴近
+	     * vi. 侧身而行；悄悄贴近
+
+---
+Staggering slightly under their weight, he managed to make his way out of the limelight to the edge of the room, where Ginny was standing next to her new cauldron.  
+
+	stagger UK: ['stægə], US: ['stægɚ]
+	  Word Explanation:
+	     * n. 蹒跚；交错安排
+	     * vt. 蹒跚；使交错；使犹豫
+	     * adj. 交错的；错开的
+	     * vi. 蹒跚；犹豫
+
+	limelight UK: ['laɪmlaɪt], US: ['laɪmlaɪt]
+	  Word Explanation:
+	     * n. 石灰光，石灰光灯；众人注目的中心
+	     * vt. 使显露头角，使受到注目
+---
+“Bet you loved that, didn’t you, Potter?” said a voice Harry had no trouble recognizing. He straightened up and found himself face-to-face with Draco Malfoy, who was wearing his usual sneer.
+
+	sneer UK: [snɪə], US: [snɪr]
+	  Word Explanation:
+	     * vi. 嘲笑，冷笑
+	     * vt. 嘲笑，冷笑
+	     * n. 嘲笑，冷笑
+---
+“Oh, it’s you,” said Ron, looking at Malfoy as if he were something unpleasant on the sole of his shoe.
+
+	sole UK: [səʊl], US: [sol]
+	  Word Explanation:
+	     * n. 鞋底；脚底；基础；鳎目鱼
+	     * adj. 唯一的；单独的；仅有的
+	     * vt. 触底；上鞋底
+	     * n. (Sole)人名；(意、西、芬、塞、罗、南非)索莱
+---
+“Ron!” said Mr. Weasley, struggling over with Fred and George.
+
+	struggling UK: ['strʌɡlɪŋ], US: ['strʌɡlɪŋ]
+	  Word Explanation:
+	     * v. 努力；斗争；竞争（struggle的ing形式）
+	     * adj. 奋斗的；努力的；苦斗的
+---
+He reached into Ginny’s cauldron and extracted, from amid the glossy Lockhart books, a very old, very battered copy of A Beginner’s Guide to Transfiguration.  
+
+	amid UK: [ə'mɪd], US: [ə'mɪd]
+	  Word Explanation:
+	     * prep. 在其中，在其间
+	     * n. (Amid)人名；(法、阿拉伯)阿米德
+
+	glossy UK: ['glɒsɪ], US: ['ɡlɑsi]
+	  Word Explanation:
+	     * adj. 光滑的；有光泽的
+
+	battered UK: ['bætəd], US: ['bætɚd]
+	  Word Explanation:
+	     * v. 连续猛击；磨损（batter的过去分词）
+	     * adj. 破旧的；磨损的；弄垮的；受到虐待的
+---
+“Obviously not,” Mr. Malfoy said. “Dear me, what’s the use of being a disgrace to the name of wizard if they don’t even pay you well for it?”
+
+	disgrace UK: [dɪs'greɪs], US: [dɪs'ɡres]
+	  Word Explanation:
+	     * n. 耻辱；丢脸的人或事；失宠
+	     * vt. 使……失宠；给……丢脸；使……蒙受耻辱；贬黜
+---
+“Clearly,” said Mr. Malfoy, his pale eyes straying to Mr. and Mrs. Granger, who were watching apprehensively.
+
+	stray UK: [streɪ], US: [stre]
+	  Word Explanation:
+	     * n. 走失的家畜；流浪者
+	     * adj. 迷路的；离群的；偶遇的
+	     * vi. 流浪；迷路；偏离
+	     * n. (Stray)人名；(挪)斯特雷
+
+	apprehensively
+	  Word Explanation:
+	     * adv. 担心地
+---
+There was a thud of metal as Ginny’s cauldron went flying; Mr. Weasley had thrown himself at Mr. Malfoy, knocking him backward into a bookshelf. Dozens of heavy spellbooks came thundering down on all their heads; there was a yell of, “Get him, Dad!” from Fred or George; Mrs. Weasley was shrieking, “No, Arthur, no!”; the crowd stampeded backward, knocking more shelves over; “Gentlemen, please — please!” cried the assistant, and then, louder than all — 
+
+	thud UK: [θʌd], US: [θʌd]
+	  Word Explanation:
+	     * n. 砰的一声；重击
+	     * vi. 砰的一声掉下；发出砰声
+	     * vt. 砰地击中
+
+	shriek UK: [ʃriːk], US: [ʃrik]
+	  Word Explanation:
+	     * vt. 尖声发出
+	     * vi. 尖叫；促人注意
+	     * n. 尖声；尖锐的响声
+
+
+	stamped UK: [stæmpt], US: [stæmpt]
+	  Word Explanation:
+	     * v. 贴上邮票（stamp的过去式）；顿足
+	     * adj. 铭刻的；盖上邮戳的；顿足的
+---
+He thrust it at her, his eyes glittering with malice.
+
+	thrust UK: [θrʌst], US: [θrʌst]
+	  Word Explanation:
+	     * n. [力] 推力；刺
+	     * vt. 插；插入；推挤
+	     * vi. 插入；用向某人刺去；猛然或用力推
+
+
+	malice UK: ['mælɪs], US: ['mælɪs]
+	  Word Explanation:
+	     * n. 恶意；怨恨；预谋
+	     * n. (Malice)人名；(意)马利切
+---
+“Here, girl — take your book — it’s the best your father can give you —” Pulling himself out of Hagrid’s grip he beckoned to Draco and swept from the shop.  
+
+	beckon UK: ['bek(ə)n], US: ['bɛkən]
+	  Word Explanation:
+	     * vt. 召唤；吸引
+	     * vi. 吸引；（招手或点头）示意
+	     * n. 表召唤的点头；手势
+---
+“A fine example to set for your children . . . brawling in public . . . what Gilderoy Lockhart must’ve thought —”
+
+	brawling UK: ['brɔ:liŋ], US: ['brɔ:liŋ]
+	  Word Explanation:
+	     * n. 争吵；喧嚷
+	     * adj. 爱吵架的
+	     * v. 吵架（brawl的ing形式）
+---
+“He was pleased,” said Fred. “Didn’t you hear him as we were leaving? He was asking that bloke from the Daily Prophet if he’d be able to work the fight into his report — said it was all publicity —”
+
+	bloke UK: [bləʊk], US: [blok]
+	  Word Explanation:
+	     * n. 家伙；小子
+---
+But it was a subdued group that headed back to the fireside in the Leaky Cauldron, where Harry, the Weasleys, and all their shopping would be traveling back to the Burrow using Floo powder.
+
+	subdue UK: [səb'djuː], US: [səb'du]
+	  Word Explanation:
+	     * vt. 征服；抑制；减轻
