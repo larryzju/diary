@@ -3482,4 +3482,897 @@ Lockhart gulped and dived under his own desk, narrowly avoiding being squashed b
 	     * n. 东西；材料；填充物；素材资料
 	     * vt. 塞满；填塞；让吃饱
 	     * vi. 吃得过多
+---
+Harry spent a lot of time over the next few days dodging out of sight whenever he saw Gilderoy Lockhart coming down a corridor.
+
+	dodging UK: ['dɔdʒiŋ], US: ['dɔdʒiŋ]
+	  Word Explanation:
+	     * n. 避开；音调改变
+	     * vt. 闪避（dodge的现在分词）
+---
+Nothing seemed to give Colin a bigger thrill than to say, “All right, Harry?” six or seven times a day and hear, “Hello, Colin,” back, however exasperated Harry sounded when he said it.  
+
+	exasperated UK: [ɪɡ'zæspəreɪtɪd], US: [ɪɡ'zæspəretɪd]
+	  Word Explanation:
+	     * v. 使恼怒；激怒；恶化（exasperate的过去式）
+	     * adj. 激怒的；恼火的
+---
+Hedwig was still angry with Harry about the disastrous car journey and Ron’s wand was still malfunctioning, surpassing itself on Friday morning by shooting out of Ron’s hand in Charms and hitting tiny old Professor Flitwick squarely between the eyes, creating a large, throbbing green boil where it had struck.
+
+	surpass UK: [sə'pɑːs], US: [sə'pæs]
+	  Word Explanation:
+	     * vt. 超越；胜过，优于；非…所能办到或理解
+
+	squarely
+	  Translation:
+	     * 直接
+
+	throbbing UK: ['θrɒbɪŋ], US: ['θrɔbiŋ]
+	  Word Explanation:
+	     * n. 跳动，激动
+	     * adj. 悸动的；跳动的
+	     * v. 跳动，悸动（throb的ing形式）
+---
+Harry squinted at the window. There was a thin mist hanging across the pink-and-gold sky.
+
+	squint UK: [skwɪnt], US: [skwɪnt]
+	  Word Explanation:
+	     * n. 斜视；斜孔小窗；一瞥
+	     * adj. 斜视的；斜的
+	     * vt. 使斜眼；眯眼看
+	     * vi. 眯眼看；斜视；窥视；偏移
+---
+“Exactly,” said Wood. He was a tall and burly sixth year and, at the moment, his eyes were gleaming with a crazed enthusiasm.
+
+	burly UK: ['bɜːlɪ], US: ['bɝli]
+	  Word Explanation:
+	     * adj. 结实的；率直的；粗鲁的
+---
+“It’s part of our new training program. Come on, grab your broom, and let’s go,” said Wood heartily. “None of the other teams have started training yet; we’re going to be first off the mark this year —” 
+
+	heartily UK: ['hɑːtɪlɪ], US: ['hɑrtɪli]
+	  Word Explanation:
+	     * adv. 衷心地；热忱地；痛快地
+---
+When he’d found his scarlet team robes and pulled on his cloak for warmth, Harry scribbled a note to Ron explaining where he’d gone and went down the spiral staircase to the common room, his Nimbus Two Thousand on his shoulder.
+
+	cloak UK: [kləʊk], US: [klok]
+	  Word Explanation:
+	     * n. 斗蓬；宽大外衣；托词
+	     * vt. 遮掩；隐匿
+	     * n. (Cloak)人名；(英)克洛克
+
+	scribble UK: ['skrɪb(ə)l], US: ['skrɪbl]
+	  Word Explanation:
+	     * n. 潦草写成的东西；潦草的写法；杂文
+	     * vt. 乱写；滥写；潦草地书写
+	     * vi. 乱写；乱涂
+---
+Harry looked bemusedly at the photograph Colin was brandishing under his nose.  
+
+	bemused UK: [bɪ'mjuːzd], US: [bɪ'mjuzd]
+	  Word Explanation:
+	     * adj. 困惑的；发呆的
+	     * v. 使发呆（bemuse的过去式和过去分词）
+---
+A moving, black-and-white Lockhart was tugging hard on an arm Harry recognized as his own. He was pleased to see that his photographic self was putting up a good fight and refusing to be dragged into view. As Harry watched, Lockhart gave up and slumped, panting, against the white edge of the picture.  
+
+	tugging UK: ['tʌgiŋ], US: ['tʌgiŋ]
+	  Word Explanation:
+	     * v. 用力拉（tug的ing形式）
+	     * n. 牵引感
+
+	slump UK: [slʌmp], US: [slʌmp]
+	  Word Explanation:
+	     * vt. 使降低；使衰落；使倒下
+	     * n. 衰退；暴跌；消沉
+	     * vi. 下降，衰落；倒下；大幅度下降，暴跌
+---
+“You were the youngest House player in a hundred years, weren’t you, Harry? Weren’t you?” said Colin, trotting alongside him. “You must be brilliant. I’ve never flown. Is it easy? Is that your own broom? Is that the best one there is?” 
+
+	trot UK: [trɒt], US: [trɑt]
+	  Word Explanation:
+	     * n. （人）慢跑；马小跑的步态；小跑的马蹄声；刚学步的小孩；老太婆；腹泻；（学生作弊用的）译文对照本
+	     * vi. （马）小跑；（人）慢跑；快步走
+	     * vt. 使小跑；使快步走
+
+	flown UK: [fləʊn], US: [flon]
+	  Word Explanation:
+	     * v. fly的过去分词
+---
+Harry didn’t know how to get rid of him. It was like having an extremely talkative shadow.
+
+	talkative UK: ['tɔːkətɪv], US: ['tɔkətɪv]
+	  Word Explanation:
+	     * adj. 饶舌的；多话的；多嘴的；爱说话的
+---
+“Yes,” said Harry heavily, resigned to explaining the complicated rules of Quidditch. “They’re called Bludgers. There are two Beaters on each team who carry clubs to beat the Bludgers away from their side. Fred and George Weasley are the Gryffindor Beaters.” 
+
+	resigned UK: [rɪ'zaɪnd], US: [rɪ'zaɪnd]
+	  Word Explanation:
+	     * v. 辞职；顺从（resign的过去分词）
+	     * adj. 顺从的；已辞职的；己放弃的
+
+	bludger UK: ['blʌdʒə], US: ['blʌdʒə]
+	  Word Explanation:
+	     * n. 游手好闲的人；二流子
+
+	club UK: [klʌb], US: [klʌb]
+	  Word Explanation:
+	     * n. 俱乐部，社团；夜总会；棍棒；（扑克牌中的）梅花
+	     * adj. 俱乐部的
+	     * vt. 用棍棒打；募集
+	     * vi. 集资；组成俱乐部
+	     * n. (Club)人名；(英)克拉布
+---
+“Well, the Quaffle — that’s the biggish red one — is the one that scores goals. Three Chasers on each team throw the Quaffle to each other and try and get it through the goalposts at the end of the pitch — they’re three long poles with hoops on the end.” 
+
+	goalpost UK: ['ɡəulpəust], US: ['ɡolpost]
+	  Word Explanation:
+	     * n. 球门柱；门柱
+
+	pitch UK: [pɪtʃ], US: [pɪtʃ]
+	  Word Explanation:
+	     * n. 沥青；音高；程度；树脂；倾斜；投掷；球场
+	     * vt. 投；掷；定位于；用沥青涂；扎营；向前倾跌
+	     * vi. 倾斜；投掷；搭帐篷；坠落
+---
+“— is the Golden Snitch,” said Harry, “and it’s very small, very fast, and difficult to catch. But that’s what the Seeker’s got to do, because a game of Quidditch doesn’t end until the Snitch has been caught. And whichever team’s Seeker gets the Snitch earns his team an extra hundred and fifty points.” 
+
+	snitch UK: [snɪtʃ], US: [snɪtʃ]
+	  Word Explanation:
+	     * n. 告密者；告发者
+	     * vt. 偷；顺手牵羊
+	     * vi. 告密；进行小偷小摸
+---
+Fred and george weasley were sitting, puffy-eyed and tousle-haired, next to fourth year Alicia Spinnet, who seemed to be nodding off against the wall behind her.
+
+	puffy UK: ['pʌfɪ], US: ['pʌfi]
+	  Word Explanation:
+	     * adj. 一阵阵吹的；胀大的；喘气的
+
+	tousle UK: ['taʊz(ə)l], US: ['taʊzl]
+	  Word Explanation:
+	     * n. 杂乱；蓬乱的头发
+	     * vt. 弄乱
+---
+He took out his wand, tapped the board, and the arrows began to wiggle over the diagram like caterpillars.
+
+	wiggle UK: ['wɪg(ə)l], US: ['wɪɡl]
+	  Word Explanation:
+	     * n. 扭动
+	     * vt. 使……摆动，使……扭动
+	     * vi. 摆动
+
+	caterpillars
+	  Word Explanation:
+	     * n. 毛毛虫（caterpillar的复数）
+
+---
+as wood launched into a speech about his new tactics, fred weasley's head drooped right onto Alicia spinnet's shoulder and he began to snore.
+
+	tactic UK: ['tæktɪk], US: ['tæktɪk]
+	  Word Explanation:
+	     * n. 策略，战略
+	     * adj. 按顺序的，依次排列的
+
+	snore UK: [snɔː], US: [snɔr]
+	  Word Explanation:
+	     * n. 鼾声
+	     * vt. 打鼾
+	     * vi. 打呼噜；打着鼾声渡过
+
+---
+Harry sank into a stupor as wood droned on and on.
+
+	stupor UK: ['stjuːpə], US: ['stupɚ]
+	  Word Explanation:
+	     * n. 昏迷，恍惚；麻木
+
+	drone UK: [drəʊn], US: [dron]
+	  Word Explanation:
+	     * n. 雄蜂；嗡嗡的声音；懒惰者
+	     * n. 无人机（非正式）
+	     * n. n. (Drone)人名；(法)德罗纳
+	     * vt. 低沉地说
+	     * vi. 嗡嗡作声；混日子
+
+---
+"So," said wood, at long last, jerking Harry from a wistful fantasy about what he could be eating for breakfast at this very moment up at the castle. "Is that clear? Any questions?"
+
+	jerk UK: [dʒɜːk], US: [dʒɝk]
+	  Word Explanation:
+	     * n. 肌肉抽搐；性情古怪的人；蠢人；急拉
+	     * vi. 痉挛；急拉；颠簸地行进
+	     * vt. 猛拉
+	     * n. (Jerk)人名；(俄)埃尔克；(匈)耶尔克
+
+	wistful UK: ['wɪs(t)fʊl; -f(ə)l], US: ['wɪstfl]
+	  Word Explanation:
+	     * adj. 渴望的；沉思的，默想的；引起怀念的；不满足似的
+
+	fantasy UK: ['fæntəsɪ; -zɪ], US: ['fæntəsi]
+	  Word Explanation:
+	     * n. 幻想；白日梦；幻觉
+	     * adj. 虚幻的
+	     * vt. 空想；想像
+	     * vi. 耽于幻想；奏幻想曲（等于phantasy）
+
+---
+"Now, listen here, you lot," he said, glowering at them all.
+
+	glower UK: ['glaʊə], US: ['ɡlaʊɚ]
+	  Word Explanation:
+	     * n. 怒视；热切的注视；灯丝
+	     * n. (Glower)人名；(英)格洛尔
+	     * vi. 怒目而视；瞪眼
+
+---
+Harry had been unconscious in the hospital wing for the final match of the previous year, meaning that Gryffindor had been a player short and had suffered their worst defeat in three hundred years.
+
+	wing UK: [wɪŋ], US: [wɪŋ]
+	  Word Explanation:
+	     * n. 翼；翅膀；飞翔；派别；侧厅，耳房，厢房
+	     * vt. 使飞；飞过；空运；增加…速度；装以翼
+	     * vi. 飞行
+	     * n. (Wing)人名；(英、印尼)温
+
+---
+They had been in the locker room so long that the sun was up completely now, although remnants of mist hung over the grass in the stadium.
+
+	locker UK: ['lɒkə], US: ['lɑkɚ]
+	  Word Explanation:
+	     * n. 柜，箱；上锁的人；有锁的橱柜；锁扣装置；有锁的存物柜
+	     * n. (Locker)人名；(英、德、法)洛克
+
+	remnant UK: ['remnənt], US: ['rɛmnənt]
+	  Word Explanation:
+	     * n. 剩余
+	     * n. (Remnant)人名；(英)雷姆南特
+	     * adj. 剩余的
+
+---
+"Aren't you finished yet?" called ron incredulously.
+
+	incredulously UK: [in'kredjuləsli], US: [in'kredjuləsli]
+	  Word Explanation:
+	     * adv. 不相信地，怀疑地
+
+---
+"Haven't even started," said harry, looking jealously at the toast and marmalade ron and hermione had brought out the Greate hall.
+
+	jealously UK: ['dʒeləsli], US: ['dʒɛləsli]
+	  Word Explanation:
+	     * adv. 妒忌地；猜疑地
+
+	marmalade UK: ['mɑːməleɪd], US: ['mɑrməled]
+	  Word Explanation:
+	     * n. 橘子或柠檬等水果制成的果酱
+	     * adj. 橘子酱色的
+	     * vt. 涂橘子或柠檬酱于…
+
+---
+"No idea,"Harry lied, putting on a spurt of speed that took him as far away as possible from colin.
+
+	spurt UK: [spɜːt], US: [spɝt]
+	  Word Explanation:
+	     * n. 冲刺；喷射
+	     * vi. 冲刺；喷出；迸发
+	     * vt. 喷射；喷出
+
+---
+"And the slytherins don't need a spy, Oliver," said George.
+
+"What makes you say that?" said wood testily.
+
+	testily UK: ['testili], US: ['testili]
+	  Word Explanation:
+	     * adv. 暴躁地，易怒地；恼火地，不耐烦地
+
+---
+Marcus Flint was even larger than Wood. He had a look of trollish cunning on his face as he replied, "Plenty of room for all of us, Wood."
+
+	troll UK: [trəʊl; trɒl], US: [trol]
+	  Word Explanation:
+	     * n. 轮唱；钓鱼；北欧神话中的巨人
+	     * vt. 轮唱，使转动；放声高唱；拖饵钓鱼
+	     * vi. 参加轮唱；宏亮地唱；拖饵钓鱼
+
+	cunning UK: ['kʌnɪŋ], US: ['kʌnɪŋ]
+	  Word Explanation:
+	     * n. 狡猾
+	     * adj. 狡猾的；巧妙的；可爱的
+
+---
+There were no girls on the Slytherin team, who stood shoulder to shoulder, facing the gryffindors, leering to a man.
+
+	leer UK: [lɪə], US: [lɪr]
+	  Word Explanation:
+	     * n. 媚眼，秋波；恶意的瞥视
+	     * vi. 抛媚眼，送秋波；斜睨
+
+---
+"Very lastest model. Only came out last month," said Flint carelessly, flicking a speck of dust from the end of his own. "I believe it outstrips the old Two tThousand series by a considerable amount. As for the old cleansweeps" -- he smiled nastily at Fred and George, who were both clutching Cleansweep Fives -- "sweeps the board with them."
+
+	careless UK: ['keələs], US: ['kɛrləs]
+	  Word Explanation:
+	     * adj. 粗心的；无忧无虑的；淡漠的
+	     * n. (Careless)人名；(英)凯尔利斯
+
+	flicking
+	  Word Explanation:
+	     * v. 闪烁（flick的ing形式）
+
+	speck UK: [spek], US: [spɛk]
+	  Word Explanation:
+	     * n. 灰尘；污点；小颗粒
+	     * vt. 使有斑点
+	     * n. (Speck)人名；(英)斯佩克；(德)施佩克
+
+	outstrip UK: [aʊt'strɪp], US: [,aʊt'strɪp]
+	  Word Explanation:
+	     * vt. 超过；胜过；比…
+
+	nastily UK: ['næstəli], US: ['næstəli]
+	  Word Explanation:
+	     * adv. 污秽地；不洁地；讨厌地
+
+---
+Malfoy was smirking so broadly his cold eyes were reduced to slits.
+
+	smirking
+	  Word Explanation:
+	     * n. 假笑；傻笑
+	     * v. 假笑；傻笑（smirk的ing形式）
+
+	slit UK: [slɪt], US: [slɪt]
+	  Word Explanation:
+	     * n. 裂缝；投币口
+	     * vt. 撕裂；使有狭缝
+	     * vi. 纵裂
+
+---
+"On, look," said Flint. "A field invasion."
+
+	invasion UK: [ɪn'veɪʒ(ə)n], US: [ɪn'veʒn]
+	  Word Explanation:
+	     * n. 入侵，侵略；侵袭；侵犯
+
+---
+"I'm the new Slytherin Seeker, weasley," said malfoy, smugly. "Everyone's just been admiring the brooms my father's bought our team."
+
+	smugly UK: ['smʌgli], US: ['smʌgli]
+	  Word Explanation:
+	     * adv. 自鸣得意地；沾沾自喜地
+
+---
+Ron gaped, openmouthed, at the seven superb broomsticks in front of him.
+
+	superb UK: [suː'pɜːb; sjuː-], US: [/suːˈpɜːrb/]
+	  Word Explanation:
+	     * adj. 极好的；华丽的；宏伟的
+	     * n. (Superb)人名；(罗)苏佩尔布
+---
+You could raffle off those Cleansweep Fives; I except a museum would bid for them.
+
+	raffle UK: ['ræf(ə)l], US: ['ræfl]
+	  Word Explanation:
+	     * n. 废物；抽彩售货
+	     * vt. 抽彩售货
+	     * vi. 抽彩
+
+	bid UK: [bɪd], US: [bɪd]
+	  Word Explanation:
+	     * n. 出价；叫牌；努力争取
+	     * vi. 投标；吩咐
+	     * vt. 投标；出价；表示；吩咐
+	     * n. (Bid)人名；(俄)比德
+
+---
+The smug look on Malfoy's face flickered.
+
+	smug UK: [smʌg], US: [smʌɡ]
+	  Word Explanation:
+	     * n. 书呆子；自命不凡的家伙
+	     * adj. 自鸣得意的；自以为是的；整洁的
+
+	flicker UK: ['flɪkə], US: ['flɪkɚ]
+	  Word Explanation:
+	     * vi. 闪烁；摇曳；颤动；扑动翅膀；假装昏倒
+	     * vt. 使闪烁；使摇曳
+	     * n. 闪烁；闪光；电影
+	     * n. (Flicker)人名；(英)弗利克
+
+---
+"No one asked your opinion, you filthy little Mudblood," he spat.
+
+	filthy UK: ['fɪlθɪ], US: ['fɪlθi]
+	  Word Explanation:
+	     * adj. 肮脏的；污秽的；猥亵的
+
+	spat UK: [spæt], US: [spæt]
+	  Word Explanation:
+	     * n. 口角；蚝卵；蚝仔；掌击
+	     * v. 吐口水（spit的过去式）
+	     * vi. 争吵；一巴掌打去
+	     * n. (Spat)人名；(意)斯帕特
+
+---
+Flint had to dive in front of Malfoy to stop Fred and George jumping on him, Alicia shrieked, "How dare you!", and Ron plunged his had into his robes, pulled out his wand yelling, "You'll pay for that one, Malfoy!" and pointed it furiously under Flint's arm at Malfoy's face.
+
+	shriek UK: [ʃriːk], US: [ʃrik]
+	  Word Explanation:
+	     * vt. 尖声发出
+	     * vi. 尖叫；促人注意
+	     * n. 尖声；尖锐的响声
+
+	plunged
+	  Word Explanation:
+	     * 投入
+	     * 跳进
+	     * 使陷入
+	     * 使投入（plunge的过去式和过去分词）
+
+	furiously UK: ['fjuəriəsli], US: ['fjuəriəsli]
+	  Word Explanation:
+	     * adv. 猛烈地；狂暴地
+
+---
+"Ron! Ron! Are you all right?" squealed Hermione.
+
+	squeal UK: [skwiːl], US: [skwil]
+	  Word Explanation:
+	     * vt. 告密；长声尖叫
+	     * vi. 告密；尖声地说
+	     * n. 尖叫声
+
+---
+Ron opened his mouth to speak, but no words cam out. Instead he gave an almighty belch and serveral slugs dribbled out of his mouth onto his lap.
+
+	belch UK: [beltʃ], US: [bɛltʃ]
+	  Word Explanation:
+	     * n. 打嗝；喷出物
+	     * vt. 打嗝；喷出
+	     * vi. 打嗝；喷出
+	     * n. (Belch)人名；(英)贝尔奇
+
+	dribble UK: ['drɪb(ə)l], US: ['drɪbl]
+	  Word Explanation:
+	     * n. n. 点滴；运球
+	     * vt. 连击；使滴下；运球
+	     * vi. 滴下；流口水
+
+---
+The Slytherin team were paralyzed with laughter.
+
+	paralyzed UK: ['pærəlaizd], US: ['pærəlaizd]
+	  Word Explanation:
+	     * v. 使麻痹；使无力；使失去勇气（paralyze的过去分词）
+	     * adj. 瘫痪的；麻痹的
+
+---
+They were within twenty feet of Hagrid's house when the front door opened, but it wasn't Hagrid who emerged. Gilderoy Lockhart, wearing robes of palest mauve today, came striding out.
+
+	palest
+	  Word Explanation:
+	     * adj. 苍白的；无力的；暗淡的 (pale的变形)
+
+	mauve UK: [məʊv], US: [mov]
+	  Word Explanation:
+	     * n. 淡紫色；苯胺紫；淡紫色染料
+	     * n. (Mauve)人名；(德、荷)毛弗；(法)莫夫
+	     * adj. 淡紫色的
+
+---
+Hagrid appeared at once, looking very grumpy, but his expression brightened when he saw who it was.
+
+	grumpy UK: ['grʌmpɪ], US: ['ɡrʌmpi]
+	  Word Explanation:
+	     * n. 脾气坏的人；爱抱怨的人
+	     * adj. 脾气暴躁的；性情乖戾的
+
+	hist UK: [hɪst], US: [hist]
+	  Word Explanation:
+	     * int. 嘘（用以引起注意或制止人讲话的发声）
+---
+Harry and Hermione supported Ron over the threshold into the one-roomed cabin, which had an enormous bed in one corner, a fire crackling merrily in the other. Hagrid didn't seem perturbed by Ron's slug problem, which Harry hastilly explained as he lowered Ron into a chair.
+
+	crack UK: [kræk], US: [kræk]
+	  Word Explanation:
+	     * n. 裂缝；声变；噼啪声
+	     * adj. 最好的；高明的
+	     * vi. 破裂；爆裂
+	     * vt. 使破裂；打开；变声
+
+	merrily UK: ['merɪlɪ], US: ['mɛrəli]
+	  Word Explanation:
+	     * adv. 愉快地；高兴地（merry的副词形式）
+
+	perturbe
+	  Translation:
+	     * 扰乱
+
+	hastilly
+	  Translation:
+	     * 慌忙地
+
+---
+Hagrid was bustling around making them tea. His boarhound, Fang, was slobbering over Harry.
+
+	bustling UK: ['bʌslɪŋ], US: ['bʌslɪŋ]
+	  Word Explanation:
+	     * adj. 熙熙攘攘的；忙乱的
+
+	boarhound UK: ['bɔːhaʊnd], US: ['bɔr,haʊnd; 'bor,haʊnd]
+	  Word Explanation:
+	     * n. 猎野猪的大猎狗
+
+	slobber UK: ['slɒbə], US: ['slɑbɚ]
+	  Word Explanation:
+	     * n. 口水；感情用事的话
+	     * vt. 处事马虎；流口水弄湿；口齿不清地说
+	     * vi. 流口水；情不自禁地说；过分感伤地说；感情迸发
+
+---
+"Givin' me advice on gettin' kelpies out of  a well," growled Hagrid, moving a half-plucked rooster off his scrubbed table and setting down the teapot.
+
+	kelpy UK: ['kelpi], US: ['kelpi]
+	  Word Explanation:
+	     * n. 马形水鬼（等于kelpie）
+
+	growl UK: [graʊl], US: [ɡraʊl]
+	  Word Explanation:
+	     * n. 咆哮声；吠声；不平
+	     * vt. 咆哮；（雷电，炮等）轰鸣
+	     * vi. 咆哮着说
+
+	plucked
+	  Word Explanation:
+	     * [纺] 粗细不匀
+
+	rooster UK: ['ruːstə], US: ['rustɚ]
+	  Word Explanation:
+	     * n. 公鸡；狂妄自负的人
+
+	scrubbed UK: ['skrʌbid], US: ['skrʌbid]
+	  Word Explanation:
+	     * adj. 精制的，纯净的
+	     * v. 擦洗；废止；揉搓（scrub的过去分词）
+
+---
+"He was the only man for the job," said Hagrid, offering them a plate of treacle toffee, while Ron coughed squelchily into his basin.
+
+	treacle UK: ['triːk(ə)l], US: ['tri:kl]
+	  Word Explanation:
+	     * n. 糖蜜；过分甜蜜的声调
+
+	squelchily
+	  Translation:
+	     * 嘎吱声的
+
+---
+He gave a small burp, and a single slug fell into his outstretched hand.
+
+	burp UK: [bɜːp], US: [bɝp]
+	  Word Explanation:
+	     * n. 打嗝；饱嗝儿
+	     * vt. 使打嗝
+	     * vi. 打嗝；打饱嗝
+
+	outstretch UK: [aʊt'stretʃ], US: [,aut'stretʃ]
+	  Word Explanation:
+	     * vt. 拉长；伸展得超出...的范围
+
+---
+"An' they haven't invented a spell our Hermione can' do," said Hagrid proudly, making Hermione go a brilliant shade of magenta.
+
+	magenta UK: [mə'dʒentə], US: [mə'dʒɛntə]
+	  Word Explanation:
+	     * n. 品红；洋红；红色苯胺染料
+	     * n. (Magenta)人名；(意)马真塔
+	     * adj. 洋红色的；品红色的
+
+--
+He retched and ducked out of sight again.
+
+	retch UK: [retʃ], US: [ritʃ]
+	  Word Explanation:
+	     * n. 反胃，呕吐
+	     * vi. 作呕，反胃；恶心
+
+	duck UK: [dʌk], US: [dʌk]
+	  Word Explanation:
+	     * n. 鸭子；鸭肉；（英）宝贝儿；零分
+	     * vt. 躲避；猛按…入水
+	     * vi. 闪避；没入水中
+	     * n. (Duck)人名；(德、葡、匈)杜克
+
+---
+Harry would have pointed out that trouble didn't come much worse than having slugs pouring out of your mouth, but he couldn't; Hagrid's treacle toffee had cemented his jaws together.
+
+	pouring UK: ['pɔ:riŋ], US: [por]
+	  Word Explanation:
+	     * n. [冶] 浇注；传布
+	     * v. 倾泻；倾诉（pour的ing形式）
+
+	cement UK: [sɪ'ment], US: [sə'mɛnt]
+	  Word Explanation:
+	     * n. 水泥；接合剂
+	     * vt. 巩固，加强；用水泥涂；接合
+	     * vi. 粘牢
+
+	jaw UK: [dʒɔː], US: [dʒɔ]
+	  Word Explanation:
+	     * n. 颌；下巴；狭窄入口；唠叨
+	     * vt. 教训；对…唠叨
+	     * vi. 教训；唠叨
+	     * n. (Jaw)人名；(冈)乔
+
+---
+furious, Harry wrenched his teeth apart.
+
+	wrench UK: [ren(t)ʃ], US: [rɛntʃ]
+	  Word Explanation:
+	     * n. 扳手，扳钳；扭伤；痛苦；歪曲；猛扭
+	     * vt. 扭伤；猛扭；曲解；折磨
+	     * vi. 扭伤；猛扭；猛绞
+	     * n. (Wrench)人名；(英)伦奇
+
+---
+"I'm only jokin," he said, patting Harry genially on the back and sending him face first into the table.
+
+	genially UK: ['dʒi:njəli], US: ['dʒi:njəli]
+	  Word Explanation:
+	     * adv. 和蔼地；快活地；亲切地
+---
+“Bet he didn’t like that,” said Harry, sitting up and rubbing his chin.
+
+	rubbing UK: ['rʌbɪŋ], US: ['rʌbɪŋ]
+	  Word Explanation:
+	     * n. 摩擦；研磨；摹拓
+	     * v. 摩擦；按摩；触痛（rub的ing形式）
+---
+“An Engorgement Charm, I suppose?” said Hermione, halfway between disapproval and amusement. “Well, you’ve done a good job on them.” 
+
+	engorgement UK: [in'ɡɔ:dʒmənt], US: [in'ɡɔ:dʒmənt]
+	  Word Explanation:
+	     * n. [病理] 充血；暴饮暴食；肿胀
+---
+“That’s what yer little sister said,” said Hagrid, nodding at Ron. “Met her jus’ yesterday.” Hagrid looked sideways at Harry, his beard twitching. “Said she was jus’ lookin’ round the grounds, but I reckon she was hopin’ she might run inter someone else at my house.” He winked at Harry. “If yeh ask me, she wouldn’ say no ter a signed —” 
+
+	sideway UK: ['saidwei], US: ['saidwei]
+	  Word Explanation:
+	     * adj. 旁边的；向侧面的（等于sideways）
+	     * adv. 斜地里
+	     * n. 人行道；小巷
+
+	twitch UK: [twɪtʃ], US: [twɪtʃ]
+	  Word Explanation:
+	     * n. 抽搐；抽动；痉挛；阵痛
+	     * vi. 抽搐；抽动；阵痛
+	     * vt. 使抽动；攫取；猛拉
+---
+“Oh, shut up,” said Harry. Ron snorted with laughter and the ground was sprayed with slugs.  
+
+	snort UK: [snɔːt], US: [snɔrt]
+	  Word Explanation:
+	     * n. 喷鼻息；一小杯酒
+	     * vt. 喷出；发哼声；吸毒品
+	     * vi. 轻蔑或愤怒地发出哼声；喷出蒸汽声
+---
+They said good-bye to Hagrid and walked back up to the castle, Ron hiccoughing occasionally, but only bringing up two very small slugs.  
+
+	hiccough UK: ['hɪkʌp], US: ['hikʌp, -əp]
+	  Word Explanation:
+	     * vi. 打嗝
+	     * n. 打嗝
+---
+“What’re we doing, Professor?” said Ron, nervously suppressing a burp.
+
+	burp UK: [bɜːp], US: [bɝp]
+	  Word Explanation:
+	     * n. 打嗝；饱嗝儿
+	     * vt. 使打嗝
+	     * vi. 打嗝；打饱嗝
+---
+“You will be polishing the silver in the trophy room with Mr. Filch,” said Professor McGonagall. “And no magic, Weasley — elbow grease.”
+
+	trophy UK: ['trəʊfɪ], US: [trofɪ]
+	  Word Explanation:
+	     * n. 奖品；战利品；纪念品
+	     * vt. 用战利品装饰
+	     * adj. 显示身份的；有威望的
+	     * n. (Trophy)人名；(法)特罗菲
+
+	elbow UK: ['elbəʊ], US: ['ɛlbo]
+	  Word Explanation:
+	     * n. 肘部；弯头；扶手
+	     * vt. 推挤；用手肘推开
+
+	grease UK: [griːs], US: [gris]
+	  Word Explanation:
+	     * n. 油脂；贿赂
+	     * vt. 涂脂于；贿赂
+---
+Ron gulped. Argus Filch, the caretaker, was loathed by every student in the school.
+
+	gulp UK: [gʌlp], US: [ɡʌlp]
+	  Word Explanation:
+	     * n. 一大口（尤指液体）；吞咽
+	     * vi. 哽住；喘不过气
+	     * vt. 狼吞虎咽地吃；大口地吸
+
+	caretaker UK: ['keəteɪkə], US: ['kɛr'tekɚ]
+	  Word Explanation:
+	     * n. 看管者；看门人；守护者
+	     * adj. 临时代理的
+
+	loath UK: [ləʊθ], US: [loθ]
+	  Word Explanation:
+	     * adj. 勉强的；不情愿的（等于loth）
+
+	loathe UK: [ləʊð], US: [loð]
+	  Word Explanation:
+	     * vt. 讨厌，厌恶
+
+---
+“Oh n — Professor, can’t I go and do the trophy room, too?” said Harry desperately.
+
+	desperately UK: ['despərətlɪ], US: ['despərətli]
+	  Word Explanation:
+	     * adv. 拼命地；绝望地；极度地
+---
+Harry and Ron slouched into the Great Hall in states of deepest gloom, Hermione behind them, wearing a well-you-did-break-school-rules sort of expression. Harry didn’t enjoy his shepherd’s pie as much as he’d thought. Both he and Ron felt they’d got the worse deal.
+
+	slouch UK: [slaʊtʃ], US: [slaʊtʃ]
+	  Word Explanation:
+	     * n. 下垂；笨拙的人，懒散的人；懒散的样子
+	     * vt. 使下垂
+	     * vi. 没精打采地站；耷拉
+
+	     
+	shepherd UK: ['ʃepəd], US: ['ʃɛpɚd]
+	  Word Explanation:
+	     * n. 牧羊人；牧师；指导者
+	     * vt. 牧羊；带领；指导；看管
+	     * n. (Shepherd)人名；(英)谢泼德
+---
+Saturday afternoon seemed to melt away, and in what seemed like no time, it was five minutes to eight, and Harry was dragging his feet along the second-floor corridor to Lockhart’s office. He gritted his teeth and knocked.
+
+	grit UK: [grɪt], US: [ɡrɪt]
+	  Word Explanation:
+	     * n. 粗砂，砂砾砂砾，粗砂石；勇气；决心
+	     * vt. 研磨；在…上铺砂砾，覆以砂砾；咬紧牙关
+	     * vi. 摩擦作声
+	     * n. (Grit)人名；(德)格里特；(法)格里
+---
+“Ah, here’s the scalawag!” he said. “Come in, Harry, come in —”
+
+	scalawag UK: ['skæləwæɡ], US: ['skæləwæɡ]
+	  Word Explanation:
+	     * n. 无赖汉
+---
+The minutes snailed by. Harry let Lockhart’s voice wash over him, occasionally saying, “Mmm” and “Right” and “Yeah.” Now and then he caught a phrase like, “Fame’s a fickle friend, Harry,” or “Celebrity is as celebrity does, remember that.”
+
+	snail UK: [sneɪl], US: [snel]
+	  Word Explanation:
+	     * n. 蜗牛；迟钝的人
+	     * vt. 缓慢移动
+	     * vi. 缓慢移动
+
+
+	phrase UK: [freɪz], US: [frez]
+	  Word Explanation:
+	     * n. 短语, 习语, 措辞, 乐句
+	     * vt. 措词, 将(乐曲)分成乐句
+
+	fickle UK: ['fɪk(ə)l], US: ['fɪkl]
+	  Word Explanation:
+	     * adj. 浮躁的；易变的；变幻无常的
+
+	celebrity UK: [sɪ'lebrɪtɪ], US: [sə'lɛbrəti]
+	  Word Explanation:
+	     * n. 名人；名声
+---
+It must be nearly time to leave, Harry thought miserably, please let it be nearly time. . . .  
+
+	miserably UK: ['mɪzərəblɪ], US: ['mizərəbli]
+	  Word Explanation:
+	     * adv. 贫困地；可悲地；糟糕地；非常不幸地
+---
+And then he heard something — something quite apart from the spitting of the dying candles and Lockhart’s prattle about his fans.
+
+	spitting UK: ['sptɪŋ], US: ['spɪtɪŋ]
+	  Word Explanation:
+	     * n. 分散；喷溅物；点燃导火线
+	     * v. 吐痰；吐出；啐唾沫；用炙叉叉住（spit的ing形式）
+
+	prattle UK: ['præt(ə)l], US: ['prætl]
+	  Word Explanation:
+	     * n. 无聊话；咿咿呀呀声
+	     * vi. 闲聊；胡说；小孩般说话
+	     * vt. 天真地说
+---
+It was a voice, a voice to chill the bone marrow, a voice of breathtaking, ice-cold venom.  
+
+	chill UK: [tʃɪl], US: [tʃɪl]
+	  Word Explanation:
+	     * n. 寒冷；寒意；寒心
+	     * vt. 冷冻，冷藏；使寒心；使感到冷
+	     * adj. 寒冷的；冷漠的；扫兴的
+	     * vi. 冷藏；变冷
+
+	marrow UK: ['mærəʊ], US: ['mæro]
+	  Word Explanation:
+	     * n. 髓，骨髓；精华；活力
+	     * n. (Marrow)人名；(英)马罗
+
+	venom UK: ['venəm], US: ['vɛnəm]
+	  Word Explanation:
+	     * n. 毒液；恶意
+	     * vt. 使有毒；放毒
+---
+Harry gave a huge jump and a large lilac blot appeared on Veronica Smethley’s street.  
+
+	lilac UK: ['laɪlək], US: ['laɪlək]
+	  Word Explanation:
+	     * n. 淡紫色；丁香花；[植] 紫丁香
+	     * n. (Lilac)人名；(英)莱拉克
+	     * adj. 淡紫色的
+
+	blot UK: [blɒt], US: [blɑt]
+	  Word Explanation:
+	     * n. 污点，污渍；墨水渍
+	     * vt. 涂污，弄脏；用吸墨纸弄干（或除去）
+	     * vi. 吸墨水；弄上墨渍或污渍
+	     * n. (Blot)人名；(法)布洛
+---
+“No,” said Harry frantically. “That voice!”
+
+	frantically UK: ['fræntikəli], US: ['fræntikəli]
+	  Word Explanation:
+	     * adv. 疯狂似地；狂暴地
+---
+“What are you talking about, Harry? Perhaps you’re getting a little drowsy? Great Scott — look at the time! We’ve been here nearly four hours! I’d never have believed it — the time’s flown, hasn’t it?”
+
+	drowsy UK: ['draʊzɪ], US: ['draʊzi]
+	  Word Explanation:
+	     * adj. 昏昏欲睡的；沉寂的；催眠的
+
+---
+He was straining his ears to hear the voice again, but there was no sound now except for Lockhart telling him he mustn’t expect a treat like this every time he got detention. Feeling dazed, Harry left.  
+
+	straining UK: ['streiniŋ], US: ['streiniŋ]
+	  Word Explanation:
+	     * n. 应变，变形
+	     * v. 拉紧；竭尽…的全力；使…损坏（strain的ing形式）
+
+---
+Half an hour later, Ron arrived, nursing his right arm and bringing a strong smell of polish into the darkened room.  
+
+	nursing UK: ['nɜːsɪŋ], US: ['nɝsɪŋ]
+	  Word Explanation:
+	     * n. 护理；看护；养育
+	     * v. 看护；养育（nurse的ing形式）
+---
+“Fourteen times he made me buff up that Quidditch Cup before he was satisfied. And then I had another slug attack all over a Special Award for Services to the School. Took ages to get the slime off. . . . How was it with Lockhart?” 
+
+	buff UK: [bʌf], US: [bʌf]
+	  Word Explanation:
+	     * n. 浅黄色；软皮；爱好者；[俚] 健康的身体
+	     * vt. 有软皮摩擦；缓冲；擦亮，抛光某物
+	     * (Buff)人名；[德]布夫；[英]巴夫
+
+	slime UK: [slaɪm], US: [slaɪm]
+	  Word Explanation:
+	     * n. 黏液；烂泥
+	     * vt. 涂泥
+	     * vi. 变粘滑
+---
+“I know,” said Harry, lying back in his four-poster and staring at the canopy above him. “I don’t get it either.”
+
+	canopy UK: ['kænəpɪ], US: ['kænəpi]
+	  Word Explanation:
+	     * n. 天篷；华盖；遮篷；苍穹
+	     * vt. 用天蓬遮盖；遮盖
 
