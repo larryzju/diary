@@ -1,0 +1,106 @@
+#+TITLE: org 模式小记
+#+OPTIONS: toc:2
+
+
+* Document Structure
+
+** outline
+
+Org 基于 Outline 模式，将文档以层级形式组织。可以将具体的层级折叠起来，以获得对整体结构的把握，并专注于当前处理的部分。
+
+org 模型简化了 outline 的命令，通过 ~org-cycle~ （即 TAB 键）来完成主要的操作。
+
+** headlines
+
+headlines 亦即“标题”。类似于 markdown header，用多个 ~*~ 表示不同的级别。
+
+*** clean view
+
+过多的 ~*~ 可能造成混乱，clean view 用来解决这一问题
+
+*** TODO 如何添加一个内部链接？
+** Visibility cycling
+
+通过 =<TAB>= 和 =S-<TAB>= 来进行层级的展开（可见性控制）。Super 前缀表示对全局进行操作。
+
+将在三个状态之间切换：
+
+1. FOLDED（OVERVIEW）
+2. CHILDREN（CONTENTS）
+3. SUBTREE（SHOW ALL）
+
+
+
+* Hyperlinks
+
+- 完整写法 :: =[[link][description]]=
+- 简写法 :: =[[link]]=
+
+emacs 会自动显示成最终输出的格式！但隐藏了链接地址，如果需要编辑使用 =C-c C-l= 来进行编辑
+
+* Markup
+
+“层次结构” 比 “排版样式” 更重要！所谓大巧不工
+
+** title
+
+使用 #+TITLE 来进行标记，默认使用文件名
+
+
+** headings
+
+只有前三级的星级别被认为是 heading，再深的则被以 items 处理
+
+通过 ~headline-levels~ 来设置（或 ~OPTIONS~ 参数)
+
+** toc
+
+自动生成，与 headlines 级别一致。可定义深度，可取消。
+
+配置参数为 
+
+- 级别 :: =#+OPTIONS: toc:2=
+- 位置 :: =#+TOC: headlines 2=
+
+** list
+
+分为三种：
+
+- 有序
+- 无序
+- 描述性的列表（description list）
+
+同一个列表应有相同的缩进。
+** paragraphs
+
+段落以一个空行标识。
+** verbose
+定义环境，关键字为 =VERSE= 或 =QUOTE= 或 =CENTER=
+** TODO footnote
+** emphasis 和 monospace
+
+- ~*xx*~ :: bold
+- ~/xx/~ :: italic
+- ~_xx_~ :: underlined
+- ~=xx=~ :: verbatim
+- ~~code~~ :: code
+- ~+xx+~ :: strike
+
+** horizontal rules
+使用 5 个以上的 dash 来表示一条水平线
+** comment
+- 以 ~#~ 加空格开头，后面内容被视为注释
+- 或者关键字为 COMMENT 的环境
+
+
+
+
+* 小抄
+
+** TODO 如何跳转到下一个 ~TODO~
+
+- 显示所有的 todo :: =C-c / t=
+
+** TODO github org 模式支持
+
+
