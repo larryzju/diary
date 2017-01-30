@@ -10,7 +10,7 @@
 2. 下载并编译安装 binutils （指定 target 为 =i386-elf= ）
 3. 下载并编译安装 gcc （指定 target 为 =i386-elf= ）
 
-可以将 prefix 指定到 `/usr/loca/i386elfgcc` 目录，并将 $prefix/bin 目录下的可执行文件链接为正常的名称
+可以将 prefix 指定到 =/usr/loca/i386elfgcc= 目录，并将 $prefix/bin 目录下的可执行文件链接为正常的名称
 
 #+BEGIN_SRC
 cd /usr/local/i386elfgcc/bin/;
@@ -27,5 +27,5 @@ done
 
 * 模拟执行
 
-1. 安装 qemu: `brew install qemu`
-2. 执行： `qemu-system-i386 -kernel kernel`
+1. 安装 qemu: =brew install qemu=
+2. 执行： =qemu-system-i386 -kernel kernel=
