@@ -29,3 +29,10 @@ mvn archetype:generate
 
 aliyun 的 mirrors 会导致 remote 下载异常？
 
+# 速度
+
+xml 文件有 5M 大小，网络比较慢的情况下，下载时间过长。
+
+可以先用 wget 下载文件到 `~/.m2/repository` 目录下，使用 `mvn  archetype:generate -DarchetypeCatalog=local` 加载之
+
+另外，可以为 `maven -X` 参数打开 debug 来调试
