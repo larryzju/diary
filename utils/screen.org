@@ -1,0 +1,18 @@
+#+TITLE: screen 笔记
+#+AUTHOR: 赵文彬
+
+* 概述
+
+- 复用物理终端
+- scrollback history buffer
+- copy-and-paste 机制 
+
+* 快捷键
+
+| create new window | ~C-a c~ |
+| ------------------+---------|
+
+
+
+
+

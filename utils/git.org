@@ -1,0 +1,11 @@
+#+TITLE: git 备忘
+
+* 未完成
+
+- Git revert 如何看以后的版本？ `reflog` 合集
+- soft 与 hard 与 mixed 的区别？
+- `git checkout -- file` 丢弃工作区修改（从缓存区）
+- `git reset HEAD file` 从提交中
+- HEAD 指向 master，master 指向当前提交
+- `git stash {apply,drop,pop,list}
+- `git branch --set-upstream <branch-name> <origin/branch-name>`: 本地分支与远程进行关联
