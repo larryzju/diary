@@ -1,0 +1,870 @@
+#+TITLE: learning go 笔记
+#+AUTHOR: 赵文彬
+#+LATEX_HEADER: \usepackage{xeCJK}
+
+* Introduction
+
+** 语言的特性
+
+- Clean and Simple
+- Concurrent ( goroutine 轻量级线程 )
+- Channels
+- Fast 编译和运行
+- Safe 显示要求和严格的规则，内存回收
+- gofmt
+- Postfix types
+- UTF8 (python3 级)
+- Open Source
+- Fun
+
+** 查看帮助
+
+- =godoc builtin= :: 类似于 =java.lang.System=
+- =godoc hash= :: 查看包的手册
+
+* 基础
+
+** TODO hello world
+
+#+BEGIN_SRC go
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Printf( "Hello World." )
+}
+#+END_SRC
+
+- 可执行程序包名必须是 =main=
+- 可执行程序的入口是 =main.main()=
+- main 的参数由 sys 传入?（类似 python）
+
+
+** 编译执行
+
+#+BEGIN_SRC shell
+go build helloworld.go
+#+END_SRC
+
+- 文件名可以与包名不一致
+- 生成结果与文件名一致
+- 可以直接使用 =go run helloworld.go= 来运行
+
+
+
+
+** 基础类型和变量 
+
+*** 类型后缀形式
+
+#+BEGIN_SRC go
+var a int
+#+END_SRC
+
+类型有默认的空值
+
+*** 声明与初始化可以写在一起
+
+如 ~var a = 15; a := 15~ 等价于 ~a = 15~
+
+~:=~ 是赋值语句，只能用在函数内部
+
+*** 多个变量申明
+
+多变量申明可以放于一起，类似的还有 =const= 和 =import=，如
+
+#+BEGIN_SRC go
+var (
+  x int
+  b bool
+)
+#+END_SRC
+
+相同类型的变量可以一起申明或赋值
+
+#+BEGIN_SRC
+var x, y int 
+a, b := 20, 16
+#+END_SRC
+
+*** 特殊变量 ~`_`~
+
+类似于 lua，表示丢弃这一变量
+
+go 中检查比较严格，发现未使用的变量会报错，使用 ~_~ 来显示的解决错误
+
+*** Boolean 
+
+- 关键字是 =bool=
+- 两个字面值是 ~true~ 和 ~false~
+
+*** Numerical
+
+- ~int~ :: 宽度视平台而定
+- ~uint~ :: 同上
+- ~[u]int{8,16,32,64}~ :: 指定具体宽度
+- ~byte~ :: 对应 ~uint8~
+- ~float{32,64}~ :: 浮点数（无 double）
+
+**** TODO 类型转换
+
+不同类型之前直接不可赋值或计算 
+
+*** Constants
+
+在编译时生成，只能是数字、字符串或布尔值。
+
+**** TODO 枚举
+
+使用 ~iota~ 来生成枚举（ iota 指极少量）
+
+为什么这里的 iota 可以省略？
+
+#+BEGIN_SRC go
+const (
+  a = iota
+  b
+)
+#+END_SRC
+
+
+
+
+
+
+
+*** TODO Strings
+
+- 以双引号表示
+- ？单引号表示字符？
+- 字符串不可修改（immutable）
+
+
+*** TODO Runes
+
+是 ~int32~ 的别名，保存 utf8 编码，方便对宽字符集作操作
+
+可以修改？
+
+
+*** TODO Complex Numbers
+
+原生支持复数，有两个类型
+
+1. ~complex128~
+2. ~complex64~
+
+有没有字面表示方法？
+
+
+*** TODO Error
+
+- 默认值是 ~nil~
+
+
+
+
+
+
+
+** 操作符和基本函数
+
+go 不支持运算符重载！
+
+
+
+** 控制结构
+
+*** if-else
+
+- if 可以像 for 有初始步骤
+- 条件不加括号
+- body 必须使用大括号
+
+*** goto
+
+- 和 C 一样，跳转到 label 处
+- label 大小写无要求
+
+*** for
+
+- 基本形式与 C 的一致
+- 可以省略初始和变化而部分，退化成 ~while(condition)~
+- 可以全部省略三个参数，退化成 ~while()~
+- for 中初始的变量只能在 for 中使用
+
+*** break and continue
+
+- 基本用法和 C 的致
+- 另外可以指定退出的 label，跳出多层循环
+
+*** range
+
+- 关键字 ~range~ 用于迭代序列 (loop over)
+- 对于 slice 或 array，返回 ~index: int~ 和 ~value: string~
+- 字符串是对每个 UTF8 字符进行迭代，postition 为字节数
+
+*** TODO switch
+
+#+BEGIN_SRC go
+switch{
+  case '0' <= c && c <= '9':
+    return c - '0'
+  case 'a' <= c && c <= 'f':
+    return c - 'a' + 10
+  case 'A' <= c && c <= 'F':
+    return c - 'A' + 10
+}
+
+switch i {
+  case 0, 1:
+    f()
+  case 2: fallthrough
+  case 3: 
+    h()
+  default:
+    g()
+#+END_SRC
+
+- 匹配的可以不止是整数（与C相比）
+- 不加条件的 switch 相当于 ~switch true~ ， 可以用于生成条件分支
+- 不用加 break，若要生成多条件匹配，用关键字 =fallthrough=
+- 默认分支用 =default= 标识
+- case 后可以跟多个条件
+
+* 内建函数
+
+** 基础
+
+*使用 =godoc builtin= 来查看内建函数手册*
+
+- close :: close a channel
+- delete :: delete entries in maps
+- len/cap :: 长度，容量
+- new :: allocating memory for user defined data types.
+- make :: allocating memory for builtin types (maps,slices,channels)
+- copy/append :: copy or concatenating slices
+- panic,recover :: used for an exception mechanism
+- complex,real,img :: deal with complex numbers
+
+** Arrays
+
+*** 示例
+
+ #+BEGIN_SRC go
+ var arr [10]int
+ a := [3]int{1,2,3}
+ b := [...]int{1,2,3,4} // composite literal
+ #+END_SRC
+
+*** 特性
+
+- 有固定长度
+- 函数参数时传递拷贝，而非指针
+
+
+
+
+
+
+
+
+** Slices
+
+- 类似于数组，但可以动态扩展（通过 *append* 和 *copy* ）方法
+- 底层也是 array
+- 是到 array 的指针（类似于 C++ 中的引用类型）
+- 引用类型通过 *make* 生成
+
+*** 示例
+
+#+BEGIN_SRC go
+c  := [...]int{1,2,3,4,5}
+sa := make([]int, 10)
+sb := c[:3]
+sc := c[0:3:4] // 同时设定 cap
+#+END_SRC
+
+
+*** append
+
+- append 会生成新的底层数组
+- 后面跟数组元素类型时，添加元素: ~append(s,1,2,3)~
+- 后面跟数组类型时，添加数组（注意 *`...`* ） ~append(s,s2...)~
+
+#+BEGIN_SRC go
+s1 := []int{1,2,3}
+s2 := []int{5,6,7}
+fmt.Println( append(s1,s2...) )
+#+END_SRC
+
+
+*** copy
+
+- copy 返回实际拷贝长度（类似 memcpy）
+
+** TODO Array VS Slices
+*** 初始化方式
+
+ Array 初始化时需要指定长度: `[3]int{1,2,3}` 或 `[...]int{1,2,3}` ；
+ 而 Slices 不需要指定: `[]int{1,2,3}`
+
+*** TODO 如何确定 array 或 slices
+
+** Maps
+
+*** 类比
+
+- Perl 中的 hash
+- python 中的 dictionary
+- C++ 中的maps
+
+*** 语法
+
+#+BEGIN_SRC go
+monthdays := map[string]int{
+  "Jan": 31, "Feb": 28, "Mar": 31,
+  "Apr": 30, "May": 31, "Jun": 30,
+  "Jul": 31, "Aug": 31, "Sep": 30,
+  "Oct": 31, "Nov": 30, "Dec": 31,
+}
+#+END_SRC
+
+- 通用的语法是: ~map[<from type>]<to type>~
+- 注意， *结尾的逗号是必须的*
+- 使用 ~make[string]int~ 来生成一个 map
+- map 是一个引用类型
+- 与数组一样，通过方括号进行访问
+- 通过 *range* 来迭代
+- 通过 ~value, present := monthdays["Jan"]~ 来测试是否存在
+- 通过 ~delete( monthdays, "Mar" )~ 来删除键值
+
+* 函数
+
+** TODO receiver
+** 定义函数
+
+#+BEGIN_SRC go
+type mytype int
+func ( p mytype ) funcname ( q int ) ( r, s int ) { return 0, 0 }
+#+END_SRC
+
+*** TODO 说明
+
+- optionally bind to a specific type called receiver ( method )
+- parameters are passed pass-by-value
+- functions in Go can have multiple return values
+- named result parameters, return 后不加参数时被返回
+- 函数可以以任意顺序声明（与 C 需要声明不同）
+- 不允许函数嵌套定义！！但可以使用匿名函数
+- 可以递归。尾递归？？
+
+
+
+** 作用域
+
+- 注意赋值 ~=~ 与定义 ~:=~ 的区别
+- 函数的局部变量不会绑定到要调用的函数环境中
+
+** 高阶函数
+
+#+BEGIN_SRC go
+var xs = map[int]func() int{
+  1: func() int {return 10},
+  2: func() int {return 20},
+  3: func() int {return 30},
+}
+#+END_SRC
+
+** defer
+
+- 不是 lazy eval，而类似于 atexit。在函数退出时被回调
+- 可以多次注册，以 LIFO （栈）形式被回调
+- defer 还可以用于装饰返回结果（如 JSON 序列化）
+
+** 变长参数列表
+
+类似于 scala，示例如下：
+
+#+BEGIN_SRC go
+func myfunc2( args ...string ) {
+        for _, v := range args {
+                fmt.Println( v )
+        }
+}
+
+func myfunc( args ...string ) {
+        myfunc2( args[3:]... )
+}
+#+END_SRC
+
+*** TODO interface
+
+If you don't specify the type of the varadic argument
+it defaults to the empty interface =interface{}=
+
+** Panic and recovering
+
+*** TODO Exception vs Panic-Recovering
+
+GO 不提供异常捕获机制
+
+**** TODO 原因
+
+**** TODO 区别
+
+**** TODO 细节
+
+***** Panic
+
+- 函数调用 ~panic~ 时，函数的 defer 被回调，然后返回到被调用处
+- 对外层函数，触发 panic 的函数，此时相当于一个 panic
+- 沿着栈回溯向下
+
+***** Recover
+
+- 正常执行中，返回 nil，无其它作用
+- 用于恢复被 panic 打断的执行
+
+
+
+* Packages
+
+** 定义
+
+A package is a collection of functions and data.
+
+** 说明
+
+- 文件名与包名无关
+- 包名通常用小写命名
+- 多个文件可以取相同的包名
+- 包里的以大写开头的函数对外可见（exported）
+- 导入名与代码路径一致
+- 包名是路径的最后一级
+- ~import bar "bytes"~ 重命名包
+
+** TODO 多文件包融合问题
+
+** TODO Document
+
+- 在 =package= 关键字节可以加入块级注释，作为代码的文档
+- 用 =go doc= 来查看
+- 多文件的包应该只写一次（重复写会怎样？）
+- 习惯上建立一个 =doc.go= 来写文档
+- 函数注释同理
+
+
+** TODO Testing packages
+
+- 使用 =testing= 包提供的功能
+- 调用 =go test= 测试
+- test 文件以 =*_test.go= 为后缀
+- test 函数原型是 ~Test: func TestXxx( t *testing.T )~
+- 使用 ~go doc testing~ 或 ~go help testfun~ 来查看帮助
+
+*** 常用函数
+
+- ~func (t *T) Fail()~ :: failed but continues execution
+- ~func (t *T) FailNow()~ :: fail and stop execution
+- ~func (t *T) Log( args ...interface{} )~ :: error log
+- ~func (t *T) Fatal(args ...interface{} )~ :: Log + FailNow
+
+
+
+
+
+
+
+
+** 常用 Packages
+
+*** 列表
+
+- fmt :: 注意比 C 多出的 =%v=, =%#v=, =%T=
+- io :: I/O primitives
+- bufio :: buffered I/O
+- sort :: sorting
+- strconv :: string <-> basic data type
+- os :: platform-independent interface
+- sync :: synchronization primitives such as mutual exclusion locks
+- flag :: argparses or getopt
+- encoding/json :: RFC4627
+- html/template :: generate HTML
+- net/http :: HTTP server/client
+- unsafe :: ??
+- reflect :: run-time reflection
+- os/exec :: os.system in python
+
+*** 其它
+
+- 在 =$GOROOT/src/pkg= 目录下查看
+
+
+* Beyond the basics
+
+** Pointer
+
+*** 概念
+
+- Go has pointers. 
+- There is however no pointer arithmetic
+- Go pointers act more like references than pointers in C
+
+*** 语法
+
+- 在类型前前缀 '*'
+- 默认指向 =nil=
+- 使用 '&' 来取地址，并给指针赋值
+- 使用 '*' 来反引用（取指向数据）
+
+*** 例子
+
+#+BEGIN_SRC go
+var p *int
+fmt.Printf( "%v %T\n", p, p )
+
+var i int
+p = &i
+fmt.Printf( "%v %v %T\n", p, *p, p )
+#+END_SRC
+
+
+
+
+** Allocation
+
+*** 概念
+
+- go 有自动内存管理，无须手动释放
+- 申请有两个原语: ~new~ 和 ~make~
+- *new* alloctes; *make* initializes
+
+
+*** new
+
+=new(T)= 为类型 T 申请一个空的空间，返回地址( *T )
+
+
+*** make
+
+- =make(T, args)= 用于创建 slices, map, 或 channels
+- 返回是 T 本身，而非地址
+
+** Composite literals
+
+Composite literal is an expression that creates a new instance each time it is evaluated.
+
+*** TODO 例子
+
+#+BEGIN_SRC go
+func NewFile( fd int, name string )*File {
+  if fd < 0 {
+    return nil
+  }
+
+  f := File{fd, name, nil, 0}
+  return &f
+}
+#+END_SRC
+
+注意返回一个局部变量 f 在 golang 中是允许的，go 会自动提升变量存活时长
+
+
+*** 说明
+
+- laid out in order and must all be present： =File{fd,name,nil,0}=
+- 也可以加 label，乱序和选填： =File{fd:fd, name;name]=
+- 甚至可以不填: =File{}=
+- 返回是一个实例, 可以解引用： =&File{}=
+- 字符串数组，忽略 field: =[...]string{Enone: "no error", Einval: "invalid argument"}=
+
+
+
+
+
+* 自定义类型
+
+** 基本语法
+
+- 基本语法是 =type foo int= ，创建一个类型 foo，定义是 int
+- 与 C 中的 typedef 相似，顺序相反
+
+** 例子
+
+#+BEGIN_SRC go
+type Point struct{
+        x float64
+        y float64
+}
+
+func main() {
+        p := &Point{x:10}
+        fmt.Printf( "%v %v %T\n", p, *p, p )
+}
+#+END_SRC
+
+** struct
+
+- struct 可以没有 field
+- 可以有多个 field
+- 可以只有类型，称为 anonymous field
+- field 以大写开关的表示全局可见，否则只能在本包内使用
+
+
+
+
+
+
+* Methods
+
+** 基础
+
+- 目标是为类型提供方法调用
+- 但不是以 Java/C++/Python OOP 形式
+- 更像是 lisp/scheme 中的 GOOP 形式，或 Clojure 中的 Protocol
+- 要满足 interface，必须要使用 method
+- 其它情况 method 和 function 都可使用
+- 对于指针的方法，可以用 =x.m()= 来简写 =(&x).m=
+
+** TODO 继承关系
+
+
+
+* 类型转换
+
+- 通过操作符(operator)来转换（与函数形式一样，本质上有所不同）
+- 字符串可以转换为 =byte[]= 或 =rune[]= ，反之亦然
+- 自定义类型与其别名之间可以相互转换
+
+* Interface
+** 意义
+
+- 用于函数定义与类型绑定 GOOPS
+- 定义一个 interface 类型，表示方法的集合: 鸭子类型
+- Go 可以使用 interface 类型作为参数类型，称为 interface value
+
+** 示例
+
+#+BEGIN_SRC go
+type I interface {
+  Get() int
+  Put(int)
+}
+
+func f( p I ) {
+  fmt.Println( p.Get() )
+  p.Put(1)
+}
+#+END_SRC
+
+** 拆分多态
+
+#+BEGIN_SRC go
+func f(p I) {
+  switch t := p.(type) {
+    case *S:
+    case *R:
+    default:
+}
+#+END_SRC
+
+其中 =(.type)= 语法只在 switch 中有效，也可以写成
+
+#+BEGIN_SRC go
+if t, ok := something.(I); ok {
+   // 检查 something 是否实现了接口 I
+}
+#+END_SRC
+
+** Empty Interface
+
+- 每个类型都默认实现了 =interface{}=
+- 用于创建通用函数
+- 通用函数，动态的获取其中的函数
+
+*** 示例
+
+#+BEGIN_SRC go
+func g( something interface{} ) int {
+    return something.(I).Get()
+}
+#+END_SRC
+
+** Methods
+
+- Methods are functions that have a receiver
+- 可以对任何类型定义方法，包括内置类型（除了 int 之外）
+
+** TODO Methods on interface faces
+
+- An interface defines a set of methods : 定义
+- A method contains the actual code ： 实现
+- receiver can not be an interface type?
+
+*** receiver type
+
+- 有两种形式 =T= 或者 =*T=
+- T is called the base type
+- T must not be a pointer or interface type
+- T must be declared in the same package as the method
+- 不应该对 interface value 作指针
+
+*** Interface names
+
+- 如果只有一个方法，以 ~-er~ 为后缀，如 Reader, Writer, Formatter
+- 方法名避免与标准函数重名
+
+
+
+
+
+
+
+** TODO tag
+** Introspection and reflection 
+
+*** 示例
+
+#+BEGIN_SRC go
+type Person struct {
+    name string "namestr"
+    age int
+}
+
+
+func ShowTag( i interface[] ) {
+    switch t:= reflect.TypeOf(i); t.Kind() {
+    case reflect.Ptr:
+        tag := t.Elem().Field(0).Tag
+}
+#+END_SRC
+
+
+*** TODO 说明
+
+- 要通过内存中的变量，得到关于结构体等定义信息
+- 用于区分 type 和 value
+
+* Concurrency
+
+** 概述
+
+- Parallelism is about performance.
+- Concurrency is about program design
+- 核心是 channel 和 goroutine
+
+** goroutine
+
+   #+BEGIN_QUOTE
+   It is a function executing in parallel with other goroutines in the same address sapce. 
+   It is lightweight, cosing little more than the allocation of stack space.
+   And the stacks start small, so they are cheap, and grow by 
+   allocating( and freeing) heap storage as required.
+   #+END_QUOTE
+
+*** 说明
+
+- 普通函数，以关键字 =go= 开头
+
+** channel
+
+*** 说明
+
+- 类似于双向的 pipe
+- 只能以 channel 定义的数据类型进行交流
+- 通过 =make(chan int)= 来生成
+- 可以交换 interface, =make(chan interface{})= !!!
+- 通过 =<-= 来发送信息和接收
+- 使用函数 =select= 来监听接收信息
+
+*** 示例
+
+#+BEGIN_SRC go
+func ready( w string, sec int ) {
+    time.Sleep( time.Duration(sec) * time.Second )
+    fmt.Println( w, "is ready" )
+    c <- w
+}
+
+func main() {
+    c = make(chan string)
+    go ready( "2sec", 2 )
+    go ready( "1sec", 1 )
+    fmt.Println( "I'm waiting" )
+    fmt.Println( <-c )
+    fmt.Println( <-c )
+    fmt.Println( "over" )
+}
+#+END_SRC
+
+*** 缓存
+
+- =make(chan bool)= 创建的是 unbuffered channel for bools
+- unbuffered channel 用于同步多个 goroutine
+- =make(chan bool, 4)= 创建带缓存的 channel
+
+*** 关闭
+
+- channel 会被单向关闭
+- 可以以 =x, ok = <-ch= 来检查是否关闭（ok 为 false 表示关闭）
+
+
+** parallel
+
+- goroutine concurrently，而非并行
+- 使用 ~runtime.GOMAXPROCS(n)~ 来设置最大并行度
+- 也可以设置 =GOMAXPROCS= 环境变量
+- 默认并行度是 CPU 的核数
+
+* Communication
+** 清单
+
+- 与外界交互，如 file, directories, networking, system(shell)
+- I/O 接口 =io.Reader= 和 =io.Writer=
+- =os.Open=, =os.Close=, =os.Stdout=, =os.Stat=, =os.Mkdir=
+- =File.Read=, =File.Write=
+- bufio( Buffered I/O ), 如 NewReader, NewWriter, Read, Write, Flush, ReadString, ReadLine
+- 日志 ~log~, 如 Fatalf
+
+** 命令行参数
+
+- os.Args （类似于 sys.args in python）
+- flag 包来解析参数 （类似于 argparsers, optparser in python， getopt）
+- =flag.{Bool,String}= , =flag.Usage=, =flag.Parse=, =flag.PrintDefaults=
+
+*** TODO 效率？？
+
+** 系统命令
+
+- ~os/exec~ 提供了调用外部命令的函数
+- =exec.Command=
+- =cmd.Run=, =cmd.Output=
+
+** Networking
+
+*** 低级接口
+
+- 在包 =net= 中定义
+- =net.DIal= 返回一个 ~Conn~ 接口类型，可以用来收发信息
+- =Conn= 实现了 ~io.Reader~ 和 ~io.Writer~ 类型
+
+*** http 接口
+
+- ~http~ 包， Get 方法，对返回结果的 Body 进行操作
+
+* 杂项
+** TODO iota
+#+BEGIN_SRC go
+const (
+   _ = 1000 * iota
+   ADD
+   SUB
+   MUL
+   DIV
+   MAXPOS = 11
+)
+#+END_SRC
+
+
