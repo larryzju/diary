@@ -1,0 +1,105 @@
+#+TITLE: Note on "HDFS Permission Guide"
+#+AUTHOR:  Zhao WenBin
+
+* Overview 
+
+** 与 Posix 相同之处
+
+- hdfs 实现了类 UNIX 的文件和目录的权限，抽象出用户和组的概念
+- 权限分为：用户、组和其它三类
+- 文件有可读、可写权限
+- 目录可读表示可以列出其内容
+- 目录可写表示可以创建或删除其中数据
+- 目录可执行(x) 表示允许访问目录中的子文件（或目录）
+
+** 与 Posix 不同之处
+
+- 没有 setuid 或 setgid 位
+- 没有可执行文件的概念
+- 目录可以设置 Sticky 位，只允许 superuser 和文件的属主来删除或移动其文件
+- 创建文件或目录时，owner 是客户端用户，group 继承自父目录的 group
+- HDFS 提供额外的 ACL 机制，来更精细的控制文件权限
+
+
+** 认证过程
+
+1. user name 认证
+2. group lists 认证
+
+
+
+* TODO User Identity
+
+** 方式
+
+分为两种，由 =hadoop.security.authentication= 来控制
+
+- simple :: 使用 ~whoami~ 命令确定主机的用户
+- kerberos :: ??
+
+** 注意
+
+- 不同的用户身份识别方式对 HDFS 没有影响
+- HDFS 没有创建用户、建立组或认证的机制
+
+* Group Mapping
+
+- HDFS 确定用户后，通过 group mapping service 来确定对应的 group list
+- 该服务通过 =hadoop.security.group.mapping= 配置来确定
+- TDH 中该配置为 =ShellBasedUnixGroupsMapping=
+- ShellBasedUnixGroupsMapping 在 UNIX 环境中使用 ~bash -c groups~ (group命令)来获取组信息
+- 除些之外，还有 =JniBasedUnixGroupsMappingWithFallback= 模式
+- =LdapGroupsMapping= 联系 LDAP 服务来获取 list of groups
+- *获取 group list 的动作在 NameNode 上进行*
+
+* Understanding the Implementation
+
+- 权限管理针对的完整路径，在每次操作时会进行
+- HDFS 客户端连接 name node 时带着 user id 信息
+- 权限是针对块级别的，同一个文件可能中途失败
+
+
+
+
+
+
+
+* TODO SuperUser
+
+- namenode 进程用户是超级用户（一般是 hdfs）
+- 另外可以手动设定一系列组，组内成员作为超级用户（How？）
+
+* TODO ACLs
+
+** 概述
+
+- ACL 提供不同的用户和组方式的权限管理
+- 默认 HDFS 关闭 ACL 支持，不允许创建 ACLs
+- 通过设置 =dfs.namenode.acls.enabled= 来开启
+- ACL 是一系列的规则（类似 iptables）
+
+** 规则 
+
+- 包含三部分，用 ':' 分隔，分别是 type, optional name, permission string
+- type 为 user, group, other 以及 mask
+- 每个 ACL 规则组需要有一个 mask，否则用自动生成一个（根据当前的权限求并）
+- chmod 实际上修改了 mask 的信息
+- 可以前缀 'default:' 来描写 default ACL
+
+
+** 示例
+
+#+BEGIN_SRC 
+user::rw-
+user:bruce:rwx  # bruce 用户 777 -> r--
+group::r-x      #                r--
+group:sales:rwx # sales 组 777 -> r--
+mask::r--       # 影响全部 named user, named group, unamed group
+other::r--      # 654 权限
+#+END_SRC
+
+** default ACL vs access ACL
+
+- default ACL 用于新文件和目录的创建时缺省的权限
+- access ACL 定义了权限检查
+- 前者类似 umask ? 并只针对目录
