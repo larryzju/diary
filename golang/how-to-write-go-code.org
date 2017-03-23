@@ -1,0 +1,111 @@
+#+TITLE: Note on "How to write go code"
+#+AUTHOR: Zhao WenBin
+#+LATEX_HEADER: \usepackage{xeCJK}
+
+* 代码组织
+
+** 目录结构
+
+- workspace
+  - repositories(版本库)
+    - packages（包）
+      - go source files
+
+** 关系
+
+- 包目录决定了导入路径 ( import path )
+
+
+** Workspace
+
+*** 目录
+
+ 包含三级目录
+
+ 1. *src* contains Go source files
+ 2. *pkg* contains package objects
+ 3. *bin* contains executable commands
+
+*** 关系
+
+ - go tool 从 src 中编译包，生成二进制到 pkg 和 bin
+ - src 目录下有多个子 package，每个 package 可以有独立的版本管理（repositories）
+
+
+
+
+
+* GOPATH
+
+- 用于设定 workspace 的位置
+- 默认为 =${HOME}/go=
+- *不能* 与 GO 安装位置重复
+- 通过 ~go env GOPATH~ 查看当前 GOPATH 设置
+- 为了方便运行，可以加入 PATH： ~export PATH=$PATH:$(go env GOPATH)/bin~
+- 通过 ~go help gopath~ 查看帮助
+
+** TODO GOROOT
+
+* Import Paths
+
+- 字符串，标识一个包
+- 导入路径与包在 workspace 中的目录一致
+- 可以是一个远程仓库
+- 注意起名的惯例，如 ~github.com/larryzju/xxx~ ，以免重复
+
+
+
+* 编译和运行
+
+** 步骤
+
+1. 设定 GOPATH
+2. 创建 package 目录
+3. 编程
+4. 使用 ~go install <github.com/larry/package-name>~ 生成(可以在任意路径)
+5. 生成结果位于 =$WORKSPACE/{bin,pkg}= （视是否可执行而定）
+6. [OPTIONAL] 版本管理 package（在包的最终目录下，不需要整个路径）
+
+
+** 注意
+
+- 设定 GOPATH， ~go install <package-path>~ 可以在任意路径下进行
+- 如果已经在当前包的最终目录下，可以直接 ~go install~
+- 可以使用 ~go build~ 编译; ~go install~ 包含 build，同时生成文件
+- go 生成的可执行文件是静态链接，可独立运行
+
+
+** 问题
+
+*** TODO 如何实现跨平台编译
+
+* Package names 
+
+- package name 是导入后被调用时写的名称
+- all files in a package must use the same name.
+- 惯例是以导入路径的最后一个元素作为包名
+- 可执行命令包名必须为 =main=
+- 生成的二进制文件中不需要担心包名重复（Why？），但需要保护导入路径唯一
+
+
+
+
+
+
+
+* Testing
+
+- =go test= 命令和 =testing= 包
+- 文件命名以 =_test.go= 为后缀，并以 =func TestXXX( t *testing.T )= 来写测试函数
+- 使用 =go help test= 来查看帮助
+
+
+
+
+* Remote Packages
+
+- 使用 =go get= 来获取远程包
+- 默认获取到 =GOPATH= 路径下
+- 使用 =go help importpath= 来查看帮助
+
+
