@@ -1,0 +1,460 @@
+#+TITLE: Note on "Code Like a Pythonista: Idiomatic Python"
+#+AUTHOR: Zhao WenBin
+
+* 说明
+
+笔记摘录自 [[http://python.net/~goodger/projects/pycon/2007/idiomatic/handout.html#simple-is-better-than-complex][Code Like a Pythonista: Idiomatic Python]]
+
+* Zen of Python
+
+使用 ~import this~ 来查看 python zen, 在 PEP20 中正式定义
+
+
+#+BEGIN_EXAMPLE
+The Zen of Python, by Tim Peters
+
+Beautiful is better than ugly.
+Explicit is better than implicit.
+Simple is better than complex.
+Complex is better than complicated.
+Flat is better than nested.
+Sparse is better than dense.
+Readability counts.
+Special cases aren't special enough to break the rules.
+Although practicality beats purity.
+Errors should never pass silently.
+Unless explicitly silenced.
+In the face of ambiguity, refuse the temptation to guess.
+There should be one-- and preferably only one --obvious way to do it.
+Although that way may not be obvious at first unless you're Dutch.
+Now is better than never.
+Although never is often better than *right* now.
+If the implementation is hard to explain, it's a bad idea.
+If the implementation is easy to explain, it may be a good idea.
+Namespaces are one honking great idea -- let's do more of those!
+#+END_EXAMPLE
+
+** 心得
+
+- 大巧不工
+- 道可道，非常道
+- 不要隐藏问题，尽快解决，至少让它能及时反映出来
+- 不要过度追求代码的完善，完成功能是首要的
+- 要有原则，有所不为，过多的特例只会成为惯例
+
+
+* Coding Style
+
+#+BEGIN_QUOTE
+Programms must be written for people to read, and only incidentally for machines to execute. -- SICP
+#+END_QUOTE
+
+Python 推荐的编码风格参考 PEP08
+
+
+** Whitespace
+
+- 4 个空格缩进
+- 不要混合 tabs 和 spaces
+- 函数间以一个空行分隔
+- Class 前加两个空行
+- 在 dict, list, tuple 中逗号分隔后加空格；同理，在 dict 的冒号后加空格
+- 在赋值或比较前后加空格分隔
+- 圆括号前后不要加空格
+
+** 命名
+
+- 下划线命名
+- 大写用于常量
+- 类名用骆驼命名法
+- 使用 =_name= 表示私有变量，不要用两个下划线开头
+- python 中以两个下划线开头的变量，实际上被展开成为 =_ClassName__PrivateName=
+
+** Long Lines & Continuations
+
+- 保持一行 80 个字符
+- 括号内部可以直接换行
+- 其余场景需要以反斜线和换行（反斜线前不要加空格）
+
+** Long Strings
+
+- 多个字符串用在解释时被拼接，如 ~print 'o' 'n' 'e'~
+- 字符串前缀以 'r' 表示 raw string, 其中的反斜转义失效，可以用于写正则式
+- 三引号内可以换行，但首行需要加反斜线来去掉空行，如
+    #+BEGIN_SRC python
+    '''\
+    Triple
+    single
+    quotes\
+    '''
+    #+END_SRC
+
+** Compound Statements
+
+- 虽然可以将 if 或 while 的 statement 写在一行
+- 但是最好还是按规则分开来写
+- Multiple statements on one line are a cardinal sin.
+
+** Docstrings & Comments 
+
+- docstring 用于说明如何使用
+- comments 用于解释为何和怎样实现的
+- False comments & docstrings are worse than none at all.
+- 参考 PEP257 "Docstring Conventions"
+
+
+
+
+* Practicality vs Purity
+
+打破纯净的场景如
+
+1. 纯净性使代码完全不可读
+2. 与历史上的问题等纠结一起
+
+* 范式
+** Swap Values
+
+*** 例子
+#+BEGIN_SRC python
+b, a = a, b
+#+END_SRC
+
+*** 说明
+
+- 右侧为 Tuple 的构造形式
+- 赋值的同时进行解构（destructure），类似于 Clojure
+- 解构可以对嵌套结构进行
+
+
+
+
+** More About Tuples
+
+- ~1,~ 生成一个 Tuple ~(1,)~
+- 最好用括号显式表示: ~(1,)~
+- 如果忘记了逗号，则生成一个数字 ~(1)~
+- 空的 Tuple 使用 ~()~ 或 ~tuple()~ 来构造
+
+
+** Interactive "_"
+- 交互解析时，"_" 保存上次计算的结果
+
+
+** Building Strings from Substrings
+
+- 使用 =result = ''.join(colors)= 
+- 不要使用 for 循环往字符串后追加
+
+** Use =in= where possible
+
+- 用于循环取迭代器中的元素，效率高
+- 对于 dictionary 直接用 in，不要用 =for key in d.keys()=
+- =in= 也可以用于判断元素是否在集合中
+
+
+** Dictionary =get= Method
+
+经常用有需要聚合统计，将结果保存在 dict 中。
+
+下面两种方法，第二种更好：
+
+#+BEGIN_SRC python
+  # naive
+  navs = {}
+  for ( portfolio, equity, position ) in data:
+      if portfolio not in navs:
+          navs[portfolio] = 0
+      navs[portfolio] += position * prices[equity]
+
+
+  # better
+  navs = {}
+  for ( position, equity, position ) in data:
+      navs[position] = (navs.get(portfolio,0) + position * prices[equity])
+#+END_SRC
+** Dictionary =setdefault= Method
+
+会有需要将集合中的元素按关键字进行分组，牵扯到为相应的键生成一个空的 list 
+
+*** 示例
+
+不好的方法是
+
+#+BEGIN_SRC python
+  equities = {}
+  for ( portfolio, equility ) in data:
+      if portfolio in equility:
+          equility[portfolio].append( equility )
+      else:
+          equility[portfolio] = [equity]
+#+END_SRC
+
+比较好的方式是使用 =dict.setdefault(key, default)= ，如下
+
+#+BEGIN_SRC python
+  equities = {}
+  for ( portfolio, equity ) in data:
+      equities.setdefault( portfolio, [] ).append( equity )
+#+END_SRC
+
+*** 说明
+
+- =setdefault( key, default )= 进行 get 或先 set 后 get
+- 只有在 key 不存在时都会设置 default
+- 但每次都会重新对 default 进行求值
+
+
+*** defaultdict
+
+**** 说明 
+
+- 在 =collections.defaultdict= 定义
+- 加入了默认的工厂函数
+- 在对一个不存在的键作操作时，会调用 factory function 来进行初始化
+
+**** 示例
+
+#+BEGIN_SRC python
+  from collctions import defaultdict
+
+  equities = defaultdict(list)
+  for ( portfolio, equity ) in data:
+      equities[portfolio].append( equity )
+
+  navs = defaultdict(int)
+  for ( portfolio, equity, position ) in data:
+      navs[portfolio] += position * prices[equity]
+#+END_SRC
+** Building & Splitting Dictionaries
+
+- 使用 zip 将 key list 和 value list 生成一个 dict
+- dict 的 key 是无序的，但是一但生成顺序不会变
+** Testing for Truth Values
+
+- 测试是否为真，使用 =if x:= 而不要使用 ~if x == True~
+- 测试是否为空，使用 ~if itemsL~ 而不要使用 ~len(items) != 0~ 或 ~items != []~
+** Truth Values
+
+*** 基本类型
+
+Python 中为 False 的值包括
+
+- False
+- ""
+- 0, 0.0
+- [], (), {}, set()
+- None 
+
+除此外都是 True
+
+
+
+
+*** 自定义类型
+
+- 容器类，定义 ~__len__~ 表示长度
+- 非窗口类，定义 ~__nonzero__~ 表示是否为真
+- python3.0 中 ~__nonzero__~ 被重命名为 ~__bool__~
+
+
+** Index & Item
+
+- 使用 enumerate 函数来迭代 list，同时获取 index 和 item
+- enumerate 返回迭代器，会惰性求值，称为 generator
+
+** Other language have "variables"
+
+- Python 的动态类型语言
+- 变量名称（atom）实际只是一个指针
+- 指向的对象（object）本身有类型
+- 当变量（object）没有被引用时，将在未来被回收内存
+- In Python, "variables" are nametags for values, not labelled boxes.
+
+
+
+
+** Default Parameter Values
+
+*** 例子
+
+#+BEGIN_SRC python
+def bad_append( new_item, a_list=[] ):
+    a_list.append( new_item )
+    return a_list
+
+print bad_append( "one" )
+print bad_append( "two" )
+#+END_SRC
+
+
+*** 说明
+
+- 函数的参数的默认值在函数定义处被调用
+- 每次函数调用中使用的 =a_list= 都是同一个
+
+*** 修改方法
+
+#+BEGIN_SRC python
+def good_append( new_item, a_list=None ):
+    if a_list is None:
+        a_list = []
+    a_list.append( new_item )
+    return a_list
+#+END_SRC
+
+
+** String Formatting
+
+- python 的 =%= 操作类似于 C 的 =sprintf=
+- 参考 /Python Library Reference/, section 2.3.6.2 "String Formatting Operations"
+
+** Advanced String Formatting
+*** interpolation
+
+可以使用 interpolation 机制来生成（注意安全）
+
+#+BEGIN_SRC python
+values = {name': name, 'messages': messages}
+print ('Hello %(name)s, you have %(message)i messages' % values)
+
+## or 
+print ('Hello %(name)s, you have %(message)i messages' % locals())
+#+END_SRC
+*** object's instances attributes
+
+- 使用 =self.__dict__= 来将类对象的成员生成一个dict
+- 可以用于生成格式化字符结果
+
+** List Comprehensions
+
+- 简称 listcomps
+- 如 ~[fn(item) for item in a_list if condition(item)]~
+- 更简洁更清晰
+- 不宜过多的层级生成
+
+
+** Generator Expression
+
+*** 例子
+
+#+BEGIN_SRC python
+print sum([num*num for num in range(1,101)])
+print sum( num*num for num in range(1,101))
+
+# more
+month_codes = dict((fn(i+1), code)
+  for i, code in enumerate( 'FGHJKMNQUVXZ' )
+  for fn in (int, str))
+#+END_SRC
+
+*** 说明 
+
+- 简称 genexps
+- 类似于 list comprehensions
+- 不同之处在于 listcomps 是贪婪的，一次求值
+- generator 是惰性的，适合于处理长的序列
+- 这里最好配合 =xrange= 使用
+
+
+
+
+** Sorting
+
+- =list.sort()= 在原数组上排序
+- 可以指定排序方法 cmp, 可以比较慢
+- 更好的方法是指定 key 方法
+
+
+
+
+
+** Generators
+
+- =yield= 将一个函数变成一个 generator
+- generator 函数返回一个 generator object
+- 其中实现了迭代器需要的 next 方法（并以 =StopIteration= 异常为结束）
+- generator function 用维护迭代过程的状态
+- 配合 for 使用
+- for 可以有一个 =else= 从句，在正常结束（非 break）时被调用 
+
+
+
+
+
+** EAFP vs. LBYL
+
+- EAFP: easier to ask forgiveness than permission
+- LBYL: look before you leap
+- 鸭子类型： If it walks like a duck, and talks like a duck, and looks like a duck: It's a duck
+- 可以在对类型有要求的地方使用异常处理保护
+- 不要直接捕 =except= 异常，而只针对期望的异常
+
+** import
+
+- 不要使用 =from module import *=
+- 这将污染 namespace 环境
+- 可以通过起别名、显式导入方式来解决 
+
+
+** Modules & Scripts
+
+- ~if __name__ == '__main__':~ 来保存可执行语句
+- 被导入时， ~__name__~ 被设置成模块的名称，因此不会执行
+- 当直接运行时， ~__name__~ 被设置成 "__main__"
+
+
+** Module Structure
+
+#+BEGIN_SRC
+"""module docstring"""
+
+# imports
+# constants
+# exception classes
+# interface functions
+# classes
+# internal functions & classes 
+
+def main(...):
+    ...
+
+if __name__ == "__main__":
+    status = main()
+    sys.exit( status )
+#+END_SRC
+** Packages
+
+*** 目录结构
+
+#+BEGIN_SRC
+package/
+    __init__.py
+    module1.py
+    subpackage/
+        __init__.py
+        module2.py
+#+END_SRC
+
+
+*** 使用方式
+
+#+BEGIN_SRC python
+import package.module1
+from package.subpackage import module2
+from package.subpackage.module2 import name
+#+END_SRC
+* Simple is Better Than Complex 
+
+#+BEGIN_QUOTE
+Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.
+#+END_QUOTE
+
+** 原则
+
+- keep you programs simple
+- don't reinvent the wheel
+  - check python's standard library.
+  - check the python package index ( pip )
+  - search the web.
+
