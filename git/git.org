@@ -1,5 +1,15 @@
 #+TITLE: git 备忘
 
+* 配置
+
+** git status octal
+
+默认 git status 显示的 utf8 中文名是以 octal 显示的，需要进行如下设置 
+
+#+BEGIN_SRC shell
+git config --global core.quotepath off
+#+END_SRC
+
 * 未完成
 
 - Git revert 如何看以后的版本？ `reflog` 合集
@@ -9,3 +19,4 @@
 - HEAD 指向 master，master 指向当前提交
 - `git stash {apply,drop,pop,list}
 - `git branch --set-upstream <branch-name> <origin/branch-name>`: 本地分支与远程进行关联
+
