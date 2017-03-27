@@ -1,0 +1,34 @@
+#+TITLE: screen 笔记
+#+AUTHOR: 赵文彬
+
+* 概述
+
+- 复用物理终端
+- scrollback history buffer
+- copy-and-paste 机制 
+
+* 快捷键
+
+| create new window | ~C-a c~ |
+| ------------------+---------|
+
+* monitor
+
+screen 可以用于多人协作或远程示范
+
+** 步骤
+
+1. 终端 A 上使用 ~screen -S sample~ 进入 screen
+2. 终端 B（同一用户）使用 ~screen -x sample~
+3. 双方可以看到同样的显示，都可以进行操作
+
+** 问题
+
+*** TODO 分辨率问题
+
+*** TODO 多 tab 问题
+
+
+
+
+
