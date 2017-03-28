@@ -1,0 +1,21 @@
+#+TITLE: linuxCast 视频笔记
+#+AUTHOR: Zhao WenBin
+
+* 文件系统 
+
+** 基本命令
+
+1. 创建文件系统 mkfs.ext4 或 mkefs
+2. 显示文件系统信息 dumpefs
+3. 添加卷标 e2label
+4. 检查修复 fsck
+
+** 知识
+
+- 文件块大小 blocksize 是读与写的最小单位
+- fsck 在每次启动时自动进行，恢复的结果放在 =lost+found= 目录中
+- fsck 文件系统不能被挂载
+- 无文件系统称为裸盘（raw），oracle 中可能使用裸盘，以获取更佳性能优化
+
+
+
