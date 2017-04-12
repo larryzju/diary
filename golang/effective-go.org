@@ -1,0 +1,58 @@
+#+TITLE: Note on "Effective Go"
+#+AUTHOR: 赵文彬
+
+* Go 控制结构
+
+** 基础
+
+- 没有 =do .. while= 循环
+- 通用的 =for=
+- 更有弹性的 =switch=
+- =if= 和 =switch= 包含一个可选的初始化
+- =break= 和 =continue= 可以指定一个 label
+- 新的 type switch 控制结构
+- select 控制结构
+
+
+** for range
+
+- range 用于迭代 array, slice, string, map 及 channel
+- 若只需要迭代 key 或 index，则 for 中只带一个迭代参数
+- 若只需要第二个值，可以使用 =_=
+- 对 string 迭代，返回 rune (UTF8) 和 pos
+- 对于无法识别的字符，返回 =U+FFFD= 特殊字符
+
+
+
+
+
+
+** swtich
+
+- 不加条件，可以构造 =if-elsif-else= 分支
+- case 中可以写多条件（用逗号分隔）
+- 可以使用 break, 默认为每个 case 加入 break
+
+** type switch
+
+- discover the dynamic type of an interface variable
+- 语法是 =t.(type)=
+
+** 其它
+
+*** Redeclaration and reassignment
+
+- 通过 ~:=~ 来进行申明时，变量 v 可以多次出现
+- 但至少在申明列表中有一个新的变量
+- 用于简化赋值与申明的语法切换
+
+*** 与 C 的不同
+
+- Go 中没有 =++= 和 =--= 操作
+- Go 中没有 comma operator，但可以进行多赋值
+
+
+
+
+
+
