@@ -211,3 +211,33 @@
 - It's perfect OK to return the address of a local variable（涉及内存堆与栈的切换，以及 GC 的优化）
 
 
+* 初始化
+
+Go 比 C 或 C++ 更加强大，体现在：
+
+  1. 复杂结构的构造
+  2. 构造顺序问题
+
+** Constants
+
+- 在编译期被创建
+- 只能是 number, rune, string, boolean 类型
+- 必须是 constant expression （编译需要）
+- 使用 =iota= 生成枚举， iota 是表达式
+
+** variables
+
+- 与 constant 语法类似
+- 但在 run time 被初始化
+
+** init function
+
+- 每个源文件可以有自己的 =init= 函数
+- 在所有变量初始化完成后，包被初始化后才会执行
+- 常用于验证和修改状态
+
+
+
+
+
+
