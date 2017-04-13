@@ -279,5 +279,58 @@ Go 比 C 或 C++ 更加强大，体现在：
 
 
 
+* Interfaces and other types
+
+** Interfaces
+
+- provider a way to specify the behavior of an object: _If something can do this, then it can be used there._
+- 只有一到两个方法的 interface 属于常见
+- 一个类型可以实现多个 interface 的方法，但不指定显示的继承实现路径
+
+** Conversions
+
+- 两个底层构造一致的对象可以相互转换
+- 转换并不是要创建新的对象，而仅是类型（及方法）的转换说明
+- 可以将对象的类型进行转换，以使用不同接口中的方法
+
+** Interface conversions and type assertions
+
+- type switch 有个常用的方式，对 interface 取 switch，在每个 case 中转换为相应的类型，进行具体的操作
+- switch 条件为 =value.(type)=
+- 通过 =value.(typeName)= 进行类型断言或转换
+- 若无法转换，则会 crash with a run-time error
+- 使用 "val, ok" 来测试是否能够正常转换
+
+** Generality
+
+- 若无 interface 以外的方法实现，类型便无意义
+- 构造函数可以返回一个 interface 而非具体实现
+- 通过对 interface 提供的接口进行开发，以实现抽象编程
+
+
+
+
+
+
+
+
+
+** Interface and methods
+
+_Almost anything can have methods attached, almost anythin can santisfy an interface_
+* The Blank Identifier
+
+- can be assigned or declared with any value of any type, with the value discarded harmlessly
+- 用于 multiple assignment
+- 用于 unused imports and variables，引用未使用的包或变量，以避免编译错误
+- 用于 import for side effect，如 =import _ "net/http/pprof"=
+- 用于 interface check，如 =var _ json.Marshaler = (*RamMessage)(nil)=
+- 类型无需指出它具体实现了哪些接口，而去具体实现相应的方法，大部分转换都在编译时进行的
+- 使用 =value.(type)= 进行 check，会在运行时进行
+
+
+
+
+
 
 
