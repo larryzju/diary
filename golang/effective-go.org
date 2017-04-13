@@ -1,7 +1,17 @@
 #+TITLE: Note on "Effective Go"
 #+AUTHOR: 赵文彬
 
-* Go 控制结构
+* 分号
+
+- Go 理论上用分号来分隔语句，但一般不写在源码里
+- lexer 会自动插入分号
+- 在行结尾为 newline, number 或 string 常量，或符号 =break=, =continue=, =fallthrough=, =return=, =++=, =--=, =)=, =}= 被插入分号
+- if the newline comes after a token that could end a statement, insert a semicolon.
+- Go 中的分号一般只出现在 for 循环中，会用分隔三个条件
+- 一行内的多个 statement 可以用分号来分隔
+- 不能将 '(' 放在新的一行
+
+* 控制结构
 
 ** 基础
 
@@ -54,5 +64,150 @@
 
 
 
+
+* 函数
+
+** 多返回值
+
+- 避免像 C 中通过返回 -1，并修改指针内容来表示错误，和错误信息
+- 多个返回值中可以设计上下文缓存，模拟 python yield
+
+** 具名返回参数
+
+- 函数初始化时，返回参数被初始化为零值
+- 在裸 return 时，返回当时返回参数的值
+- 可以作为手册，说明返回参数的信息
+
+** Defer
+
+- 用于保证资源被释放
+- 在有多个 return 分支时，常会忘记释放的情况
+- 在打开处进行关闭注册，代码更加清晰
+- defer 函数参数立即被展开
+- defer 可以多次调用，函数按 FILO 执行
+
+
+
+
+
+* Data
+** New
+
+- 申请空间有两个原语 =new= 和 =make=
+- new 仅用于申请空间并赋零值 ，但不会调用初始化过程
+- 返回类型为 =*T= ，表示指向 T 类型变量所在的位置
+- 设计类型时，尽可能让零值有意义
+
+
+
+** Make
+
+- 只用于创建 slice, map 和 channel
+- 返回一个被初始化的值（类型为 T）
+- 与 new 进行区别，是因为有些类型变量需要进行初始化
+- =make([]int, 10, 100)= 返回一个 slice, 容量为 100，长度为 10
+- 可以忽略长度： ~v := make([]int, 100)~
+
+** 构造字面量
+
+- composite literal
+- 可以指定局部成员，可以乱序，如 ~&File{fd:fd, name:name}~
+- 可以完全不写成员值，以初始化空值
+- 可以用于初始化 array, slice, map
+- 数组类初始化，field 名称直接被忽略
+
+
+** Arrays
+
+- 与 C 的数组不同，在 Go 中
+  + Array are value, 赋值相当于拷贝
+  + 将 array 作为函数的参数，会对值进行拷贝
+  + The size of an array is part of its type: ~[10]int~
+- 为了提高效率，函数参数需要以指针传入，避免拷贝
+- 一般用 slice 来替代直接使用 array
+
+
+** Slices
+
+- 对 arrays 的封装
+- 更通用，功能更强，接口更方便
+- 大部分应用场景下都应使用 slice 来替代 array
+- slice 是引用，赋值不会拷贝
+- slice 隐含有长度（和容量）信息
+- slice 的长度可以扩展，受底层 array 容量的限制
+- 要改变 slice 长度，只需要对其切片赋值到新的 slice
+- 内置有 append 函数
+
+
+
+
+
+
+** Two-dimensional slices
+
+- 例如 ~type linesOfText [][]byte~
+- slice 是变长的，所以内部（第二维） slice 可以是变长的
+- 二维数组实现有两种方式
+  1. 独立申请第二维 slice，类似 C 中指针数组
+  2. 对一维数组中切片，适用于固定长度
+
+
+
+** Maps
+
+- key 可以是定义了 equality operator 的任意类型
+- key 可以是 interface 类型的
+- slice 不可以作为 key
+- map 是引用类型，会被函数修改
+- ？？copy, deepcopy
+- 类型写作 =map[string]int= ，表示 string 类的键指向 int 类的值
+- 取不存在的键，返回零值
+- 返回两个值，后一个作为是否存在的标志
+- delete 删除 map 中的成员，不存在也不会报错
+
+
+
+
+
+
+
+
+** Printing
+
+- 常用的函数有 =fmt.{Printf,Fprintf,Sprintf}=
+- Println 插入空格和换行， Print 插入空格
+- Fprint 等函数的文件对象需要实现 =io.Writer= 接口
+- 常用文件如 =os.Stdout= 或 =os.Stderr=
+- =%d= 不能像 C 一样带修饰符
+- =%v= 作 default conversion，可打印复合结构，如 array, slice, struct, map
+- 对于结构体, =%v= 显示值， =%+v= 显示键和值， =%#v= 以 Go 语法来显示键和值
+- =%q=, 指 quote，用于 =string= 或 =[]byte=
+- =%#q= 使用 backquote 来作为引用符
+- =%x= 可应用于 =string=, =[]byte=
+- =% x= 可以在 hex 中插入空格
+- =%T= 打印变量的类型
+- 通过实现 =T.String()= 方法来提供默认的格式化方法
+- =func Printf( format string, v ...interface{} )(n int, err error)=
+- v 是可变长参数列表，使用 =v...= 来展开（类似于 lisp apply）
+
+
+
+
+
+
+
+
+
+
+
+** Append
+
+- 示意如下 ~func append( slice []T, elements ...T)[]T~
+- Go 不能实现对泛型的函数定义，因此 append 以内置函数实现
+- ~append( x, y... )~ ，类似于 lisp 中的 =(append* a b)=
+
+** 注意
+
+- It's perfect OK to return the address of a local variable（涉及内存堆与栈的切换，以及 GC 的优化）
 
 
