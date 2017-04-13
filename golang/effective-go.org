@@ -1,6 +1,33 @@
 #+TITLE: Note on "Effective Go"
 #+AUTHOR: 赵文彬
 
+* Names
+
+- 首字母大小写决定包外的可见性
+- 骆驼命名法
+
+** Package names
+
+- 包名即变量的引用名
+- 要求：short, concise, evocative
+- 由小写字母构成
+- 在使用时可以起别名，但在定义时不要求严格的唯一
+- 习惯上，package name 与源目录一致
+- 导入的名称是完整路径
+- 函数名不必再重复 package name
+- Long names don't automatically make things more readable. A helpful doc comment can often be more valuable than an extra long name.
+
+** Getter
+
+- Go 不自动提供 getter 和 setter
+- 习惯以 =Owner= 而非 =GetOwner= 表示 getter
+- 以 =SetOwner= 来表示 setter
+
+** Interface name
+
+- 单方法接口以方法名加 'er' 后缀来命名
+- 接口名不应与常用函数（Read，Writer，Close，Flush）重名
+
 * 分号
 
 - Go 理论上用分号来分隔语句，但一般不写在源码里
@@ -236,6 +263,19 @@ Go 比 C 或 C++ 更加强大，体现在：
 - 在所有变量初始化完成后，包被初始化后才会执行
 - 常用于验证和修改状态
 
+
+
+
+
+
+* Methods
+
+** Pointers vs. Values
+
+- methods can be defined for any named type ( except a pointer or an interface )
+- 使用指针，方法可以直接修改 caller 本身
+- value methods can be invoked on pointers and values; but pointers methods can only be invoked on pointers
+- 对于可取地址的值，对其进行方法调用时，编译器用自动进行地址引用。因此 ~(&b).Write~ 可以简写为 ~b.write~
 
 
 
