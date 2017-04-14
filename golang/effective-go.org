@@ -1,6 +1,16 @@
 #+TITLE: Note on "Effective Go"
 #+AUTHOR: 赵文彬
 
+* Commentary
+
+- 注释有行注释和块注释两种
+- godoc 命令会根据注释内容生成文档
+- 文档注释分为 package comment 和 doc comment
+- 对于多文件的包，包注释只应出现在其中一个文件中
+- 注释文档不会被进行格式化处理
+- 每个导出的名称都应予以 doc comment 注释
+- var 或 const 分组只注释一次
+
 * Names
 
 - 首字母大小写决定包外的可见性
@@ -327,10 +337,22 @@ _Almost anything can have methods attached, almost anythin can santisfy an inter
 - 用于 interface check，如 =var _ json.Marshaler = (*RamMessage)(nil)=
 - 类型无需指出它具体实现了哪些接口，而去具体实现相应的方法，大部分转换都在编译时进行的
 - 使用 =value.(type)= 进行 check，会在运行时进行
+* Errors
 
+- 正常情况通过多返回值来描述错误信息
+- 错误类型为 =error= ，是一个内置的 interface，其中有 =Error()= 方法
+- 除了简单的报错外，还可以提供一些上下文环境记录
+- 调用者通过 type switch 或 type assertion 来区分 error 的具体类型
 
+** Panic
 
+- 对不可恢复的错误，使用 =panic= 来创建 runtime error，并停止程序执行
+- panic 后可以跟任意类型，一般是字符串，会打印其错误信息
+- 多场景都不应使用 panic
 
+** Recover
 
-
+- 当 panic 触发后，会立即停止当前函数的执行，展开 goroutine 的栈，执行 defer 注册的函数，栈处理完成后停止程序
+- panic 流程中途用 recover 来恢复正常执行流程，recover 停下 goroutine 栈的展开
+- recover 只可写在 deferred 函数的内部 
 
