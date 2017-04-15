@@ -1,0 +1,114 @@
+#+TITLE: Note on 80386 reference
+#+AUTHOR: Zhao WenBin
+
+* Memory Management
+
+** 概述
+
+*** TODO 流程图
+
+[[./80386/FIG5-1.GIF]]
+
+Paging enabled 的连线是否标注有误??
+
+*** 说明
+
+- 进程中看到的内存是连续的、独立的，地址空间称为 logical address
+- 实际上硬件内存称为 physical address
+- logical address 到 physical address 的映射关系经过两种转换:segment translation, page translation
+- segment translation 将 logical address 转换为 linear address
+- page translation 将 linear address 转换为 physical address
+- page translation 是可选的映射
+
+** Segment Translation
+
+*** 概述
+
+- logical address 是多个分段下的连续地址, 分段以 base + limit 来指定
+- 要使用 logical address, 需要找到基地址，并指定偏移。即 base + offset
+- 基地址保存在　descriptor 结构中，系统维护有两张　descriptor 表，称为　GDT 和　LDT
+- selector　相当于一个索引，来从　descriptor table 中找到具体的 descriptor，进而找到相应的段
+- descriptor 由　compiler, linker, loader, os 等创建
+- 实际使用中，会大量的提取　descriptor。为了提高效率，segment register 缓存了 selector 到　descriptor 的关系
+
+*** 转换流程图
+
+[[file:80386/FIG5-2.GIF]]
+
+
+*** Descriptor
+
+**** 分类
+
+分为两类
+
+1. for applications code and data segments
+2. for special system segments
+
+**** 示意图
+
+[[file:80386/FIG5-3.GIF]]
+
+**** 说明
+
+- base 保存基地址，由三部分构成，共 32 位
+- limit 由两部分构成，共 20 位
+- granularity 位是 Limit 长度标记，0 时 limit 单位为 1 字节，1 时 limit 单位为 4k 字节
+- type 用于区别两种格式 
+- segmentPresent 标记是否适用于地址转换
+- accessed 标记是否正在被使用
+- limit 最大长度为 4G（当 granularity 为 1 时）
+- 进程最大可以访问的 logical address 长度为 4G，达到虚拟进程访问空间的效果
+
+
+
+
+*** Descriptor Tables
+
+**** 说明
+
+- 分为 GDT 和 LDT 两类
+- 其中保存的是 descriptor 结构（8 个字节），长度可变，最长 8192 个 descriptor
+- 第一个 GDT 的 descriptor 不使用
+- GDTR 和 LDTR 寄存器，存储表的位置和长度
+- GDTR 的指令有： LGDT 和 SGDT
+- LDTR 的指令有： LLDT 和 SLDT
+
+
+**** 示意
+
+[[file:80386/FIG5-5.GIF]]
+
+
+*** Selector
+
+**** 说明
+
+- selector 是到 descriptor table 的具体 descriptor 的索引
+- selector 的值一般由 linker 或 linking loader 来定义
+
+**** 格式
+
+[[file:80386/FIG5-6.GIF]]
+
+
+- index 表示 8192 个 descriptor 的索引
+- Table Indicator 表示 GDT 或 LDT
+- RPL: Requested Privilege Level
+
+
+
+*** Segment Registers
+
+**** 图示
+
+[[file:80386/FIG5-7.GIF]]
+
+**** 说明
+
+- segment register 包括了 CS, SS, DS，ES，FS，GS
+- 包括两部分，第一部分是可见的 16 位，保存 selector
+- program loads the visible part of the segment register with a 16-bit register
+- 处理器自动加载相应的 descriptor 到 segment register 的不可见部分
+- 本质是缓存 selector 与 descritpro 的关系
+
