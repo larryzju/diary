@@ -19,8 +19,7 @@ for b in `ls /usr/local/i386elfgcc/bin/`; do
 done
 #+END_SRC
 
-
-* 编译 toruos
+* 编译 toaruos
 
 1. 指定 gcc 编译器路径： =export PATH=/usr/local/i386elfgcc/bin:$PATH=
 2. 编译 make
