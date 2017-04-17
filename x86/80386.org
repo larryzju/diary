@@ -1,6 +1,35 @@
 #+TITLE: Note on 80386 reference
 #+AUTHOR: Zhao WenBin
 
+
+* Basic Programming Model
+
+** Memory Organization and Segmentation
+
+- 从物理内存上看，最大有 4 个 GBytes 的空间，每个字节有唯一的线性物理地址
+- 有 flat 和 segmented address space 两种看法
+- flat 模式下处理器将 4G 空间通过地址转换映射到物理内存中
+- segmented Model 将 16,383 个段映射到物理内存中，每个段最大有 4G 空间，最大寻址 64T
+
+*** 补充
+
+- 在段下内存寻址需要指定“段”和“偏移量”
+- 段为内存空间提供了第二个维度，并提供了内存保护机制
+- 16 位的段选择子，32 位的地址偏移，总共提供了 64T 的寻址空间
+
+
+
+*** 问题
+
+**** 为什么有 64T 寻址空间
+
+因为 selector 有 16 位，其中 descriptor table 的索引有 13 位，descriptor table 分为 GDT 和 LDT 两种，共 14 位，即 16K 空间。每个段内最大空间是 4G。因此最大可以寻址 64T 空间
+
+**** TODO 操作系统如 Windows, Linux 看到的完整的 4G 空间，是否意味着使用 flat 模式？
+
+
+
+
 * Memory Management
 
 ** 概述
