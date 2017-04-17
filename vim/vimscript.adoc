@@ -1,0 +1,147 @@
+= Learn vimscript the hard way 笔记 =
+
+入门时需要学习以下内容：
+
+* vimtutor
+* learn python the hard way
+
+== 打印信息
+
+=== echo 与 echom
+  
+后者会将打印内容写入到 messages 中，通过 `:messages` 查看 
+
+[NOTE]
+要查看 `messages` 帮助，使用 `help messages` 显示的并非我们所要的。
+而应该使用 `help :messages`，冒号表示命令
+
+[NOTE]
+使用 `"` 前缀来进行注释，据说有时候不生效（？）
+
+
+
+== 设置选项
+
+`set` 命令来设置变量内容
+
+布尔值 ::
+  开启 ::: `set xxx`
+  关闭 ::: `set noxxx`
+  切换 ::: `set xx!`
+  查看 ::: `set xx?`
+
+键值设置方式同上，但没有切换语义
+
+另外 `set` 可以同时设置多个变量，写在同一行，用空格分隔既可
+
+[NOTE]
+行号设置相关的有 `nu`, `nuw`, `rnu` 。 `rnu` 显示相对行号，在跳转和文本提取时可能比较有用。
+
+
+== 基本映射
+
+在不同的模式下（normal, insert, visual）有不同的映射方式。
+
+在普通模式下，映射方式为 `map <key> <op>` 。 其中 key 可以是简单的可见字符，也可以是不可见的 `<keyname>` (如 `<space>` `<c-d>` 等）
+
+=== 解读 `:map <space> viw " Select word` 命令
+
+输入为
+
+	hello world
+
+输出为
+
+	hellw " Select word" Select wordo world
+
+并且最后停留在插入模式，为什么会向中间插入两次 `" Select word` ?
+
+因为实际上展开后的调用方法为：
+
+1. 展开第一层 `viw<space>"<space>Select word`
+2. 展开第一个 `<space>` （因为此时在 visual mode）， 实际上看到 `viwviw<space>"<space>Select word"<space>Select word`
+3. `viwv` 使光标移到 `o` 并回到普通模式，下一个 `i` 进入插入模式，则以后的 `<space>` 不会再展开
+
+问题的关键在于 `:map` 生效于 visual 和 normal 模式，在这种方式下 `<space>` 被多次展开
+
+=== 取消映射
+
+`unmap` ，与 set 相似。同理通过 `map` 查看所有映射。从这个角度，vim 命令设计上一致性很好。
+
+
+== 模式映射
+
+如上面分析， `map` 同时生效于 normal 和 visual 模式。另外有 `vmap`, `nmap`, `imap` 来在具体的模式下生效。
+
+[NOTE]
+在 `imap` 映射中，需要考虑切换到 normal 模式（用 `<esc>` 退出）
+
+练习将当前单词变为大写，脚本如下：
+
+	nmap <c-u> viwU
+	imap <c-u> <esc>lviwUi
+
+[WARNING] 
+其中的 imap 中开始向后偏移一位，因为 `<esc>` 退出时光标会回到上一位？
+
+
+== 精确映射
+
+如上面 `viw` 例子，因为在映射展开中出现了递归展开，出现了预期之外的现象。我们应该避免递归展开。
+
+通过 `[nvi]norepmap` 来定义一个不展开递归的映射，应该在可能的所有地方使用这种保护。
+
+[NOTE]
+注意 `unmap` 在不同的模式下的写法是 `nunmap`, `iunmap` ，这一点和 `set` 不太一致
+
+
+== leaders
+
+vim 有一个特殊的前缀变量 `mapleader` （类比于 screen 的 `C-a` 和 tmux 的 `C-b`），用于解决快捷键冲突问题
+
+通过 `:let mapleader=,` 来设定，好处是移植性和一致性（类似于程序里写宏或常量）
+
+另外，还有针对一类文件的变量 `maplocalleader`
+
+== 编辑你的Vimrc文件
+
+使用 `source` 来加载 vimscript，类似于 shell 的 `source` 命令
+
+== Abbreviation
+
+与 mapping 类似，同样分为不同的模式。主要用于纠错和展开。
+
+在非关键字键入时被展开，关键字通过 `:set iskeyword?` 查看。好处在于 mapping 无视条件展开，而 abbreviation 有展开条件
+
+缩写展开可以方便写入一串内容，比如：
+
+	iabbrev @@ larryzju@163.com
+	iabbrev @n Zhao WenBin
+
+== 更多的Mappings
+
+vim mapping 组合键需要连续按下（双击的梗），至于如何修改这一配置暂时不关心
+
+另外，mapping 能干能多事，但也带来理解的困难，不能滥用（类比于 Lisp 宏）
+
+练习将选中区域用引号括起来脚本如下：
+
+	vnoremap q" <esc>:'<,'>s/\%V\(.*\)\%V/"\1"/<cr>
+
+其中关键在于 `%V` 限制作用范围在当前选中区域
+
+== 锻炼你的手指
+
+vim 可以通过 `<esc>` , `<C-c>` 或 `<C-[>` 来退出编辑模式
+
+作者推荐使用 `jk` 来退出，并通过 `:inoremap <esc> <nop>` 来禁用 `<esc>` 。我需要试一试
+
+[NOTE]
+当你想改掉一个坏习惯的时候，你最好能够想一些办法使得这个坏习惯很难甚至是不能发生。
+
+[NOTE]
+正确使用Vim的关键就是使得自己能够快速的离开插入模式，然后在常用模式下进行移动。
+
+== 本地缓冲区的选项设置和映射
+
+
