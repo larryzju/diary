@@ -93,6 +93,28 @@
 
 
 
+* 指令格式
+
+** 概述
+
+- 指令中反映出操作类型、操作数类型、操作数位置；其中隐含有寻址的方式
+- 指令有可变长个元素组成，由 opcode 个可选个其它参数组成（用于表示操作数类型和位置）
+
+** 元素
+
+- Prefix :: 用于修饰指令操作数
+  + Segment override :: 用于显式地指定段寄存器（替换默认的段寄存器）
+  + Address size :: 在 32 和 16 位地址类型之间切换
+  + Operand size :: 在 32 和 16 位操作数类型之间切换
+  + Repeat :: 循环对字符串的每个字进行操作
+- Opcode :: 指令操作类型，可多态
+- Register specifier :: 寄存器指定操作数
+- Address-Model Specifier :: 指定地址信息
+  + SIB(Scale, index, base) :: 通过基地址加偏移量指定位置
+  + Displacement :: 通过偏移量指定位置
+  + Immediate Operand :: 指定立即数，可用作地址或数值
+
+
 * 内存管理
 
 ** 概述
