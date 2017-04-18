@@ -1,5 +1,6 @@
 #+TITLE: Note on 80386 reference
 #+AUTHOR: Zhao WenBin
+#+OPTIONS: tex:t
 
 * 寄存器
 
@@ -50,6 +51,45 @@
 
 - Extended Instruction Pointer
 - 对程序员不可见，通过 control-transfer， interrupt 和 exception 进行修改
+
+
+
+* 数据类型
+
+** 基本类型
+
+- 三种基本类型，分别是 byte, word, doubleword
+- bit zero is the least significant bit
+- 低字节（地址）中含有低有效位
+- 字节度中位值随地址增大而增大，称为 little endian
+- Intel 架构是小端字节序
+- CPU 和内存之间是 32 位总线，内存不对齐会降低处理效率
+- 数据结构尽可能保证内存对齐
+- 指令因为 CPU 预取指机制而无需对齐
+
+** Additional Data Type
+
+- Integer，对应于 C 中的 char, short 和 int
+- Ordinal, 无符号整型
+- Near Pointer，指针类型，32 位，用于在 flat 或 segment model 中表示 offset
+- Far Pointer，48 位地址，包括 segment selector(16位） 和 offset（32位） 两部分，只能在 segment 下使用
+- String，最大 $(2^32)-1$ 字节
+- Bit field，最大 32 位
+- Bit String，最大 $(2^32)-1$ 位
+- BCD，用后半字节表示 0到9 的数字
+- Packed BCD，两个半字节来表示 0 到 99 的数字 
+
+** 图示
+
+[[file:80386/FIG2-4.GIF]]
+
+
+
+
+
+
+
+
 
 
 
