@@ -115,6 +115,103 @@
   + Immediate Operand :: 指定立即数，可用作地址或数值
 
 
+* 控制指令
+
+** 概述
+
+- 包含两类跳转指令：有条件的和无条件的跳转指令
+- 跳转与处理器状态标记有关
+- 中断和异常也会触发跳转
+
+** 无条件跳转
+
+- 可将 CS 切换到另一个，称为 far control transfer
+- 在同一个 segment 内跳转，称为 near control transfer
+
+*** Jump Instruction
+
+- 直接跳转，不会压栈
+- 地址可以是直接指定的，也可以是寄存器间接寻址的
+  + Direct Near Jump： 使用相对偏移地址
+  + Indirect Near Jump: 指定绝对地址
+    - 通用寄存器（除 ESP 之外）内容回填 EIP
+    - memory operand specified
+    - 修改 memory pointer 地址
+
+*** Call Instruction
+
+- Call Procedure，将 EIP 压栈，并在 RET 时弹出
+- 地址有 relative, direct, indirect 三种
+- 间接寻址有两种方式
+  + 通用寄存器内容回填 EIP
+  + 从 memory operand 中获取 
+
+*** Return and Return-From-Interrupt Instruction
+
+- RET :: 从栈中恢复 EIP 到前一个 CALL 的位置，可以指定一个返回值（立即数）
+- IRET :: 从中断处理中返回。不同于 RET，还会将栈上的 flags 恢复（中断时保存的现场）
+
+
+** 有条件跳转
+
+由 CPU 状态来决定是否跳转
+
+*** Conditional Jump Instruction
+
+[[file:80386/TABLE3-2.PNG]]
+
+- 条件跳转指令对 EIP 进行偏移
+- 偏移可以为负，即可以向前跳转
+
+*** Loop Instructions
+
+- loop 也是条件跳转，使用 ECX 的值作为循环次数
+- 有五个循环指令： =LOOP=, =LOOPE=, =LOOPZ=, =LOOPNE=, =LOOPNZ=
+- 其中有四个通过 ZF 状态来判断是否结束循环
+
+**** LOOPE/LOOPZ
+
+- LOOPE: Loop While Equal
+- LOOPZ: Loop While Zero
+- 两个指令有相同的作用
+- 当  ~(ECX-- && ZF==1)~ 时，跳转到 LABEL 处
+
+**** LOOPNE/LOOPNZ
+
+- 当 ~(ECX-- && ZF==0)~ 时，跳转到 LABEL 处
+
+
+*** TODO Executing a Loop or Repeat Zero Times
+
+- JCXZ ( Jump If ECX Zero )
+- 若 ECX 为 0，则跳转到 label 处
+- 配合 LOOP 指令，用于 string scan 和比较操作
+
+
+
+** 软件中断
+
+*** INT n
+
+- =INT n= 和 =BOUND= 允许跳转到配置的 interrupt service routine
+- =INT n= 调用第 n 号软件中断，可以指定 interrupt type
+- 中断号 0 到 31 被 intel 保留，用于内部异常
+- 中断通过 =IRET= 来返回
+
+*** INT0
+
+- Interrupt on Overflow
+- 若 OF 被置位，则调用中断 4
+
+*** BOUND
+
+- Detect Value Out of Range
+- 检查特定寄存器中的有符号值是否在范围内
+- 若不在范围内，则铖中断 5
+- BOUND 每一个参数是要被检查的寄存器
+- 第二个是相对地址，指向高与低两个上下限
+- BOUND 可用于检查数组边界
+
 * 内存管理
 
 ** 概述
