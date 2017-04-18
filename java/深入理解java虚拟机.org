@@ -1,0 +1,108 @@
+#+TITLE: Note on "深入理解Java虚拟机"
+#+AUTHOR: Zhao WenBin
+#+STATUS: unfinished
+
+* 概述
+
+** Java 技术体系
+
+- Java 语言
+- JVM 虚拟机
+- Class 格式
+- API 类库
+- 第三方类库
+
+
+
+
+
+** Java 的优势
+
+- 结构严谨、面向对象的编程语言
+- 提供内存管理，避免内存泄露与指针越界
+- 在虚拟机层面隐藏了底层技术的复杂性以及机器与操作系统的差异性
+- 热点代码检测和运行时编译优化
+- 完善的应用程序接口
+
+** Java 平台的分类
+
+*** 按业务分类
+
+- Java Card :: 小内存设备平台
+- JavaME :: 终端
+- JavaSE :: 标准
+- JavaEE :: 企业
+
+** 需要关注的技术
+
+- 反射（reflection）
+- 自动装箱
+- 泛型
+- 动态注解
+- 枚举
+- foreach 循环
+- =java.util.concurrent=
+- lambda 表达式
+
+
+
+
+
+
+
+
+
+
+
+
+
+* Java 虚拟机
+
+** 概述
+
+- 不止 Sun Java 1.0 中的 Sun Classic VM
+- Sun JDK 和 OpenJDK 中的 HotSpot 虚拟机
+- BEA 的 JRockit 和 IBM J9
+- 其它 
+
+** 虚拟机
+
+*** Sun Classic VM
+
+ - Class VM 是第一款商用 Java 虚拟机
+ - 只能以纯解释器方式来执行
+ - 不能与编译器混合
+ - 在 JDK1.3 时被 HotSpot 替换默认位置，1.4 中退出
+
+*** Sun Extract VM
+
+ - JDK1.2 中加入 Solaris Extract VM
+ - 两级即时编译器
+ - 编译器与解释器混合工作模式
+
+*** Sun HotSpot VM
+
+ - 是 Sun JDK 和 OpenJDK 所带的虚拟机
+ - 既是 Sun 公司开发 的，也不是原生为 Java 作的
+ - 热点代码探测技术：通过执行计数器找出最有编译价值的代码，然后通知 JIT 编译器以方法为单位进行编译
+ - 通过编译器与解释器恰当地协同工作，可以在最优化的程序响应时间与最佳性能中取得平衡，而且无需等待本地代码输出才能执行程序，即时编译时间压力也相对减少
+
+** Java 发展趋势
+
+1. 模块化
+2. 混合语言
+3. 多核并行
+4. 进一步丰富语法
+5. 64 位虚拟机
+
+
+
+
+
+
+
+
+
+
+
+
