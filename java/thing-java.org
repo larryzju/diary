@@ -1,0 +1,48 @@
+#+TITLE: Note on "Think Java"
+#+AUTHOR: Zhao WenBin
+#+STATUS: 1/16
+
+* The way of programming 
+
+** 编程三比
+
+- 比之数学，都使用规范的、抽象的语言
+- 比之工程，通过小心组合，权衡完美与工程实现需要
+- 比之科学，先假设后检验
+
+** 目标
+
+锻炼和培养解决问题的能力
+
+** 什么是编程
+
+- 描述解决问题的方法
+- 将复杂的任务拆解成足够简单的小任务
+- 基础是输入、输出、计算、决策和循环
+
+** 什么是计算机科学
+
+- 完成和效率：算法的设计、分析和评价
+- 工程能力：代码的维护性、开发效率
+- 程序的调试技能
+
+** Programming Language 
+
+- 高级语言表达力强且可移植
+- 通过 Compiler 和 Interrupt 运行
+- Java 既是编译型，也是解释型
+
+** Java 语言
+
+- 由 Class 和 Method 构成，Method 由 Statement 来构成
+- 语法规范可以参考 [[https://google.github.io/styleguide/javaguide.html]]
+- 开发时应遵循：由小及大、添砖加瓦的策略
+
+
+
+
+
+
+
+
+
