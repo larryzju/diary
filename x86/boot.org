@@ -1,0 +1,62 @@
+#+TITLE: 操作系统启动说明
+#+AUTHOR: Zhao WenBin
+
+* 说明
+
+以下内容参考自 freebsd1.0/sys/i386/i386/README.MARCH
+
+* 整体流程
+
+1. 上电后由 BIOS 完成自检
+2. BIOS 加载  sector 1, track 0 到 0000:7c00H 处，进行第一步启动
+3. 加载 second stage 到 0000:1000H 进行第二步启动
+4. 加载操作系统内核，初始化后交由 kernel 进行启动
+5. 操作系统启动
+
+* BIOS 加载 
+
+- 读 sector 1, track 0 扇区到内存 0000:7c00H 处
+- 要求 0000:7DFEH（即 512 的最后两个字节）为 AA55H
+- 兼容 DOS 模式，若 boot device 为硬盘，则需要额外加载 active partition 扇区内容
+- 硬盘的第一扇区包含 MS-DOS boot code 和 record partition table
+- 硬盘模式 BIOS 将自身移动到别的位置，并将硬盘第一扇区加载到 7C00H
+
+* The First Stage BootStrap Loader
+
+- 被加载到 0000:7C00H
+- 作用是将自己和 second stage 加载到内存 0000:1000H
+  + floopy 的第一柱面作为 boot 之用
+  + hard disk active partition 中前 29 个 sector 保存具体的 stage boot
+
+* The Second Stage BootStrap Loader
+
+- 用于加载内核
+- 由于内核比较大，因而在保护模式下进行
+- 因为调用 BIOS，会在保护模式下与实模式间进行切换，所以 cs 和 ds 段不于 64K
+- 将第一 stage 所在 [0000:1000H,0000:1200H) 用作 BIOS IO buffer
+- 第一stage 空间后面跟着 GDT Table 和 second stage boot loader
+- 内核镜像被加载到大于 1M 的位置，并将信息压栈，控制交给内核，信息包括
+  + type of boot device
+  + size of base memory
+  + size of the extend memory
+
+* FreeBSD/UNIX StartUp
+
+- 内核位于大于 1M 的内存位置，CPU 处于保护模式
+- link-editor descriptor file( vuifile ) 决定 cs 和 ds 的位置在 1MB 以上的空间
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
