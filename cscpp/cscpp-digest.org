@@ -1,0 +1,153 @@
+#+TITLE: CSCPP 摘要
+#+AUTHOR: Zhao WenBin
+#+STATUS: 50/1078
+#+OPTIONS: html5-fancy
+#+OPTIONS: toc:2
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="style.css">
+
+* A Tour of Computer System
+
+软件与硬件共同构成了计算机系统。虽然计算机系统细节诸多，但万变不离其宗。要写出好的程序，一定要掌握底层原理。
+
+常见的问题如数字格式、C 程序优化、链接、内存泄露、并行程序开发等。都将在后续展开。
+
+** Infomation is Bits + Context
+
+计算机中所有的信息都以一系列的位来表示。例如，源代码文件，以字节（8位）为单位保存在文件中。其编码由 ASCII 定义。
+
+不同的位表示不同的意思的本质在于上下文（Context）。
+
+
+#+BEGIN_aside
+C 语言于 1969-1973 年在贝尔实验室被创造。由 ANSI C 和 ISO 进行标准，著名书籍是 K&R。C 语言有以下特点
+
+1. 与 UNIX 关联密切，可移植
+2. small and simple
+3. paratical purpose
+#+END_aside
+
+** Programs Are Translated by Other Programs into different form
+
+程序以人类可读的程序语言写成（如 C 语言或汇编语言），需要将之翻译为机器可以识别的机器语言（二进制的可执行文件）。
+
+通常的 C 源码需要经过 4 个步骤生成最终可执行文件，如下
+
+| preprocessor(cpp) | 用于展开头文件(.i)            |
+| compiler(cc1)     | 翻译成汇编文件(.s)            |
+| assembler(as)     | 汇编生成 relocatable 文件(.o) |
+| linker(ld)        | 生成可执行文件                |
+
+#+BEGIN_aside
+GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 emacs, gcc, gdb, as, linker 以及各种工具。linux 亦是基于 GNU 提供的工具构建的。
+#+END_aside
+
+
+
+** It Pays to Understand How Compilation System Work
+
+编译器作了太多的事情，为此我们需要了解其细节，以便在以下方面进行优化：
+
+1. 优化性能：只有知道了编译器原理才能写出更好的高级语言。常见的问题如
+   - switch 与 if-else 的性能对比
+   - 函数调用开销有多大
+   - while 和 for 的开销
+   - pointer 和 array 的开销
+   - 解引用与直接访问本地变量的开销
+   - 算术顺序对性能的影响
+   - I32 与 x86-64 的指令系统
+   - 内存管理
+2. Understand link-time error：如以下问题：
+   - 找不到引用
+   - static 与 global 变量
+   - global 变量重名
+   - 静态库与动态库
+   - 库的顺序对正确的影响
+   - 运行时发生的错误
+3. Avoiding security holes：应限制从未知数据源获取数据，注意栈上的存储方式
+
+
+
+
+
+
+
+
+
+
+
+
+** Processors Read and Interrupt Instructions Stored in Memory
+
+正常执行程序时，通过 shell 调用可执行程序。实际在底层复杂无比，归纳起来过程如下：
+
+1. shell 交互输入参数到内存
+2. 加载可执行文件内容到内存（DMA 技术）
+3. 执行
+4. 退出 
+
+其中涉及到计算机的硬件组成。如下图所示：
+
+[[./img/hardware-org.png]]
+
+硬件中包含几个核心部件，如 CPU，内存，IO 设备，总线等。
+
+- 总线 :: 用于沟通各个组件，以 word 为单位（4字节或8字节）进行传送
+- IO 设备 :: 包括输入、输出、存储和网络，通过 controller/adapter[fn:1] 接到 IO 总线上
+- 主存 :: DRAM (Dynamic Random Access Memory)，通过唯一的连续地址来访问
+- 处理器 :: CPU 核心（如 PC，寄存器，ALU单元），根据指令集[fn:2]进行取指、择指、执行、下一条的循环过程，常见操作如 load,store,operate,jump 等
+
+** Caches Matters
+
+机器指令中的很大一部分工作都是在外部存储、内存、寄存器和外设之间移动数据。
+
+而存储的容量与读写的效率成反比，而且差距还在增大。所以需要考虑如何优化拷贝的效率。
+
+一个关键的问题称为 processor-memory gap：处理器性能与内存读取的鸿沟。通过添加 cache memory 来缓存近线数据来弥补数据的速度与容量的差距性。
+
+** Storage Devices From a Hierarchy
+
+[[file:img/memory-hierarchy.png]]
+
+主流解决方案采用三级缓存，缓存使用 SRAM(static random access memory) 技术。
+
+其中寄存器视为第 0 级缓存，自上向下速度越来越慢，而存储空间越来越大。
+
+** The Operating System Manages the Hardware
+
+操作系统作为中间层，隔离了应用软件与硬件，其作用有两个：
+
+1. 保护硬件的正常运行
+2. 提供对硬件复杂性的封装，提供一致的、高效的接口
+
+操作系统对硬件作出抽象，其中主要包括
+
+- files
+- virtual memory
+- processor
+
+#+BEGIN_aside
+- Unix :: 诞生于 Multics 项目之后，由贝尔实验室 Ken Tompson 和 Dennis Ritchie 等在 DEC PDP-7 机器上实现，于 1973 年用 C 重写，并于 1974 年对外发布。
+  + BSD :: 伯克利版本 UNIX，加入了 Internet 支持和虚拟内存支持
+  + System V. :: 贝尔实验室后续版本
+  + Solaris :: Sun 公司基于二者开发的版本
+- Posix :: IEEE 牵头制定的 UNIX 标准，包括系统调用的 C 接口，shell, utilities，thread 及 network programming。由 Richard Stallman 命名
+#+END_aside
+
+*** Processes
+
+进程是对正在运行的程序的一个抽象描述。每个进程都有自己独立的计算、内存及 IO 资源。
+
+操作系统通过上下文切换来时分复用，达到多个进程同时运行（concurrently）的效果。多核环境下，可以有真正的并行（parallelism）
+
+*** TODO Threads
+
+*** TODO Virtual Memory
+
+*** TODO Files
+
+* Footnotes
+
+[fn:1] Controller 集成在设备或主板上，Adapater 是主板上的插槽的可插拔设备
+[fn:2] 指令集( Instruction set artichecture ) 相当于对外的接口，CPU 具体实现可以不同，称为 microarchitecture
+
+
