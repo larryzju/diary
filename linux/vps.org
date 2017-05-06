@@ -1,0 +1,53 @@
+#+TITLE: 博客搭建
+#+AUTHOR: Zhao WenBin
+
+* 目标
+
+有一个独立的 VPS 主机，使用 HEXO 搭建博客，并申请一个免费的 domain
+
+* VPS
+
+经过多方调查，在 vultr 和 banwango 之间选择。因为后者可以以支付宝付款，所以果断选择了后者
+
+** 系统
+
+选择的是 debian8，默认是 centos7，切换起来不慢。
+
+#+BEGIN_SRC shell
+root@larry:~/node-v6.10.3# lsb_release -a
+No LSB modules are available.
+Distributor ID: Debian
+Description:    Debian GNU/Linux 8.1 (jessie)
+Release:        8.1
+Codename:       jessie
+#+END_SRC
+
+* 域名
+
+虽然很想有一个靠谱的域名，长期拥有。但考虑到费用，而且应该以内容为重。所以选择了免费的[[http://www.dot.tk/zh/index.html][ dot.tk]]
+
+* Hexo
+
+目前打算在 VPS 上作以下服务：
+
+1. 笔记， 使用 org-mode 来管理
+2. Hexo，保存笔记，另一份在 [[http://larryzju.github.io]]
+3. 其它 
+
+** 安装 
+
+#+BEGIN_SRC shell
+# apt-get install npm nodejs
+# ln -s /usr/bin/nodejs /usr/local/bin/node
+# npm install -g hexo-cli
+#+END_SRC
+
+
+** 初始化
+
+#+BEGIN_SRC shell
+$ hexo init blog
+$ cd blog
+$ npm install
+$ hexo server
+#+END_SRC
