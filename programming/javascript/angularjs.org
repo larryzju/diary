@@ -1,0 +1,45 @@
+#+TITLE: angularjs 框架笔记
+#+AUTHOR: Zhao WenBin
+
+* 概述
+
+** 内容
+
+1. 扩展 HTML 语法: Directive
+2. Bind data to HTML: Expressive
+
+** 概念
+
+1. modules: 定义 app 不同的部分
+2. controller: 归属于某个 module
+
+
+* Directive
+
+通过 =ng-<directives>= 来标识某段 HTML 使用扩展，如
+
+- ng-app :: 定义 Application
+- ng-init :: 初始化
+- ng-controller :: 定义 controller
+- ng-model :: 绑定 control 到 data
+- ng-bind :: 绑定 data 到 view
+- ng-xxx :: 其它，也作 =data-ng-xxx=
+
+* Expressions
+
+将数据绑定到 HTML 中，分为三种绑定方式：
+
+1. 字面语法 literals
+2. operators
+3. variables
+
+
+* Sample
+
+#+BEGIN_SRC javascript
+var app = angular.module( 'myApp', [] );
+app.controller( 'myControl', function($scope) {
+  $scope.firstName = "John";
+  $scope.lastName  = "Doe";
+}
+#+END_SRC
