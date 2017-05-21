@@ -1,0 +1,9 @@
+* 基础
+
+ElasticSearch 是一个实时分布式搜索和分析引擎。
+
+有两方面考虑：
+
+1. 存储 提供通用的存储方式（如 index,type,document,shard 等）
+2. 使用 提供高效和表达能力强的语句（RESTFul）
+

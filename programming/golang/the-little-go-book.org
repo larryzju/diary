@@ -1,0 +1,106 @@
+#+TITLE: Note on "The little Go Book"
+#+AUTHOR: Zhao WenBin
+
+* 前言
+
+** 为什么不愿意学习新的语言
+
+1. 语言相对基础，任何变动都会对上层产生影响
+2. 语言细节多，学习涉及方方面面，付出与收效比例不相当
+
+** 为什么要学习 go
+
+- 语法和标准库相对简单
+- 社区活跃
+- 其它
+  - 静态语言
+  - 适合于系统级或大型应用级别的开发 
+
+* 代码结构
+
+- =${GOPATH}= 环境变量定义 workspace
+- workspace 下保存目录代码和生成结果，如 =src=, =bin=, =pkg= 等 
+
+* Basic
+
+** 特点 
+
+*** 编译型
+
+- 编译速度快，能更快迭代
+- 运行速度相对解释型快
+- 无依赖
+
+*** 静态类型
+
+- 可以通过手动指定类型，或由编译器推导类型
+- 编译时可以检查出很多错误，增强可靠性
+
+*** 类 C 语法
+
+- 去掉了 semi-colon terminated
+- 去掉了 parenthese around conditions
+- 在表示优先级时可以使用括号
+
+*** GC
+
+- keep track of values
+- and free them when they're no longer used.
+
+
+
+
+
+
+
+
+
+
+
+
+
+** running
+
+- 使用 go run 来执行
+- 使用 go build 来编译，生成可执行文件
+- 入口是 main 包的 main 函数
+- 非 main 包不能执行
+- 非 main 包能 build，但不会生成库文件
+- build 生成的可执行文件与源码同名
+
+
+
+
+** Import
+
+- 有一些默认的函数不需要导入，如 ~len~, ~cap~, ~println~
+- =import= 用于导入指定字符串对应的包，可以一次导入多个
+- 不允许未被使用的包的导入（会降低编译速度）
+- 使用 godoc 来查看包及函数、类型的使用手册
+
+** 变量与申明
+
+- 使用 ~var~ 定义，类型在后
+- 或者使用 ~:=~ 来定义局部变量，类型由值推导而来
+- 默认会赋予 zero value
+- 可以多变量赋值
+- 不允许的未被使用的变量
+
+*** 注意
+
+- ~:=~ 会阻止重复定义
+- 但只要左值有一个是新的变量， ~:=~ 将允许赋值
+
+
+
+
+** 函数声明
+
+- 可以返回多个值
+- 使用 blank identifier ( "_" ) 来忽略赋值
+- 相同参数类型时，可以简写类型到最后（ shorter syntax ）
+- Named return values
+
+
+* Structure
+
