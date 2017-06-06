@@ -1,0 +1,60 @@
+#+TITLE: 《javascript 全栈式编程》笔记
+#+AUTHOR: Zhao WenBin
+#+STATUS: unfinished
+
+* 一句话
+
+javascript 是浏览器中的解释型语言
+
+* 历史 
+
+1. 网景 navigator 语言
+2. 微软 jscript
+3. ecmascript 标准, 2015 年 6 月的 es6 标准
+
+* 入门
+
+** 使用
+
+通过 html 中 script 标签来引入，可存放于单独的文件，类型为 =text/javascipt=
+
+** 类型
+
+- Number :: 其中有 NaN 和 Infinity
+- String :: 不可变
+- Boolean :: true 和 false，但逻辑假还有 null, undefined, "", false 等
+- Array :: =[]= ， 关键方法 =splice=
+- Object :: 键值必须为字符串
+- Map :: 键值可以不限于字符串
+- Set :: 集合
+
+** 其它 
+
+*** ~==~ 与 ~===~
+
+前者进行跨类型比较，后者同类型比较。用后者
+
+*** null 与 undefined
+
+前者为 void，后者为未定义？
+
+*** var 与 strict
+
+var 定义的是本地变量，不加时为全局。应该要加。用 ="use strict"= 来强制检查
+
+*** backquote 与 interpolate 
+
+反引号同 python 中的 =```= ，其中可以用 ruby 的字符串模板语法
+
+*** in 与 hasOwnProperty
+
+对象有继承自 Object 的方法，如 toString。使用 hasOwnProperty
+
+*** iterable
+
+Map, Set, Array 都是抽象的 iterable 类型
+
+*** for ... in 与 for ... of
+
+后者是更新的语法，严格对元素进行迭代。可以使用 =iterable.forEach= 方法回调
+
