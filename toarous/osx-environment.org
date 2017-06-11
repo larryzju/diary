@@ -2,7 +2,7 @@
 
 * 安装流程
 
-参考 [[GCC Cross-Compiler][http://wiki.osdev.org/GCC_Cross-Compiler#OS_X_Users]]
+参考 [[http://wiki.osdev.org/GCC_Cross-Compiler#OS_X_Users]]
 
 主要流程如下：
 

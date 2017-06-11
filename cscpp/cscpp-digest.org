@@ -1,6 +1,6 @@
 #+TITLE: CSCPP 摘要
 #+AUTHOR: Zhao WenBin
-#+STATUS: 50/1078
+#+STATUS: 55/1078
 #+OPTIONS: html5-fancy
 #+OPTIONS: toc:2
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="style.css">
@@ -139,11 +139,48 @@ GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 
 
 操作系统通过上下文切换来时分复用，达到多个进程同时运行（concurrently）的效果。多核环境下，可以有真正的并行（parallelism）
 
-*** TODO Threads
+上下文切换需要保存 PC 指针、Register file、Content of main memory 信息，涉及到操作系统与硬件的配合
 
-*** TODO Virtual Memory
+*** Threads
 
-*** TODO Files
+在一个进程中的上下文中可以有多个线程，线程共享代码和全局数据，因此更容易共享数据，效率较高
+
+*** Virtual Memory
+
+在每个进程看来，自己独占了整个内存，称为 virtual address space。
+
+实际上由操作系统在上下文切换时，通过硬件的转换机制伪造出相应的内存视图。可以看作用硬盘来保存进程的虚拟内存，而使用 main memory 作为缓存提高效率。
+
+进程的内存分为多个区域，存储代码和数据，以及某些公共区域，如下图所示
+
+[[file:img/virutal-memory.png]]
+
+其中：
+
+- code 在放在低地址的固定区域
+- C 中的全局变量存储
+- 堆区域，在运行时通过 malloc 和 free 来动态扩展
+- shared libraries，用于动态链接
+- stack，保存函数调用时参数和返回传递，向下增长
+- kernel virtual memory 位于高地址，程序不可用
+
+*** Files
+
+文件是对 I/O 设备的一种抽象。其本质是一堆字节，并提供了读写操作。
+
+文件的作用是统一了 I/O 设备的视图，并提供不同设备、不同平台间的移植性。
+
+Unix 中一切皆文件，因此也称作 Unix I/O
+
+#+BEGIN_aside
+- Linux Project :: Linus Torvalds 于 1991 年作为业余项目实现的一个类 UNIX 操作系统，受 Minix 启发，并兼容 Posix 标准。与 GNU 项目关系密切
+#+END_aside
+
+** System Communicate with Other System Using Network
+
+计算机系统并不只是以单机运行的。越来越多的价值从互联之中发掘。
+
+计算机通过网络与其它计算机交换数据，网络也是一种 I/O 设备
 
 * Footnotes
 
