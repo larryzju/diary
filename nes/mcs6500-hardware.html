@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-06-11 Sun 11:50 -->
+<!-- 2017-06-11 Sun 11:52 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MCS6500 HARDWARE 笔记</title>
@@ -177,12 +177,12 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
-<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/htmlize.css"/>
-<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/readtheorg.css"/>
+<link rel="stylesheet" type="text/css" href="https://www.pirilampo.org/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://www.pirilampo.org/styles/readtheorg/css/readtheorg.css"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="http://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.min.js"></script>
-<script type="text/javascript" src="http://www.pirilampo.org/styles/readtheorg/js/readtheorg.js"></script>
+<script type="text/javascript" src="https://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://www.pirilampo.org/styles/readtheorg/js/readtheorg.js"></script>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -238,24 +238,24 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org2e4a36f">说明</a></li>
-<li><a href="#org9f33c98">chapter 1. Microcomputer System</a></li>
+<li><a href="#orgdeda98e">说明</a></li>
+<li><a href="#org7a7a525">chapter 1. Microcomputer System</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org2e4a36f" class="outline-2">
-<h2 id="org2e4a36f">说明</h2>
-<div class="outline-text-2" id="text-org2e4a36f">
+<div id="outline-container-orgdeda98e" class="outline-2">
+<h2 id="orgdeda98e">说明</h2>
+<div class="outline-text-2" id="text-orgdeda98e">
 <p>
 研究 FC/NES 原理，因此翻到了这本古老的手册。在其中我看到了当年计算机幼年的说教，但也看到了它从一开始就带有的特质。
 </p>
 </div>
 </div>
 
-<div id="outline-container-org9f33c98" class="outline-2">
-<h2 id="org9f33c98">chapter 1. Microcomputer System</h2>
-<div class="outline-text-2" id="text-org9f33c98">
+<div id="outline-container-org7a7a525" class="outline-2">
+<h2 id="org7a7a525">chapter 1. Microcomputer System</h2>
+<div class="outline-text-2" id="text-org7a7a525">
 <p>
 近来几年（1976年前后）大规模集成单板芯片发展迅速。其好处是能大大减少设计其个逻辑电路的成本，而只需要使用通用的硬件环境，通过 ROM 中的“程序”来适应不同的应用。
 </p>
@@ -274,9 +274,9 @@ for the JavaScript code in this tag.
 </div>
 
 
-<div id="outline-container-org9ff6cae" class="outline-3">
-<h3 id="org9ff6cae">基本构成</h3>
-<div class="outline-text-3" id="text-org9ff6cae">
+<div id="outline-container-orgfb46315" class="outline-3">
+<h3 id="orgfb46315">基本构成</h3>
+<div class="outline-text-3" id="text-orgfb46315">
 <p>
 主要关注构成的基本元素，以及之间的数据关联。
 </p>
@@ -292,9 +292,9 @@ for the JavaScript code in this tag.
 </figure>
 </div>
 
-<div id="outline-container-org11ecc84" class="outline-4">
-<h4 id="org11ecc84">处理器</h4>
-<div class="outline-text-4" id="text-org11ecc84">
+<div id="outline-container-orgb488c5c" class="outline-4">
+<h4 id="orgb488c5c">处理器</h4>
+<div class="outline-text-4" id="text-orgb488c5c">
 <p>
 功能是取址、译址和执行指令。它通过
 </p>
@@ -311,9 +311,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org81f9daf" class="outline-4">
-<h4 id="org81f9daf">地址</h4>
-<div class="outline-text-4" id="text-org81f9daf">
+<div id="outline-container-orgb59e040" class="outline-4">
+<h4 id="orgb59e040">地址</h4>
+<div class="outline-text-4" id="text-orgb59e040">
 <p>
 地址表示处理器可以访问的位置。地址空间有 16 位，可访问 64k 空间。
 </p>
@@ -324,36 +324,36 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgb770178" class="outline-4">
-<h4 id="orgb770178">clock generator</h4>
-<div class="outline-text-4" id="text-orgb770178">
+<div id="outline-container-org252aa16" class="outline-4">
+<h4 id="org252aa16">clock generator</h4>
+<div class="outline-text-4" id="text-org252aa16">
 <p>
 用于提供心跳（拍子），使处理器和其它组件协同工作
 </p>
 </div>
 </div>
 
-<div id="outline-container-org1989675" class="outline-4">
-<h4 id="org1989675">program memory</h4>
-<div class="outline-text-4" id="text-org1989675">
+<div id="outline-container-org24e35f6" class="outline-4">
+<h4 id="org24e35f6">program memory</h4>
+<div class="outline-text-4" id="text-org24e35f6">
 <p>
 ROM，存储指令，只读内存
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgc34a0f2" class="outline-4">
-<h4 id="orgc34a0f2">data memory</h4>
-<div class="outline-text-4" id="text-orgc34a0f2">
+<div id="outline-container-orgb4aabe2" class="outline-4">
+<h4 id="orgb4aabe2">data memory</h4>
+<div class="outline-text-4" id="text-orgb4aabe2">
 <p>
 RAM，易失。通过 Write-Enable 开关来控制读写
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgd8ce278" class="outline-4">
-<h4 id="orgd8ce278">I/O 设备</h4>
-<div class="outline-text-4" id="text-orgd8ce278">
+<div id="outline-container-org520874a" class="outline-4">
+<h4 id="org520874a">I/O 设备</h4>
+<div class="outline-text-4" id="text-org520874a">
 <p>
 与 RAM 类似，处理器通过地址进行读写操作
 </p>
@@ -361,9 +361,9 @@ RAM，易失。通过 Write-Enable 开关来控制读写
 </div>
 </div>
 
-<div id="outline-container-org7583eb9" class="outline-3">
-<h3 id="org7583eb9">产品线</h3>
-<div class="outline-text-3" id="text-org7583eb9">
+<div id="outline-container-orgddd40ff" class="outline-3">
+<h3 id="orgddd40ff">产品线</h3>
+<div class="outline-text-3" id="text-orgddd40ff">
 <ol class="org-ol">
 <li>MCS6501，兼容 M6800，16 位数据总线，8 位数据总线，有两个中断</li>
 <li>MCS6502, 同 6501，片上带时钟电路和驱动</li>
@@ -372,12 +372,12 @@ RAM，易失。通过 Write-Enable 开关来控制读写
 </div>
 </div>
 
-<div id="outline-container-org68f1aff" class="outline-3">
-<h3 id="org68f1aff">核心概念</h3>
-<div class="outline-text-3" id="text-org68f1aff">
-</div><div id="outline-container-org82c26f8" class="outline-4">
-<h4 id="org82c26f8">总线结构</h4>
-<div class="outline-text-4" id="text-org82c26f8">
+<div id="outline-container-org2819dbe" class="outline-3">
+<h3 id="org2819dbe">核心概念</h3>
+<div class="outline-text-3" id="text-org2819dbe">
+</div><div id="outline-container-org4dd124f" class="outline-4">
+<h4 id="org4dd124f">总线结构</h4>
+<div class="outline-text-4" id="text-org4dd124f">
 <p>
 总线分为地址和数据两种，
 </p>
@@ -402,9 +402,9 @@ RAM，易失。通过 Write-Enable 开关来控制读写
 </div>
 </div>
 
-<div id="outline-container-org12754bf" class="outline-4">
-<h4 id="org12754bf">中断</h4>
-<div class="outline-text-4" id="text-org12754bf">
+<div id="outline-container-org7e04e72" class="outline-4">
+<h4 id="org7e04e72">中断</h4>
+<div class="outline-text-4" id="text-org7e04e72">
 <p>
 中断应该用在必要的地方，使外设能向处理器提出服务请求。中断分为 IRQ 和 NMI 两种，两者响应方式不同，但服务方式没有区别。
 </p>
@@ -420,7 +420,7 @@ RAM，易失。通过 Write-Enable 开关来控制读写
 </ol>
 </div>
 
-<ul class="org-ul"><li><a id="org11ba681"></a>什么时候需要中断<br><div class="outline-text-5" id="text-org11ba681">
+<ul class="org-ul"><li><a id="org5b08887"></a>什么时候需要中断<br><div class="outline-text-5" id="text-org5b08887">
 <p>
 需要中断的场景比如：
 </p>
@@ -435,7 +435,7 @@ RAM，易失。通过 Write-Enable 开关来控制读写
 </p>
 </div></li>
 
-<li><a id="org3071552"></a>中断触发服务<br><div class="outline-text-5" id="text-org3071552">
+<li><a id="org70bb567"></a>中断触发服务<br><div class="outline-text-5" id="text-org70bb567">
 <p>
 中断信号低电平时触发中断服务，在指令周期结束后被检查是否有中断信号。
 </p>
@@ -445,7 +445,7 @@ RAM，易失。通过 Write-Enable 开关来控制读写
 </p>
 </div></li>
 
-<li><a id="org3ad4b9d"></a>中断优先级<br><div class="outline-text-5" id="text-org3ad4b9d">
+<li><a id="org1d3586c"></a>中断优先级<br><div class="outline-text-5" id="text-org1d3586c">
 <p>
 不同的中断源需要按优先级进行排列，需要有硬件的支持，支持软件的控制。有两种方式：
 </p>
@@ -464,27 +464,27 @@ RAM，易失。通过 Write-Enable 开关来控制读写
 
 
 
-<div id="outline-container-org1d96336" class="outline-4">
-<h4 id="org1d96336">IRQ</h4>
-<div class="outline-text-4" id="text-org1d96336">
+<div id="outline-container-org148a93a" class="outline-4">
+<h4 id="org148a93a">IRQ</h4>
+<div class="outline-text-4" id="text-org148a93a">
 <p>
 通过 PSR 寄存器中的 interrupt disable flag (I) 标记，标记在 RET 时由程序主动清除
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgfabffe2" class="outline-4">
-<h4 id="orgfabffe2">NMI</h4>
-<div class="outline-text-4" id="text-orgfabffe2">
+<div id="outline-container-org05fc708" class="outline-4">
+<h4 id="org05fc708">NMI</h4>
+<div class="outline-text-4" id="text-org05fc708">
 <p>
 在下降沿触发，不可屏蔽
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgc8a9947" class="outline-4">
-<h4 id="orgc8a9947">RESET</h4>
-<div class="outline-text-4" id="text-orgc8a9947">
+<div id="outline-container-orgde0881e" class="outline-4">
+<h4 id="orgde0881e">RESET</h4>
+<div class="outline-text-4" id="text-orgde0881e">
 <p>
 RESET 信号应同时连接到处理器和外设的 RESET 口。
 </p>
@@ -500,9 +500,9 @@ RESET 信号应同时连接到处理器和外设的 RESET 口。
 </div>
 </div>
 
-<div id="outline-container-org5524978" class="outline-3">
-<h3 id="org5524978">处理器核心</h3>
-<div class="outline-text-3" id="text-org5524978">
+<div id="outline-container-org35aae1f" class="outline-3">
+<h3 id="org35aae1f">处理器核心</h3>
+<div class="outline-text-3" id="text-org35aae1f">
 <p>
 处理器中重点关注 register 和 data paths。按照功能和地位的不同，分为两部分
 </p>
@@ -539,7 +539,7 @@ RESET 信号应同时连接到处理器和外设的 RESET 口。
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Larry</p>
-<p class="date">Created: 2017-06-11 Sun 11:50</p>
+<p class="date">Created: 2017-06-11 Sun 11:52</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
