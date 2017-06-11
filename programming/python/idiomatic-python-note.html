@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-06-10 Sat 23:36 -->
+<!-- 2017-06-11 Sun 11:50 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Note on "Code Like a Pythonista: Idiomatic Python"</title>
@@ -177,7 +177,12 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
-<link rel="stylesheet" type="text/css" href="/diary/style/style.css"/>
+<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="http://www.pirilampo.org/styles/readtheorg/js/readtheorg.js"></script>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -229,19 +234,32 @@ for the JavaScript code in this tag.
 <div id="content">
 <header>
 <h1 class="title">Note on "Code Like a Pythonista: Idiomatic Python"</h1>
-</header>
-<div id="outline-container-orgce705be" class="outline-2">
-<h2 id="orgce705be">说明</h2>
-<div class="outline-text-2" id="text-orgce705be">
+</header><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgfd1bc79">说明</a></li>
+<li><a href="#orgb07ed64">Zen of Python</a></li>
+<li><a href="#org77c5a39">Coding Style</a></li>
+<li><a href="#org6af38f0">Practicality vs Purity</a></li>
+<li><a href="#orgf64a73e">范式</a></li>
+<li><a href="#org186b69e">Simple is Better Than Complex</a></li>
+</ul>
+</div>
+</nav>
+
+<div id="outline-container-orgfd1bc79" class="outline-2">
+<h2 id="orgfd1bc79">说明</h2>
+<div class="outline-text-2" id="text-orgfd1bc79">
 <p>
 笔记摘录自 <a href="http://python.net/~goodger/projects/pycon/2007/idiomatic/handout.html#simple-is-better-than-complex">Code Like a Pythonista: Idiomatic Python</a>
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgecb1f38" class="outline-2">
-<h2 id="orgecb1f38">Zen of Python</h2>
-<div class="outline-text-2" id="text-orgecb1f38">
+<div id="outline-container-orgb07ed64" class="outline-2">
+<h2 id="orgb07ed64">Zen of Python</h2>
+<div class="outline-text-2" id="text-orgb07ed64">
 <p>
 使用 <code>import this</code> 来查看 python zen, 在 PEP20 中正式定义
 </p>
@@ -272,9 +290,9 @@ Namespaces are one honking great idea -- let's do more of those!
 </pre>
 </div>
 
-<div id="outline-container-org569f0e2" class="outline-3">
-<h3 id="org569f0e2">心得</h3>
-<div class="outline-text-3" id="text-org569f0e2">
+<div id="outline-container-orgef3ebde" class="outline-3">
+<h3 id="orgef3ebde">心得</h3>
+<div class="outline-text-3" id="text-orgef3ebde">
 <ul class="org-ul">
 <li>大巧不工</li>
 <li>道可道，非常道</li>
@@ -287,9 +305,9 @@ Namespaces are one honking great idea -- let's do more of those!
 </div>
 
 
-<div id="outline-container-org85c3803" class="outline-2">
-<h2 id="org85c3803">Coding Style</h2>
-<div class="outline-text-2" id="text-org85c3803">
+<div id="outline-container-org77c5a39" class="outline-2">
+<h2 id="org77c5a39">Coding Style</h2>
+<div class="outline-text-2" id="text-org77c5a39">
 <blockquote>
 <p>
 Programms must be written for people to read, and only incidentally for machines to execute. &#x2013; SICP
@@ -302,9 +320,9 @@ Python 推荐的编码风格参考 PEP08
 </div>
 
 
-<div id="outline-container-org06b8bf1" class="outline-3">
-<h3 id="org06b8bf1">Whitespace</h3>
-<div class="outline-text-3" id="text-org06b8bf1">
+<div id="outline-container-org064ab16" class="outline-3">
+<h3 id="org064ab16">Whitespace</h3>
+<div class="outline-text-3" id="text-org064ab16">
 <ul class="org-ul">
 <li>4 个空格缩进</li>
 <li>不要混合 tabs 和 spaces</li>
@@ -317,9 +335,9 @@ Python 推荐的编码风格参考 PEP08
 </div>
 </div>
 
-<div id="outline-container-orgc308dd1" class="outline-3">
-<h3 id="orgc308dd1">命名</h3>
-<div class="outline-text-3" id="text-orgc308dd1">
+<div id="outline-container-org8f9be0e" class="outline-3">
+<h3 id="org8f9be0e">命名</h3>
+<div class="outline-text-3" id="text-org8f9be0e">
 <ul class="org-ul">
 <li>下划线命名</li>
 <li>大写用于常量</li>
@@ -330,9 +348,9 @@ Python 推荐的编码风格参考 PEP08
 </div>
 </div>
 
-<div id="outline-container-orge88c22d" class="outline-3">
-<h3 id="orge88c22d">Long Lines &amp; Continuations</h3>
-<div class="outline-text-3" id="text-orge88c22d">
+<div id="outline-container-orgd946035" class="outline-3">
+<h3 id="orgd946035">Long Lines &amp; Continuations</h3>
+<div class="outline-text-3" id="text-orgd946035">
 <ul class="org-ul">
 <li>保持一行 80 个字符</li>
 <li>括号内部可以直接换行</li>
@@ -341,9 +359,9 @@ Python 推荐的编码风格参考 PEP08
 </div>
 </div>
 
-<div id="outline-container-orgc7bf3e2" class="outline-3">
-<h3 id="orgc7bf3e2">Long Strings</h3>
-<div class="outline-text-3" id="text-orgc7bf3e2">
+<div id="outline-container-orgff60c28" class="outline-3">
+<h3 id="orgff60c28">Long Strings</h3>
+<div class="outline-text-3" id="text-orgff60c28">
 <ul class="org-ul">
 <li>多个字符串用在解释时被拼接，如 <code>print 'o' 'n' 'e'</code></li>
 <li>字符串前缀以 'r' 表示 raw string, 其中的反斜转义失效，可以用于写正则式</li>
@@ -362,9 +380,9 @@ quotes\
 </div>
 </div>
 
-<div id="outline-container-org93ad5d1" class="outline-3">
-<h3 id="org93ad5d1">Compound Statements</h3>
-<div class="outline-text-3" id="text-org93ad5d1">
+<div id="outline-container-org2d1e472" class="outline-3">
+<h3 id="org2d1e472">Compound Statements</h3>
+<div class="outline-text-3" id="text-org2d1e472">
 <ul class="org-ul">
 <li>虽然可以将 if 或 while 的 statement 写在一行</li>
 <li>但是最好还是按规则分开来写</li>
@@ -373,9 +391,9 @@ quotes\
 </div>
 </div>
 
-<div id="outline-container-org8bc8b21" class="outline-3">
-<h3 id="org8bc8b21">Docstrings &amp; Comments</h3>
-<div class="outline-text-3" id="text-org8bc8b21">
+<div id="outline-container-org9478ddb" class="outline-3">
+<h3 id="org9478ddb">Docstrings &amp; Comments</h3>
+<div class="outline-text-3" id="text-org9478ddb">
 <ul class="org-ul">
 <li>docstring 用于说明如何使用</li>
 <li>comments 用于解释为何和怎样实现的</li>
@@ -389,9 +407,9 @@ quotes\
 
 
 
-<div id="outline-container-orge430e8d" class="outline-2">
-<h2 id="orge430e8d">Practicality vs Purity</h2>
-<div class="outline-text-2" id="text-orge430e8d">
+<div id="outline-container-org6af38f0" class="outline-2">
+<h2 id="org6af38f0">Practicality vs Purity</h2>
+<div class="outline-text-2" id="text-org6af38f0">
 <p>
 打破纯净的场景如
 </p>
@@ -403,15 +421,15 @@ quotes\
 </div>
 </div>
 
-<div id="outline-container-org4230909" class="outline-2">
-<h2 id="org4230909">范式</h2>
-<div class="outline-text-2" id="text-org4230909">
-</div><div id="outline-container-orgc545da5" class="outline-3">
-<h3 id="orgc545da5">Swap Values</h3>
-<div class="outline-text-3" id="text-orgc545da5">
-</div><div id="outline-container-org1a36dd0" class="outline-4">
-<h4 id="org1a36dd0">例子</h4>
-<div class="outline-text-4" id="text-org1a36dd0">
+<div id="outline-container-orgf64a73e" class="outline-2">
+<h2 id="orgf64a73e">范式</h2>
+<div class="outline-text-2" id="text-orgf64a73e">
+</div><div id="outline-container-orgc510b09" class="outline-3">
+<h3 id="orgc510b09">Swap Values</h3>
+<div class="outline-text-3" id="text-orgc510b09">
+</div><div id="outline-container-orgb743851" class="outline-4">
+<h4 id="orgb743851">例子</h4>
+<div class="outline-text-4" id="text-orgb743851">
 <div class="org-src-container">
 <pre class="src src-python">b, a = a, b
 </pre>
@@ -419,9 +437,9 @@ quotes\
 </div>
 </div>
 
-<div id="outline-container-orge4e8fa3" class="outline-4">
-<h4 id="orge4e8fa3">说明</h4>
-<div class="outline-text-4" id="text-orge4e8fa3">
+<div id="outline-container-org4d9ca91" class="outline-4">
+<h4 id="org4d9ca91">说明</h4>
+<div class="outline-text-4" id="text-org4d9ca91">
 <ul class="org-ul">
 <li>右侧为 Tuple 的构造形式</li>
 <li>赋值的同时进行解构（destructure），类似于 Clojure</li>
@@ -434,9 +452,9 @@ quotes\
 
 
 
-<div id="outline-container-org53928c1" class="outline-3">
-<h3 id="org53928c1">More About Tuples</h3>
-<div class="outline-text-3" id="text-org53928c1">
+<div id="outline-container-org591899c" class="outline-3">
+<h3 id="org591899c">More About Tuples</h3>
+<div class="outline-text-3" id="text-org591899c">
 <ul class="org-ul">
 <li><code>1,</code> 生成一个 Tuple <code>(1,)</code></li>
 <li>最好用括号显式表示: <code>(1,)</code></li>
@@ -447,9 +465,9 @@ quotes\
 </div>
 
 
-<div id="outline-container-org35676ae" class="outline-3">
-<h3 id="org35676ae">Interactive "_"</h3>
-<div class="outline-text-3" id="text-org35676ae">
+<div id="outline-container-orgbaf9b6e" class="outline-3">
+<h3 id="orgbaf9b6e">Interactive "_"</h3>
+<div class="outline-text-3" id="text-orgbaf9b6e">
 <ul class="org-ul">
 <li>交互解析时，"_" 保存上次计算的结果</li>
 </ul>
@@ -457,9 +475,9 @@ quotes\
 </div>
 
 
-<div id="outline-container-orgd71b434" class="outline-3">
-<h3 id="orgd71b434">Building Strings from Substrings</h3>
-<div class="outline-text-3" id="text-orgd71b434">
+<div id="outline-container-org8a56ae8" class="outline-3">
+<h3 id="org8a56ae8">Building Strings from Substrings</h3>
+<div class="outline-text-3" id="text-org8a56ae8">
 <ul class="org-ul">
 <li>使用 <code>result = ''.join(colors)</code></li>
 <li>不要使用 for 循环往字符串后追加</li>
@@ -467,9 +485,9 @@ quotes\
 </div>
 </div>
 
-<div id="outline-container-orgd0ca5ab" class="outline-3">
-<h3 id="orgd0ca5ab">Use <code>in</code> where possible</h3>
-<div class="outline-text-3" id="text-orgd0ca5ab">
+<div id="outline-container-org4709527" class="outline-3">
+<h3 id="org4709527">Use <code>in</code> where possible</h3>
+<div class="outline-text-3" id="text-org4709527">
 <ul class="org-ul">
 <li>用于循环取迭代器中的元素，效率高</li>
 <li>对于 dictionary 直接用 in，不要用 <code>for key in d.keys()</code></li>
@@ -479,9 +497,9 @@ quotes\
 </div>
 
 
-<div id="outline-container-orge518980" class="outline-3">
-<h3 id="orge518980">Dictionary <code>get</code> Method</h3>
-<div class="outline-text-3" id="text-orge518980">
+<div id="outline-container-orgbc65fee" class="outline-3">
+<h3 id="orgbc65fee">Dictionary <code>get</code> Method</h3>
+<div class="outline-text-3" id="text-orgbc65fee">
 <p>
 经常用有需要聚合统计，将结果保存在 dict 中。
 </p>
@@ -507,17 +525,17 @@ for ( position, equity, position ) in data:
 </div>
 </div>
 </div>
-<div id="outline-container-org048a0a3" class="outline-3">
-<h3 id="org048a0a3">Dictionary <code>setdefault</code> Method</h3>
-<div class="outline-text-3" id="text-org048a0a3">
+<div id="outline-container-orgf5f7034" class="outline-3">
+<h3 id="orgf5f7034">Dictionary <code>setdefault</code> Method</h3>
+<div class="outline-text-3" id="text-orgf5f7034">
 <p>
 会有需要将集合中的元素按关键字进行分组，牵扯到为相应的键生成一个空的 list 
 </p>
 </div>
 
-<div id="outline-container-org647084d" class="outline-4">
-<h4 id="org647084d">示例</h4>
-<div class="outline-text-4" id="text-org647084d">
+<div id="outline-container-orgb862306" class="outline-4">
+<h4 id="orgb862306">示例</h4>
+<div class="outline-text-4" id="text-orgb862306">
 <p>
 不好的方法是
 </p>
@@ -545,9 +563,9 @@ for ( portfolio, equity ) in data:
 </div>
 </div>
 
-<div id="outline-container-org2091d24" class="outline-4">
-<h4 id="org2091d24">说明</h4>
-<div class="outline-text-4" id="text-org2091d24">
+<div id="outline-container-orgb2519de" class="outline-4">
+<h4 id="orgb2519de">说明</h4>
+<div class="outline-text-4" id="text-orgb2519de">
 <ul class="org-ul">
 <li><code>setdefault( key, default )</code> 进行 get 或先 set 后 get</li>
 <li>只有在 key 不存在时都会设置 default</li>
@@ -557,10 +575,10 @@ for ( portfolio, equity ) in data:
 </div>
 
 
-<div id="outline-container-orgc1e75a0" class="outline-4">
-<h4 id="orgc1e75a0">defaultdict</h4>
-<div class="outline-text-4" id="text-orgc1e75a0">
-</div><ul class="org-ul"><li><a id="org03032f9"></a>说明<br><div class="outline-text-5" id="text-org03032f9">
+<div id="outline-container-org4891ac1" class="outline-4">
+<h4 id="org4891ac1">defaultdict</h4>
+<div class="outline-text-4" id="text-org4891ac1">
+</div><ul class="org-ul"><li><a id="orgd02596a"></a>说明<br><div class="outline-text-5" id="text-orgd02596a">
 <ul class="org-ul">
 <li>在 <code>collections.defaultdict</code> 定义</li>
 <li>加入了默认的工厂函数</li>
@@ -568,7 +586,7 @@ for ( portfolio, equity ) in data:
 </ul>
 </div></li>
 
-<li><a id="orgf212040"></a>示例<br><div class="outline-text-5" id="text-orgf212040">
+<li><a id="org053735f"></a>示例<br><div class="outline-text-5" id="text-org053735f">
 <div class="org-src-container">
 <pre class="src src-python">from collctions import defaultdict
 
@@ -584,30 +602,30 @@ for ( portfolio, equity, position ) in data:
 </div></li></ul>
 </div>
 </div>
-<div id="outline-container-org75b84c3" class="outline-3">
-<h3 id="org75b84c3">Building &amp; Splitting Dictionaries</h3>
-<div class="outline-text-3" id="text-org75b84c3">
+<div id="outline-container-org06ab1a4" class="outline-3">
+<h3 id="org06ab1a4">Building &amp; Splitting Dictionaries</h3>
+<div class="outline-text-3" id="text-org06ab1a4">
 <ul class="org-ul">
 <li>使用 zip 将 key list 和 value list 生成一个 dict</li>
 <li>dict 的 key 是无序的，但是一但生成顺序不会变</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf9bd113" class="outline-3">
-<h3 id="orgf9bd113">Testing for Truth Values</h3>
-<div class="outline-text-3" id="text-orgf9bd113">
+<div id="outline-container-org79282e7" class="outline-3">
+<h3 id="org79282e7">Testing for Truth Values</h3>
+<div class="outline-text-3" id="text-org79282e7">
 <ul class="org-ul">
 <li>测试是否为真，使用 <code>if x:</code> 而不要使用 <code>if x == True</code></li>
 <li>测试是否为空，使用 <code>if itemsL</code> 而不要使用 <code>len(items) != 0</code> 或 <code>items != []</code></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orga66149d" class="outline-3">
-<h3 id="orga66149d">Truth Values</h3>
-<div class="outline-text-3" id="text-orga66149d">
-</div><div id="outline-container-org13663d6" class="outline-4">
-<h4 id="org13663d6">基本类型</h4>
-<div class="outline-text-4" id="text-org13663d6">
+<div id="outline-container-org273560d" class="outline-3">
+<h3 id="org273560d">Truth Values</h3>
+<div class="outline-text-3" id="text-org273560d">
+</div><div id="outline-container-orgfebfce1" class="outline-4">
+<h4 id="orgfebfce1">基本类型</h4>
+<div class="outline-text-4" id="text-orgfebfce1">
 <p>
 Python 中为 False 的值包括
 </p>
@@ -629,9 +647,9 @@ Python 中为 False 的值包括
 
 
 
-<div id="outline-container-orgf4695f1" class="outline-4">
-<h4 id="orgf4695f1">自定义类型</h4>
-<div class="outline-text-4" id="text-orgf4695f1">
+<div id="outline-container-orgb963a2f" class="outline-4">
+<h4 id="orgb963a2f">自定义类型</h4>
+<div class="outline-text-4" id="text-orgb963a2f">
 <ul class="org-ul">
 <li>容器类，定义 <code>__len__</code> 表示长度</li>
 <li>非窗口类，定义 <code>__nonzero__</code> 表示是否为真</li>
@@ -642,9 +660,9 @@ Python 中为 False 的值包括
 </div>
 
 
-<div id="outline-container-orgb4ce7b3" class="outline-3">
-<h3 id="orgb4ce7b3">Index &amp; Item</h3>
-<div class="outline-text-3" id="text-orgb4ce7b3">
+<div id="outline-container-orgf98ea40" class="outline-3">
+<h3 id="orgf98ea40">Index &amp; Item</h3>
+<div class="outline-text-3" id="text-orgf98ea40">
 <ul class="org-ul">
 <li>使用 enumerate 函数来迭代 list，同时获取 index 和 item</li>
 <li>enumerate 返回迭代器，会惰性求值，称为 generator</li>
@@ -652,9 +670,9 @@ Python 中为 False 的值包括
 </div>
 </div>
 
-<div id="outline-container-org12e41a7" class="outline-3">
-<h3 id="org12e41a7">Other language have "variables"</h3>
-<div class="outline-text-3" id="text-org12e41a7">
+<div id="outline-container-org8eb9993" class="outline-3">
+<h3 id="org8eb9993">Other language have "variables"</h3>
+<div class="outline-text-3" id="text-org8eb9993">
 <ul class="org-ul">
 <li>Python 的动态类型语言</li>
 <li>变量名称（atom）实际只是一个指针</li>
@@ -668,12 +686,12 @@ Python 中为 False 的值包括
 
 
 
-<div id="outline-container-org2b92269" class="outline-3">
-<h3 id="org2b92269">Default Parameter Values</h3>
-<div class="outline-text-3" id="text-org2b92269">
-</div><div id="outline-container-orged28a38" class="outline-4">
-<h4 id="orged28a38">例子</h4>
-<div class="outline-text-4" id="text-orged28a38">
+<div id="outline-container-org0c411c1" class="outline-3">
+<h3 id="org0c411c1">Default Parameter Values</h3>
+<div class="outline-text-3" id="text-org0c411c1">
+</div><div id="outline-container-org4ed4e87" class="outline-4">
+<h4 id="org4ed4e87">例子</h4>
+<div class="outline-text-4" id="text-org4ed4e87">
 <div class="org-src-container">
 <pre class="src src-python">def bad_append( new_item, a_list=[] ):
     a_list.append( new_item )
@@ -687,9 +705,9 @@ print bad_append( "two" )
 </div>
 
 
-<div id="outline-container-orge2d199b" class="outline-4">
-<h4 id="orge2d199b">说明</h4>
-<div class="outline-text-4" id="text-orge2d199b">
+<div id="outline-container-org2af0220" class="outline-4">
+<h4 id="org2af0220">说明</h4>
+<div class="outline-text-4" id="text-org2af0220">
 <ul class="org-ul">
 <li>函数的参数的默认值在函数定义处被调用</li>
 <li>每次函数调用中使用的 <code>a_list</code> 都是同一个</li>
@@ -697,9 +715,9 @@ print bad_append( "two" )
 </div>
 </div>
 
-<div id="outline-container-org0cdf7ac" class="outline-4">
-<h4 id="org0cdf7ac">修改方法</h4>
-<div class="outline-text-4" id="text-org0cdf7ac">
+<div id="outline-container-orgda9641b" class="outline-4">
+<h4 id="orgda9641b">修改方法</h4>
+<div class="outline-text-4" id="text-orgda9641b">
 <div class="org-src-container">
 <pre class="src src-python">def good_append( new_item, a_list=None ):
     if a_list is None:
@@ -713,9 +731,9 @@ print bad_append( "two" )
 </div>
 
 
-<div id="outline-container-orgaf6c476" class="outline-3">
-<h3 id="orgaf6c476">String Formatting</h3>
-<div class="outline-text-3" id="text-orgaf6c476">
+<div id="outline-container-org114484d" class="outline-3">
+<h3 id="org114484d">String Formatting</h3>
+<div class="outline-text-3" id="text-org114484d">
 <ul class="org-ul">
 <li>python 的 <code>%</code> 操作类似于 C 的 <code>sprintf</code></li>
 <li>参考 <i>Python Library Reference</i>, section 2.3.6.2 "String Formatting Operations"</li>
@@ -723,12 +741,12 @@ print bad_append( "two" )
 </div>
 </div>
 
-<div id="outline-container-org3c3b438" class="outline-3">
-<h3 id="org3c3b438">Advanced String Formatting</h3>
-<div class="outline-text-3" id="text-org3c3b438">
-</div><div id="outline-container-org2d00f73" class="outline-4">
-<h4 id="org2d00f73">interpolation</h4>
-<div class="outline-text-4" id="text-org2d00f73">
+<div id="outline-container-org560fe92" class="outline-3">
+<h3 id="org560fe92">Advanced String Formatting</h3>
+<div class="outline-text-3" id="text-org560fe92">
+</div><div id="outline-container-orgc2082f7" class="outline-4">
+<h4 id="orgc2082f7">interpolation</h4>
+<div class="outline-text-4" id="text-orgc2082f7">
 <p>
 可以使用 interpolation 机制来生成（注意安全）
 </p>
@@ -743,9 +761,9 @@ print ('Hello %(name)s, you have %(message)i messages' % locals())
 </div>
 </div>
 </div>
-<div id="outline-container-org255e99c" class="outline-4">
-<h4 id="org255e99c">object's instances attributes</h4>
-<div class="outline-text-4" id="text-org255e99c">
+<div id="outline-container-org36ce2af" class="outline-4">
+<h4 id="org36ce2af">object's instances attributes</h4>
+<div class="outline-text-4" id="text-org36ce2af">
 <ul class="org-ul">
 <li>使用 <code>self.__dict__</code> 来将类对象的成员生成一个dict</li>
 <li>可以用于生成格式化字符结果</li>
@@ -754,9 +772,9 @@ print ('Hello %(name)s, you have %(message)i messages' % locals())
 </div>
 </div>
 
-<div id="outline-container-org406cf92" class="outline-3">
-<h3 id="org406cf92">List Comprehensions</h3>
-<div class="outline-text-3" id="text-org406cf92">
+<div id="outline-container-orgdcbf793" class="outline-3">
+<h3 id="orgdcbf793">List Comprehensions</h3>
+<div class="outline-text-3" id="text-orgdcbf793">
 <ul class="org-ul">
 <li>简称 listcomps</li>
 <li>如 <code>[fn(item) for item in a_list if condition(item)]</code></li>
@@ -767,12 +785,12 @@ print ('Hello %(name)s, you have %(message)i messages' % locals())
 </div>
 
 
-<div id="outline-container-org55c535d" class="outline-3">
-<h3 id="org55c535d">Generator Expression</h3>
-<div class="outline-text-3" id="text-org55c535d">
-</div><div id="outline-container-orgc18d7d1" class="outline-4">
-<h4 id="orgc18d7d1">例子</h4>
-<div class="outline-text-4" id="text-orgc18d7d1">
+<div id="outline-container-org3c33866" class="outline-3">
+<h3 id="org3c33866">Generator Expression</h3>
+<div class="outline-text-3" id="text-org3c33866">
+</div><div id="outline-container-org2495bd7" class="outline-4">
+<h4 id="org2495bd7">例子</h4>
+<div class="outline-text-4" id="text-org2495bd7">
 <div class="org-src-container">
 <pre class="src src-python">print sum([num*num for num in range(1,101)])
 print sum( num*num for num in range(1,101))
@@ -786,9 +804,9 @@ month_codes = dict((fn(i+1), code)
 </div>
 </div>
 
-<div id="outline-container-orgc7f1dce" class="outline-4">
-<h4 id="orgc7f1dce">说明</h4>
-<div class="outline-text-4" id="text-orgc7f1dce">
+<div id="outline-container-orgd0282ff" class="outline-4">
+<h4 id="orgd0282ff">说明</h4>
+<div class="outline-text-4" id="text-orgd0282ff">
 <ul class="org-ul">
 <li>简称 genexps</li>
 <li>类似于 list comprehensions</li>
@@ -803,9 +821,9 @@ month_codes = dict((fn(i+1), code)
 
 
 
-<div id="outline-container-orga396d28" class="outline-3">
-<h3 id="orga396d28">Sorting</h3>
-<div class="outline-text-3" id="text-orga396d28">
+<div id="outline-container-org878569c" class="outline-3">
+<h3 id="org878569c">Sorting</h3>
+<div class="outline-text-3" id="text-org878569c">
 <ul class="org-ul">
 <li><code>list.sort()</code> 在原数组上排序</li>
 <li>可以指定排序方法 cmp, 可以比较慢</li>
@@ -818,9 +836,9 @@ month_codes = dict((fn(i+1), code)
 
 
 
-<div id="outline-container-org22f5b6a" class="outline-3">
-<h3 id="org22f5b6a">Generators</h3>
-<div class="outline-text-3" id="text-org22f5b6a">
+<div id="outline-container-orgba6d4fc" class="outline-3">
+<h3 id="orgba6d4fc">Generators</h3>
+<div class="outline-text-3" id="text-orgba6d4fc">
 <ul class="org-ul">
 <li><code>yield</code> 将一个函数变成一个 generator</li>
 <li>generator 函数返回一个 generator object</li>
@@ -836,9 +854,9 @@ month_codes = dict((fn(i+1), code)
 
 
 
-<div id="outline-container-org7c614a7" class="outline-3">
-<h3 id="org7c614a7">EAFP vs. LBYL</h3>
-<div class="outline-text-3" id="text-org7c614a7">
+<div id="outline-container-orgcda0ffc" class="outline-3">
+<h3 id="orgcda0ffc">EAFP vs. LBYL</h3>
+<div class="outline-text-3" id="text-orgcda0ffc">
 <ul class="org-ul">
 <li>EAFP: easier to ask forgiveness than permission</li>
 <li>LBYL: look before you leap</li>
@@ -849,9 +867,9 @@ month_codes = dict((fn(i+1), code)
 </div>
 </div>
 
-<div id="outline-container-org5c002a3" class="outline-3">
-<h3 id="org5c002a3">import</h3>
-<div class="outline-text-3" id="text-org5c002a3">
+<div id="outline-container-org98fe66d" class="outline-3">
+<h3 id="org98fe66d">import</h3>
+<div class="outline-text-3" id="text-org98fe66d">
 <ul class="org-ul">
 <li>不要使用 <code>from module import *</code></li>
 <li>这将污染 namespace 环境</li>
@@ -861,9 +879,9 @@ month_codes = dict((fn(i+1), code)
 </div>
 
 
-<div id="outline-container-orgd406451" class="outline-3">
-<h3 id="orgd406451">Modules &amp; Scripts</h3>
-<div class="outline-text-3" id="text-orgd406451">
+<div id="outline-container-org4f84ff1" class="outline-3">
+<h3 id="org4f84ff1">Modules &amp; Scripts</h3>
+<div class="outline-text-3" id="text-org4f84ff1">
 <ul class="org-ul">
 <li><code>if __name__ == '__main__':</code> 来保存可执行语句</li>
 <li>被导入时， <code>__name__</code> 被设置成模块的名称，因此不会执行</li>
@@ -873,9 +891,9 @@ month_codes = dict((fn(i+1), code)
 </div>
 
 
-<div id="outline-container-org774a754" class="outline-3">
-<h3 id="org774a754">Module Structure</h3>
-<div class="outline-text-3" id="text-org774a754">
+<div id="outline-container-org2c9b2d9" class="outline-3">
+<h3 id="org2c9b2d9">Module Structure</h3>
+<div class="outline-text-3" id="text-org2c9b2d9">
 <pre class="example">
 """module docstring"""
 
@@ -895,12 +913,12 @@ if __name__ == "__main__":
 </pre>
 </div>
 </div>
-<div id="outline-container-org5c1650e" class="outline-3">
-<h3 id="org5c1650e">Packages</h3>
-<div class="outline-text-3" id="text-org5c1650e">
-</div><div id="outline-container-org926b31f" class="outline-4">
-<h4 id="org926b31f">目录结构</h4>
-<div class="outline-text-4" id="text-org926b31f">
+<div id="outline-container-org864db3c" class="outline-3">
+<h3 id="org864db3c">Packages</h3>
+<div class="outline-text-3" id="text-org864db3c">
+</div><div id="outline-container-org68e4aaf" class="outline-4">
+<h4 id="org68e4aaf">目录结构</h4>
+<div class="outline-text-4" id="text-org68e4aaf">
 <pre class="example">
 package/
     __init__.py
@@ -913,9 +931,9 @@ package/
 </div>
 
 
-<div id="outline-container-org42c4793" class="outline-4">
-<h4 id="org42c4793">使用方式</h4>
-<div class="outline-text-4" id="text-org42c4793">
+<div id="outline-container-orgb2ca7ae" class="outline-4">
+<h4 id="orgb2ca7ae">使用方式</h4>
+<div class="outline-text-4" id="text-orgb2ca7ae">
 <div class="org-src-container">
 <pre class="src src-python">import package.module1
 from package.subpackage import module2
@@ -926,9 +944,9 @@ from package.subpackage.module2 import name
 </div>
 </div>
 </div>
-<div id="outline-container-org0376c11" class="outline-2">
-<h2 id="org0376c11">Simple is Better Than Complex</h2>
-<div class="outline-text-2" id="text-org0376c11">
+<div id="outline-container-org186b69e" class="outline-2">
+<h2 id="org186b69e">Simple is Better Than Complex</h2>
+<div class="outline-text-2" id="text-org186b69e">
 <blockquote>
 <p>
 Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.
@@ -936,9 +954,9 @@ Debugging is twice as hard as writing the code in the first place. Therefore, if
 </blockquote>
 </div>
 
-<div id="outline-container-org4c8c556" class="outline-3">
-<h3 id="org4c8c556">原则</h3>
-<div class="outline-text-3" id="text-org4c8c556">
+<div id="outline-container-org2ee831f" class="outline-3">
+<h3 id="org2ee831f">原则</h3>
+<div class="outline-text-3" id="text-org2ee831f">
 <ul class="org-ul">
 <li>keep you programs simple</li>
 <li>don't reinvent the wheel
@@ -954,7 +972,7 @@ Debugging is twice as hard as writing the code in the first place. Therefore, if
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2017-06-10 Sat 23:36</p>
+<p class="date">Created: 2017-06-11 Sun 11:50</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

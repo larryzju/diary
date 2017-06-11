@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-06-10 Sat 23:36 -->
+<!-- 2017-06-11 Sun 11:50 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Note on "HDFS Permission Guide"</title>
@@ -177,7 +177,12 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
-<link rel="stylesheet" type="text/css" href="/diary/style/style.css"/>
+<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="http://www.pirilampo.org/styles/readtheorg/js/readtheorg.js"></script>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -229,13 +234,26 @@ for the JavaScript code in this tag.
 <div id="content">
 <header>
 <h1 class="title">Note on "HDFS Permission Guide"</h1>
-</header>
-<div id="outline-container-org24cb7f2" class="outline-2">
-<h2 id="org24cb7f2">Overview</h2>
-<div class="outline-text-2" id="text-org24cb7f2">
-</div><div id="outline-container-org5835b29" class="outline-3">
-<h3 id="org5835b29">与 Posix 相同之处</h3>
-<div class="outline-text-3" id="text-org5835b29">
+</header><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org467cac4">Overview</a></li>
+<li><a href="#org8f04e12"><span class="todo TODO">TODO</span> User Identity</a></li>
+<li><a href="#org0688c73">Group Mapping</a></li>
+<li><a href="#orgbe7b750">Understanding the Implementation</a></li>
+<li><a href="#org2819ef2"><span class="todo TODO">TODO</span> SuperUser</a></li>
+<li><a href="#orga0dae16"><span class="todo TODO">TODO</span> ACLs</a></li>
+</ul>
+</div>
+</nav>
+
+<div id="outline-container-org467cac4" class="outline-2">
+<h2 id="org467cac4">Overview</h2>
+<div class="outline-text-2" id="text-org467cac4">
+</div><div id="outline-container-orgb6a92ad" class="outline-3">
+<h3 id="orgb6a92ad">与 Posix 相同之处</h3>
+<div class="outline-text-3" id="text-orgb6a92ad">
 <ul class="org-ul">
 <li>hdfs 实现了类 UNIX 的文件和目录的权限，抽象出用户和组的概念</li>
 <li>权限分为：用户、组和其它三类</li>
@@ -247,9 +265,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org07ff707" class="outline-3">
-<h3 id="org07ff707">与 Posix 不同之处</h3>
-<div class="outline-text-3" id="text-org07ff707">
+<div id="outline-container-org9359953" class="outline-3">
+<h3 id="org9359953">与 Posix 不同之处</h3>
+<div class="outline-text-3" id="text-org9359953">
 <ul class="org-ul">
 <li>没有 setuid 或 setgid 位</li>
 <li>没有可执行文件的概念</li>
@@ -261,9 +279,9 @@ for the JavaScript code in this tag.
 </div>
 
 
-<div id="outline-container-org32d70b2" class="outline-3">
-<h3 id="org32d70b2">认证过程</h3>
-<div class="outline-text-3" id="text-org32d70b2">
+<div id="outline-container-org9b87f22" class="outline-3">
+<h3 id="org9b87f22">认证过程</h3>
+<div class="outline-text-3" id="text-org9b87f22">
 <ol class="org-ol">
 <li>user name 认证</li>
 <li>group lists 认证</li>
@@ -274,12 +292,12 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-orgce7c2a4" class="outline-2">
-<h2 id="orgce7c2a4"><span class="todo TODO">TODO</span> User Identity</h2>
-<div class="outline-text-2" id="text-orgce7c2a4">
-</div><div id="outline-container-orgbc9ea93" class="outline-3">
-<h3 id="orgbc9ea93">方式</h3>
-<div class="outline-text-3" id="text-orgbc9ea93">
+<div id="outline-container-org8f04e12" class="outline-2">
+<h2 id="org8f04e12"><span class="todo TODO">TODO</span> User Identity</h2>
+<div class="outline-text-2" id="text-org8f04e12">
+</div><div id="outline-container-orgba740b3" class="outline-3">
+<h3 id="orgba740b3">方式</h3>
+<div class="outline-text-3" id="text-orgba740b3">
 <p>
 分为两种，由 <code>hadoop.security.authentication</code> 来控制
 </p>
@@ -291,9 +309,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org8d349e3" class="outline-3">
-<h3 id="org8d349e3">注意</h3>
-<div class="outline-text-3" id="text-org8d349e3">
+<div id="outline-container-org8024e0c" class="outline-3">
+<h3 id="org8024e0c">注意</h3>
+<div class="outline-text-3" id="text-org8024e0c">
 <ul class="org-ul">
 <li>不同的用户身份识别方式对 HDFS 没有影响</li>
 <li>HDFS 没有创建用户、建立组或认证的机制</li>
@@ -302,9 +320,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org15124da" class="outline-2">
-<h2 id="org15124da">Group Mapping</h2>
-<div class="outline-text-2" id="text-org15124da">
+<div id="outline-container-org0688c73" class="outline-2">
+<h2 id="org0688c73">Group Mapping</h2>
+<div class="outline-text-2" id="text-org0688c73">
 <ul class="org-ul">
 <li>HDFS 确定用户后，通过 group mapping service 来确定对应的 group list</li>
 <li>该服务通过 <code>hadoop.security.group.mapping</code> 配置来确定</li>
@@ -317,9 +335,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgc79ce63" class="outline-2">
-<h2 id="orgc79ce63">Understanding the Implementation</h2>
-<div class="outline-text-2" id="text-orgc79ce63">
+<div id="outline-container-orgbe7b750" class="outline-2">
+<h2 id="orgbe7b750">Understanding the Implementation</h2>
+<div class="outline-text-2" id="text-orgbe7b750">
 <ul class="org-ul">
 <li>权限管理针对的完整路径，在每次操作时会进行</li>
 <li>HDFS 客户端连接 name node 时带着 user id 信息</li>
@@ -334,9 +352,9 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-org5a380e2" class="outline-2">
-<h2 id="org5a380e2"><span class="todo TODO">TODO</span> SuperUser</h2>
-<div class="outline-text-2" id="text-org5a380e2">
+<div id="outline-container-org2819ef2" class="outline-2">
+<h2 id="org2819ef2"><span class="todo TODO">TODO</span> SuperUser</h2>
+<div class="outline-text-2" id="text-org2819ef2">
 <ul class="org-ul">
 <li>namenode 进程用户是超级用户（一般是 hdfs）</li>
 <li>另外可以手动设定一系列组，组内成员作为超级用户（How？）</li>
@@ -344,12 +362,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org26b7ee0" class="outline-2">
-<h2 id="org26b7ee0"><span class="todo TODO">TODO</span> ACLs</h2>
-<div class="outline-text-2" id="text-org26b7ee0">
-</div><div id="outline-container-org93d8a57" class="outline-3">
-<h3 id="org93d8a57">概述</h3>
-<div class="outline-text-3" id="text-org93d8a57">
+<div id="outline-container-orga0dae16" class="outline-2">
+<h2 id="orga0dae16"><span class="todo TODO">TODO</span> ACLs</h2>
+<div class="outline-text-2" id="text-orga0dae16">
+</div><div id="outline-container-org7121781" class="outline-3">
+<h3 id="org7121781">概述</h3>
+<div class="outline-text-3" id="text-org7121781">
 <ul class="org-ul">
 <li>ACL 提供不同的用户和组方式的权限管理</li>
 <li>默认 HDFS 关闭 ACL 支持，不允许创建 ACLs</li>
@@ -359,9 +377,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgcc07459" class="outline-3">
-<h3 id="orgcc07459">规则</h3>
-<div class="outline-text-3" id="text-orgcc07459">
+<div id="outline-container-orgf0e76b7" class="outline-3">
+<h3 id="orgf0e76b7">规则</h3>
+<div class="outline-text-3" id="text-orgf0e76b7">
 <ul class="org-ul">
 <li>包含三部分，用 ':' 分隔，分别是 type, optional name, permission string</li>
 <li>type 为 user, group, other 以及 mask</li>
@@ -373,9 +391,9 @@ for the JavaScript code in this tag.
 </div>
 
 
-<div id="outline-container-orgc7ae46b" class="outline-3">
-<h3 id="orgc7ae46b">示例</h3>
-<div class="outline-text-3" id="text-orgc7ae46b">
+<div id="outline-container-orgdffcbeb" class="outline-3">
+<h3 id="orgdffcbeb">示例</h3>
+<div class="outline-text-3" id="text-orgdffcbeb">
 <pre class="example">
 user::rw-
 user:bruce:rwx  # bruce 用户 777 -&gt; r--
@@ -387,9 +405,9 @@ other::r--      # 654 权限
 </div>
 </div>
 
-<div id="outline-container-org1b46367" class="outline-3">
-<h3 id="org1b46367">default ACL vs access ACL</h3>
-<div class="outline-text-3" id="text-org1b46367">
+<div id="outline-container-org3443dc0" class="outline-3">
+<h3 id="org3443dc0">default ACL vs access ACL</h3>
+<div class="outline-text-3" id="text-org3443dc0">
 <ul class="org-ul">
 <li>default ACL 用于新文件和目录的创建时缺省的权限</li>
 <li>access ACL 定义了权限检查</li>
@@ -401,7 +419,7 @@ other::r--      # 654 权限
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2017-06-10 Sat 23:36</p>
+<p class="date">Created: 2017-06-11 Sun 11:50</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-06-10 Sat 23:36 -->
+<!-- 2017-06-11 Sun 11:50 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Note on "How to write go code"</title>
@@ -177,7 +177,12 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
-<link rel="stylesheet" type="text/css" href="/diary/style/style.css"/>
+<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="http://www.pirilampo.org/styles/readtheorg/js/readtheorg.js"></script>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -229,13 +234,27 @@ for the JavaScript code in this tag.
 <div id="content">
 <header>
 <h1 class="title">Note on "How to write go code"</h1>
-</header>
-<div id="outline-container-orgf02b822" class="outline-2">
-<h2 id="orgf02b822">代码组织</h2>
-<div class="outline-text-2" id="text-orgf02b822">
-</div><div id="outline-container-org9d9184f" class="outline-3">
-<h3 id="org9d9184f">目录结构</h3>
-<div class="outline-text-3" id="text-org9d9184f">
+</header><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org7cc3fdc">代码组织</a></li>
+<li><a href="#org3a75a00">GOPATH</a></li>
+<li><a href="#org6eeb8a6">Import Paths</a></li>
+<li><a href="#orge58480b">编译和运行</a></li>
+<li><a href="#orgd218a6a">Package names</a></li>
+<li><a href="#org6cef3b5">Testing</a></li>
+<li><a href="#orgb0fc390">Remote Packages</a></li>
+</ul>
+</div>
+</nav>
+
+<div id="outline-container-org7cc3fdc" class="outline-2">
+<h2 id="org7cc3fdc">代码组织</h2>
+<div class="outline-text-2" id="text-org7cc3fdc">
+</div><div id="outline-container-org1c38260" class="outline-3">
+<h3 id="org1c38260">目录结构</h3>
+<div class="outline-text-3" id="text-org1c38260">
 <ul class="org-ul">
 <li>workspace
 <ul class="org-ul">
@@ -251,9 +270,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org66b5678" class="outline-3">
-<h3 id="org66b5678">关系</h3>
-<div class="outline-text-3" id="text-org66b5678">
+<div id="outline-container-org7fc4996" class="outline-3">
+<h3 id="org7fc4996">关系</h3>
+<div class="outline-text-3" id="text-org7fc4996">
 <ul class="org-ul">
 <li>包目录决定了导入路径 ( import path )</li>
 </ul>
@@ -261,12 +280,12 @@ for the JavaScript code in this tag.
 </div>
 
 
-<div id="outline-container-org7b0a667" class="outline-3">
-<h3 id="org7b0a667">Workspace</h3>
-<div class="outline-text-3" id="text-org7b0a667">
-</div><div id="outline-container-orgc9bf760" class="outline-4">
-<h4 id="orgc9bf760">目录</h4>
-<div class="outline-text-4" id="text-orgc9bf760">
+<div id="outline-container-orgef46c29" class="outline-3">
+<h3 id="orgef46c29">Workspace</h3>
+<div class="outline-text-3" id="text-orgef46c29">
+</div><div id="outline-container-org9a99157" class="outline-4">
+<h4 id="org9a99157">目录</h4>
+<div class="outline-text-4" id="text-org9a99157">
 <p>
 包含三级目录
 </p>
@@ -279,9 +298,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org76e53c5" class="outline-4">
-<h4 id="org76e53c5">关系</h4>
-<div class="outline-text-4" id="text-org76e53c5">
+<div id="outline-container-orgcbbb574" class="outline-4">
+<h4 id="orgcbbb574">关系</h4>
+<div class="outline-text-4" id="text-orgcbbb574">
 <ul class="org-ul">
 <li>go tool 从 src 中编译包，生成二进制到 pkg 和 bin</li>
 <li>src 目录下有多个子 package，每个 package 可以有独立的版本管理（repositories）</li>
@@ -295,9 +314,9 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-org243774c" class="outline-2">
-<h2 id="org243774c">GOPATH</h2>
-<div class="outline-text-2" id="text-org243774c">
+<div id="outline-container-org3a75a00" class="outline-2">
+<h2 id="org3a75a00">GOPATH</h2>
+<div class="outline-text-2" id="text-org3a75a00">
 <ul class="org-ul">
 <li>用于设定 workspace 的位置</li>
 <li>默认为 <code>${HOME}/go</code></li>
@@ -308,14 +327,14 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 
-<div id="outline-container-orga0ca377" class="outline-3">
-<h3 id="orga0ca377"><span class="todo TODO">TODO</span> GOROOT</h3>
+<div id="outline-container-org54f6faf" class="outline-3">
+<h3 id="org54f6faf"><span class="todo TODO">TODO</span> GOROOT</h3>
 </div>
 </div>
 
-<div id="outline-container-orga79cc33" class="outline-2">
-<h2 id="orga79cc33">Import Paths</h2>
-<div class="outline-text-2" id="text-orga79cc33">
+<div id="outline-container-org6eeb8a6" class="outline-2">
+<h2 id="org6eeb8a6">Import Paths</h2>
+<div class="outline-text-2" id="text-org6eeb8a6">
 <ul class="org-ul">
 <li>字符串，标识一个包</li>
 <li>导入路径与包在 workspace 中的目录一致</li>
@@ -327,12 +346,12 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-org9f86678" class="outline-2">
-<h2 id="org9f86678">编译和运行</h2>
-<div class="outline-text-2" id="text-org9f86678">
-</div><div id="outline-container-org15840f2" class="outline-3">
-<h3 id="org15840f2">步骤</h3>
-<div class="outline-text-3" id="text-org15840f2">
+<div id="outline-container-orge58480b" class="outline-2">
+<h2 id="orge58480b">编译和运行</h2>
+<div class="outline-text-2" id="text-orge58480b">
+</div><div id="outline-container-orgdb59638" class="outline-3">
+<h3 id="orgdb59638">步骤</h3>
+<div class="outline-text-3" id="text-orgdb59638">
 <ol class="org-ol">
 <li>设定 GOPATH</li>
 <li>创建 package 目录</li>
@@ -345,9 +364,9 @@ for the JavaScript code in this tag.
 </div>
 
 
-<div id="outline-container-orge131fbc" class="outline-3">
-<h3 id="orge131fbc">注意</h3>
-<div class="outline-text-3" id="text-orge131fbc">
+<div id="outline-container-org5167d5e" class="outline-3">
+<h3 id="org5167d5e">注意</h3>
+<div class="outline-text-3" id="text-org5167d5e">
 <ul class="org-ul">
 <li>设定 GOPATH， <code>go install &lt;package-path&gt;</code> 可以在任意路径下进行</li>
 <li>如果已经在当前包的最终目录下，可以直接 <code>go install</code></li>
@@ -358,18 +377,18 @@ for the JavaScript code in this tag.
 </div>
 
 
-<div id="outline-container-org81f25d8" class="outline-3">
-<h3 id="org81f25d8">问题</h3>
-<div class="outline-text-3" id="text-org81f25d8">
-</div><div id="outline-container-orgfd87aa9" class="outline-4">
-<h4 id="orgfd87aa9"><span class="todo TODO">TODO</span> 如何实现跨平台编译</h4>
+<div id="outline-container-org400e48f" class="outline-3">
+<h3 id="org400e48f">问题</h3>
+<div class="outline-text-3" id="text-org400e48f">
+</div><div id="outline-container-org10e8bd9" class="outline-4">
+<h4 id="org10e8bd9"><span class="todo TODO">TODO</span> 如何实现跨平台编译</h4>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgcd96aca" class="outline-2">
-<h2 id="orgcd96aca">Package names</h2>
-<div class="outline-text-2" id="text-orgcd96aca">
+<div id="outline-container-orgd218a6a" class="outline-2">
+<h2 id="orgd218a6a">Package names</h2>
+<div class="outline-text-2" id="text-orgd218a6a">
 <ul class="org-ul">
 <li>package name 是导入后被调用时写的名称</li>
 <li>all files in a package must use the same name.</li>
@@ -386,9 +405,9 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-org6527336" class="outline-2">
-<h2 id="org6527336">Testing</h2>
-<div class="outline-text-2" id="text-org6527336">
+<div id="outline-container-org6cef3b5" class="outline-2">
+<h2 id="org6cef3b5">Testing</h2>
+<div class="outline-text-2" id="text-org6cef3b5">
 <ul class="org-ul">
 <li><code>go test</code> 命令和 <code>testing</code> 包</li>
 <li>文件命名以 <code>_test.go</code> 为后缀，并以 <code>func TestXXX( t *testing.T )</code> 来写测试函数</li>
@@ -400,9 +419,9 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-org7dea238" class="outline-2">
-<h2 id="org7dea238">Remote Packages</h2>
-<div class="outline-text-2" id="text-org7dea238">
+<div id="outline-container-orgb0fc390" class="outline-2">
+<h2 id="orgb0fc390">Remote Packages</h2>
+<div class="outline-text-2" id="text-orgb0fc390">
 <ul class="org-ul">
 <li>使用 <code>go get</code> 来获取远程包</li>
 <li>默认获取到 <code>GOPATH</code> 路径下</li>
@@ -413,7 +432,7 @@ for the JavaScript code in this tag.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2017-06-10 Sat 23:36</p>
+<p class="date">Created: 2017-06-11 Sun 11:50</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -384,6 +384,10 @@ div.figure {
         margin-left: 280px;
         max-width: 960px;
     }
+
+    #postamble {
+	margin-left: 280px;
+    }
 }
 
 @media screen and (max-width: 1024px) {
@@ -403,6 +407,10 @@ div.figure {
         margin-left: 5%;
         max-width: 90%;
     }
+
+    #postamble {
+	margin-left: 280px;
+    }    
 }
 
 @media print {
@@ -437,3 +445,4 @@ div.figure {
         display: none;
     }
 }
+

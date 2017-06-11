@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-06-10 Sat 23:36 -->
+<!-- 2017-06-11 Sun 11:50 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Note on "Think Java"</title>
@@ -177,7 +177,12 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
-<link rel="stylesheet" type="text/css" href="/diary/style/style.css"/>
+<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="http://www.pirilampo.org/styles/readtheorg/js/readtheorg.js"></script>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -229,13 +234,22 @@ for the JavaScript code in this tag.
 <div id="content">
 <header>
 <h1 class="title">Note on "Think Java"</h1>
-</header>
-<div id="outline-container-orgbfdcfd9" class="outline-2">
-<h2 id="orgbfdcfd9">The way of programming</h2>
-<div class="outline-text-2" id="text-orgbfdcfd9">
-</div><div id="outline-container-org5c9466d" class="outline-3">
-<h3 id="org5c9466d">编程三比</h3>
-<div class="outline-text-3" id="text-org5c9466d">
+</header><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orga378570">The way of programming</a></li>
+<li><a href="#orgfe68f1f"></a></li>
+</ul>
+</div>
+</nav>
+
+<div id="outline-container-orga378570" class="outline-2">
+<h2 id="orga378570">The way of programming</h2>
+<div class="outline-text-2" id="text-orga378570">
+</div><div id="outline-container-org1eb3cf3" class="outline-3">
+<h3 id="org1eb3cf3">编程三比</h3>
+<div class="outline-text-3" id="text-org1eb3cf3">
 <ul class="org-ul">
 <li>比之数学，都使用规范的、抽象的语言</li>
 <li>比之工程，通过小心组合，权衡完美与工程实现需要</li>
@@ -244,18 +258,18 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orge9ac8a4" class="outline-3">
-<h3 id="orge9ac8a4">目标</h3>
-<div class="outline-text-3" id="text-orge9ac8a4">
+<div id="outline-container-orgd74c51b" class="outline-3">
+<h3 id="orgd74c51b">目标</h3>
+<div class="outline-text-3" id="text-orgd74c51b">
 <p>
 锻炼和培养解决问题的能力
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgf882c69" class="outline-3">
-<h3 id="orgf882c69">什么是编程</h3>
-<div class="outline-text-3" id="text-orgf882c69">
+<div id="outline-container-org716e6f9" class="outline-3">
+<h3 id="org716e6f9">什么是编程</h3>
+<div class="outline-text-3" id="text-org716e6f9">
 <ul class="org-ul">
 <li>描述解决问题的方法</li>
 <li>将复杂的任务拆解成足够简单的小任务</li>
@@ -264,9 +278,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgbe08f72" class="outline-3">
-<h3 id="orgbe08f72">什么是计算机科学</h3>
-<div class="outline-text-3" id="text-orgbe08f72">
+<div id="outline-container-orgafa6070" class="outline-3">
+<h3 id="orgafa6070">什么是计算机科学</h3>
+<div class="outline-text-3" id="text-orgafa6070">
 <ul class="org-ul">
 <li>完成和效率：算法的设计、分析和评价</li>
 <li>工程能力：代码的维护性、开发效率</li>
@@ -275,9 +289,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orge128573" class="outline-3">
-<h3 id="orge128573">Programming Language</h3>
-<div class="outline-text-3" id="text-orge128573">
+<div id="outline-container-orgdbcb3e1" class="outline-3">
+<h3 id="orgdbcb3e1">Programming Language</h3>
+<div class="outline-text-3" id="text-orgdbcb3e1">
 <ul class="org-ul">
 <li>高级语言表达力强且可移植</li>
 <li>通过 Compiler 和 Interrupt 运行</li>
@@ -286,9 +300,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org05ca86b" class="outline-3">
-<h3 id="org05ca86b">Java 语言</h3>
-<div class="outline-text-3" id="text-org05ca86b">
+<div id="outline-container-orgad5cc4f" class="outline-3">
+<h3 id="orgad5cc4f">Java 语言</h3>
+<div class="outline-text-3" id="text-orgad5cc4f">
 <ul class="org-ul">
 <li>由 Class 和 Method 构成，Method 由 Statement 来构成</li>
 <li>语法规范可以参考 <a href="https://google.github.io/styleguide/javaguide.html">https://google.github.io/styleguide/javaguide.html</a></li>
@@ -306,13 +320,13 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-org3674d10" class="outline-2">
-<h2 id="org3674d10"></h2>
+<div id="outline-container-orgfe68f1f" class="outline-2">
+<h2 id="orgfe68f1f"></h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2017-06-10 Sat 23:36</p>
+<p class="date">Created: 2017-06-11 Sun 11:50</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

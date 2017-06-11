@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-06-10 Sat 23:36 -->
+<!-- 2017-06-11 Sun 11:50 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title></title>
@@ -177,7 +177,12 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
-<link rel="stylesheet" type="text/css" href="/diary/style/style.css"/>
+<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="http://www.pirilampo.org/styles/readtheorg/js/readtheorg.js"></script>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -227,9 +232,22 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<div id="outline-container-org163ad00" class="outline-2">
-<h2 id="org163ad00">基本功能</h2>
-<div class="outline-text-2" id="text-org163ad00">
+<nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org78ff52c">基本功能</a></li>
+<li><a href="#org540274c">配置</a></li>
+<li><a href="#org7dd71fe">文档结构</a></li>
+<li><a href="#org8f4967b">Tables</a></li>
+<li><a href="#org854c7b3">Hyperlinks</a></li>
+<li><a href="#org36d556e"><span class="underline">TODO</span> Items</a></li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-org78ff52c" class="outline-2">
+<h2 id="org78ff52c">基本功能</h2>
+<div class="outline-text-2" id="text-org78ff52c">
 <ul class="org-ul">
 <li>keeping notes</li>
 <li>maintaining TODO lists</li>
@@ -239,12 +257,12 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 </div>
-<div id="outline-container-org9d38eb6" class="outline-2">
-<h2 id="org9d38eb6">配置</h2>
-<div class="outline-text-2" id="text-org9d38eb6">
-</div><div id="outline-container-orgd6d666f" class="outline-3">
-<h3 id="orgd6d666f">快捷键</h3>
-<div class="outline-text-3" id="text-orgd6d666f">
+<div id="outline-container-org540274c" class="outline-2">
+<h2 id="org540274c">配置</h2>
+<div class="outline-text-2" id="text-org540274c">
+</div><div id="outline-container-orgec7414c" class="outline-3">
+<h3 id="orgec7414c">快捷键</h3>
+<div class="outline-text-3" id="text-orgec7414c">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">;; The following lines are always needed.  Choose your own keys.
 (global-set-key "\C-cl" 'org-store-link)
@@ -256,12 +274,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org180b76a" class="outline-2">
-<h2 id="org180b76a">文档结构</h2>
-<div class="outline-text-2" id="text-org180b76a">
-</div><div id="outline-container-org2a11b5d" class="outline-3">
-<h3 id="org2a11b5d">outlines</h3>
-<div class="outline-text-3" id="text-org2a11b5d">
+<div id="outline-container-org7dd71fe" class="outline-2">
+<h2 id="org7dd71fe">文档结构</h2>
+<div class="outline-text-2" id="text-org7dd71fe">
+</div><div id="outline-container-org461f7fa" class="outline-3">
+<h3 id="org461f7fa">outlines</h3>
+<div class="outline-text-3" id="text-org461f7fa">
 <p>
 将文档以层次结构进行组织，适用于笔记记录。从整体结构上把握文档内容。
 </p>
@@ -272,29 +290,29 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org4d05f2d" class="outline-3">
-<h3 id="org4d05f2d">headlines</h3>
-<div class="outline-text-3" id="text-org4d05f2d">
-</div><div id="outline-container-orgece9e05" class="outline-4">
-<h4 id="orgece9e05"><span class="todo TODO">TODO</span> org-footnote-section</h4>
-<div class="outline-text-4" id="text-orgece9e05">
+<div id="outline-container-org81580f8" class="outline-3">
+<h3 id="org81580f8">headlines</h3>
+<div class="outline-text-3" id="text-org81580f8">
+</div><div id="outline-container-org1d18157" class="outline-4">
+<h4 id="org1d18157"><span class="todo TODO">TODO</span> org-footnote-section</h4>
+<div class="outline-text-4" id="text-org1d18157">
 <p>
 可以在 <code>org-footnote-section</code> 后进行脚注。其后的章节将被忽略
 </p>
 </div>
 </div>
 
-<div id="outline-container-org10df383" class="outline-4">
-<h4 id="org10df383"><span class="todo TODO">TODO</span> 避免过多的 star</h4>
+<div id="outline-container-org63f3218" class="outline-4">
+<h4 id="org63f3218"><span class="todo TODO">TODO</span> 避免过多的 star</h4>
 </div>
 </div>
 
-<div id="outline-container-org722d5c8" class="outline-3">
-<h3 id="org722d5c8">visibility cycling</h3>
-<div class="outline-text-3" id="text-org722d5c8">
-</div><div id="outline-container-org757cce0" class="outline-4">
-<h4 id="org757cce0">TAB</h4>
-<div class="outline-text-4" id="text-org757cce0">
+<div id="outline-container-org5c4294a" class="outline-3">
+<h3 id="org5c4294a">visibility cycling</h3>
+<div class="outline-text-3" id="text-org5c4294a">
+</div><div id="outline-container-orgf159fe8" class="outline-4">
+<h4 id="orgf159fe8">TAB</h4>
+<div class="outline-text-4" id="text-orgf159fe8">
 <p>
 substree cycling:
 </p>
@@ -307,9 +325,9 @@ substree cycling:
 </div>
 </div>
 
-<div id="outline-container-org56ee984" class="outline-4">
-<h4 id="org56ee984">S-TAB</h4>
-<div class="outline-text-4" id="text-org56ee984">
+<div id="outline-container-org85ab8d8" class="outline-4">
+<h4 id="org85ab8d8">S-TAB</h4>
+<div class="outline-text-4" id="text-org85ab8d8">
 <p>
 Global cycling
 </p>
@@ -323,9 +341,9 @@ Global cycling
 </div>
 
 
-<div id="outline-container-org4cdfe3c" class="outline-4">
-<h4 id="org4cdfe3c">默认启动显示方式</h4>
-<div class="outline-text-4" id="text-org4cdfe3c">
+<div id="outline-container-orge22d3b6" class="outline-4">
+<h4 id="orge22d3b6">默认启动显示方式</h4>
+<div class="outline-text-4" id="text-orge22d3b6">
 <p>
 在文件开头指定： <code>overview</code>, <code>content</code>, <code>showall</code>
 </p>
@@ -337,9 +355,9 @@ Global cycling
 </div>
 </div>
 
-<div id="outline-container-org0db2a26" class="outline-3">
-<h3 id="org0db2a26">motion</h3>
-<div class="outline-text-3" id="text-org0db2a26">
+<div id="outline-container-org959376e" class="outline-3">
+<h3 id="org959376e">motion</h3>
+<div class="outline-text-3" id="text-org959376e">
 <table>
 
 
@@ -378,9 +396,9 @@ Global cycling
 </div>
 </div>
 
-<div id="outline-container-org7f77b82" class="outline-3">
-<h3 id="org7f77b82">Structure editing</h3>
-<div class="outline-text-3" id="text-org7f77b82">
+<div id="outline-container-orgea440a4" class="outline-3">
+<h3 id="orgea440a4">Structure editing</h3>
+<div class="outline-text-3" id="text-orgea440a4">
 <table>
 
 
@@ -429,9 +447,9 @@ Global cycling
 </div>
 </div>
 
-<div id="outline-container-orgbae8952" class="outline-3">
-<h3 id="orgbae8952">Sparse trees</h3>
-<div class="outline-text-3" id="text-orgbae8952">
+<div id="outline-container-org40e0fb1" class="outline-3">
+<h3 id="org40e0fb1">Sparse trees</h3>
+<div class="outline-text-3" id="text-org40e0fb1">
 <p>
 折叠全部内容，除了匹配的章节
 </p>
@@ -463,9 +481,9 @@ Global cycling
 </div>
 </div>
 
-<div id="outline-container-orgd06f935" class="outline-3">
-<h3 id="orgd06f935">Plain Lists</h3>
-<div class="outline-text-3" id="text-orgd06f935">
+<div id="outline-container-orgcccd97b" class="outline-3">
+<h3 id="orgcccd97b">Plain Lists</h3>
+<div class="outline-text-3" id="text-orgcccd97b">
 <p>
 即 items，用过提供额外的层级表示
 </p>
@@ -493,9 +511,9 @@ Global cycling
 </div>
 </div>
 </div>
-<div id="outline-container-orgf69ba6a" class="outline-2">
-<h2 id="orgf69ba6a">Tables</h2>
-<div class="outline-text-2" id="text-orgf69ba6a">
+<div id="outline-container-org8f4967b" class="outline-2">
+<h2 id="org8f4967b">Tables</h2>
+<div class="outline-text-2" id="text-org8f4967b">
 <p>
 表以 <code>"|"</code> 开头，如下所示
 </p>
@@ -554,12 +572,12 @@ Global cycling
 
 
 
-<div id="outline-container-org04bd9b1" class="outline-2">
-<h2 id="org04bd9b1">Hyperlinks</h2>
-<div class="outline-text-2" id="text-org04bd9b1">
-</div><div id="outline-container-org968714d" class="outline-3">
-<h3 id="org968714d">link format</h3>
-<div class="outline-text-3" id="text-org968714d">
+<div id="outline-container-org854c7b3" class="outline-2">
+<h2 id="org854c7b3">Hyperlinks</h2>
+<div class="outline-text-2" id="text-org854c7b3">
+</div><div id="outline-container-org4f87b9a" class="outline-3">
+<h3 id="org4f87b9a">link format</h3>
+<div class="outline-text-3" id="text-org4f87b9a">
 <p>
 有两种写法：
 </p>
@@ -575,9 +593,9 @@ Global cycling
 </div>
 </div>
 
-<div id="outline-container-org7596522" class="outline-3">
-<h3 id="org7596522"><span class="todo TODO">TODO</span> Internal links</h3>
-<div class="outline-text-3" id="text-org7596522">
+<div id="outline-container-org60e1063" class="outline-3">
+<h3 id="org60e1063"><span class="todo TODO">TODO</span> Internal links</h3>
+<div class="outline-text-3" id="text-org60e1063">
 <p>
 链接地址有几种：
 </p>
@@ -594,13 +612,13 @@ Global cycling
 
 
 
-<div id="outline-container-org331fae5" class="outline-2">
-<h2 id="org331fae5"><span class="underline">TODO</span> Items</h2>
+<div id="outline-container-org36d556e" class="outline-2">
+<h2 id="org36d556e"><span class="underline">TODO</span> Items</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Larry</p>
-<p class="date">Created: 2017-06-10 Sat 23:36</p>
+<p class="date">Created: 2017-06-11 Sun 11:50</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

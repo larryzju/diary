@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-06-10 Sat 23:36 -->
+<!-- 2017-06-11 Sun 11:50 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>cscpp</title>
@@ -177,7 +177,12 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
-<link rel="stylesheet" type="text/css" href="/diary/style/style.css"/>
+<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="http://www.pirilampo.org/styles/readtheorg/js/readtheorg.js"></script>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -229,13 +234,22 @@ for the JavaScript code in this tag.
 <div id="content">
 <header>
 <h1 class="title">cscpp</h1>
-</header>
-<div id="outline-container-org6caa823" class="outline-2">
-<h2 id="org6caa823">计算机系统漫游</h2>
-<div class="outline-text-2" id="text-org6caa823">
-</div><div id="outline-container-orgfc584df" class="outline-3">
-<h3 id="orgfc584df">为什么</h3>
-<div class="outline-text-3" id="text-orgfc584df">
+</header><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgac8f9fd">计算机系统漫游</a></li>
+<li><a href="#org1a81b65">第一部分 程序结构和执行</a></li>
+</ul>
+</div>
+</nav>
+
+<div id="outline-container-orgac8f9fd" class="outline-2">
+<h2 id="orgac8f9fd">计算机系统漫游</h2>
+<div class="outline-text-2" id="text-orgac8f9fd">
+</div><div id="outline-container-orgc0251c3" class="outline-3">
+<h3 id="orgc0251c3">为什么</h3>
+<div class="outline-text-3" id="text-orgc0251c3">
 <ul class="org-ul">
 <li>硬件与软件共同构成了计算机系统</li>
 <li>万变不离其宗，只有学好了计算机原理方能写好程序</li>
@@ -243,12 +257,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org67919d1" class="outline-3">
-<h3 id="org67919d1">存储</h3>
-<div class="outline-text-3" id="text-org67919d1">
-</div><div id="outline-container-org2c0644b" class="outline-4">
-<h4 id="org2c0644b">主存、磁盘、寄存器、IO 设备</h4>
-<div class="outline-text-4" id="text-org2c0644b">
+<div id="outline-container-orgd18dd05" class="outline-3">
+<h3 id="orgd18dd05">存储</h3>
+<div class="outline-text-3" id="text-orgd18dd05">
+</div><div id="outline-container-orga8c4e1b" class="outline-4">
+<h4 id="orga8c4e1b">主存、磁盘、寄存器、IO 设备</h4>
+<div class="outline-text-4" id="text-orga8c4e1b">
 <p>
 程序的一个主要开销在于，将数据在不同的存储和 I/O 设备之间搬移。
 </p>
@@ -259,9 +273,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orge9e5ef2" class="outline-4">
-<h4 id="orge9e5ef2">存储器层次结构</h4>
-<div class="outline-text-4" id="text-orge9e5ef2">
+<div id="outline-container-org840fc5d" class="outline-4">
+<h4 id="org840fc5d">存储器层次结构</h4>
+<div class="outline-text-4" id="text-org840fc5d">
 
 <figure>
 <img src="./storage_level.png" alt="storage_level.png">
@@ -271,12 +285,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgcced420" class="outline-3">
-<h3 id="orgcced420">操作系统</h3>
-<div class="outline-text-3" id="text-orgcced420">
-</div><div id="outline-container-org2d3436f" class="outline-4">
-<h4 id="org2d3436f">作用</h4>
-<div class="outline-text-4" id="text-org2d3436f">
+<div id="outline-container-org0663288" class="outline-3">
+<h3 id="org0663288">操作系统</h3>
+<div class="outline-text-3" id="text-org0663288">
+</div><div id="outline-container-orgb365476" class="outline-4">
+<h4 id="orgb365476">作用</h4>
+<div class="outline-text-4" id="text-orgb365476">
 <ol class="org-ol">
 <li>防止失控的程序对硬件的滥用</li>
 <li>提供高层次的硬件功能抽象</li>
@@ -284,9 +298,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org4ba2abf" class="outline-4">
-<h4 id="org4ba2abf">部件</h4>
-<div class="outline-text-4" id="text-org4ba2abf">
+<div id="outline-container-orgbb04eb7" class="outline-4">
+<h4 id="orgbb04eb7">部件</h4>
+<div class="outline-text-4" id="text-orgbb04eb7">
 <ul class="org-ul">
 <li>虚拟存储器</li>
 <li>进程</li>
@@ -294,7 +308,7 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 
-<ul class="org-ul"><li><a id="org45be83d"></a>进程<br><div class="outline-text-5" id="text-org45be83d">
+<ul class="org-ul"><li><a id="orgb7f7bdb"></a>进程<br><div class="outline-text-5" id="text-orgb7f7bdb">
 <p>
 进程是操作系统正在运行的程序的一个抽象。
 </p>
@@ -304,13 +318,13 @@ for the JavaScript code in this tag.
 </p>
 </div></li>
 
-<li><a id="org5f627de"></a>线程<br><div class="outline-text-5" id="text-org5f627de">
+<li><a id="org199e127"></a>线程<br><div class="outline-text-5" id="text-org199e127">
 <p>
 进程中可以有多个线程。线程之间共享代码和全局数据，更方便进行共享数据，某些场景下比进程更加高效
 </p>
 </div></li>
 
-<li><a id="org96ed23d"></a>虚拟存储器<br><div class="outline-text-5" id="text-org96ed23d">
+<li><a id="org342db1e"></a>虚拟存储器<br><div class="outline-text-5" id="text-org342db1e">
 <p>
 为进程提供一个干净的工作环境，使进程看到的是独立完整的主存空间
 </p>
@@ -322,22 +336,22 @@ for the JavaScript code in this tag.
 </figure>
 </div>
 
-<ul class="org-ul"><li><a id="org8634689"></a><span class="todo TODO">TODO</span> 共享库映射区域为什么夹在堆和栈之间？<br></li></ul></li></ul>
+<ul class="org-ul"><li><a id="org15f7b64"></a><span class="todo TODO">TODO</span> 共享库映射区域为什么夹在堆和栈之间？<br></li></ul></li></ul>
 </div>
 </div>
 
-<div id="outline-container-orge7605a3" class="outline-3">
-<h3 id="orge7605a3">并发与并行</h3>
-<div class="outline-text-3" id="text-orge7605a3">
+<div id="outline-container-org9fb1699" class="outline-3">
+<h3 id="org9fb1699">并发与并行</h3>
+<div class="outline-text-3" id="text-org9fb1699">
 <p>
 计算机的发展有两个目标：更多和更快。并发 (concurrency) 目的是更多，并行 (parallelism) 是更快。
 但实践中两者普遍同时存在不同的层次中。
 </p>
 </div>
 
-<div id="outline-container-orgd2da807" class="outline-4">
-<h4 id="orgd2da807">线程级并发</h4>
-<div class="outline-text-4" id="text-orgd2da807">
+<div id="outline-container-org43e04df" class="outline-4">
+<h4 id="org43e04df">线程级并发</h4>
+<div class="outline-text-4" id="text-org43e04df">
 <p>
 在单处理器硬件上，通过进行上下文切换模拟出多个线程同时进行的“假象”。不仅有利于对交互性的支持，同时有利于对于 I/O 密集性操作的性能优化。
 </p>
@@ -348,9 +362,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org59bc5ad" class="outline-4">
-<h4 id="org59bc5ad">指令级并发</h4>
-<div class="outline-text-4" id="text-org59bc5ad">
+<div id="outline-container-orga6081b6" class="outline-4">
+<h4 id="orga6081b6">指令级并发</h4>
+<div class="outline-text-4" id="text-orga6081b6">
 <p>
 基本原理上一个指令需要多个时钟周期来完成。
 </p>
@@ -365,51 +379,51 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org80dfc5f" class="outline-4">
-<h4 id="org80dfc5f">单指令，多数据并行</h4>
-<div class="outline-text-4" id="text-org80dfc5f">
+<div id="outline-container-orgc5e9862" class="outline-4">
+<h4 id="orgc5e9862">单指令，多数据并行</h4>
+<div class="outline-text-4" id="text-orgc5e9862">
 <p>
 SIMD 技术，常用于多媒体的处理。GCC 编译中提供特殊的向量数据进行此类数据优化处理。
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-orgdfbf1bb" class="outline-3">
-<h3 id="orgdfbf1bb">抽象</h3>
-<div class="outline-text-3" id="text-orgdfbf1bb">
-</div><div id="outline-container-org945c646" class="outline-4">
-<h4 id="org945c646">API 对细节的抽象</h4>
+<div id="outline-container-org5bfc437" class="outline-3">
+<h3 id="org5bfc437">抽象</h3>
+<div class="outline-text-3" id="text-org5bfc437">
+</div><div id="outline-container-orgf66e010" class="outline-4">
+<h4 id="orgf66e010">API 对细节的抽象</h4>
 </div>
 
-<div id="outline-container-orgacc3230" class="outline-4">
-<h4 id="orgacc3230">指令集对处理器的抽象</h4>
+<div id="outline-container-orgcb1be4b" class="outline-4">
+<h4 id="orgcb1be4b">指令集对处理器的抽象</h4>
 </div>
 
-<div id="outline-container-org377018a" class="outline-4">
-<h4 id="org377018a">文件对 I/O 的抽象</h4>
+<div id="outline-container-org3776b6d" class="outline-4">
+<h4 id="org3776b6d">文件对 I/O 的抽象</h4>
 </div>
 
-<div id="outline-container-orgf7cab1a" class="outline-4">
-<h4 id="orgf7cab1a">虚拟存储对程序存储的抽象</h4>
+<div id="outline-container-org477574f" class="outline-4">
+<h4 id="org477574f">虚拟存储对程序存储的抽象</h4>
 </div>
 
-<div id="outline-container-org3a74df8" class="outline-4">
-<h4 id="org3a74df8">进程对程序执行的抽象</h4>
+<div id="outline-container-orgca8ba89" class="outline-4">
+<h4 id="orgca8ba89">进程对程序执行的抽象</h4>
 </div>
 
-<div id="outline-container-orgc7a01e7" class="outline-4">
-<h4 id="orgc7a01e7">虚拟机对整个计算机的抽象</h4>
+<div id="outline-container-orgda1cd27" class="outline-4">
+<h4 id="orgda1cd27">虚拟机对整个计算机的抽象</h4>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org48eb972" class="outline-2">
-<h2 id="org48eb972">第一部分 程序结构和执行</h2>
+<div id="outline-container-org1a81b65" class="outline-2">
+<h2 id="org1a81b65">第一部分 程序结构和执行</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2017-06-10 Sat 23:36</p>
+<p class="date">Created: 2017-06-11 Sun 11:50</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
