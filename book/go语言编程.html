@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2017-06-11 Sun 15:16 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>《Go 语言编程》笔记</title>
+<meta name="generator" content="Org mode">
+<meta name="author" content="赵文彬">
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.pirilampo.org/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://www.pirilampo.org/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://www.pirilampo.org/styles/readtheorg/js/readtheorg.js"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<header>
+<h1 class="title">《Go 语言编程》笔记</h1>
+</header><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org8a8a9cf">概述</a></li>
+<li><a href="#org5ad31ad">初始 go 语言</a></li>
+<li><a href="#orgea6ab0c">顺序编程</a></li>
+<li><a href="#org5b7b5ed">面向对象编程</a></li>
+<li><a href="#orge57294b"><span class="todo TODO">TODO</span> 并发编程</a></li>
+<li><a href="#orga0cb4eb">开发工具</a></li>
+</ul>
+</div>
+</nav>
+
+<div id="outline-container-org8a8a9cf" class="outline-2">
+<h2 id="org8a8a9cf">概述</h2>
+<div class="outline-text-2" id="text-org8a8a9cf">
+<p>
+Go 编程思想核心是维持语言的简洁，时刻警惕特性复杂化，与 C 语言相通。
+</p>
+</div>
+
+<div id="outline-container-orgb6d51d5" class="outline-3">
+<h3 id="orgb6d51d5">简化</h3>
+<div class="outline-text-3" id="text-orgb6d51d5">
+<p>
+语言设计总体上持保守态度，有以下简化：
+</p>
+
+<ol class="org-ol">
+<li>反对函数和操作符重载（overload），因其有负担而无解决问题的能力</li>
+<li>反对继承、反对虚函数和虚函数重载</li>
+<li>放弃构造函数与析构函数</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgc695513" class="outline-3">
+<h3 id="orgc695513">特征</h3>
+<div class="outline-text-3" id="text-orgc695513">
+<ol class="org-ol">
+<li><code>go</code> 关键字与协程</li>
+<li>推荐采用 erlang 风格的消息传递机制进行通信</li>
+<li>强制代码风格</li>
+<li>统一的错误处理（多返回，defer 机制等）</li>
+<li>非侵入性的接口（鸭子方法，静态编译）</li>
+<li>函数式编程，如匿名函数、闭包<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup></li>
+</ol>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5ad31ad" class="outline-2">
+<h2 id="org5ad31ad">初始 go 语言</h2>
+<div class="outline-text-2" id="text-org5ad31ad">
+</div><div id="outline-container-org205eaec" class="outline-3">
+<h3 id="org205eaec">Go 语言特性</h3>
+<div class="outline-text-3" id="text-org205eaec">
+<dl class="org-dl">
+<dt>GC</dt><dd>自动内存管理，有指针而无操作，避免 C 中的野指针问题</dd>
+<dt>更丰富的内置类型</dt><dd>如 map, slices</dd>
+<dt>函数多返回值</dt><dd>C 需要通过参数修改返回多个值</dd>
+<dt>错误处理</dt><dd>defer 及 panic/recover 机制</dd>
+<dt>匿名函数与闭包</dt><dd>高阶函数式编程</dd>
+<dt>类型和接口</dt><dd>类型组合，非侵入式的接口</dd>
+<dt>并发编程</dt><dd>goroutine 以及 channel，CSP（通信顺序进程）</dd>
+<dt>反射</dt><dd>动态操作对象，涉及序列化与反序列化</dd>
+<dt>语言交互性</dt><dd>cgo 提供与 C 的互操作</dd>
+</dl>
+</div>
+</div>
+
+<div id="outline-container-orgea538bc" class="outline-3">
+<h3 id="orgea538bc">Hello World</h3>
+<div class="outline-text-3" id="text-orgea538bc">
+<ul class="org-ul">
+<li>main 包中 main 函数为入口</li>
+<li>main 函数无返回，无参数传入（通过 <code>os.Args</code> ）</li>
+<li>go run/build 命令运行和编译</li>
+<li>go 命令只是一个前端，编译器与链接器为 6g, 6l 等 <sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org3cb7062" class="outline-3">
+<h3 id="org3cb7062">工程管理</h3>
+<div class="outline-text-3" id="text-org3cb7062">
+<ul class="org-ul">
+<li>完全用目录结构和包名来推导工程结构和构建顺序（策略而非规则）</li>
+<li>包括 src, pkg, bin 三个目录</li>
+<li><code>xxx_test.go</code> 是针对 <code>xxx.go</code> 的单元测试文件</li>
+<li><code>GOPATH</code> 环境变量为工程根目录</li>
+<li><code>go test</code> 执行单元测试</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org9b655a6" class="outline-3">
+<h3 id="org9b655a6">其它资料</h3>
+<div class="outline-text-3" id="text-org9b655a6">
+<ul class="org-ul">
+<li><a href="https://github.com/wonderfo/wonderfogo/wiki">持续整理的 go 资料</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgea6ab0c" class="outline-2">
+<h2 id="orgea6ab0c">顺序编程</h2>
+<div class="outline-text-2" id="text-orgea6ab0c">
+</div><div id="outline-container-org899889d" class="outline-3">
+<h3 id="org899889d">变量</h3>
+<div class="outline-text-3" id="text-org899889d">
+<ul class="org-ul">
+<li>变量是对一块数据存储空间的命名</li>
+<li><code>var</code> 关键字</li>
+<li><code>:=</code> 定义及自动类型推导，用于局部变量</li>
+<li>支持多重赋值</li>
+<li>用 <code>_</code> 来表示匿名变量，通常丢弃该值</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orga64c826" class="outline-3">
+<h3 id="orga64c826">常量</h3>
+<div class="outline-text-3" id="text-orga64c826">
+<ul class="org-ul">
+<li>编译期间就已知且不可改变的值</li>
+<li>字面常量：无类型，视使用值域而定，保持精确度</li>
+<li><code>const</code> 关键字，类似于 <code>var</code> ，可以是无类型的</li>
+<li>预定义了 true, false, iota<sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup> 等变量</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org39f2391" class="outline-3">
+<h3 id="org39f2391">类型</h3>
+<div class="outline-text-3" id="text-org39f2391">
+<dl class="org-dl">
+<dt>布尔值</dt><dd>bool，值为 <code>true</code> 或 <code>false</code></dd>
+<dt>整形</dt><dd><code>[u]int{8,16,32,64}</code> 以及 <code>int</code>, <code>uint</code>, <code>uintptr</code></dd>
+<dt>浮点型</dt><dd><code>float{32,64}</code></dd>
+<dt>复数类型</dt><dd><code>complex{64,128}</code></dd>
+<dt>字符串</dt><dd>不可修改，字符类型为 <code>rune</code> ，注意与 byte 的区别</dd>
+<dt>字符类型</dt><dd>byte vs rune</dd>
+<dt>数组</dt><dd><code>[2*N]struct{x,y int 32}</code>, 注意数组是一个 <b><b>值类型</b></b> ，赋值与传参内容会被复制</dd>
+<dt>切片</dt><dd>slices，底层是数组，可动态扩充空间，引用类型。常用方法为 copy,len,cap</dd>
+<dt>map</dt><dd><code>map[string] PersonInfo</code> 定义，通过 make 来申请，引用类型</dd>
+</dl>
+</div>
+</div>
+
+<div id="outline-container-org8ee5693" class="outline-3">
+<h3 id="org8ee5693">流程控制</h3>
+<div class="outline-text-3" id="text-org8ee5693">
+</div><div id="outline-container-orgeda6971" class="outline-4">
+<h4 id="orgeda6971">条件语句</h4>
+<div class="outline-text-4" id="text-orgeda6971">
+<p>
+<code>if ... else</code>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org11e7001" class="outline-4">
+<h4 id="org11e7001">选择语句</h4>
+<div class="outline-text-4" id="text-org11e7001">
+<ul class="org-ul">
+<li><code>switch ... case</code></li>
+<li>switch 后表达式可选，退化成 <code>if...elseif...else</code> 分支</li>
+<li>不需要加 break ，可以加入 fallthrough 跳过跳出</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgca36c5a" class="outline-4">
+<h4 id="orgca36c5a">循环语句</h4>
+<div class="outline-text-4" id="text-orgca36c5a">
+<p>
+通过 <code>for</code> 语句实现，有三种方式
+</p>
+
+<ol class="org-ol">
+<li>无限循环</li>
+<li>C 循环（三段式）</li>
+<li>range 迭代</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgf9c0948" class="outline-4">
+<h4 id="orgf9c0948">跳转语句</h4>
+<div class="outline-text-4" id="text-orgf9c0948">
+<p>
+<code>goto LABLE</code>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org83a7c6d" class="outline-3">
+<h3 id="org83a7c6d">函数</h3>
+<div class="outline-text-3" id="text-org83a7c6d">
+<ul class="org-ul">
+<li>通过首字母大小写来体现可见性</li>
+<li>不定参数 <code>...type</code> ，本质是数组切片</li>
+<li>数组展开 <code>slices...</code> ，类似于 lisp apply 展开 list</li>
+<li><code>interaface{}</code> 接口可以表示任意类型数据</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org68b4be3" class="outline-3">
+<h3 id="org68b4be3">闭包</h3>
+<div class="outline-text-3" id="text-org68b4be3">
+<p>
+可以包含自由（未绑定）变量的代码段，这些变量不在这个代码块内部或任何全局上下文中定义，而是在定义代码块的环境中定义。
+</p>
+
+<p>
+要执行的代码块为自由变量提供绑定的计算环境（作用域）
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0ac0371" class="outline-3">
+<h3 id="org0ac0371">错误处理</h3>
+<div class="outline-text-3" id="text-org0ac0371">
+<dl class="org-dl">
+<dt>error 接口</dt><dd>有唯一的方法 Error</dd>
+<dt>defer</dt><dd>atexit 回调，保证资源被清理干净</dd>
+<dt>panic/recover</dt><dd>defer 会被先执行， recover 位于 defer 中</dd>
+</dl>
+</div>
+</div>
+
+<div id="outline-container-orge5b9a41" class="outline-3">
+<h3 id="orge5b9a41">示例</h3>
+<div class="outline-text-3" id="text-orge5b9a41">
+<ul class="org-ul">
+<li>演示了排序程序，以及命令行的交互实现</li>
+<li><code>flag</code> 用于解析参数</li>
+<li><code>os.Open</code>, <code>os.Create</code> 以及 <code>File.Close</code>, <code>File.WriteString</code> 操作文件</li>
+<li><code>bufio.NewReader</code>, <code>bufio.ReadLine</code> 操作 IO</li>
+<li><code>strconv.Atoi</code> 字符串转换</li>
+<li><code>time.Now</code> 获取当前时间</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div id="outline-container-org5b7b5ed" class="outline-2">
+<h2 id="org5b7b5ed">面向对象编程</h2>
+<div class="outline-text-2" id="text-org5b7b5ed">
+</div><div id="outline-container-org45cc3f5" class="outline-3">
+<h3 id="org45cc3f5">概述</h3>
+<div class="outline-text-3" id="text-org45cc3f5">
+<ul class="org-ul">
+<li>Go 没有继承、虚函数、构造/析构函数 ，this 掼</li>
+<li>通过接口 (interface) 来盘活整个类型系统</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org030a3ee" class="outline-3">
+<h3 id="org030a3ee">类型系统</h3>
+<div class="outline-text-3" id="text-org030a3ee">
+</div><div id="outline-container-org3886d52" class="outline-4">
+<h4 id="org3886d52">概述</h4>
+<div class="outline-text-4" id="text-org3886d52">
+<p>
+类型系统是程序语言中一个重要的部分，在 GO 中主要包括以下部分
+</p>
+
+<ol class="org-ol">
+<li>基础类型</li>
+<li>复合类型：如数组、结构体、指针等</li>
+<li>可以指向任意对象的类型（Any 类型）</li>
+<li>值语义与引用语义<sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup></li>
+<li>面向对象</li>
+<li>接口</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org325f840" class="outline-4">
+<h4 id="org325f840">Java 类型系统</h4>
+<div class="outline-text-4" id="text-org325f840">
+<p>
+以 java 为例，有两套独立的类型系统<sup><a id="fnr.5" class="footref" href="#fn.5">5</a></sup>
+</p>
+
+<ol class="org-ol">
+<li>值类型：通过装箱才能作为对象，如 int 转换为 Integer 对象</li>
+<li>对象类型/引用类型：只允许在堆上创建（共享内存），以 Object 作为类型系统的根</li>
+</ol>
+
+<p>
+只有对象类型才能实现接口
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9d6a778" class="outline-4">
+<h4 id="org9d6a778">Go 语言类型系统</h4>
+<div class="outline-text-4" id="text-org9d6a778">
+<p>
+Go 语言类型系统有如下特征：
+</p>
+
+<dl class="org-dl">
+<dt>大多类型都是值语义</dt><dd>意味要想修改变量的值，需要显式的传递指针</dd>
+<dt>可以包含对应的操作方法</dt><dd>Reciever</dd>
+<dt>Any 类型</dt><dd>即 <code>interface{}</code></dd>
+</dl>
+
+<p>
+其值主义表现的非常彻底，包括数组、结构体、指针都基于值语义<sup><a id="fnr.6" class="footref" href="#fn.6">6</a></sup>
+</p>
+
+<p>
+Go 中有四个引用类型的特别类型：
+</p>
+
+<ol class="org-ol">
+<li>slice</li>
+<li>map</li>
+<li>channel</li>
+<li>interface</li>
+</ol>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div id="outline-container-org4512f4c" class="outline-3">
+<h3 id="org4512f4c">初始化</h3>
+<div class="outline-text-3" id="text-org4512f4c">
+<p>
+Go 中未显示初始化的变量都会被初始化为默认零值。结构体为例，构造的方法有四种：
+</p>
+
+<ol class="org-ol">
+<li><code>new(Rect)</code></li>
+<li><code>&amp;Rect{}</code></li>
+<li><code>&amp;Rect{0,0,100,200}</code></li>
+<li><code>&amp;Rect{width: 100, height: 200}</code></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org662180c" class="outline-3">
+<h3 id="org662180c">匿名组合</h3>
+<div class="outline-text-3" id="text-org662180c">
+<p>
+“继承”匿名 struct 的方法，本质是语法糖。其中匿名 struct 中 field 访问获得提升
+</p>
+</div>
+</div>
+
+<div id="outline-container-org05bcf6c" class="outline-3">
+<h3 id="org05bcf6c">可见性</h3>
+<div class="outline-text-3" id="text-org05bcf6c">
+<ul class="org-ul">
+<li>通过首字母大小写控制可见性</li>
+<li>可见性针对包级别，比 scala 粗旷，但好理解</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org1410cb4" class="outline-3">
+<h3 id="org1410cb4">接口</h3>
+<div class="outline-text-3" id="text-org1410cb4">
+<p>
+接口是 go 语言中类型系统的基石
+</p>
+</div>
+
+<div id="outline-container-org85e5b40" class="outline-4">
+<h4 id="org85e5b40">侵入式接口</h4>
+<div class="outline-text-4" id="text-org85e5b40">
+<p>
+Go 语言之外，接口主要作为不同组件之间的契约关系存在，需要强制声明实现。称为“侵入式”。
+</p>
+
+<p>
+侵入式接口有一个邮件个主要问题：
+</p>
+
+<ol class="org-ol">
+<li>提供哪些接口</li>
+<li>两个类实现了相同的接口，接口放在哪个包好？</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org749fe65" class="outline-4">
+<h4 id="org749fe65">非侵入式接口</h4>
+<div class="outline-text-4" id="text-org749fe65">
+<p>
+Go 语言中，一个类只要实现了接口要求的所有函数，则自动实现该接口<sup><a id="fnr.7" class="footref" href="#fn.7">7</a></sup>。称为“非侵入式接口”。
+</p>
+
+<p>
+其优势在于：
+</p>
+
+<ol class="org-ol">
+<li>不再需要绘制类库的继承树图（好事？坏事？）</li>
+<li>只需要关心应该提供哪些方法，无须纠结接口如何细分</li>
+<li>不需要为实现接口而导包，减少耦合</li>
+</ol>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6316721" class="outline-3">
+<h3 id="org6316721">接口赋值</h3>
+<div class="outline-text-3" id="text-org6316721">
+<p>
+接口赋值分为两种：
+</p>
+
+<ol class="org-ol">
+<li>将对象实例赋值给接口</li>
+<li>将一个接口赋值给另一个接口</li>
+</ol>
+</div>
+
+<div id="outline-container-org13b22df" class="outline-4">
+<h4 id="org13b22df">注意</h4>
+<div class="outline-text-4" id="text-org13b22df">
+<p>
+Go 会根据 <code>func ( a Integer ) Less ( b Integer ) bool</code> 自动生成：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go">func ( a *Integer ) Less ( b Interger ) book {
+    return (*a).Less(b)
+}
+</pre>
+</div>
+
+<p>
+反之则不成立（因为 <code>&amp;a.Add()</code> 改变的只是函数的参数，并不对外部的对象产生影响。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9eeba9c" class="outline-3">
+<h3 id="org9eeba9c">接口查询</h3>
+<div class="outline-text-3" id="text-org9eeba9c">
+<p>
+用于检查对象是否实现了接口。注意这是在运行期进行的操作，有成本，且可能失败
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go">file, ok := obj.(*File)
+</pre>
+</div>
+
+<p>
+接口查询的主要用途是：
+</p>
+
+<ol class="org-ol">
+<li>查询接口</li>
+<li>查询具体类型</li>
+</ol>
+</div>
+
+<div id="outline-container-org3846a9f" class="outline-4">
+<h4 id="org3846a9f">类型查询</h4>
+<div class="outline-text-4" id="text-org3846a9f">
+<p>
+通过 <code>v.(type)</code> 语法来查询，配合 <code>switch</code> 语法。另外也可以通过反射进行类型查询 ，详见 <code>reflect.TypeOf</code> 方法
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org780eeee" class="outline-3">
+<h3 id="org780eeee">接口组合</h3>
+<div class="outline-text-3" id="text-org780eeee">
+<p>
+与类型匿名组合类似，可看作其一种特殊用法。
+</p>
+
+<p>
+用于整合不同接口，形成新的接口。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orged7fcf3" class="outline-3">
+<h3 id="orged7fcf3">Any 类型</h3>
+<div class="outline-text-3" id="text-orged7fcf3">
+<p>
+go 语言中任何对象实例都满足 <code>interface{}</code> 接口。
+</p>
+
+<p>
+对于 Any 类型，刚开始对其一无所知，但可以通过接口查询和类型查询了解它（自省特性？）
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orge57294b" class="outline-2">
+<h2 id="orge57294b"><span class="todo TODO">TODO</span> 并发编程</h2>
+</div>
+<div id="outline-container-orga0cb4eb" class="outline-2">
+<h2 id="orga0cb4eb">开发工具</h2>
+<div class="outline-text-2" id="text-orga0cb4eb">
+<ul class="org-ul">
+<li><code>github.com/nfs/gocode</code> 提供代码补全功能</li>
+<li>由于多线程和多进程的引入 ，可视化调试手段功能有限，不如直接 <code>fmt.Println</code></li>
+</ul>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+闭包在函数式编程中是一个重要想对概念，C++ 式的面向对象编程中把一组函数绑定到特定的数据类型上，而闭包可以说是把一组数据绑定到特定的函数上。
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><p class="footpara">
+貌似 plan9 中的编译器也是如此。在 1.8 版本的 bin 目录下没有看到 6g, 6l 等文件？
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3">3</a></sup> <div class="footpara"><p class="footpara">
+编译时生成，每次自动加 1。用于生成枚举，多次调用时可以只写第一个，后续省略
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4">4</a></sup> <div class="footpara"><p class="footpara">
+在 C 语言中函数传参方式不同，决定函数是否能够修改外部变量内容
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5">5</a></sup> <div class="footpara"><p class="footpara">
+可以看出 java 不是完整的面向对象语言，在 ruby 等中强制要求所有类型都是对象
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6">6</a></sup> <div class="footpara"><p class="footpara">
+C 语言中数组基于引用，但结构体中的数组基于值
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.7" class="footnum" href="#fnr.7">7</a></sup> <div class="footpara"><p class="footpara">
+类似于 python 中的 duck type，但由于 go 是编译语言，在使用时强制转换和检查，能保证更好的可用性和性能
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="author">Author: 赵文彬</p>
+<p class="date">Created: 2017-06-11 Sun 15:16</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
