@@ -1,0 +1,150 @@
+#+TITLE: 《Git 教程》笔记
+#+AUTHOR: Zhao WenBin
+
+* 说明
+
+教程原文地址是 [[http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000][廖雪峰的官方网站-git教程]]
+
+* 概述
+
+git 是分布式的版本管理系统。
+
+与集中式相比，不需要时刻联网，也不需要中间服务器（可以有），本地就有完整的仓库。
+
+另外，git 的分支管理也是一大亮点
+
+* 安装配置
+
+/ubuntu,debian 中的包之前命名为 git-core，因为有 gnu iterative tool 使用了 git 的名字/
+
+配置使用命令 =git config= ，常见的配置有：
+
+- user.name :: 用户名
+- user.email :: email 地址
+- color.ui :: 是否启用颜色
+- alias.st :: 指定别名，如用 st 替代 status
+- core.quotepath :: 中文名问题
+
+另外可以在仓库下建立 =.gitignore= 文件，来忽略某些文件
+
+* 创建版本
+
+** 本地仓库
+
+1. =git init=
+2. =git add=
+3. =git commit=
+
+** 远程仓库
+
+/github 中可以通过公布 ssh pub key 来配置免密/
+
+- 添加远程仓库 :: =git remote add origin <url>=
+- 推送到远程仓库 :: =git push -u origin master=
+- 克隆仓库 :: =git clone=
+
+*** 注意
+
+- 克隆远端仓库时不会主动拉取除 master 之外的分支
+- =git remote -v= 来查看远程仓库
+- =git checkout -b dev origin/dev= 来获取远端的其它分支
+
+
+远程仓库可以有多种协议，如 =http:=, =git:=, =ssh:=
+
+* 时光穿梭
+
+git 仓库历史版本与当前修改通过 diff, status 来查看
+
+** 版本回退
+
+- 通过 =git log --pretty oneline= 来查看历史提交
+- =HEAD= 表示当前版本
+- =HEAD^= 表示上一版本
+- =HEAD~100= 表示前一百个版本
+- 命令 =git reset --hard <refspec>= 来回退版本
+- 通过 =git reflog= 来要查看历史命令，以找回 reset 后的提交
+
+
+** 工作区与暂存区
+
+- 工作区指工作目录
+- 版本库保存于 .git 目录
+  + stage 为暂存器
+  + master 主分支
+  + HEAD 指针，指向当前分支
+- add 命令添加到 stage 中
+- commit 刷 stage 到当前分支
+
+** 管理修改
+
+git 跟踪的是修改，而非文件。实际上是对文件的 sha1sum 进行比较来跟踪修改。
+
+** 撤消修改
+
+- =git checkout -- <file>= :: 丢弃工作区修改
+- =git reset HEAD <file>= :: unstage 修改
+
+** 删除文件
+
+=git rm= 命令删除记录
+
+
+
+* 分支管理
+
+git 按提交的父子关系形成一条时间轴，一条时间轴就是一个分支，默认为 master 分支。
+
+HEAD 指向当前分支，可以有多个分支，分支之间可以在某个点分岔。
+
+- =git checkout -b dev= :: 创建分支并切换
+- =git branch= :: 查看分支
+- =git checkout master= :: 切换回主分支
+- =git merge dev= :: 合并 dev 到当前分支
+- =git branch -d dev= :: 删除 dev 分支
+
+** 合并
+
+- 如果分支有前后继承关系，则为 fast forward
+- 通过 --no-ff 关闭快进模式，以便从日志中看出分支合并信息
+- 通过 =git log --graph --pretty=oneline --abbrev-commit= 来查看分支图
+
+** 分支策略
+
+- master 作为稳定内容，一般用于发布新版本
+- dev 用于开发
+- bug-xx 用于 bug 修复，合并后删除
+- feature 分支
+
+** stash
+
+- git stash 提供一个栈，缓存修改内容
+- =git stash= 压栈， =git stash list= 查看
+- =git apply= 配合 =git drop= ，等价于 =git pop=
+
+* 标签管理
+
+tag 对版本库提交生成指针，通过名称来标识提交
+
+- =git tag <name>= :: 打标签
+- =git tag= :: 查看标签
+- =git show <tagname>= :: 查看详情
+- =git tag -a v0.1 -m ""= :: 带说明的标签
+- =git push origin v1.0= :: 推送指定标签
+- =git push origin --tags= :: 推送所有标签
+- =git push origin :refs/tags/v0.9= :: 删除远程仓库的标签
+
+* 建立远程仓库
+
+基本的思路如下：
+
+1. 建立 git 用户，并配置其 shell 为 git-shell （禁止普通登录）
+2. 建立裸仓库 =git init --bare xxx=
+3. 收集用户的 ssh public key，以无密操作
+
+
+
+
+
+
+
