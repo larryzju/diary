@@ -1,0 +1,51 @@
+* dependency 插件
+
+从外网攒 jar 包，用 =dependency:get= 插件，具体用法如：
+
+#+BEGIN_SRC shell
+mvn dependency:get -DartifactId=spark-sql_2.11 -DgroupId=org.apache.spark -Dversion=2.1.1 -Dclassifier=sources
+#+END_SRC
+
+其中 classifier 为可选的，用于下载 javadoc 或 sources
+
+* repositories 配置
+
+** TODO 在工程 pom.xml 配置
+
+待补充
+
+** 在 settings.xml 配置
+
+在 =~/.m2/settings.xml= 中 profiles 一节中添加配置，如下
+
+#+BEGIN_SRC xml
+  <profile>
+    <id>cloudera</id>
+    <repositories>
+      <repository>
+	<id>cloudera</id>
+	<name>cloudera repo</name>
+	<url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
+      </repository>
+    </repositories>
+  </profile>
+#+END_SRC
+
+使用时，需要为 maven 指定 profile，如 =mvn -Pcloudera=
+
+* mirror 配置
+
+国内中央镜像源可以使用阿里镜像，在 =~/.m2/settings.xml= 中添加
+
+#+BEGIN_SRC xml
+  <mirrors>
+    <mirror>
+      <id>aliyun</id>
+      <mirrorOf>central</mirrorOf>
+      <name>Human Readable Name for this Mirror.</name>
+      <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+    </mirror>
+  </mirrors>
+#+END_SRC
+
+
