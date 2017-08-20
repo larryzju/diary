@@ -89,3 +89,15 @@
 *** LinearSeq 类型
 
 LinearSeq 底层是 MutableList，那么 LinearSeq 本质上是个 class 还是 type?
+* String Interpolation
+
+String Interpolation 是在 2.10.0 中加入的功能，可以在字符串中嵌入变量引用，如 =s"Hello, $name"=
+
+内置三种前缀字母，表示不同的处理方法：
+
+1. s 前缀，类似 ruby，替换用 =$var= 表示的变量，也可将表达式放在 =${}= 中
+2. f 前缀，类似 printf 语法，如 =f"$name%s is $height%2.2f meters tall"=
+3. raw 前缀，类似 python 'r' 前缀，同 's'，但不会处理转义字符
+
+String Interpolation 本质上是语法糖，对应于 =StringContext.id= 函数调用，可以自定义，需要实现一个 implicit 类，方法略
+
