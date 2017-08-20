@@ -1,0 +1,91 @@
+#+TITLE: scala 笔记
+#+AUTHOR: 赵文彬
+
+* Collection
+
+** 说明
+
+ scala 官方 tutorial 第一章中重点介绍了集合类的特性：
+
+ -  通用性
+ -  一致性
+ -  功能丰富性
+
+ 类似于 clojure 等设计思路
+
+ -  对集合作出抽象数据结构，有丰富的通用的 API 和函数式的用法
+ -  使用高阶函数（并提供语法支持）
+ -  方便在 API 兼容的情况下切换到多处理器支持等不同实现数据结构
+
+ 优于 clojure 的地方在于
+
+ -  scala 是静态类型语言，通过函数参数显式声明，在编译时会检测出很多类型错误
+
+** 可变与不可变
+
+集合类存在三种变体：
+
+ -  root: =scala.collection=
+ -  mutable: =scala.collection.mutable=
+ -  immutable: =scala.collection.immutable=
+
+为了方便和向后兼容性，一些导入类型在包 =scala= 中有别名，如： =List=, =Traversable=, =Iterable=, =Seq=, =IndexedSeq=, =Iterator=, =Stream=,   =Vector=, =StringBuilder=, =Range=
+
+*** scala.collection 数据结构层次
+
+ [[file:image/collections.png]]
+
+ 集合类的抽象层次依次为：
+
+ 1. Traverable
+ 2. Iterable
+ 3. Seq, Set, Map
+ 4. ...
+
+*** scala.collection.immutable 数据结构层次
+
+[[file:image/collections.immutable.png]]
+
+*** scala.collection.mutable 数据结构层次
+
+[[file:image/collections.mutable.png]]
+
+*** 构造
+
+直接用类型加参数列表构造，常见语法如
+
+- =Traversable(1,2,3)=
+- =Map("x"->24,"y"->25,"z"->26)=
+
+*** API
+
+- Traversable 类提供了所有集合支持的 API
+- 可能被具体类型实现重写
+- map 操作返回与原类型一致的对象
+
+** 常用不可变类型
+
+| 名称             | 说明                                                                                      |
+|------------------+-------------------------------------------------------------------------------------------|
+| ArrayBuffer      | 底层是 array，隐含 size，向结尾添加高效                                                   |
+| ListBuffer       | 内部为 linked list                                                                        |
+| StringBuilder    | 用于构造 String，可以直接在 scala 命名空间使用                                            |
+| LinkedList       | 单向链表，用于方便插入                                                                    |
+| DoubleLinkedList | 双向链表                                                                                  |
+| MutableList      | 单向链表+尾指针，append 效率高，是 LineSeq 的标准实现                                     |
+| Queue            | 用 ~+=~ 添加元素， ~++=~ 添加 seq                                                         |
+| ArraySeq         |                                                                                           |
+| Stack            |                                                                                           |
+| ArrayStack       |                                                                                           |
+| HashMap/HashSet  | 底层是数组，返回时按哈希顺序返回                                                          |
+| WeakHashMap      | 无引用会自动删除键值对，用作缓存（类似 clojure memorize），底层是 =java.util.WeakHashMap= |
+| ConcurrentMap    | 有额外带保护的方法，是 trait，实现了 =java.util.concurrent.ConcurrentMap=                 |
+| BitSet           |                                                                                           |
+
+*** TODO empty 构造
+
+可以用 =mutable.ArrayBuffer.empty[int]= 构造对象，empty 的 API 从哪里来？
+
+*** LinearSeq 类型
+
+LinearSeq 底层是 MutableList，那么 LinearSeq 本质上是个 class 还是 type?
