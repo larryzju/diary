@@ -101,3 +101,17 @@ String Interpolation 是在 2.10.0 中加入的功能，可以在字符串中嵌
 
 String Interpolation 本质上是语法糖，对应于 =StringContext.id= 函数调用，可以自定义，需要实现一个 implicit 类，方法略
 
+* REPL
+
+scala repl 将代码按模板进行封装（wrap with template)，编译并执行。并将结果自动导出到当前 scope 中。
+
+常用的命令有
+
+| variable/command | description     |
+|------------------+-----------------|
+| $intp            | IMain 实例      |
+| lastException    | 最后一个异常    |
+| :help            | 查看帮助        |
+| :javap           | 反汇编文件或类  |
+| :power           | 进入 power mode |
+| <tab>            | 补全              |
