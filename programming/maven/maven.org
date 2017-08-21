@@ -1,3 +1,20 @@
+* pom
+
+maven 的核心为 pom, 通过 pom.xml 配置，定义了 project，包括配置和源码。
+
+配置包括与开发者相关的，缺陷跟踪系统，组织和许可，项目 URL，项目信赖以及其他。
+
+pom.xml 中的核心元素包括
+
+- project :: 声明一些命名空间及 xsd（让第三方工具快速编辑 pom）
+- modelVersion :: =4.0.0= （对于 maven2 和 maven3）
+- groupId
+- artifactId
+- version
+- name :: 建议每个 pom 声明 name，指定项目名称
+- dependencies/dependicy :: 坐标依赖
+- scope :: 依赖范围
+
 * dependency 插件
 
 从外网攒 jar 包，用 =dependency:get= 插件，具体用法如：
