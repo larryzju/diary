@@ -8,9 +8,9 @@ pom.xml 中的核心元素包括
 
 - project :: 声明一些命名空间及 xsd（让第三方工具快速编辑 pom）
 - modelVersion :: =4.0.0= （对于 maven2 和 maven3）
-- groupId
-- artifactId
-- version
+- groupId ::
+- artifactId ::
+- version ::
 - name :: 建议每个 pom 声明 name，指定项目名称
 - dependencies/dependicy :: 坐标依赖
 - scope :: 依赖范围
