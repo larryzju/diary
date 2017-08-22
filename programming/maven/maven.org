@@ -66,3 +66,12 @@ mvn dependency:get -DartifactId=spark-sql_2.11 -DgroupId=org.apache.spark -Dvers
 #+END_SRC
 
 
+* build classpath 
+
+=maven dependency:build-classpath= 可以从当前工程（pom.xml）中生成 classpath
+
+比如 spark hive 需要指定 classpath，可以
+
+1. 从 =hive-exec= jar 包中提取 pom.xml
+2. 使用 =maven dependency:build-classpath= 命令生成 classpath
+3. classpath 中补充 hive-exec 所在的本地 jar 包路径
