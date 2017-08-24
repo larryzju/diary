@@ -1,0 +1,147 @@
+#+TITLE: liquid 笔记
+#+AUTHOR: 赵文彬
+
+* 什么是 liquid?
+
+html 模板语言及编译器
+
+* 基本语法
+
+分为三种：object, tags, filters
+
+** object
+
+页面中显示的内容，用 ={{}}= 括起来，如 ={{ page.title }}=
+
+*** TODO 问题
+
+如果知道当前有哪些可用的 object?
+
+** tags
+
+定义逻辑和控制流，用 ={% %}= 表示。并不产生任何的可见内容，用于实现逻辑，内容仍由 object 来提供。
+
+#+BEGIN_SRC
+{% if user %}
+  Hello {{ user.name }}!
+{% endif %}
+#+END_SRC
+
+常用功能如: control flow, iteration, variable assignments
+
+*** comment
+
+在 comment 和 uncomment 之间的内容将被忽略
+
+*** control flow
+
+- if, elsif, else, endif
+- unless, elsif, else, endunless
+- case, when..., endcase
+
+*** iteration
+
+- =for x in array=
+- =break=
+- =continue=
+- =for x in array limit:2= , 表示只取前两个元素
+- =for x in array offset:2= ，表示跳过前两个元素
+- =for x in array reversed= ，表示反向
+- range，类似 shell, 用 =(3..5)= 来表示
+- ={% cycle 'one', 'tow', 'three' %}= ，每次调用返回下一个值，用在 for 循环内
+- tablerow 用于生成表格，配合 limit, offset, range, cols 等参数
+
+
+*** raw
+
+raw 和 endraw 之间的内容被临时禁用 tag 处理
+
+
+*** variable assignments
+
+- ={% assign tobi = "Tobi %}=
+- ={% capture my_variable %}I am being captured.{% endcapture %}=
+- ={% increment my_counter %}= ，与 assign 命名的变量无关
+- decrement 同上
+
+** filters
+
+对 object 的内容进行处理，用 =|= （管道）来表示，可连续多个
+
+#+BEGIN_SRC
+{{ "/my/fancy/url" | append: ".html" }}
+#+END_SRC
+
+*** 举例
+
+- compact :: 去除数组中的空元素
+- date :: 时间 format
+- default :: 提供默认值
+- join :: 连接数组字符串
+- map :: 同函数式
+- =newline_to_br= :: 将 =\n= 转换为 =<br>=
+- size :: 长度，字符串或数组
+- slice :: 同 python array 分片
+- =strip_html= :: 去除 HTML tags
+- =truncate= :: 截断字符串，返回前 n 个
+- =url_encode= / =url_decode= :: 编解码 url
+
+* 操作符
+
+| ~==~          | equals                         |
+| ~!=~          | does not equal                 |
+| ~>~           | greater than                   |
+| ~<~	   | less than                      |
+| ~>=~	  | greater than or equal to       |
+| ~<=~	  | less than or equal to          |
+| ~or~	  | logical or                     |
+| ~and~	 | logical and                    |
+| =contains=    | 字符串包含，或者数组包含字符串 |
+
+
+配合 tag 语法，如 =if .. endif= 等使用
+
+* 布尔值
+
+除了 =nil= 和 =false= 外都为真
+* TODO 类型
+
+有六种类型（五种？）
+
+- String ::
+- Number :: 可心是浮点数或整数
+- Boolean :: 字面量 true 或 false
+- Nil :: 空，不存在之意
+- Array :: 可存储任何变量
+
+可以通过 =assign= 或 =capture= tag 来初始化
+
+** 数组操作
+
+| 迭代  | ={% for user in site.users %}= |
+| index | ={{ site.users[0] }}=          |
+
+可以对 string 使用 split filter 来生成子字符串数组
+
+* 变种
+
+- Liquid
+- Shopify Liquid
+- Jekyll Liquid
+
+** Jekyll
+
+jekyll 是一个静态站点生成器，通过将内容与模型渲染生成最终网页。
+
+Jekyll 使用 Liquid 作为其模板语言，添加了额外的 objects, tags 和 filters。如
+
+- objects representing content pages
+- tags for including snippets of content in others
+- filters for manipulating strings and URLs
+
+
+
+
+* Whitespace control
+
+liquid 会在 HTML 渲染中加入空行，用 ={{-,-}}= 或 ={%- -%}= 来避免
