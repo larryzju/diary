@@ -27,7 +27,7 @@ log 实现应该有以下方法：
 
 # 分类
 
-查看 `clojure.tools.logging.impl.clj` 代码，发现四种 log 库 API 上两两分类：
+查看 `clojure/tools/logging/impl.clj` 代码，发现四种 log 库 API 上两两分类：
 
 * slf4j 和 cl (org.apache.commons.logging.Log) 相似
 * log4j 和 jul (java.util.logging.Logger) 相似
