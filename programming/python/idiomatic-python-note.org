@@ -42,7 +42,6 @@ Namespaces are one honking great idea -- let's do more of those!
 - 不要过度追求代码的完善，完成功能是首要的
 - 要有原则，有所不为，过多的特例只会成为惯例
 
-
 * Coding Style
 
 #+BEGIN_QUOTE
@@ -78,7 +77,7 @@ Python 推荐的编码风格参考 PEP08
 
 ** Long Strings
 
-- 多个字符串用在解释时被拼接，如 ~print 'o' 'n' 'e'~
+- 多个字符串用在解释时被拼接，如 =print 'o' 'n' 'e'=
 - 字符串前缀以 'r' 表示 raw string, 其中的反斜转义失效，可以用于写正则式
 - 三引号内可以换行，但首行需要加反斜线来去掉空行，如
     #+BEGIN_SRC python
@@ -101,7 +100,6 @@ Python 推荐的编码风格参考 PEP08
 - comments 用于解释为何和怎样实现的
 - False comments & docstrings are worse than none at all.
 - 参考 PEP257 "Docstring Conventions"
-
 
 
 
@@ -131,7 +129,7 @@ b, a = a, b
 
 ** More About Tuples
 
-- ~1,~ 生成一个 Tuple ~(1,)~
+- =1,= 生成一个 Tuple =(1,)=
 - 最好用括号显式表示: ~(1,)~
 - 如果忘记了逗号，则生成一个数字 ~(1)~
 - 空的 Tuple 使用 ~()~ 或 ~tuple()~ 来构造
@@ -254,7 +252,7 @@ Python 中为 False 的值包括
 *** 自定义类型
 
 - 容器类，定义 ~__len__~ 表示长度
-- 非窗口类，定义 ~__nonzero__~ 表示是否为真
+- 非容器类，定义 ~__nonzero__~ 表示是否为真
 - python3.0 中 ~__nonzero__~ 被重命名为 ~__bool__~
 
 
@@ -315,7 +313,7 @@ def good_append( new_item, a_list=None ):
 可以使用 interpolation 机制来生成（注意安全）
 
 #+BEGIN_SRC python
-values = {name': name, 'messages': messages}
+values = {'name': name, 'messages': messages}
 print ('Hello %(name)s, you have %(message)i messages' % values)
 
 ## or 
