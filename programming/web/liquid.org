@@ -139,9 +139,6 @@ Jekyll 使用 Liquid 作为其模板语言，添加了额外的 objects, tags �
 - tags for including snippets of content in others
 - filters for manipulating strings and URLs
 
-
-
-
 * Whitespace control
 
 liquid 会在 HTML 渲染中加入空行，用 ={{-,-}}= 或 ={%- -%}= 来避免
