@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-06-11 Sun 15:16 -->
+<!-- 2017-08-26 六 09:10 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>《Go 语言编程》笔记</title>
@@ -238,27 +238,27 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org8a8a9cf">概述</a></li>
-<li><a href="#org5ad31ad">初始 go 语言</a></li>
-<li><a href="#orgea6ab0c">顺序编程</a></li>
-<li><a href="#org5b7b5ed">面向对象编程</a></li>
-<li><a href="#orge57294b"><span class="todo TODO">TODO</span> 并发编程</a></li>
-<li><a href="#orga0cb4eb">开发工具</a></li>
+<li><a href="#orgaa38754">概述</a></li>
+<li><a href="#org067eb14">初始 go 语言</a></li>
+<li><a href="#orgcd5c3b7">顺序编程</a></li>
+<li><a href="#org3e1b7ac">面向对象编程</a></li>
+<li><a href="#org4fd2922"><span class="todo TODO">TODO</span> 并发编程</a></li>
+<li><a href="#org013988a">开发工具</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org8a8a9cf" class="outline-2">
-<h2 id="org8a8a9cf">概述</h2>
-<div class="outline-text-2" id="text-org8a8a9cf">
+<div id="outline-container-orgaa38754" class="outline-2">
+<h2 id="orgaa38754">概述</h2>
+<div class="outline-text-2" id="text-orgaa38754">
 <p>
 Go 编程思想核心是维持语言的简洁，时刻警惕特性复杂化，与 C 语言相通。
 </p>
 </div>
 
-<div id="outline-container-orgb6d51d5" class="outline-3">
-<h3 id="orgb6d51d5">简化</h3>
-<div class="outline-text-3" id="text-orgb6d51d5">
+<div id="outline-container-org2b5c888" class="outline-3">
+<h3 id="org2b5c888">简化</h3>
+<div class="outline-text-3" id="text-org2b5c888">
 <p>
 语言设计总体上持保守态度，有以下简化：
 </p>
@@ -271,9 +271,9 @@ Go 编程思想核心是维持语言的简洁，时刻警惕特性复杂化，�
 </div>
 </div>
 
-<div id="outline-container-orgc695513" class="outline-3">
-<h3 id="orgc695513">特征</h3>
-<div class="outline-text-3" id="text-orgc695513">
+<div id="outline-container-org47e9aac" class="outline-3">
+<h3 id="org47e9aac">特征</h3>
+<div class="outline-text-3" id="text-org47e9aac">
 <ol class="org-ol">
 <li><code>go</code> 关键字与协程</li>
 <li>推荐采用 erlang 风格的消息传递机制进行通信</li>
@@ -286,12 +286,12 @@ Go 编程思想核心是维持语言的简洁，时刻警惕特性复杂化，�
 </div>
 </div>
 
-<div id="outline-container-org5ad31ad" class="outline-2">
-<h2 id="org5ad31ad">初始 go 语言</h2>
-<div class="outline-text-2" id="text-org5ad31ad">
-</div><div id="outline-container-org205eaec" class="outline-3">
-<h3 id="org205eaec">Go 语言特性</h3>
-<div class="outline-text-3" id="text-org205eaec">
+<div id="outline-container-org067eb14" class="outline-2">
+<h2 id="org067eb14">初始 go 语言</h2>
+<div class="outline-text-2" id="text-org067eb14">
+</div><div id="outline-container-orge9b8b7e" class="outline-3">
+<h3 id="orge9b8b7e">Go 语言特性</h3>
+<div class="outline-text-3" id="text-orge9b8b7e">
 <dl class="org-dl">
 <dt>GC</dt><dd>自动内存管理，有指针而无操作，避免 C 中的野指针问题</dd>
 <dt>更丰富的内置类型</dt><dd>如 map, slices</dd>
@@ -306,9 +306,9 @@ Go 编程思想核心是维持语言的简洁，时刻警惕特性复杂化，�
 </div>
 </div>
 
-<div id="outline-container-orgea538bc" class="outline-3">
-<h3 id="orgea538bc">Hello World</h3>
-<div class="outline-text-3" id="text-orgea538bc">
+<div id="outline-container-org4a2323e" class="outline-3">
+<h3 id="org4a2323e">Hello World</h3>
+<div class="outline-text-3" id="text-org4a2323e">
 <ul class="org-ul">
 <li>main 包中 main 函数为入口</li>
 <li>main 函数无返回，无参数传入（通过 <code>os.Args</code> ）</li>
@@ -319,9 +319,9 @@ Go 编程思想核心是维持语言的简洁，时刻警惕特性复杂化，�
 </div>
 
 
-<div id="outline-container-org3cb7062" class="outline-3">
-<h3 id="org3cb7062">工程管理</h3>
-<div class="outline-text-3" id="text-org3cb7062">
+<div id="outline-container-orgf307c17" class="outline-3">
+<h3 id="orgf307c17">工程管理</h3>
+<div class="outline-text-3" id="text-orgf307c17">
 <ul class="org-ul">
 <li>完全用目录结构和包名来推导工程结构和构建顺序（策略而非规则）</li>
 <li>包括 src, pkg, bin 三个目录</li>
@@ -332,9 +332,9 @@ Go 编程思想核心是维持语言的简洁，时刻警惕特性复杂化，�
 </div>
 </div>
 
-<div id="outline-container-org9b655a6" class="outline-3">
-<h3 id="org9b655a6">其它资料</h3>
-<div class="outline-text-3" id="text-org9b655a6">
+<div id="outline-container-org4f767d4" class="outline-3">
+<h3 id="org4f767d4">其它资料</h3>
+<div class="outline-text-3" id="text-org4f767d4">
 <ul class="org-ul">
 <li><a href="https://github.com/wonderfo/wonderfogo/wiki">持续整理的 go 资料</a></li>
 </ul>
@@ -342,12 +342,12 @@ Go 编程思想核心是维持语言的简洁，时刻警惕特性复杂化，�
 </div>
 </div>
 
-<div id="outline-container-orgea6ab0c" class="outline-2">
-<h2 id="orgea6ab0c">顺序编程</h2>
-<div class="outline-text-2" id="text-orgea6ab0c">
-</div><div id="outline-container-org899889d" class="outline-3">
-<h3 id="org899889d">变量</h3>
-<div class="outline-text-3" id="text-org899889d">
+<div id="outline-container-orgcd5c3b7" class="outline-2">
+<h2 id="orgcd5c3b7">顺序编程</h2>
+<div class="outline-text-2" id="text-orgcd5c3b7">
+</div><div id="outline-container-orgc257fa8" class="outline-3">
+<h3 id="orgc257fa8">变量</h3>
+<div class="outline-text-3" id="text-orgc257fa8">
 <ul class="org-ul">
 <li>变量是对一块数据存储空间的命名</li>
 <li><code>var</code> 关键字</li>
@@ -358,9 +358,9 @@ Go 编程思想核心是维持语言的简洁，时刻警惕特性复杂化，�
 </div>
 </div>
 
-<div id="outline-container-orga64c826" class="outline-3">
-<h3 id="orga64c826">常量</h3>
-<div class="outline-text-3" id="text-orga64c826">
+<div id="outline-container-org9b64162" class="outline-3">
+<h3 id="org9b64162">常量</h3>
+<div class="outline-text-3" id="text-org9b64162">
 <ul class="org-ul">
 <li>编译期间就已知且不可改变的值</li>
 <li>字面常量：无类型，视使用值域而定，保持精确度</li>
@@ -370,9 +370,9 @@ Go 编程思想核心是维持语言的简洁，时刻警惕特性复杂化，�
 </div>
 </div>
 
-<div id="outline-container-org39f2391" class="outline-3">
-<h3 id="org39f2391">类型</h3>
-<div class="outline-text-3" id="text-org39f2391">
+<div id="outline-container-orge6a8f91" class="outline-3">
+<h3 id="orge6a8f91">类型</h3>
+<div class="outline-text-3" id="text-orge6a8f91">
 <dl class="org-dl">
 <dt>布尔值</dt><dd>bool，值为 <code>true</code> 或 <code>false</code></dd>
 <dt>整形</dt><dd><code>[u]int{8,16,32,64}</code> 以及 <code>int</code>, <code>uint</code>, <code>uintptr</code></dd>
@@ -387,21 +387,21 @@ Go 编程思想核心是维持语言的简洁，时刻警惕特性复杂化，�
 </div>
 </div>
 
-<div id="outline-container-org8ee5693" class="outline-3">
-<h3 id="org8ee5693">流程控制</h3>
-<div class="outline-text-3" id="text-org8ee5693">
-</div><div id="outline-container-orgeda6971" class="outline-4">
-<h4 id="orgeda6971">条件语句</h4>
-<div class="outline-text-4" id="text-orgeda6971">
+<div id="outline-container-orga121f26" class="outline-3">
+<h3 id="orga121f26">流程控制</h3>
+<div class="outline-text-3" id="text-orga121f26">
+</div><div id="outline-container-orge0dcb9f" class="outline-4">
+<h4 id="orge0dcb9f">条件语句</h4>
+<div class="outline-text-4" id="text-orge0dcb9f">
 <p>
 <code>if ... else</code>
 </p>
 </div>
 </div>
 
-<div id="outline-container-org11e7001" class="outline-4">
-<h4 id="org11e7001">选择语句</h4>
-<div class="outline-text-4" id="text-org11e7001">
+<div id="outline-container-org722489a" class="outline-4">
+<h4 id="org722489a">选择语句</h4>
+<div class="outline-text-4" id="text-org722489a">
 <ul class="org-ul">
 <li><code>switch ... case</code></li>
 <li>switch 后表达式可选，退化成 <code>if...elseif...else</code> 分支</li>
@@ -410,9 +410,9 @@ Go 编程思想核心是维持语言的简洁，时刻警惕特性复杂化，�
 </div>
 </div>
 
-<div id="outline-container-orgca36c5a" class="outline-4">
-<h4 id="orgca36c5a">循环语句</h4>
-<div class="outline-text-4" id="text-orgca36c5a">
+<div id="outline-container-org64ae373" class="outline-4">
+<h4 id="org64ae373">循环语句</h4>
+<div class="outline-text-4" id="text-org64ae373">
 <p>
 通过 <code>for</code> 语句实现，有三种方式
 </p>
@@ -425,9 +425,9 @@ Go 编程思想核心是维持语言的简洁，时刻警惕特性复杂化，�
 </div>
 </div>
 
-<div id="outline-container-orgf9c0948" class="outline-4">
-<h4 id="orgf9c0948">跳转语句</h4>
-<div class="outline-text-4" id="text-orgf9c0948">
+<div id="outline-container-orgc0d45e1" class="outline-4">
+<h4 id="orgc0d45e1">跳转语句</h4>
+<div class="outline-text-4" id="text-orgc0d45e1">
 <p>
 <code>goto LABLE</code>
 </p>
@@ -435,9 +435,9 @@ Go 编程思想核心是维持语言的简洁，时刻警惕特性复杂化，�
 </div>
 </div>
 
-<div id="outline-container-org83a7c6d" class="outline-3">
-<h3 id="org83a7c6d">函数</h3>
-<div class="outline-text-3" id="text-org83a7c6d">
+<div id="outline-container-orgaca1430" class="outline-3">
+<h3 id="orgaca1430">函数</h3>
+<div class="outline-text-3" id="text-orgaca1430">
 <ul class="org-ul">
 <li>通过首字母大小写来体现可见性</li>
 <li>不定参数 <code>...type</code> ，本质是数组切片</li>
@@ -447,9 +447,9 @@ Go 编程思想核心是维持语言的简洁，时刻警惕特性复杂化，�
 </div>
 </div>
 
-<div id="outline-container-org68b4be3" class="outline-3">
-<h3 id="org68b4be3">闭包</h3>
-<div class="outline-text-3" id="text-org68b4be3">
+<div id="outline-container-orge64627c" class="outline-3">
+<h3 id="orge64627c">闭包</h3>
+<div class="outline-text-3" id="text-orge64627c">
 <p>
 可以包含自由（未绑定）变量的代码段，这些变量不在这个代码块内部或任何全局上下文中定义，而是在定义代码块的环境中定义。
 </p>
@@ -460,9 +460,9 @@ Go 编程思想核心是维持语言的简洁，时刻警惕特性复杂化，�
 </div>
 </div>
 
-<div id="outline-container-org0ac0371" class="outline-3">
-<h3 id="org0ac0371">错误处理</h3>
-<div class="outline-text-3" id="text-org0ac0371">
+<div id="outline-container-orgcdcdf39" class="outline-3">
+<h3 id="orgcdcdf39">错误处理</h3>
+<div class="outline-text-3" id="text-orgcdcdf39">
 <dl class="org-dl">
 <dt>error 接口</dt><dd>有唯一的方法 Error</dd>
 <dt>defer</dt><dd>atexit 回调，保证资源被清理干净</dd>
@@ -471,9 +471,9 @@ Go 编程思想核心是维持语言的简洁，时刻警惕特性复杂化，�
 </div>
 </div>
 
-<div id="outline-container-orge5b9a41" class="outline-3">
-<h3 id="orge5b9a41">示例</h3>
-<div class="outline-text-3" id="text-orge5b9a41">
+<div id="outline-container-orgddd2b44" class="outline-3">
+<h3 id="orgddd2b44">示例</h3>
+<div class="outline-text-3" id="text-orgddd2b44">
 <ul class="org-ul">
 <li>演示了排序程序，以及命令行的交互实现</li>
 <li><code>flag</code> 用于解析参数</li>
@@ -495,12 +495,12 @@ Go 编程思想核心是维持语言的简洁，时刻警惕特性复杂化，�
 
 
 
-<div id="outline-container-org5b7b5ed" class="outline-2">
-<h2 id="org5b7b5ed">面向对象编程</h2>
-<div class="outline-text-2" id="text-org5b7b5ed">
-</div><div id="outline-container-org45cc3f5" class="outline-3">
-<h3 id="org45cc3f5">概述</h3>
-<div class="outline-text-3" id="text-org45cc3f5">
+<div id="outline-container-org3e1b7ac" class="outline-2">
+<h2 id="org3e1b7ac">面向对象编程</h2>
+<div class="outline-text-2" id="text-org3e1b7ac">
+</div><div id="outline-container-orgcf2f619" class="outline-3">
+<h3 id="orgcf2f619">概述</h3>
+<div class="outline-text-3" id="text-orgcf2f619">
 <ul class="org-ul">
 <li>Go 没有继承、虚函数、构造/析构函数 ，this 掼</li>
 <li>通过接口 (interface) 来盘活整个类型系统</li>
@@ -508,12 +508,12 @@ Go 编程思想核心是维持语言的简洁，时刻警惕特性复杂化，�
 </div>
 </div>
 
-<div id="outline-container-org030a3ee" class="outline-3">
-<h3 id="org030a3ee">类型系统</h3>
-<div class="outline-text-3" id="text-org030a3ee">
-</div><div id="outline-container-org3886d52" class="outline-4">
-<h4 id="org3886d52">概述</h4>
-<div class="outline-text-4" id="text-org3886d52">
+<div id="outline-container-org03249cd" class="outline-3">
+<h3 id="org03249cd">类型系统</h3>
+<div class="outline-text-3" id="text-org03249cd">
+</div><div id="outline-container-org2d0ce35" class="outline-4">
+<h4 id="org2d0ce35">概述</h4>
+<div class="outline-text-4" id="text-org2d0ce35">
 <p>
 类型系统是程序语言中一个重要的部分，在 GO 中主要包括以下部分
 </p>
@@ -529,9 +529,9 @@ Go 编程思想核心是维持语言的简洁，时刻警惕特性复杂化，�
 </div>
 </div>
 
-<div id="outline-container-org325f840" class="outline-4">
-<h4 id="org325f840">Java 类型系统</h4>
-<div class="outline-text-4" id="text-org325f840">
+<div id="outline-container-org143cad6" class="outline-4">
+<h4 id="org143cad6">Java 类型系统</h4>
+<div class="outline-text-4" id="text-org143cad6">
 <p>
 以 java 为例，有两套独立的类型系统<sup><a id="fnr.5" class="footref" href="#fn.5">5</a></sup>
 </p>
@@ -547,9 +547,9 @@ Go 编程思想核心是维持语言的简洁，时刻警惕特性复杂化，�
 </div>
 </div>
 
-<div id="outline-container-org9d6a778" class="outline-4">
-<h4 id="org9d6a778">Go 语言类型系统</h4>
-<div class="outline-text-4" id="text-org9d6a778">
+<div id="outline-container-orge6dde16" class="outline-4">
+<h4 id="orge6dde16">Go 语言类型系统</h4>
+<div class="outline-text-4" id="text-orge6dde16">
 <p>
 Go 语言类型系统有如下特征：
 </p>
@@ -587,9 +587,9 @@ Go 中有四个引用类型的特别类型：
 
 
 
-<div id="outline-container-org4512f4c" class="outline-3">
-<h3 id="org4512f4c">初始化</h3>
-<div class="outline-text-3" id="text-org4512f4c">
+<div id="outline-container-orgcdf80fa" class="outline-3">
+<h3 id="orgcdf80fa">初始化</h3>
+<div class="outline-text-3" id="text-orgcdf80fa">
 <p>
 Go 中未显示初始化的变量都会被初始化为默认零值。结构体为例，构造的方法有四种：
 </p>
@@ -603,18 +603,18 @@ Go 中未显示初始化的变量都会被初始化为默认零值。结构体�
 </div>
 </div>
 
-<div id="outline-container-org662180c" class="outline-3">
-<h3 id="org662180c">匿名组合</h3>
-<div class="outline-text-3" id="text-org662180c">
+<div id="outline-container-org0890c92" class="outline-3">
+<h3 id="org0890c92">匿名组合</h3>
+<div class="outline-text-3" id="text-org0890c92">
 <p>
 “继承”匿名 struct 的方法，本质是语法糖。其中匿名 struct 中 field 访问获得提升
 </p>
 </div>
 </div>
 
-<div id="outline-container-org05bcf6c" class="outline-3">
-<h3 id="org05bcf6c">可见性</h3>
-<div class="outline-text-3" id="text-org05bcf6c">
+<div id="outline-container-orga6692d5" class="outline-3">
+<h3 id="orga6692d5">可见性</h3>
+<div class="outline-text-3" id="text-orga6692d5">
 <ul class="org-ul">
 <li>通过首字母大小写控制可见性</li>
 <li>可见性针对包级别，比 scala 粗旷，但好理解</li>
@@ -622,17 +622,17 @@ Go 中未显示初始化的变量都会被初始化为默认零值。结构体�
 </div>
 </div>
 
-<div id="outline-container-org1410cb4" class="outline-3">
-<h3 id="org1410cb4">接口</h3>
-<div class="outline-text-3" id="text-org1410cb4">
+<div id="outline-container-org4600f61" class="outline-3">
+<h3 id="org4600f61">接口</h3>
+<div class="outline-text-3" id="text-org4600f61">
 <p>
 接口是 go 语言中类型系统的基石
 </p>
 </div>
 
-<div id="outline-container-org85e5b40" class="outline-4">
-<h4 id="org85e5b40">侵入式接口</h4>
-<div class="outline-text-4" id="text-org85e5b40">
+<div id="outline-container-org2ef4c60" class="outline-4">
+<h4 id="org2ef4c60">侵入式接口</h4>
+<div class="outline-text-4" id="text-org2ef4c60">
 <p>
 Go 语言之外，接口主要作为不同组件之间的契约关系存在，需要强制声明实现。称为“侵入式”。
 </p>
@@ -648,9 +648,9 @@ Go 语言之外，接口主要作为不同组件之间的契约关系存在，�
 </div>
 </div>
 
-<div id="outline-container-org749fe65" class="outline-4">
-<h4 id="org749fe65">非侵入式接口</h4>
-<div class="outline-text-4" id="text-org749fe65">
+<div id="outline-container-org5d4e074" class="outline-4">
+<h4 id="org5d4e074">非侵入式接口</h4>
+<div class="outline-text-4" id="text-org5d4e074">
 <p>
 Go 语言中，一个类只要实现了接口要求的所有函数，则自动实现该接口<sup><a id="fnr.7" class="footref" href="#fn.7">7</a></sup>。称为“非侵入式接口”。
 </p>
@@ -668,9 +668,9 @@ Go 语言中，一个类只要实现了接口要求的所有函数，则自动�
 </div>
 </div>
 
-<div id="outline-container-org6316721" class="outline-3">
-<h3 id="org6316721">接口赋值</h3>
-<div class="outline-text-3" id="text-org6316721">
+<div id="outline-container-org412ea9d" class="outline-3">
+<h3 id="org412ea9d">接口赋值</h3>
+<div class="outline-text-3" id="text-org412ea9d">
 <p>
 接口赋值分为两种：
 </p>
@@ -681,9 +681,9 @@ Go 语言中，一个类只要实现了接口要求的所有函数，则自动�
 </ol>
 </div>
 
-<div id="outline-container-org13b22df" class="outline-4">
-<h4 id="org13b22df">注意</h4>
-<div class="outline-text-4" id="text-org13b22df">
+<div id="outline-container-org8008660" class="outline-4">
+<h4 id="org8008660">注意</h4>
+<div class="outline-text-4" id="text-org8008660">
 <p>
 Go 会根据 <code>func ( a Integer ) Less ( b Integer ) bool</code> 自动生成：
 </p>
@@ -702,9 +702,9 @@ Go 会根据 <code>func ( a Integer ) Less ( b Integer ) bool</code> 自动生�
 </div>
 </div>
 
-<div id="outline-container-org9eeba9c" class="outline-3">
-<h3 id="org9eeba9c">接口查询</h3>
-<div class="outline-text-3" id="text-org9eeba9c">
+<div id="outline-container-org66f61ee" class="outline-3">
+<h3 id="org66f61ee">接口查询</h3>
+<div class="outline-text-3" id="text-org66f61ee">
 <p>
 用于检查对象是否实现了接口。注意这是在运行期进行的操作，有成本，且可能失败
 </p>
@@ -724,9 +724,9 @@ Go 会根据 <code>func ( a Integer ) Less ( b Integer ) bool</code> 自动生�
 </ol>
 </div>
 
-<div id="outline-container-org3846a9f" class="outline-4">
-<h4 id="org3846a9f">类型查询</h4>
-<div class="outline-text-4" id="text-org3846a9f">
+<div id="outline-container-org82e52aa" class="outline-4">
+<h4 id="org82e52aa">类型查询</h4>
+<div class="outline-text-4" id="text-org82e52aa">
 <p>
 通过 <code>v.(type)</code> 语法来查询，配合 <code>switch</code> 语法。另外也可以通过反射进行类型查询 ，详见 <code>reflect.TypeOf</code> 方法
 </p>
@@ -734,9 +734,9 @@ Go 会根据 <code>func ( a Integer ) Less ( b Integer ) bool</code> 自动生�
 </div>
 </div>
 
-<div id="outline-container-org780eeee" class="outline-3">
-<h3 id="org780eeee">接口组合</h3>
-<div class="outline-text-3" id="text-org780eeee">
+<div id="outline-container-org4dfb43c" class="outline-3">
+<h3 id="org4dfb43c">接口组合</h3>
+<div class="outline-text-3" id="text-org4dfb43c">
 <p>
 与类型匿名组合类似，可看作其一种特殊用法。
 </p>
@@ -747,9 +747,9 @@ Go 会根据 <code>func ( a Integer ) Less ( b Integer ) bool</code> 自动生�
 </div>
 </div>
 
-<div id="outline-container-orged7fcf3" class="outline-3">
-<h3 id="orged7fcf3">Any 类型</h3>
-<div class="outline-text-3" id="text-orged7fcf3">
+<div id="outline-container-orgb224d07" class="outline-3">
+<h3 id="orgb224d07">Any 类型</h3>
+<div class="outline-text-3" id="text-orgb224d07">
 <p>
 go 语言中任何对象实例都满足 <code>interface{}</code> 接口。
 </p>
@@ -762,12 +762,12 @@ go 语言中任何对象实例都满足 <code>interface{}</code> 接口。
 </div>
 
 
-<div id="outline-container-orge57294b" class="outline-2">
-<h2 id="orge57294b"><span class="todo TODO">TODO</span> 并发编程</h2>
+<div id="outline-container-org4fd2922" class="outline-2">
+<h2 id="org4fd2922"><span class="todo TODO">TODO</span> 并发编程</h2>
 </div>
-<div id="outline-container-orga0cb4eb" class="outline-2">
-<h2 id="orga0cb4eb">开发工具</h2>
-<div class="outline-text-2" id="text-orga0cb4eb">
+<div id="outline-container-org013988a" class="outline-2">
+<h2 id="org013988a">开发工具</h2>
+<div class="outline-text-2" id="text-org013988a">
 <ul class="org-ul">
 <li><code>github.com/nfs/gocode</code> 提供代码补全功能</li>
 <li>由于多线程和多进程的引入 ，可视化调试手段功能有限，不如直接 <code>fmt.Println</code></li>
@@ -811,7 +811,7 @@ C 语言中数组基于引用，但结构体中的数组基于值
 </div></div>
 <div id="postamble" class="status">
 <p class="author">Author: 赵文彬</p>
-<p class="date">Created: 2017-06-11 Sun 15:16</p>
+<p class="date">Created: 2017-08-26 六 09:10</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

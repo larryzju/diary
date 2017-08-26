@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-06-11 Sun 11:52 -->
+<!-- 2017-08-26 六 09:10 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Note on "深入理解Java虚拟机"</title>
@@ -238,18 +238,18 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org5205e1e">概述</a></li>
-<li><a href="#orgab3366c">Java 虚拟机</a></li>
+<li><a href="#org894f9ad">概述</a></li>
+<li><a href="#orgd1fefbd">Java 虚拟机</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org5205e1e" class="outline-2">
-<h2 id="org5205e1e">概述</h2>
-<div class="outline-text-2" id="text-org5205e1e">
-</div><div id="outline-container-org8697071" class="outline-3">
-<h3 id="org8697071">Java 技术体系</h3>
-<div class="outline-text-3" id="text-org8697071">
+<div id="outline-container-org894f9ad" class="outline-2">
+<h2 id="org894f9ad">概述</h2>
+<div class="outline-text-2" id="text-org894f9ad">
+</div><div id="outline-container-org895dc90" class="outline-3">
+<h3 id="org895dc90">Java 技术体系</h3>
+<div class="outline-text-3" id="text-org895dc90">
 <ul class="org-ul">
 <li>Java 语言</li>
 <li>JVM 虚拟机</li>
@@ -264,9 +264,9 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-orgbe24a72" class="outline-3">
-<h3 id="orgbe24a72">Java 的优势</h3>
-<div class="outline-text-3" id="text-orgbe24a72">
+<div id="outline-container-org5f13156" class="outline-3">
+<h3 id="org5f13156">Java 的优势</h3>
+<div class="outline-text-3" id="text-org5f13156">
 <ul class="org-ul">
 <li>结构严谨、面向对象的编程语言</li>
 <li>提供内存管理，避免内存泄露与指针越界</li>
@@ -277,12 +277,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org3610abd" class="outline-3">
-<h3 id="org3610abd">Java 平台的分类</h3>
-<div class="outline-text-3" id="text-org3610abd">
-</div><div id="outline-container-org2fc95e5" class="outline-4">
-<h4 id="org2fc95e5">按业务分类</h4>
-<div class="outline-text-4" id="text-org2fc95e5">
+<div id="outline-container-org59d96e5" class="outline-3">
+<h3 id="org59d96e5">Java 平台的分类</h3>
+<div class="outline-text-3" id="text-org59d96e5">
+</div><div id="outline-container-orgf0e1ea1" class="outline-4">
+<h4 id="orgf0e1ea1">按业务分类</h4>
+<div class="outline-text-4" id="text-orgf0e1ea1">
 <dl class="org-dl">
 <dt>Java Card</dt><dd>小内存设备平台</dd>
 <dt>JavaME</dt><dd>终端</dd>
@@ -293,9 +293,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgb6252b9" class="outline-3">
-<h3 id="orgb6252b9">需要关注的技术</h3>
-<div class="outline-text-3" id="text-orgb6252b9">
+<div id="outline-container-orgeef91a2" class="outline-3">
+<h3 id="orgeef91a2">需要关注的技术</h3>
+<div class="outline-text-3" id="text-orgeef91a2">
 <ul class="org-ul">
 <li>反射（reflection）</li>
 <li>自动装箱</li>
@@ -322,12 +322,12 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-orgab3366c" class="outline-2">
-<h2 id="orgab3366c">Java 虚拟机</h2>
-<div class="outline-text-2" id="text-orgab3366c">
-</div><div id="outline-container-orgb398078" class="outline-3">
-<h3 id="orgb398078">概述</h3>
-<div class="outline-text-3" id="text-orgb398078">
+<div id="outline-container-orgd1fefbd" class="outline-2">
+<h2 id="orgd1fefbd">Java 虚拟机</h2>
+<div class="outline-text-2" id="text-orgd1fefbd">
+</div><div id="outline-container-orgcfb179c" class="outline-3">
+<h3 id="orgcfb179c">概述</h3>
+<div class="outline-text-3" id="text-orgcfb179c">
 <ul class="org-ul">
 <li>不止 Sun Java 1.0 中的 Sun Classic VM</li>
 <li>Sun JDK 和 OpenJDK 中的 HotSpot 虚拟机</li>
@@ -337,12 +337,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org7a438b9" class="outline-3">
-<h3 id="org7a438b9">虚拟机</h3>
-<div class="outline-text-3" id="text-org7a438b9">
-</div><div id="outline-container-org41c9cce" class="outline-4">
-<h4 id="org41c9cce">Sun Classic VM</h4>
-<div class="outline-text-4" id="text-org41c9cce">
+<div id="outline-container-org963b8a6" class="outline-3">
+<h3 id="org963b8a6">虚拟机</h3>
+<div class="outline-text-3" id="text-org963b8a6">
+</div><div id="outline-container-org3219b91" class="outline-4">
+<h4 id="org3219b91">Sun Classic VM</h4>
+<div class="outline-text-4" id="text-org3219b91">
 <ul class="org-ul">
 <li>Class VM 是第一款商用 Java 虚拟机</li>
 <li>只能以纯解释器方式来执行</li>
@@ -352,9 +352,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org1f8cb6f" class="outline-4">
-<h4 id="org1f8cb6f">Sun Extract VM</h4>
-<div class="outline-text-4" id="text-org1f8cb6f">
+<div id="outline-container-orgac19309" class="outline-4">
+<h4 id="orgac19309">Sun Extract VM</h4>
+<div class="outline-text-4" id="text-orgac19309">
 <ul class="org-ul">
 <li>JDK1.2 中加入 Solaris Extract VM</li>
 <li>两级即时编译器</li>
@@ -363,9 +363,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgdd9f29c" class="outline-4">
-<h4 id="orgdd9f29c">Sun HotSpot VM</h4>
-<div class="outline-text-4" id="text-orgdd9f29c">
+<div id="outline-container-org500d985" class="outline-4">
+<h4 id="org500d985">Sun HotSpot VM</h4>
+<div class="outline-text-4" id="text-org500d985">
 <ul class="org-ul">
 <li>是 Sun JDK 和 OpenJDK 所带的虚拟机</li>
 <li>既是 Sun 公司开发 的，也不是原生为 Java 作的</li>
@@ -376,9 +376,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org49341e0" class="outline-3">
-<h3 id="org49341e0">Java 发展趋势</h3>
-<div class="outline-text-3" id="text-org49341e0">
+<div id="outline-container-orgcbdf5af" class="outline-3">
+<h3 id="orgcbdf5af">Java 发展趋势</h3>
+<div class="outline-text-3" id="text-orgcbdf5af">
 <ol class="org-ol">
 <li>模块化</li>
 <li>混合语言</li>
@@ -392,7 +392,7 @@ for the JavaScript code in this tag.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2017-06-11 Sun 11:52</p>
+<p class="date">Created: 2017-08-26 六 09:10</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -4,9 +4,9 @@
 <!-- 2017-08-26 六 09:10 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>note on "programming in scala 2ed"</title>
+<title>liquid 笔记</title>
 <meta name="generator" content="Org mode">
-<meta name="author" content="zhaowenbin">
+<meta name="author" content="赵文彬">
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -233,53 +233,336 @@ for the JavaScript code in this tag.
 <body>
 <div id="content">
 <header>
-<h1 class="title">note on "programming in scala 2ed"</h1>
+<h1 class="title">liquid 笔记</h1>
 </header><nav id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgd90e917">Chapter 1</a></li>
+<li><a href="#org7015a84">什么是 liquid?</a></li>
+<li><a href="#orge987835">基本语法</a></li>
+<li><a href="#orgb1eccb6">操作符</a></li>
+<li><a href="#orge5a9561">布尔值</a></li>
+<li><a href="#org9562b38"><span class="todo TODO">TODO</span> 类型</a></li>
+<li><a href="#org279cace">变种</a></li>
+<li><a href="#org50293ce">Whitespace control</a></li>
 </ul>
 </div>
 </nav>
 
-
-<div id="outline-container-orgd90e917" class="outline-2">
-<h2 id="orgd90e917">Chapter 1</h2>
-<div class="outline-text-2" id="text-orgd90e917">
-</div><div id="outline-container-orgb604086" class="outline-3">
-<h3 id="orgb604086">Why scala?</h3>
-<div class="outline-text-3" id="text-orgb604086">
-</div><div id="outline-container-org6a35446" class="outline-4">
-<h4 id="org6a35446">简洁性与可扩展性</h4>
-<div class="outline-text-4" id="text-org6a35446">
+<div id="outline-container-org7015a84" class="outline-2">
+<h2 id="org7015a84">什么是 liquid?</h2>
+<div class="outline-text-2" id="text-org7015a84">
 <p>
-在不同规模上的编程需求是不一样的。
+html 模板语言及编译器
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge987835" class="outline-2">
+<h2 id="orge987835">基本语法</h2>
+<div class="outline-text-2" id="text-orge987835">
+<p>
+分为三种：object, tags, filters
+</p>
+</div>
+
+<div id="outline-container-org2ae2908" class="outline-3">
+<h3 id="org2ae2908">object</h3>
+<div class="outline-text-3" id="text-org2ae2908">
+<p>
+页面中显示的内容，用 <code>{{}}</code> 括起来，如 <code>{{ page.title }}</code>
+</p>
+</div>
+
+<div id="outline-container-orge92c914" class="outline-4">
+<h4 id="orge92c914"><span class="todo TODO">TODO</span> 问题</h4>
+<div class="outline-text-4" id="text-orge92c914">
+<p>
+如果知道当前有哪些可用的 object?
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org700e860" class="outline-3">
+<h3 id="org700e860">tags</h3>
+<div class="outline-text-3" id="text-org700e860">
+<p>
+定义逻辑和控制流，用 <code>{% %}</code> 表示。并不产生任何的可见内容，用于实现逻辑，内容仍由 object 来提供。
 </p>
 
+<pre class="example">
+{% if user %}
+  Hello {{ user.name }}!
+{% endif %}
+</pre>
+
+<p>
+常用功能如: control flow, iteration, variable assignments
+</p>
+</div>
+
+<div id="outline-container-org01cbbf0" class="outline-4">
+<h4 id="org01cbbf0">comment</h4>
+<div class="outline-text-4" id="text-org01cbbf0">
+<p>
+在 comment 和 uncomment 之间的内容将被忽略
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga35d1de" class="outline-4">
+<h4 id="orga35d1de">control flow</h4>
+<div class="outline-text-4" id="text-orga35d1de">
 <ul class="org-ul">
-<li>对于小的程序，简洁（比如有 Map 的语法支持，省略参数类型）等是重要特性。</li>
-<li>同时需要能够更细致地控制底层实现（在保证语法简洁的前提下）</li>
+<li>if, elsif, else, endif</li>
+<li>unless, elsif, else, endunless</li>
+<li>case, when&#x2026;, endcase</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org0060eb8" class="outline-4">
+<h4 id="org0060eb8">iteration</h4>
+<div class="outline-text-4" id="text-org0060eb8">
+<ul class="org-ul">
+<li><code>for x in array</code></li>
+<li><code>break</code></li>
+<li><code>continue</code></li>
+<li><code>for x in array limit:2</code> , 表示只取前两个元素</li>
+<li><code>for x in array offset:2</code> ，表示跳过前两个元素</li>
+<li><code>for x in array reversed</code> ，表示反向</li>
+<li>range，类似 shell, 用 <code>(3..5)</code> 来表示</li>
+<li><code>{% cycle 'one', 'tow', 'three' %}</code> ，每次调用返回下一个值，用在 for 循环内</li>
+<li>tablerow 用于生成表格，配合 limit, offset, range, cols 等参数</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org2a3072c" class="outline-4">
+<h4 id="org2a3072c">raw</h4>
+<div class="outline-text-4" id="text-org2a3072c">
+<p>
+raw 和 endraw 之间的内容被临时禁用 tag 处理
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org8603bfb" class="outline-4">
+<h4 id="org8603bfb">variable assignments</h4>
+<div class="outline-text-4" id="text-org8603bfb">
+<ul class="org-ul">
+<li><code>{% assign tobi = "Tobi %}</code></li>
+<li><code>{% capture my_variable %}I am being captured.{% endcapture %}</code></li>
+<li><code>{% increment my_counter %}</code> ，与 assign 命名的变量无关</li>
+<li>decrement 同上</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org241af73" class="outline-3">
+<h3 id="org241af73">filters</h3>
+<div class="outline-text-3" id="text-org241af73">
+<p>
+对 object 的内容进行处理，用 <code>|</code> （管道）来表示，可连续多个
+</p>
+
+<pre class="example">
+{{ "/my/fancy/url" | append: ".html" }}
+</pre>
+</div>
+
+<div id="outline-container-orgea772ba" class="outline-4">
+<h4 id="orgea772ba">举例</h4>
+<div class="outline-text-4" id="text-orgea772ba">
+<dl class="org-dl">
+<dt>compact</dt><dd>去除数组中的空元素</dd>
+<dt>date</dt><dd>时间 format</dd>
+<dt>default</dt><dd>提供默认值</dd>
+<dt>join</dt><dd>连接数组字符串</dd>
+<dt>map</dt><dd>同函数式</dd>
+<dt><code>newline_to_br</code></dt><dd>将 <code>\n</code> 转换为 <code>&lt;br&gt;</code></dd>
+<dt>size</dt><dd>长度，字符串或数组</dd>
+<dt>slice</dt><dd>同 python array 分片</dd>
+<dt><code>strip_html</code></dt><dd>去除 HTML tags</dd>
+<dt><code>truncate</code></dt><dd>截断字符串，返回前 n 个</dd>
+<dt><code>url_encode</code> / <code>url_decode</code></dt><dd>编解码 url</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb1eccb6" class="outline-2">
+<h2 id="orgb1eccb6">操作符</h2>
+<div class="outline-text-2" id="text-orgb1eccb6">
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left"><code>==</code></td>
+<td class="org-left">equals</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>!=</code></td>
+<td class="org-left">does not equal</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>&gt;</code></td>
+<td class="org-left">greater than</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>&lt;</code></td>
+<td class="org-left">less than</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>&gt;=</code></td>
+<td class="org-left">greater than or equal to</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>&lt;=</code></td>
+<td class="org-left">less than or equal to</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>or</code></td>
+<td class="org-left">logical or</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>and</code></td>
+<td class="org-left">logical and</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>contains</code></td>
+<td class="org-left">字符串包含，或者数组包含字符串</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>
+配合 tag 语法，如 <code>if .. endif</code> 等使用
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge5a9561" class="outline-2">
+<h2 id="orge5a9561">布尔值</h2>
+<div class="outline-text-2" id="text-orge5a9561">
+<p>
+除了 <code>nil</code> 和 <code>false</code> 外都为真
+</p>
+</div>
+</div>
+<div id="outline-container-org9562b38" class="outline-2">
+<h2 id="org9562b38"><span class="todo TODO">TODO</span> 类型</h2>
+<div class="outline-text-2" id="text-org9562b38">
+<p>
+有六种类型（五种？）
+</p>
+
+<dl class="org-dl">
+<dt>String</dt><dd></dd>
+
+<dt>Number</dt><dd>可心是浮点数或整数</dd>
+<dt>Boolean</dt><dd>字面量 true 或 false</dd>
+<dt>Nil</dt><dd>空，不存在之意</dd>
+<dt>Array</dt><dd>可存储任何变量</dd>
+</dl>
+
+<p>
+可以通过 <code>assign</code> 或 <code>capture</code> tag 来初始化
+</p>
+</div>
+
+<div id="outline-container-orgb3cae11" class="outline-3">
+<h3 id="orgb3cae11">数组操作</h3>
+<div class="outline-text-3" id="text-orgb3cae11">
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">迭代</td>
+<td class="org-left"><code>{% for user in site.users %}</code></td>
+</tr>
+
+<tr>
+<td class="org-left">index</td>
+<td class="org-left"><code>{{ site.users[0] }}</code></td>
+</tr>
+</tbody>
+</table>
+
+<p>
+可以对 string 使用 split filter 来生成子字符串数组
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org279cace" class="outline-2">
+<h2 id="org279cace">变种</h2>
+<div class="outline-text-2" id="text-org279cace">
+<ul class="org-ul">
+<li>Liquid</li>
+<li>Shopify Liquid</li>
+<li>Jekyll Liquid</li>
 </ul>
 </div>
 
-<ul class="org-ul"><li><a id="org3b9d27e"></a>扩展基本类型<br><div class="outline-text-5" id="text-org3b9d27e">
+<div id="outline-container-org5806547" class="outline-3">
+<h3 id="org5806547">Jekyll</h3>
+<div class="outline-text-3" id="text-org5806547">
 <p>
-一个重要的方面是语法的 <b><b>重载</b></b> ，使新增加的库能够以通用的语法来调用
+jekyll 是一个静态站点生成器，通过将内容与模型渲染生成最终网页。
 </p>
-</div></li>
 
-<li><a id="org0636b8e"></a>扩展控制结构<br><div class="outline-text-5" id="text-org0636b8e">
 <p>
-以 Erlang 的消息传递方式，在 scala 中以 actor 方式来实现
+Jekyll 使用 Liquid 作为其模板语言，添加了额外的 objects, tags 和 filters。如
 </p>
-</div></li></ul>
+
+<ul class="org-ul">
+<li>objects representing content pages</li>
+<li>tags for including snippets of content in others</li>
+<li>filters for manipulating strings and URLs</li>
+</ul>
 </div>
+</div>
+</div>
+
+<div id="outline-container-org50293ce" class="outline-2">
+<h2 id="org50293ce">Whitespace control</h2>
+<div class="outline-text-2" id="text-org50293ce">
+<p>
+liquid 会在 HTML 渲染中加入空行，用 <code>{{-,-}}</code> 或 <code>{%- -%}</code> 来避免
+</p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: zhaowenbin</p>
+<p class="author">Author: 赵文彬</p>
 <p class="date">Created: 2017-08-26 六 09:10</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>

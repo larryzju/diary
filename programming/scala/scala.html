@@ -4,9 +4,9 @@
 <!-- 2017-08-26 六 09:10 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>note on "programming in scala 2ed"</title>
+<title>scala 笔记</title>
 <meta name="generator" content="Org mode">
-<meta name="author" content="zhaowenbin">
+<meta name="author" content="赵文彬">
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -233,53 +233,337 @@ for the JavaScript code in this tag.
 <body>
 <div id="content">
 <header>
-<h1 class="title">note on "programming in scala 2ed"</h1>
+<h1 class="title">scala 笔记</h1>
 </header><nav id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgd90e917">Chapter 1</a></li>
+<li><a href="#org2224036">Collection</a></li>
+<li><a href="#org1726eac">String Interpolation</a></li>
+<li><a href="#org0d7cd73">REPL</a></li>
 </ul>
 </div>
 </nav>
 
-
-<div id="outline-container-orgd90e917" class="outline-2">
-<h2 id="orgd90e917">Chapter 1</h2>
-<div class="outline-text-2" id="text-orgd90e917">
-</div><div id="outline-container-orgb604086" class="outline-3">
-<h3 id="orgb604086">Why scala?</h3>
-<div class="outline-text-3" id="text-orgb604086">
-</div><div id="outline-container-org6a35446" class="outline-4">
-<h4 id="org6a35446">简洁性与可扩展性</h4>
-<div class="outline-text-4" id="text-org6a35446">
+<div id="outline-container-org2224036" class="outline-2">
+<h2 id="org2224036">Collection</h2>
+<div class="outline-text-2" id="text-org2224036">
+</div><div id="outline-container-org43ec236" class="outline-3">
+<h3 id="org43ec236">说明</h3>
+<div class="outline-text-3" id="text-org43ec236">
 <p>
-在不同规模上的编程需求是不一样的。
+scala 官方 tutorial 第一章中重点介绍了集合类的特性：
 </p>
 
 <ul class="org-ul">
-<li>对于小的程序，简洁（比如有 Map 的语法支持，省略参数类型）等是重要特性。</li>
-<li>同时需要能够更细致地控制底层实现（在保证语法简洁的前提下）</li>
+<li>通用性</li>
+<li>一致性</li>
+<li>功能丰富性</li>
+</ul>
+
+<p>
+类似于 clojure 等设计思路
+</p>
+
+<ul class="org-ul">
+<li>对集合作出抽象数据结构，有丰富的通用的 API 和函数式的用法</li>
+<li>使用高阶函数（并提供语法支持）</li>
+<li>方便在 API 兼容的情况下切换到多处理器支持等不同实现数据结构</li>
+</ul>
+
+<p>
+优于 clojure 的地方在于
+</p>
+
+<ul class="org-ul">
+<li>scala 是静态类型语言，通过函数参数显式声明，在编译时会检测出很多类型错误</li>
 </ul>
 </div>
-
-<ul class="org-ul"><li><a id="org3b9d27e"></a>扩展基本类型<br><div class="outline-text-5" id="text-org3b9d27e">
-<p>
-一个重要的方面是语法的 <b><b>重载</b></b> ，使新增加的库能够以通用的语法来调用
-</p>
-</div></li>
-
-<li><a id="org0636b8e"></a>扩展控制结构<br><div class="outline-text-5" id="text-org0636b8e">
-<p>
-以 Erlang 的消息传递方式，在 scala 中以 actor 方式来实现
-</p>
-</div></li></ul>
 </div>
+
+<div id="outline-container-orgdaae9ca" class="outline-3">
+<h3 id="orgdaae9ca">可变与不可变</h3>
+<div class="outline-text-3" id="text-orgdaae9ca">
+<p>
+集合类存在三种变体：
+</p>
+
+<ul class="org-ul">
+<li>root: <code>scala.collection</code></li>
+<li>mutable: <code>scala.collection.mutable</code></li>
+<li>immutable: <code>scala.collection.immutable</code></li>
+</ul>
+
+<p>
+为了方便和向后兼容性，一些导入类型在包 <code>scala</code> 中有别名，如： <code>List</code>, <code>Traversable</code>, <code>Iterable</code>, <code>Seq</code>, <code>IndexedSeq</code>, <code>Iterator</code>, <code>Stream</code>,   <code>Vector</code>, <code>StringBuilder</code>, <code>Range</code>
+</p>
+</div>
+
+<div id="outline-container-orgac0fab5" class="outline-4">
+<h4 id="orgac0fab5">scala.collection 数据结构层次</h4>
+<div class="outline-text-4" id="text-orgac0fab5">
+
+<figure>
+<img src="image/collections.png" alt="collections.png">
+
+</figure>
+
+<p>
+集合类的抽象层次依次为：
+</p>
+
+<ol class="org-ol">
+<li>Traverable</li>
+<li>Iterable</li>
+<li>Seq, Set, Map</li>
+<li>&#x2026;</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org84cd265" class="outline-4">
+<h4 id="org84cd265">scala.collection.immutable 数据结构层次</h4>
+<div class="outline-text-4" id="text-org84cd265">
+
+<figure>
+<img src="image/collections.immutable.png" alt="collections.immutable.png">
+
+</figure>
+</div>
+</div>
+
+<div id="outline-container-org1ef20e3" class="outline-4">
+<h4 id="org1ef20e3">scala.collection.mutable 数据结构层次</h4>
+<div class="outline-text-4" id="text-org1ef20e3">
+
+<figure>
+<img src="image/collections.mutable.png" alt="collections.mutable.png">
+
+</figure>
+</div>
+</div>
+
+<div id="outline-container-org25eff26" class="outline-4">
+<h4 id="org25eff26">构造</h4>
+<div class="outline-text-4" id="text-org25eff26">
+<p>
+直接用类型加参数列表构造，常见语法如
+</p>
+
+<ul class="org-ul">
+<li><code>Traversable(1,2,3)</code></li>
+<li><code>Map("x"-&gt;24,"y"-&gt;25,"z"-&gt;26)</code></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org7341054" class="outline-4">
+<h4 id="org7341054">API</h4>
+<div class="outline-text-4" id="text-org7341054">
+<ul class="org-ul">
+<li>Traversable 类提供了所有集合支持的 API</li>
+<li>可能被具体类型实现重写</li>
+<li>map 操作返回与原类型一致的对象</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org0447514" class="outline-3">
+<h3 id="org0447514">常用不可变类型</h3>
+<div class="outline-text-3" id="text-org0447514">
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">名称</th>
+<th scope="col" class="org-left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">ArrayBuffer</td>
+<td class="org-left">底层是 array，隐含 size，向结尾添加高效</td>
+</tr>
+
+<tr>
+<td class="org-left">ListBuffer</td>
+<td class="org-left">内部为 linked list</td>
+</tr>
+
+<tr>
+<td class="org-left">StringBuilder</td>
+<td class="org-left">用于构造 String，可以直接在 scala 命名空间使用</td>
+</tr>
+
+<tr>
+<td class="org-left">LinkedList</td>
+<td class="org-left">单向链表，用于方便插入</td>
+</tr>
+
+<tr>
+<td class="org-left">DoubleLinkedList</td>
+<td class="org-left">双向链表</td>
+</tr>
+
+<tr>
+<td class="org-left">MutableList</td>
+<td class="org-left">单向链表+尾指针，append 效率高，是 LineSeq 的标准实现</td>
+</tr>
+
+<tr>
+<td class="org-left">Queue</td>
+<td class="org-left">用 <code>+=</code> 添加元素， <code>++=</code> 添加 seq</td>
+</tr>
+
+<tr>
+<td class="org-left">ArraySeq</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Stack</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">ArrayStack</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">HashMap/HashSet</td>
+<td class="org-left">底层是数组，返回时按哈希顺序返回</td>
+</tr>
+
+<tr>
+<td class="org-left">WeakHashMap</td>
+<td class="org-left">无引用会自动删除键值对，用作缓存（类似 clojure memorize），底层是 <code>java.util.WeakHashMap</code></td>
+</tr>
+
+<tr>
+<td class="org-left">ConcurrentMap</td>
+<td class="org-left">有额外带保护的方法，是 trait，实现了 <code>java.util.concurrent.ConcurrentMap</code></td>
+</tr>
+
+<tr>
+<td class="org-left">BitSet</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div id="outline-container-org7f9f931" class="outline-4">
+<h4 id="org7f9f931"><span class="todo TODO">TODO</span> empty 构造</h4>
+<div class="outline-text-4" id="text-org7f9f931">
+<p>
+可以用 <code>mutable.ArrayBuffer.empty[int]</code> 构造对象，empty 的 API 从哪里来？
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc2278ca" class="outline-4">
+<h4 id="orgc2278ca">LinearSeq 类型</h4>
+<div class="outline-text-4" id="text-orgc2278ca">
+<p>
+LinearSeq 底层是 MutableList，那么 LinearSeq 本质上是个 class 还是 type?
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org1726eac" class="outline-2">
+<h2 id="org1726eac">String Interpolation</h2>
+<div class="outline-text-2" id="text-org1726eac">
+<p>
+String Interpolation 是在 2.10.0 中加入的功能，可以在字符串中嵌入变量引用，如 <code>s"Hello, $name"</code>
+</p>
+
+<p>
+内置三种前缀字母，表示不同的处理方法：
+</p>
+
+<ol class="org-ol">
+<li>s 前缀，类似 ruby，替换用 <code>$var</code> 表示的变量，也可将表达式放在 <code>${}</code> 中</li>
+<li>f 前缀，类似 printf 语法，如 <code>f"$name%s is $height%2.2f meters tall"</code></li>
+<li>raw 前缀，类似 python 'r' 前缀，同 's'，但不会处理转义字符</li>
+</ol>
+
+<p>
+String Interpolation 本质上是语法糖，对应于 <code>StringContext.id</code> 函数调用，可以自定义，需要实现一个 implicit 类，方法略
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0d7cd73" class="outline-2">
+<h2 id="org0d7cd73">REPL</h2>
+<div class="outline-text-2" id="text-org0d7cd73">
+<p>
+scala repl 将代码按模板进行封装（wrap with template)，编译并执行。并将结果自动导出到当前 scope 中。
+</p>
+
+<p>
+常用的命令有
+</p>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">variable/command</th>
+<th scope="col" class="org-left">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">$intp</td>
+<td class="org-left">IMain 实例</td>
+</tr>
+
+<tr>
+<td class="org-left">lastException</td>
+<td class="org-left">最后一个异常</td>
+</tr>
+
+<tr>
+<td class="org-left">:help</td>
+<td class="org-left">查看帮助</td>
+</tr>
+
+<tr>
+<td class="org-left">:javap</td>
+<td class="org-left">反汇编文件或类</td>
+</tr>
+
+<tr>
+<td class="org-left">:power</td>
+<td class="org-left">进入 power mode</td>
+</tr>
+
+<tr>
+<td class="org-left">&lt;tab&gt;</td>
+<td class="org-left">补全</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: zhaowenbin</p>
+<p class="author">Author: 赵文彬</p>
 <p class="date">Created: 2017-08-26 六 09:10</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
