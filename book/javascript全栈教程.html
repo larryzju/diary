@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-08-26 六 09:10 -->
+<!-- 2017-08-26 六 09:14 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>《javascript 全栈式编程》笔记</title>
@@ -238,25 +238,25 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org9f33d56">一句话</a></li>
-<li><a href="#orgd3289d3">历史</a></li>
-<li><a href="#org3f779db">入门</a></li>
+<li><a href="#org683a0c6">一句话</a></li>
+<li><a href="#org5be297c">历史</a></li>
+<li><a href="#orgfb04f87">入门</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org9f33d56" class="outline-2">
-<h2 id="org9f33d56">一句话</h2>
-<div class="outline-text-2" id="text-org9f33d56">
+<div id="outline-container-org683a0c6" class="outline-2">
+<h2 id="org683a0c6">一句话</h2>
+<div class="outline-text-2" id="text-org683a0c6">
 <p>
 javascript 是浏览器中的解释型语言
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgd3289d3" class="outline-2">
-<h2 id="orgd3289d3">历史</h2>
-<div class="outline-text-2" id="text-orgd3289d3">
+<div id="outline-container-org5be297c" class="outline-2">
+<h2 id="org5be297c">历史</h2>
+<div class="outline-text-2" id="text-org5be297c">
 <ol class="org-ol">
 <li>网景 navigator 语言</li>
 <li>微软 jscript</li>
@@ -265,21 +265,21 @@ javascript 是浏览器中的解释型语言
 </div>
 </div>
 
-<div id="outline-container-org3f779db" class="outline-2">
-<h2 id="org3f779db">入门</h2>
-<div class="outline-text-2" id="text-org3f779db">
-</div><div id="outline-container-org433a7d7" class="outline-3">
-<h3 id="org433a7d7">使用</h3>
-<div class="outline-text-3" id="text-org433a7d7">
+<div id="outline-container-orgfb04f87" class="outline-2">
+<h2 id="orgfb04f87">入门</h2>
+<div class="outline-text-2" id="text-orgfb04f87">
+</div><div id="outline-container-orgd5c1d42" class="outline-3">
+<h3 id="orgd5c1d42">使用</h3>
+<div class="outline-text-3" id="text-orgd5c1d42">
 <p>
 通过 html 中 script 标签来引入，可存放于单独的文件，类型为 <code>text/javascipt</code>
 </p>
 </div>
 </div>
 
-<div id="outline-container-org2eb3e36" class="outline-3">
-<h3 id="org2eb3e36">类型</h3>
-<div class="outline-text-3" id="text-org2eb3e36">
+<div id="outline-container-org7ac36a6" class="outline-3">
+<h3 id="org7ac36a6">类型</h3>
+<div class="outline-text-3" id="text-org7ac36a6">
 <dl class="org-dl">
 <dt>Number</dt><dd>其中有 NaN 和 Infinity</dd>
 <dt>String</dt><dd>不可变</dd>
@@ -292,66 +292,66 @@ javascript 是浏览器中的解释型语言
 </div>
 </div>
 
-<div id="outline-container-org64cab74" class="outline-3">
-<h3 id="org64cab74">其它</h3>
-<div class="outline-text-3" id="text-org64cab74">
-</div><div id="outline-container-org371492a" class="outline-4">
-<h4 id="org371492a"><code>==</code> 与 <code>===</code></h4>
-<div class="outline-text-4" id="text-org371492a">
+<div id="outline-container-org5bc3852" class="outline-3">
+<h3 id="org5bc3852">其它</h3>
+<div class="outline-text-3" id="text-org5bc3852">
+</div><div id="outline-container-org7796057" class="outline-4">
+<h4 id="org7796057"><code>==</code> 与 <code>===</code></h4>
+<div class="outline-text-4" id="text-org7796057">
 <p>
 前者进行跨类型比较，后者同类型比较。用后者
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgf6df8c0" class="outline-4">
-<h4 id="orgf6df8c0">null 与 undefined</h4>
-<div class="outline-text-4" id="text-orgf6df8c0">
+<div id="outline-container-org7e87fcf" class="outline-4">
+<h4 id="org7e87fcf">null 与 undefined</h4>
+<div class="outline-text-4" id="text-org7e87fcf">
 <p>
 前者为 void，后者为未定义？
 </p>
 </div>
 </div>
 
-<div id="outline-container-org428c6c8" class="outline-4">
-<h4 id="org428c6c8">var 与 strict</h4>
-<div class="outline-text-4" id="text-org428c6c8">
+<div id="outline-container-org6f786f0" class="outline-4">
+<h4 id="org6f786f0">var 与 strict</h4>
+<div class="outline-text-4" id="text-org6f786f0">
 <p>
 var 定义的是本地变量，不加时为全局。应该要加。用 <code>"use strict"</code> 来强制检查
 </p>
 </div>
 </div>
 
-<div id="outline-container-org3c95206" class="outline-4">
-<h4 id="org3c95206">backquote 与 interpolate</h4>
-<div class="outline-text-4" id="text-org3c95206">
+<div id="outline-container-org7df03c3" class="outline-4">
+<h4 id="org7df03c3">backquote 与 interpolate</h4>
+<div class="outline-text-4" id="text-org7df03c3">
 <p>
 反引号同 python 中的 <code>```</code> ，其中可以用 ruby 的字符串模板语法
 </p>
 </div>
 </div>
 
-<div id="outline-container-org6075081" class="outline-4">
-<h4 id="org6075081">in 与 hasOwnProperty</h4>
-<div class="outline-text-4" id="text-org6075081">
+<div id="outline-container-org3621f75" class="outline-4">
+<h4 id="org3621f75">in 与 hasOwnProperty</h4>
+<div class="outline-text-4" id="text-org3621f75">
 <p>
 对象有继承自 Object 的方法，如 toString。使用 hasOwnProperty
 </p>
 </div>
 </div>
 
-<div id="outline-container-org568dcc1" class="outline-4">
-<h4 id="org568dcc1">iterable</h4>
-<div class="outline-text-4" id="text-org568dcc1">
+<div id="outline-container-org52b777e" class="outline-4">
+<h4 id="org52b777e">iterable</h4>
+<div class="outline-text-4" id="text-org52b777e">
 <p>
 Map, Set, Array 都是抽象的 iterable 类型
 </p>
 </div>
 </div>
 
-<div id="outline-container-org2186fa0" class="outline-4">
-<h4 id="org2186fa0">for &#x2026; in 与 for &#x2026; of</h4>
-<div class="outline-text-4" id="text-org2186fa0">
+<div id="outline-container-orgdb997c8" class="outline-4">
+<h4 id="orgdb997c8">for &#x2026; in 与 for &#x2026; of</h4>
+<div class="outline-text-4" id="text-orgdb997c8">
 <p>
 后者是更新的语法，严格对元素进行迭代。可以使用 <code>iterable.forEach</code> 方法回调
 </p>
@@ -362,7 +362,7 @@ Map, Set, Array 都是抽象的 iterable 类型
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2017-08-26 六 09:10</p>
+<p class="date">Created: 2017-08-26 六 09:14</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

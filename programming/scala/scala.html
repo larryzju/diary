@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-08-26 六 09:10 -->
+<!-- 2017-08-26 六 09:14 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>scala 笔记</title>
@@ -238,19 +238,19 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org2224036">Collection</a></li>
-<li><a href="#org1726eac">String Interpolation</a></li>
-<li><a href="#org0d7cd73">REPL</a></li>
+<li><a href="#org5f20c67">Collection</a></li>
+<li><a href="#orgded68a6">String Interpolation</a></li>
+<li><a href="#org18d4867">REPL</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org2224036" class="outline-2">
-<h2 id="org2224036">Collection</h2>
-<div class="outline-text-2" id="text-org2224036">
-</div><div id="outline-container-org43ec236" class="outline-3">
-<h3 id="org43ec236">说明</h3>
-<div class="outline-text-3" id="text-org43ec236">
+<div id="outline-container-org5f20c67" class="outline-2">
+<h2 id="org5f20c67">Collection</h2>
+<div class="outline-text-2" id="text-org5f20c67">
+</div><div id="outline-container-orgd611ed6" class="outline-3">
+<h3 id="orgd611ed6">说明</h3>
+<div class="outline-text-3" id="text-orgd611ed6">
 <p>
 scala 官方 tutorial 第一章中重点介绍了集合类的特性：
 </p>
@@ -281,9 +281,9 @@ scala 官方 tutorial 第一章中重点介绍了集合类的特性：
 </div>
 </div>
 
-<div id="outline-container-orgdaae9ca" class="outline-3">
-<h3 id="orgdaae9ca">可变与不可变</h3>
-<div class="outline-text-3" id="text-orgdaae9ca">
+<div id="outline-container-org3d7c65c" class="outline-3">
+<h3 id="org3d7c65c">可变与不可变</h3>
+<div class="outline-text-3" id="text-org3d7c65c">
 <p>
 集合类存在三种变体：
 </p>
@@ -299,9 +299,9 @@ scala 官方 tutorial 第一章中重点介绍了集合类的特性：
 </p>
 </div>
 
-<div id="outline-container-orgac0fab5" class="outline-4">
-<h4 id="orgac0fab5">scala.collection 数据结构层次</h4>
-<div class="outline-text-4" id="text-orgac0fab5">
+<div id="outline-container-orgda8bcf8" class="outline-4">
+<h4 id="orgda8bcf8">scala.collection 数据结构层次</h4>
+<div class="outline-text-4" id="text-orgda8bcf8">
 
 <figure>
 <img src="image/collections.png" alt="collections.png">
@@ -321,9 +321,9 @@ scala 官方 tutorial 第一章中重点介绍了集合类的特性：
 </div>
 </div>
 
-<div id="outline-container-org84cd265" class="outline-4">
-<h4 id="org84cd265">scala.collection.immutable 数据结构层次</h4>
-<div class="outline-text-4" id="text-org84cd265">
+<div id="outline-container-org9e36de8" class="outline-4">
+<h4 id="org9e36de8">scala.collection.immutable 数据结构层次</h4>
+<div class="outline-text-4" id="text-org9e36de8">
 
 <figure>
 <img src="image/collections.immutable.png" alt="collections.immutable.png">
@@ -332,9 +332,9 @@ scala 官方 tutorial 第一章中重点介绍了集合类的特性：
 </div>
 </div>
 
-<div id="outline-container-org1ef20e3" class="outline-4">
-<h4 id="org1ef20e3">scala.collection.mutable 数据结构层次</h4>
-<div class="outline-text-4" id="text-org1ef20e3">
+<div id="outline-container-org8f30628" class="outline-4">
+<h4 id="org8f30628">scala.collection.mutable 数据结构层次</h4>
+<div class="outline-text-4" id="text-org8f30628">
 
 <figure>
 <img src="image/collections.mutable.png" alt="collections.mutable.png">
@@ -343,9 +343,9 @@ scala 官方 tutorial 第一章中重点介绍了集合类的特性：
 </div>
 </div>
 
-<div id="outline-container-org25eff26" class="outline-4">
-<h4 id="org25eff26">构造</h4>
-<div class="outline-text-4" id="text-org25eff26">
+<div id="outline-container-org91b7d23" class="outline-4">
+<h4 id="org91b7d23">构造</h4>
+<div class="outline-text-4" id="text-org91b7d23">
 <p>
 直接用类型加参数列表构造，常见语法如
 </p>
@@ -357,9 +357,9 @@ scala 官方 tutorial 第一章中重点介绍了集合类的特性：
 </div>
 </div>
 
-<div id="outline-container-org7341054" class="outline-4">
-<h4 id="org7341054">API</h4>
-<div class="outline-text-4" id="text-org7341054">
+<div id="outline-container-org34610b2" class="outline-4">
+<h4 id="org34610b2">API</h4>
+<div class="outline-text-4" id="text-org34610b2">
 <ul class="org-ul">
 <li>Traversable 类提供了所有集合支持的 API</li>
 <li>可能被具体类型实现重写</li>
@@ -369,9 +369,9 @@ scala 官方 tutorial 第一章中重点介绍了集合类的特性：
 </div>
 </div>
 
-<div id="outline-container-org0447514" class="outline-3">
-<h3 id="org0447514">常用不可变类型</h3>
-<div class="outline-text-3" id="text-org0447514">
+<div id="outline-container-orgce15064" class="outline-3">
+<h3 id="orgce15064">常用不可变类型</h3>
+<div class="outline-text-3" id="text-orgce15064">
 <table>
 
 
@@ -460,18 +460,18 @@ scala 官方 tutorial 第一章中重点介绍了集合类的特性：
 </table>
 </div>
 
-<div id="outline-container-org7f9f931" class="outline-4">
-<h4 id="org7f9f931"><span class="todo TODO">TODO</span> empty 构造</h4>
-<div class="outline-text-4" id="text-org7f9f931">
+<div id="outline-container-orge33d0e2" class="outline-4">
+<h4 id="orge33d0e2"><span class="todo TODO">TODO</span> empty 构造</h4>
+<div class="outline-text-4" id="text-orge33d0e2">
 <p>
 可以用 <code>mutable.ArrayBuffer.empty[int]</code> 构造对象，empty 的 API 从哪里来？
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgc2278ca" class="outline-4">
-<h4 id="orgc2278ca">LinearSeq 类型</h4>
-<div class="outline-text-4" id="text-orgc2278ca">
+<div id="outline-container-org0c5b5c7" class="outline-4">
+<h4 id="org0c5b5c7">LinearSeq 类型</h4>
+<div class="outline-text-4" id="text-org0c5b5c7">
 <p>
 LinearSeq 底层是 MutableList，那么 LinearSeq 本质上是个 class 还是 type?
 </p>
@@ -479,9 +479,9 @@ LinearSeq 底层是 MutableList，那么 LinearSeq 本质上是个 class 还是 
 </div>
 </div>
 </div>
-<div id="outline-container-org1726eac" class="outline-2">
-<h2 id="org1726eac">String Interpolation</h2>
-<div class="outline-text-2" id="text-org1726eac">
+<div id="outline-container-orgded68a6" class="outline-2">
+<h2 id="orgded68a6">String Interpolation</h2>
+<div class="outline-text-2" id="text-orgded68a6">
 <p>
 String Interpolation 是在 2.10.0 中加入的功能，可以在字符串中嵌入变量引用，如 <code>s"Hello, $name"</code>
 </p>
@@ -502,9 +502,9 @@ String Interpolation 本质上是语法糖，对应于 <code>StringContext.id</c
 </div>
 </div>
 
-<div id="outline-container-org0d7cd73" class="outline-2">
-<h2 id="org0d7cd73">REPL</h2>
-<div class="outline-text-2" id="text-org0d7cd73">
+<div id="outline-container-org18d4867" class="outline-2">
+<h2 id="org18d4867">REPL</h2>
+<div class="outline-text-2" id="text-org18d4867">
 <p>
 scala repl 将代码按模板进行封装（wrap with template)，编译并执行。并将结果自动导出到当前 scope 中。
 </p>
@@ -564,7 +564,7 @@ scala repl 将代码按模板进行封装（wrap with template)，编译并执�
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: 赵文彬</p>
-<p class="date">Created: 2017-08-26 六 09:10</p>
+<p class="date">Created: 2017-08-26 六 09:14</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

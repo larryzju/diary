@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-08-26 六 09:10 -->
+<!-- 2017-08-26 六 09:14 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>《Git 教程》笔记</title>
@@ -238,30 +238,30 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgb525410">说明</a></li>
-<li><a href="#org2b64c68">概述</a></li>
-<li><a href="#org5803064">安装配置</a></li>
-<li><a href="#orgdfe08f7">创建版本</a></li>
-<li><a href="#org16378b5">时光穿梭</a></li>
-<li><a href="#org0dd6e09">分支管理</a></li>
-<li><a href="#org72c922a">标签管理</a></li>
-<li><a href="#org26a79f3">建立远程仓库</a></li>
+<li><a href="#org9d12ca1">说明</a></li>
+<li><a href="#org25a6bda">概述</a></li>
+<li><a href="#orgabe2801">安装配置</a></li>
+<li><a href="#org80ec607">创建版本</a></li>
+<li><a href="#orgf28e4d1">时光穿梭</a></li>
+<li><a href="#orgda214b2">分支管理</a></li>
+<li><a href="#orgd98693f">标签管理</a></li>
+<li><a href="#org59f5827">建立远程仓库</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-orgb525410" class="outline-2">
-<h2 id="orgb525410">说明</h2>
-<div class="outline-text-2" id="text-orgb525410">
+<div id="outline-container-org9d12ca1" class="outline-2">
+<h2 id="org9d12ca1">说明</h2>
+<div class="outline-text-2" id="text-org9d12ca1">
 <p>
 教程原文地址是 <a href="http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000">廖雪峰的官方网站-git教程</a>
 </p>
 </div>
 </div>
 
-<div id="outline-container-org2b64c68" class="outline-2">
-<h2 id="org2b64c68">概述</h2>
-<div class="outline-text-2" id="text-org2b64c68">
+<div id="outline-container-org25a6bda" class="outline-2">
+<h2 id="org25a6bda">概述</h2>
+<div class="outline-text-2" id="text-org25a6bda">
 <p>
 git 是分布式的版本管理系统。
 </p>
@@ -276,9 +276,9 @@ git 是分布式的版本管理系统。
 </div>
 </div>
 
-<div id="outline-container-org5803064" class="outline-2">
-<h2 id="org5803064">安装配置</h2>
-<div class="outline-text-2" id="text-org5803064">
+<div id="outline-container-orgabe2801" class="outline-2">
+<h2 id="orgabe2801">安装配置</h2>
+<div class="outline-text-2" id="text-orgabe2801">
 <p>
 <i>ubuntu,debian 中的包之前命名为 git-core，因为有 gnu iterative tool 使用了 git 的名字</i>
 </p>
@@ -301,12 +301,12 @@ git 是分布式的版本管理系统。
 </div>
 </div>
 
-<div id="outline-container-orgdfe08f7" class="outline-2">
-<h2 id="orgdfe08f7">创建版本</h2>
-<div class="outline-text-2" id="text-orgdfe08f7">
-</div><div id="outline-container-org0aab687" class="outline-3">
-<h3 id="org0aab687">本地仓库</h3>
-<div class="outline-text-3" id="text-org0aab687">
+<div id="outline-container-org80ec607" class="outline-2">
+<h2 id="org80ec607">创建版本</h2>
+<div class="outline-text-2" id="text-org80ec607">
+</div><div id="outline-container-orgeccdb68" class="outline-3">
+<h3 id="orgeccdb68">本地仓库</h3>
+<div class="outline-text-3" id="text-orgeccdb68">
 <ol class="org-ol">
 <li><code>git init</code></li>
 <li><code>git add</code></li>
@@ -315,9 +315,9 @@ git 是分布式的版本管理系统。
 </div>
 </div>
 
-<div id="outline-container-org23eeea2" class="outline-3">
-<h3 id="org23eeea2">远程仓库</h3>
-<div class="outline-text-3" id="text-org23eeea2">
+<div id="outline-container-orgf921cac" class="outline-3">
+<h3 id="orgf921cac">远程仓库</h3>
+<div class="outline-text-3" id="text-orgf921cac">
 <p>
 <i>github 中可以通过公布 ssh pub key 来配置免密</i>
 </p>
@@ -329,9 +329,9 @@ git 是分布式的版本管理系统。
 </dl>
 </div>
 
-<div id="outline-container-org7525001" class="outline-4">
-<h4 id="org7525001">注意</h4>
-<div class="outline-text-4" id="text-org7525001">
+<div id="outline-container-orgbe98aa6" class="outline-4">
+<h4 id="orgbe98aa6">注意</h4>
+<div class="outline-text-4" id="text-orgbe98aa6">
 <ul class="org-ul">
 <li>克隆远端仓库时不会主动拉取除 master 之外的分支</li>
 <li><code>git remote -v</code> 来查看远程仓库</li>
@@ -347,17 +347,17 @@ git 是分布式的版本管理系统。
 </div>
 </div>
 
-<div id="outline-container-org16378b5" class="outline-2">
-<h2 id="org16378b5">时光穿梭</h2>
-<div class="outline-text-2" id="text-org16378b5">
+<div id="outline-container-orgf28e4d1" class="outline-2">
+<h2 id="orgf28e4d1">时光穿梭</h2>
+<div class="outline-text-2" id="text-orgf28e4d1">
 <p>
 git 仓库历史版本与当前修改通过 diff, status 来查看
 </p>
 </div>
 
-<div id="outline-container-orgf705af3" class="outline-3">
-<h3 id="orgf705af3">版本回退</h3>
-<div class="outline-text-3" id="text-orgf705af3">
+<div id="outline-container-org4b006ca" class="outline-3">
+<h3 id="org4b006ca">版本回退</h3>
+<div class="outline-text-3" id="text-org4b006ca">
 <ul class="org-ul">
 <li>通过 <code>git log --pretty oneline</code> 来查看历史提交</li>
 <li><code>HEAD</code> 表示当前版本</li>
@@ -370,9 +370,9 @@ git 仓库历史版本与当前修改通过 diff, status 来查看
 </div>
 
 
-<div id="outline-container-org1265c78" class="outline-3">
-<h3 id="org1265c78">工作区与暂存区</h3>
-<div class="outline-text-3" id="text-org1265c78">
+<div id="outline-container-orgcd78b8c" class="outline-3">
+<h3 id="orgcd78b8c">工作区与暂存区</h3>
+<div class="outline-text-3" id="text-orgcd78b8c">
 <ul class="org-ul">
 <li>工作区指工作目录</li>
 <li>版本库保存于 .git 目录
@@ -387,18 +387,18 @@ git 仓库历史版本与当前修改通过 diff, status 来查看
 </div>
 </div>
 
-<div id="outline-container-org1d9fedf" class="outline-3">
-<h3 id="org1d9fedf">管理修改</h3>
-<div class="outline-text-3" id="text-org1d9fedf">
+<div id="outline-container-orge947346" class="outline-3">
+<h3 id="orge947346">管理修改</h3>
+<div class="outline-text-3" id="text-orge947346">
 <p>
 git 跟踪的是修改，而非文件。实际上是对文件的 sha1sum 进行比较来跟踪修改。
 </p>
 </div>
 </div>
 
-<div id="outline-container-org217e8f7" class="outline-3">
-<h3 id="org217e8f7">撤消修改</h3>
-<div class="outline-text-3" id="text-org217e8f7">
+<div id="outline-container-org197eca1" class="outline-3">
+<h3 id="org197eca1">撤消修改</h3>
+<div class="outline-text-3" id="text-org197eca1">
 <dl class="org-dl">
 <dt><code>git checkout -- &lt;file&gt;</code></dt><dd>丢弃工作区修改</dd>
 <dt><code>git reset HEAD &lt;file&gt;</code></dt><dd>unstage 修改</dd>
@@ -406,9 +406,9 @@ git 跟踪的是修改，而非文件。实际上是对文件的 sha1sum 进行�
 </div>
 </div>
 
-<div id="outline-container-org9a1d7c4" class="outline-3">
-<h3 id="org9a1d7c4">删除文件</h3>
-<div class="outline-text-3" id="text-org9a1d7c4">
+<div id="outline-container-org6f7e66d" class="outline-3">
+<h3 id="org6f7e66d">删除文件</h3>
+<div class="outline-text-3" id="text-org6f7e66d">
 <p>
 <code>git rm</code> 命令删除记录
 </p>
@@ -418,9 +418,9 @@ git 跟踪的是修改，而非文件。实际上是对文件的 sha1sum 进行�
 
 
 
-<div id="outline-container-org0dd6e09" class="outline-2">
-<h2 id="org0dd6e09">分支管理</h2>
-<div class="outline-text-2" id="text-org0dd6e09">
+<div id="outline-container-orgda214b2" class="outline-2">
+<h2 id="orgda214b2">分支管理</h2>
+<div class="outline-text-2" id="text-orgda214b2">
 <p>
 git 按提交的父子关系形成一条时间轴，一条时间轴就是一个分支，默认为 master 分支。
 </p>
@@ -438,9 +438,9 @@ HEAD 指向当前分支，可以有多个分支，分支之间可以在某个点
 </dl>
 </div>
 
-<div id="outline-container-org61007ad" class="outline-3">
-<h3 id="org61007ad">合并</h3>
-<div class="outline-text-3" id="text-org61007ad">
+<div id="outline-container-org364ae98" class="outline-3">
+<h3 id="org364ae98">合并</h3>
+<div class="outline-text-3" id="text-org364ae98">
 <ul class="org-ul">
 <li>如果分支有前后继承关系，则为 fast forward</li>
 <li>通过 &#x2013;no-ff 关闭快进模式，以便从日志中看出分支合并信息</li>
@@ -449,9 +449,9 @@ HEAD 指向当前分支，可以有多个分支，分支之间可以在某个点
 </div>
 </div>
 
-<div id="outline-container-org179e5ff" class="outline-3">
-<h3 id="org179e5ff">分支策略</h3>
-<div class="outline-text-3" id="text-org179e5ff">
+<div id="outline-container-orgb4af0a3" class="outline-3">
+<h3 id="orgb4af0a3">分支策略</h3>
+<div class="outline-text-3" id="text-orgb4af0a3">
 <ul class="org-ul">
 <li>master 作为稳定内容，一般用于发布新版本</li>
 <li>dev 用于开发</li>
@@ -461,9 +461,9 @@ HEAD 指向当前分支，可以有多个分支，分支之间可以在某个点
 </div>
 </div>
 
-<div id="outline-container-orgdc5e9db" class="outline-3">
-<h3 id="orgdc5e9db">stash</h3>
-<div class="outline-text-3" id="text-orgdc5e9db">
+<div id="outline-container-org31d3cd3" class="outline-3">
+<h3 id="org31d3cd3">stash</h3>
+<div class="outline-text-3" id="text-org31d3cd3">
 <ul class="org-ul">
 <li>git stash 提供一个栈，缓存修改内容</li>
 <li><code>git stash</code> 压栈， <code>git stash list</code> 查看</li>
@@ -473,9 +473,9 @@ HEAD 指向当前分支，可以有多个分支，分支之间可以在某个点
 </div>
 </div>
 
-<div id="outline-container-org72c922a" class="outline-2">
-<h2 id="org72c922a">标签管理</h2>
-<div class="outline-text-2" id="text-org72c922a">
+<div id="outline-container-orgd98693f" class="outline-2">
+<h2 id="orgd98693f">标签管理</h2>
+<div class="outline-text-2" id="text-orgd98693f">
 <p>
 tag 对版本库提交生成指针，通过名称来标识提交
 </p>
@@ -492,9 +492,9 @@ tag 对版本库提交生成指针，通过名称来标识提交
 </div>
 </div>
 
-<div id="outline-container-org26a79f3" class="outline-2">
-<h2 id="org26a79f3">建立远程仓库</h2>
-<div class="outline-text-2" id="text-org26a79f3">
+<div id="outline-container-org59f5827" class="outline-2">
+<h2 id="org59f5827">建立远程仓库</h2>
+<div class="outline-text-2" id="text-org59f5827">
 <p>
 基本的思路如下：
 </p>
@@ -509,7 +509,7 @@ tag 对版本库提交生成指针，通过名称来标识提交
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2017-08-26 六 09:10</p>
+<p class="date">Created: 2017-08-26 六 09:14</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

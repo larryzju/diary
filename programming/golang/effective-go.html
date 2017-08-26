@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-08-26 六 09:10 -->
+<!-- 2017-08-26 六 09:14 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Note on "Effective Go"</title>
@@ -238,24 +238,24 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgbf4a28e">Commentary</a></li>
-<li><a href="#org8895a08">Names</a></li>
-<li><a href="#org90741b9">分号</a></li>
-<li><a href="#org0457e22">控制结构</a></li>
-<li><a href="#org21364c9">函数</a></li>
-<li><a href="#org0463ffd">Data</a></li>
-<li><a href="#org0c15d76">初始化</a></li>
-<li><a href="#org482e5d4">Methods</a></li>
-<li><a href="#org7fad63c">Interfaces and other types</a></li>
-<li><a href="#orgbdc1f36">The Blank Identifier</a></li>
-<li><a href="#org13c2a2d">Errors</a></li>
+<li><a href="#org7b37f66">Commentary</a></li>
+<li><a href="#orgbc46b95">Names</a></li>
+<li><a href="#org8b4bb30">分号</a></li>
+<li><a href="#orga18b015">控制结构</a></li>
+<li><a href="#org2d8d7f0">函数</a></li>
+<li><a href="#org2a81d06">Data</a></li>
+<li><a href="#org0119f82">初始化</a></li>
+<li><a href="#orgadc33c7">Methods</a></li>
+<li><a href="#org5ce7195">Interfaces and other types</a></li>
+<li><a href="#org7cd295d">The Blank Identifier</a></li>
+<li><a href="#orgbce2206">Errors</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-orgbf4a28e" class="outline-2">
-<h2 id="orgbf4a28e">Commentary</h2>
-<div class="outline-text-2" id="text-orgbf4a28e">
+<div id="outline-container-org7b37f66" class="outline-2">
+<h2 id="org7b37f66">Commentary</h2>
+<div class="outline-text-2" id="text-org7b37f66">
 <ul class="org-ul">
 <li>注释有行注释和块注释两种</li>
 <li>godoc 命令会根据注释内容生成文档</li>
@@ -268,18 +268,18 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org8895a08" class="outline-2">
-<h2 id="org8895a08">Names</h2>
-<div class="outline-text-2" id="text-org8895a08">
+<div id="outline-container-orgbc46b95" class="outline-2">
+<h2 id="orgbc46b95">Names</h2>
+<div class="outline-text-2" id="text-orgbc46b95">
 <ul class="org-ul">
 <li>首字母大小写决定包外的可见性</li>
 <li>骆驼命名法</li>
 </ul>
 </div>
 
-<div id="outline-container-org3b39abd" class="outline-3">
-<h3 id="org3b39abd">Package names</h3>
-<div class="outline-text-3" id="text-org3b39abd">
+<div id="outline-container-org622e510" class="outline-3">
+<h3 id="org622e510">Package names</h3>
+<div class="outline-text-3" id="text-org622e510">
 <ul class="org-ul">
 <li>包名即变量的引用名</li>
 <li>要求：short, concise, evocative</li>
@@ -293,9 +293,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org49c90d4" class="outline-3">
-<h3 id="org49c90d4">Getter</h3>
-<div class="outline-text-3" id="text-org49c90d4">
+<div id="outline-container-org7067451" class="outline-3">
+<h3 id="org7067451">Getter</h3>
+<div class="outline-text-3" id="text-org7067451">
 <ul class="org-ul">
 <li>Go 不自动提供 getter 和 setter</li>
 <li>习惯以 <code>Owner</code> 而非 <code>GetOwner</code> 表示 getter</li>
@@ -304,9 +304,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org900bdad" class="outline-3">
-<h3 id="org900bdad">Interface name</h3>
-<div class="outline-text-3" id="text-org900bdad">
+<div id="outline-container-org3396d77" class="outline-3">
+<h3 id="org3396d77">Interface name</h3>
+<div class="outline-text-3" id="text-org3396d77">
 <ul class="org-ul">
 <li>单方法接口以方法名加 'er' 后缀来命名</li>
 <li>接口名不应与常用函数（Read，Writer，Close，Flush）重名</li>
@@ -315,9 +315,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org90741b9" class="outline-2">
-<h2 id="org90741b9">分号</h2>
-<div class="outline-text-2" id="text-org90741b9">
+<div id="outline-container-org8b4bb30" class="outline-2">
+<h2 id="org8b4bb30">分号</h2>
+<div class="outline-text-2" id="text-org8b4bb30">
 <ul class="org-ul">
 <li>Go 理论上用分号来分隔语句，但一般不写在源码里</li>
 <li>lexer 会自动插入分号</li>
@@ -330,12 +330,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org0457e22" class="outline-2">
-<h2 id="org0457e22">控制结构</h2>
-<div class="outline-text-2" id="text-org0457e22">
-</div><div id="outline-container-org4af18cd" class="outline-3">
-<h3 id="org4af18cd">基础</h3>
-<div class="outline-text-3" id="text-org4af18cd">
+<div id="outline-container-orga18b015" class="outline-2">
+<h2 id="orga18b015">控制结构</h2>
+<div class="outline-text-2" id="text-orga18b015">
+</div><div id="outline-container-org8a56242" class="outline-3">
+<h3 id="org8a56242">基础</h3>
+<div class="outline-text-3" id="text-org8a56242">
 <ul class="org-ul">
 <li>没有 <code>do .. while</code> 循环</li>
 <li>通用的 <code>for</code></li>
@@ -349,9 +349,9 @@ for the JavaScript code in this tag.
 </div>
 
 
-<div id="outline-container-orgeed11be" class="outline-3">
-<h3 id="orgeed11be">for range</h3>
-<div class="outline-text-3" id="text-orgeed11be">
+<div id="outline-container-orge096a33" class="outline-3">
+<h3 id="orge096a33">for range</h3>
+<div class="outline-text-3" id="text-orge096a33">
 <ul class="org-ul">
 <li>range 用于迭代 array, slice, string, map 及 channel</li>
 <li>若只需要迭代 key 或 index，则 for 中只带一个迭代参数</li>
@@ -367,9 +367,9 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-orge9f2b41" class="outline-3">
-<h3 id="orge9f2b41">swtich</h3>
-<div class="outline-text-3" id="text-orge9f2b41">
+<div id="outline-container-org25fe25e" class="outline-3">
+<h3 id="org25fe25e">swtich</h3>
+<div class="outline-text-3" id="text-org25fe25e">
 <ul class="org-ul">
 <li>不加条件，可以构造 <code>if-elsif-else</code> 分支</li>
 <li>case 中可以写多条件（用逗号分隔）</li>
@@ -378,9 +378,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orge9d2b30" class="outline-3">
-<h3 id="orge9d2b30">type switch</h3>
-<div class="outline-text-3" id="text-orge9d2b30">
+<div id="outline-container-orga7f0479" class="outline-3">
+<h3 id="orga7f0479">type switch</h3>
+<div class="outline-text-3" id="text-orga7f0479">
 <ul class="org-ul">
 <li>discover the dynamic type of an interface variable</li>
 <li>语法是 <code>t.(type)</code></li>
@@ -388,12 +388,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgbcc553d" class="outline-3">
-<h3 id="orgbcc553d">其它</h3>
-<div class="outline-text-3" id="text-orgbcc553d">
-</div><div id="outline-container-org79e0488" class="outline-4">
-<h4 id="org79e0488">Redeclaration and reassignment</h4>
-<div class="outline-text-4" id="text-org79e0488">
+<div id="outline-container-orgeca4ff0" class="outline-3">
+<h3 id="orgeca4ff0">其它</h3>
+<div class="outline-text-3" id="text-orgeca4ff0">
+</div><div id="outline-container-org18d463b" class="outline-4">
+<h4 id="org18d463b">Redeclaration and reassignment</h4>
+<div class="outline-text-4" id="text-org18d463b">
 <ul class="org-ul">
 <li>通过 <code>:=</code> 来进行申明时，变量 v 可以多次出现</li>
 <li>但至少在申明列表中有一个新的变量</li>
@@ -402,9 +402,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org5a9c652" class="outline-4">
-<h4 id="org5a9c652">与 C 的不同</h4>
-<div class="outline-text-4" id="text-org5a9c652">
+<div id="outline-container-orgfb88f07" class="outline-4">
+<h4 id="orgfb88f07">与 C 的不同</h4>
+<div class="outline-text-4" id="text-orgfb88f07">
 <ul class="org-ul">
 <li>Go 中没有 <code>++</code> 和 <code>--</code> 操作</li>
 <li>Go 中没有 comma operator，但可以进行多赋值</li>
@@ -418,12 +418,12 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-org21364c9" class="outline-2">
-<h2 id="org21364c9">函数</h2>
-<div class="outline-text-2" id="text-org21364c9">
-</div><div id="outline-container-orgb71d694" class="outline-3">
-<h3 id="orgb71d694">多返回值</h3>
-<div class="outline-text-3" id="text-orgb71d694">
+<div id="outline-container-org2d8d7f0" class="outline-2">
+<h2 id="org2d8d7f0">函数</h2>
+<div class="outline-text-2" id="text-org2d8d7f0">
+</div><div id="outline-container-org5019ec4" class="outline-3">
+<h3 id="org5019ec4">多返回值</h3>
+<div class="outline-text-3" id="text-org5019ec4">
 <ul class="org-ul">
 <li>避免像 C 中通过返回 -1，并修改指针内容来表示错误，和错误信息</li>
 <li>多个返回值中可以设计上下文缓存，模拟 python yield</li>
@@ -431,9 +431,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org5bfac5b" class="outline-3">
-<h3 id="org5bfac5b">具名返回参数</h3>
-<div class="outline-text-3" id="text-org5bfac5b">
+<div id="outline-container-org28c8fd8" class="outline-3">
+<h3 id="org28c8fd8">具名返回参数</h3>
+<div class="outline-text-3" id="text-org28c8fd8">
 <ul class="org-ul">
 <li>函数初始化时，返回参数被初始化为零值</li>
 <li>在裸 return 时，返回当时返回参数的值</li>
@@ -442,9 +442,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org57f999e" class="outline-3">
-<h3 id="org57f999e">Defer</h3>
-<div class="outline-text-3" id="text-org57f999e">
+<div id="outline-container-org7689d41" class="outline-3">
+<h3 id="org7689d41">Defer</h3>
+<div class="outline-text-3" id="text-org7689d41">
 <ul class="org-ul">
 <li>用于保证资源被释放</li>
 <li>在有多个 return 分支时，常会忘记释放的情况</li>
@@ -460,12 +460,12 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-org0463ffd" class="outline-2">
-<h2 id="org0463ffd">Data</h2>
-<div class="outline-text-2" id="text-org0463ffd">
-</div><div id="outline-container-orgd5119b8" class="outline-3">
-<h3 id="orgd5119b8">New</h3>
-<div class="outline-text-3" id="text-orgd5119b8">
+<div id="outline-container-org2a81d06" class="outline-2">
+<h2 id="org2a81d06">Data</h2>
+<div class="outline-text-2" id="text-org2a81d06">
+</div><div id="outline-container-orgf983d68" class="outline-3">
+<h3 id="orgf983d68">New</h3>
+<div class="outline-text-3" id="text-orgf983d68">
 <ul class="org-ul">
 <li>申请空间有两个原语 <code>new</code> 和 <code>make</code></li>
 <li>new 仅用于申请空间并赋零值 ，但不会调用初始化过程</li>
@@ -477,9 +477,9 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-org0ceb10b" class="outline-3">
-<h3 id="org0ceb10b">Make</h3>
-<div class="outline-text-3" id="text-org0ceb10b">
+<div id="outline-container-org67d6a9c" class="outline-3">
+<h3 id="org67d6a9c">Make</h3>
+<div class="outline-text-3" id="text-org67d6a9c">
 <ul class="org-ul">
 <li>只用于创建 slice, map 和 channel</li>
 <li>返回一个被初始化的值（类型为 T）</li>
@@ -490,9 +490,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org21317aa" class="outline-3">
-<h3 id="org21317aa">构造字面量</h3>
-<div class="outline-text-3" id="text-org21317aa">
+<div id="outline-container-orgf01bda8" class="outline-3">
+<h3 id="orgf01bda8">构造字面量</h3>
+<div class="outline-text-3" id="text-orgf01bda8">
 <ul class="org-ul">
 <li>composite literal</li>
 <li>可以指定局部成员，可以乱序，如 <code>&amp;File{fd:fd, name:name}</code></li>
@@ -504,9 +504,9 @@ for the JavaScript code in this tag.
 </div>
 
 
-<div id="outline-container-org57f624b" class="outline-3">
-<h3 id="org57f624b">Arrays</h3>
-<div class="outline-text-3" id="text-org57f624b">
+<div id="outline-container-org78fb23e" class="outline-3">
+<h3 id="org78fb23e">Arrays</h3>
+<div class="outline-text-3" id="text-org78fb23e">
 <ul class="org-ul">
 <li>与 C 的数组不同，在 Go 中
 <ul class="org-ul">
@@ -521,9 +521,9 @@ for the JavaScript code in this tag.
 </div>
 
 
-<div id="outline-container-orgf93aab0" class="outline-3">
-<h3 id="orgf93aab0">Slices</h3>
-<div class="outline-text-3" id="text-orgf93aab0">
+<div id="outline-container-org153f1f1" class="outline-3">
+<h3 id="org153f1f1">Slices</h3>
+<div class="outline-text-3" id="text-org153f1f1">
 <ul class="org-ul">
 <li>对 arrays 的封装</li>
 <li>更通用，功能更强，接口更方便</li>
@@ -542,9 +542,9 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-org553453d" class="outline-3">
-<h3 id="org553453d">Two-dimensional slices</h3>
-<div class="outline-text-3" id="text-org553453d">
+<div id="outline-container-orgd408ead" class="outline-3">
+<h3 id="orgd408ead">Two-dimensional slices</h3>
+<div class="outline-text-3" id="text-orgd408ead">
 <ul class="org-ul">
 <li>例如 <code>type linesOfText [][]byte</code></li>
 <li>slice 是变长的，所以内部（第二维） slice 可以是变长的</li>
@@ -559,9 +559,9 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-org77ecd30" class="outline-3">
-<h3 id="org77ecd30">Maps</h3>
-<div class="outline-text-3" id="text-org77ecd30">
+<div id="outline-container-orga68d8bd" class="outline-3">
+<h3 id="orga68d8bd">Maps</h3>
+<div class="outline-text-3" id="text-orga68d8bd">
 <ul class="org-ul">
 <li>key 可以是定义了 equality operator 的任意类型</li>
 <li>key 可以是 interface 类型的</li>
@@ -583,9 +583,9 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-org74f34fe" class="outline-3">
-<h3 id="org74f34fe">Printing</h3>
-<div class="outline-text-3" id="text-org74f34fe">
+<div id="outline-container-orgad3a491" class="outline-3">
+<h3 id="orgad3a491">Printing</h3>
+<div class="outline-text-3" id="text-orgad3a491">
 <ul class="org-ul">
 <li>常用的函数有 <code>fmt.{Printf,Fprintf,Sprintf}</code></li>
 <li>Println 插入空格和换行， Print 插入空格</li>
@@ -616,9 +616,9 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-orgaaee927" class="outline-3">
-<h3 id="orgaaee927">Append</h3>
-<div class="outline-text-3" id="text-orgaaee927">
+<div id="outline-container-org49bd9ea" class="outline-3">
+<h3 id="org49bd9ea">Append</h3>
+<div class="outline-text-3" id="text-org49bd9ea">
 <ul class="org-ul">
 <li>示意如下 <code>func append( slice []T, elements ...T)[]T</code></li>
 <li>Go 不能实现对泛型的函数定义，因此 append 以内置函数实现</li>
@@ -627,9 +627,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orga6e5a7f" class="outline-3">
-<h3 id="orga6e5a7f">注意</h3>
-<div class="outline-text-3" id="text-orga6e5a7f">
+<div id="outline-container-org1651cef" class="outline-3">
+<h3 id="org1651cef">注意</h3>
+<div class="outline-text-3" id="text-org1651cef">
 <ul class="org-ul">
 <li>It's perfect OK to return the address of a local variable（涉及内存堆与栈的切换，以及 GC 的优化）</li>
 </ul>
@@ -638,9 +638,9 @@ for the JavaScript code in this tag.
 </div>
 
 
-<div id="outline-container-org0c15d76" class="outline-2">
-<h2 id="org0c15d76">初始化</h2>
-<div class="outline-text-2" id="text-org0c15d76">
+<div id="outline-container-org0119f82" class="outline-2">
+<h2 id="org0119f82">初始化</h2>
+<div class="outline-text-2" id="text-org0119f82">
 <p>
 Go 比 C 或 C++ 更加强大，体现在：
 </p>
@@ -651,9 +651,9 @@ Go 比 C 或 C++ 更加强大，体现在：
 </ol>
 </div>
 
-<div id="outline-container-orgda76c6e" class="outline-3">
-<h3 id="orgda76c6e">Constants</h3>
-<div class="outline-text-3" id="text-orgda76c6e">
+<div id="outline-container-orgf659838" class="outline-3">
+<h3 id="orgf659838">Constants</h3>
+<div class="outline-text-3" id="text-orgf659838">
 <ul class="org-ul">
 <li>在编译期被创建</li>
 <li>只能是 number, rune, string, boolean 类型</li>
@@ -663,9 +663,9 @@ Go 比 C 或 C++ 更加强大，体现在：
 </div>
 </div>
 
-<div id="outline-container-org558be1e" class="outline-3">
-<h3 id="org558be1e">variables</h3>
-<div class="outline-text-3" id="text-org558be1e">
+<div id="outline-container-org5385e57" class="outline-3">
+<h3 id="org5385e57">variables</h3>
+<div class="outline-text-3" id="text-org5385e57">
 <ul class="org-ul">
 <li>与 constant 语法类似</li>
 <li>但在 run time 被初始化</li>
@@ -673,9 +673,9 @@ Go 比 C 或 C++ 更加强大，体现在：
 </div>
 </div>
 
-<div id="outline-container-org4f75e9c" class="outline-3">
-<h3 id="org4f75e9c">init function</h3>
-<div class="outline-text-3" id="text-org4f75e9c">
+<div id="outline-container-org8cceb61" class="outline-3">
+<h3 id="org8cceb61">init function</h3>
+<div class="outline-text-3" id="text-org8cceb61">
 <ul class="org-ul">
 <li>每个源文件可以有自己的 <code>init</code> 函数</li>
 <li>在所有变量初始化完成后，包被初始化后才会执行</li>
@@ -690,12 +690,12 @@ Go 比 C 或 C++ 更加强大，体现在：
 
 
 
-<div id="outline-container-org482e5d4" class="outline-2">
-<h2 id="org482e5d4">Methods</h2>
-<div class="outline-text-2" id="text-org482e5d4">
-</div><div id="outline-container-org11bfa8f" class="outline-3">
-<h3 id="org11bfa8f">Pointers vs. Values</h3>
-<div class="outline-text-3" id="text-org11bfa8f">
+<div id="outline-container-orgadc33c7" class="outline-2">
+<h2 id="orgadc33c7">Methods</h2>
+<div class="outline-text-2" id="text-orgadc33c7">
+</div><div id="outline-container-org5bf1c9b" class="outline-3">
+<h3 id="org5bf1c9b">Pointers vs. Values</h3>
+<div class="outline-text-3" id="text-org5bf1c9b">
 <ul class="org-ul">
 <li>methods can be defined for any named type ( except a pointer or an interface )</li>
 <li>使用指针，方法可以直接修改 caller 本身</li>
@@ -708,12 +708,12 @@ Go 比 C 或 C++ 更加强大，体现在：
 
 
 
-<div id="outline-container-org7fad63c" class="outline-2">
-<h2 id="org7fad63c">Interfaces and other types</h2>
-<div class="outline-text-2" id="text-org7fad63c">
-</div><div id="outline-container-orgf5522f2" class="outline-3">
-<h3 id="orgf5522f2">Interfaces</h3>
-<div class="outline-text-3" id="text-orgf5522f2">
+<div id="outline-container-org5ce7195" class="outline-2">
+<h2 id="org5ce7195">Interfaces and other types</h2>
+<div class="outline-text-2" id="text-org5ce7195">
+</div><div id="outline-container-orge63fee4" class="outline-3">
+<h3 id="orge63fee4">Interfaces</h3>
+<div class="outline-text-3" id="text-orge63fee4">
 <ul class="org-ul">
 <li>provider a way to specify the behavior of an object: <span class="underline">If something can do this, then it can be used there.</span></li>
 <li>只有一到两个方法的 interface 属于常见</li>
@@ -722,9 +722,9 @@ Go 比 C 或 C++ 更加强大，体现在：
 </div>
 </div>
 
-<div id="outline-container-org995f820" class="outline-3">
-<h3 id="org995f820">Conversions</h3>
-<div class="outline-text-3" id="text-org995f820">
+<div id="outline-container-org96d11c2" class="outline-3">
+<h3 id="org96d11c2">Conversions</h3>
+<div class="outline-text-3" id="text-org96d11c2">
 <ul class="org-ul">
 <li>两个底层构造一致的对象可以相互转换</li>
 <li>转换并不是要创建新的对象，而仅是类型（及方法）的转换说明</li>
@@ -733,9 +733,9 @@ Go 比 C 或 C++ 更加强大，体现在：
 </div>
 </div>
 
-<div id="outline-container-org40b776e" class="outline-3">
-<h3 id="org40b776e">Interface conversions and type assertions</h3>
-<div class="outline-text-3" id="text-org40b776e">
+<div id="outline-container-org4d22650" class="outline-3">
+<h3 id="org4d22650">Interface conversions and type assertions</h3>
+<div class="outline-text-3" id="text-org4d22650">
 <ul class="org-ul">
 <li>type switch 有个常用的方式，对 interface 取 switch，在每个 case 中转换为相应的类型，进行具体的操作</li>
 <li>switch 条件为 <code>value.(type)</code></li>
@@ -746,9 +746,9 @@ Go 比 C 或 C++ 更加强大，体现在：
 </div>
 </div>
 
-<div id="outline-container-orga3bbe19" class="outline-3">
-<h3 id="orga3bbe19">Generality</h3>
-<div class="outline-text-3" id="text-orga3bbe19">
+<div id="outline-container-orgd89ec2a" class="outline-3">
+<h3 id="orgd89ec2a">Generality</h3>
+<div class="outline-text-3" id="text-orgd89ec2a">
 <ul class="org-ul">
 <li>若无 interface 以外的方法实现，类型便无意义</li>
 <li>构造函数可以返回一个 interface 而非具体实现</li>
@@ -765,18 +765,18 @@ Go 比 C 或 C++ 更加强大，体现在：
 
 
 
-<div id="outline-container-orgf0b808e" class="outline-3">
-<h3 id="orgf0b808e">Interface and methods</h3>
-<div class="outline-text-3" id="text-orgf0b808e">
+<div id="outline-container-org9505423" class="outline-3">
+<h3 id="org9505423">Interface and methods</h3>
+<div class="outline-text-3" id="text-org9505423">
 <p>
 <span class="underline">Almost anything can have methods attached, almost anythin can santisfy an interface</span>
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-orgbdc1f36" class="outline-2">
-<h2 id="orgbdc1f36">The Blank Identifier</h2>
-<div class="outline-text-2" id="text-orgbdc1f36">
+<div id="outline-container-org7cd295d" class="outline-2">
+<h2 id="org7cd295d">The Blank Identifier</h2>
+<div class="outline-text-2" id="text-org7cd295d">
 <ul class="org-ul">
 <li>can be assigned or declared with any value of any type, with the value discarded harmlessly</li>
 <li>用于 multiple assignment</li>
@@ -788,9 +788,9 @@ Go 比 C 或 C++ 更加强大，体现在：
 </ul>
 </div>
 </div>
-<div id="outline-container-org13c2a2d" class="outline-2">
-<h2 id="org13c2a2d">Errors</h2>
-<div class="outline-text-2" id="text-org13c2a2d">
+<div id="outline-container-orgbce2206" class="outline-2">
+<h2 id="orgbce2206">Errors</h2>
+<div class="outline-text-2" id="text-orgbce2206">
 <ul class="org-ul">
 <li>正常情况通过多返回值来描述错误信息</li>
 <li>错误类型为 <code>error</code> ，是一个内置的 interface，其中有 <code>Error()</code> 方法</li>
@@ -799,9 +799,9 @@ Go 比 C 或 C++ 更加强大，体现在：
 </ul>
 </div>
 
-<div id="outline-container-org976cb4e" class="outline-3">
-<h3 id="org976cb4e">Panic</h3>
-<div class="outline-text-3" id="text-org976cb4e">
+<div id="outline-container-orge937dcf" class="outline-3">
+<h3 id="orge937dcf">Panic</h3>
+<div class="outline-text-3" id="text-orge937dcf">
 <ul class="org-ul">
 <li>对不可恢复的错误，使用 <code>panic</code> 来创建 runtime error，并停止程序执行</li>
 <li>panic 后可以跟任意类型，一般是字符串，会打印其错误信息</li>
@@ -810,9 +810,9 @@ Go 比 C 或 C++ 更加强大，体现在：
 </div>
 </div>
 
-<div id="outline-container-orgcd587a2" class="outline-3">
-<h3 id="orgcd587a2">Recover</h3>
-<div class="outline-text-3" id="text-orgcd587a2">
+<div id="outline-container-org528d6eb" class="outline-3">
+<h3 id="org528d6eb">Recover</h3>
+<div class="outline-text-3" id="text-org528d6eb">
 <ul class="org-ul">
 <li>当 panic 触发后，会立即停止当前函数的执行，展开 goroutine 的栈，执行 defer 注册的函数，栈处理完成后停止程序</li>
 <li>panic 流程中途用 recover 来恢复正常执行流程，recover 停下 goroutine 栈的展开</li>
@@ -824,7 +824,7 @@ Go 比 C 或 C++ 更加强大，体现在：
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: 赵文彬</p>
-<p class="date">Created: 2017-08-26 六 09:10</p>
+<p class="date">Created: 2017-08-26 六 09:14</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

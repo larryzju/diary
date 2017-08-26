@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-08-26 六 09:10 -->
+<!-- 2017-08-26 六 09:14 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CSCPP 摘要</title>
@@ -233,25 +233,25 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org1aff252">A Tour of Computer System</a>
+<li><a href="#orgfb2d75e">A Tour of Computer System</a>
 <ul>
-<li><a href="#org74a0d2a">Infomation is Bits + Context</a></li>
-<li><a href="#org3a8761c">Programs Are Translated by Other Programs into different form</a></li>
-<li><a href="#orga2bfb57">It Pays to Understand How Compilation System Work</a></li>
-<li><a href="#orgf9002a5">Processors Read and Interrupt Instructions Stored in Memory</a></li>
-<li><a href="#orgab2db9c">Caches Matters</a></li>
-<li><a href="#org55ba761">Storage Devices From a Hierarchy</a></li>
-<li><a href="#orgdcc80ea">The Operating System Manages the Hardware</a></li>
-<li><a href="#org96d6d6b">System Communicate with Other System Using Network</a></li>
+<li><a href="#orgbdbc68e">Infomation is Bits + Context</a></li>
+<li><a href="#orgfe74731">Programs Are Translated by Other Programs into different form</a></li>
+<li><a href="#org4903029">It Pays to Understand How Compilation System Work</a></li>
+<li><a href="#org4f7f65a">Processors Read and Interrupt Instructions Stored in Memory</a></li>
+<li><a href="#org335299d">Caches Matters</a></li>
+<li><a href="#org637e2f9">Storage Devices From a Hierarchy</a></li>
+<li><a href="#org6af50ca">The Operating System Manages the Hardware</a></li>
+<li><a href="#orga530857">System Communicate with Other System Using Network</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org1aff252" class="outline-2">
-<h2 id="org1aff252">A Tour of Computer System</h2>
-<div class="outline-text-2" id="text-org1aff252">
+<div id="outline-container-orgfb2d75e" class="outline-2">
+<h2 id="orgfb2d75e">A Tour of Computer System</h2>
+<div class="outline-text-2" id="text-orgfb2d75e">
 <p>
 软件与硬件共同构成了计算机系统。虽然计算机系统细节诸多，但万变不离其宗。要写出好的程序，一定要掌握底层原理。
 </p>
@@ -261,9 +261,9 @@ for the JavaScript code in this tag.
 </p>
 </div>
 
-<div id="outline-container-org74a0d2a" class="outline-3">
-<h3 id="org74a0d2a">Infomation is Bits + Context</h3>
-<div class="outline-text-3" id="text-org74a0d2a">
+<div id="outline-container-orgbdbc68e" class="outline-3">
+<h3 id="orgbdbc68e">Infomation is Bits + Context</h3>
+<div class="outline-text-3" id="text-orgbdbc68e">
 <p>
 计算机中所有的信息都以一系列的位来表示。例如，源代码文件，以字节（8位）为单位保存在文件中。其编码由 ASCII 定义。
 </p>
@@ -287,9 +287,9 @@ C 语言于 1969-1973 年在贝尔实验室被创造。由 ANSI C 和 ISO 进行
 </div>
 </div>
 
-<div id="outline-container-org3a8761c" class="outline-3">
-<h3 id="org3a8761c">Programs Are Translated by Other Programs into different form</h3>
-<div class="outline-text-3" id="text-org3a8761c">
+<div id="outline-container-orgfe74731" class="outline-3">
+<h3 id="orgfe74731">Programs Are Translated by Other Programs into different form</h3>
+<div class="outline-text-3" id="text-orgfe74731">
 <p>
 程序以人类可读的程序语言写成（如 C 语言或汇编语言），需要将之翻译为机器可以识别的机器语言（二进制的可执行文件）。
 </p>
@@ -339,9 +339,9 @@ GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 
 
 
 
-<div id="outline-container-orga2bfb57" class="outline-3">
-<h3 id="orga2bfb57">It Pays to Understand How Compilation System Work</h3>
-<div class="outline-text-3" id="text-orga2bfb57">
+<div id="outline-container-org4903029" class="outline-3">
+<h3 id="org4903029">It Pays to Understand How Compilation System Work</h3>
+<div class="outline-text-3" id="text-org4903029">
 <p>
 编译器作了太多的事情，为此我们需要了解其细节，以便在以下方面进行优化：
 </p>
@@ -383,9 +383,9 @@ GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 
 
 
 
-<div id="outline-container-orgf9002a5" class="outline-3">
-<h3 id="orgf9002a5">Processors Read and Interrupt Instructions Stored in Memory</h3>
-<div class="outline-text-3" id="text-orgf9002a5">
+<div id="outline-container-org4f7f65a" class="outline-3">
+<h3 id="org4f7f65a">Processors Read and Interrupt Instructions Stored in Memory</h3>
+<div class="outline-text-3" id="text-org4f7f65a">
 <p>
 正常执行程序时，通过 shell 调用可执行程序。实际在底层复杂无比，归纳起来过程如下：
 </p>
@@ -420,9 +420,9 @@ GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 
 </div>
 </div>
 
-<div id="outline-container-orgab2db9c" class="outline-3">
-<h3 id="orgab2db9c">Caches Matters</h3>
-<div class="outline-text-3" id="text-orgab2db9c">
+<div id="outline-container-org335299d" class="outline-3">
+<h3 id="org335299d">Caches Matters</h3>
+<div class="outline-text-3" id="text-org335299d">
 <p>
 机器指令中的很大一部分工作都是在外部存储、内存、寄存器和外设之间移动数据。
 </p>
@@ -437,9 +437,9 @@ GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 
 </div>
 </div>
 
-<div id="outline-container-org55ba761" class="outline-3">
-<h3 id="org55ba761">Storage Devices From a Hierarchy</h3>
-<div class="outline-text-3" id="text-org55ba761">
+<div id="outline-container-org637e2f9" class="outline-3">
+<h3 id="org637e2f9">Storage Devices From a Hierarchy</h3>
+<div class="outline-text-3" id="text-org637e2f9">
 
 <figure>
 <img src="img/memory-hierarchy.png" alt="memory-hierarchy.png">
@@ -456,9 +456,9 @@ GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 
 </div>
 </div>
 
-<div id="outline-container-orgdcc80ea" class="outline-3">
-<h3 id="orgdcc80ea">The Operating System Manages the Hardware</h3>
-<div class="outline-text-3" id="text-orgdcc80ea">
+<div id="outline-container-org6af50ca" class="outline-3">
+<h3 id="org6af50ca">The Operating System Manages the Hardware</h3>
+<div class="outline-text-3" id="text-org6af50ca">
 <p>
 操作系统作为中间层，隔离了应用软件与硬件，其作用有两个：
 </p>
@@ -491,9 +491,9 @@ GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 
 </aside>
 </div>
 
-<div id="outline-container-org6321c15" class="outline-4">
-<h4 id="org6321c15">Processes</h4>
-<div class="outline-text-4" id="text-org6321c15">
+<div id="outline-container-org3a5dbc1" class="outline-4">
+<h4 id="org3a5dbc1">Processes</h4>
+<div class="outline-text-4" id="text-org3a5dbc1">
 <p>
 进程是对正在运行的程序的一个抽象描述。每个进程都有自己独立的计算、内存及 IO 资源。
 </p>
@@ -508,18 +508,18 @@ GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 
 </div>
 </div>
 
-<div id="outline-container-org87064d4" class="outline-4">
-<h4 id="org87064d4">Threads</h4>
-<div class="outline-text-4" id="text-org87064d4">
+<div id="outline-container-orgfc63f06" class="outline-4">
+<h4 id="orgfc63f06">Threads</h4>
+<div class="outline-text-4" id="text-orgfc63f06">
 <p>
 在一个进程中的上下文中可以有多个线程，线程共享代码和全局数据，因此更容易共享数据，效率较高
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgfa70ee0" class="outline-4">
-<h4 id="orgfa70ee0">Virtual Memory</h4>
-<div class="outline-text-4" id="text-orgfa70ee0">
+<div id="outline-container-org4acd9f6" class="outline-4">
+<h4 id="org4acd9f6">Virtual Memory</h4>
+<div class="outline-text-4" id="text-org4acd9f6">
 <p>
 在每个进程看来，自己独占了整个内存，称为 virtual address space。
 </p>
@@ -553,9 +553,9 @@ GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 
 </div>
 </div>
 
-<div id="outline-container-org3b6f5d7" class="outline-4">
-<h4 id="org3b6f5d7">Files</h4>
-<div class="outline-text-4" id="text-org3b6f5d7">
+<div id="outline-container-orgd975f08" class="outline-4">
+<h4 id="orgd975f08">Files</h4>
+<div class="outline-text-4" id="text-orgd975f08">
 <p>
 文件是对 I/O 设备的一种抽象。其本质是一堆字节，并提供了读写操作。
 </p>
@@ -577,9 +577,9 @@ Unix 中一切皆文件，因此也称作 Unix I/O
 </div>
 </div>
 
-<div id="outline-container-org96d6d6b" class="outline-3">
-<h3 id="org96d6d6b">System Communicate with Other System Using Network</h3>
-<div class="outline-text-3" id="text-org96d6d6b">
+<div id="outline-container-orga530857" class="outline-3">
+<h3 id="orga530857">System Communicate with Other System Using Network</h3>
+<div class="outline-text-3" id="text-orga530857">
 <p>
 计算机系统并不只是以单机运行的。越来越多的价值从互联之中发掘。
 </p>
@@ -607,7 +607,7 @@ Controller 集成在设备或主板上，Adapater 是主板上的插槽的可插
 </div></div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2017-08-26 六 09:10</p>
+<p class="date">Created: 2017-08-26 六 09:14</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

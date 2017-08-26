@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-08-26 六 09:10 -->
+<!-- 2017-08-26 六 09:14 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>java note 笔记</title>
@@ -238,17 +238,18 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org756ee58">1. The mental landscape</a></li>
+<li><a href="#org12d2a72">1. The mental landscape</a></li>
+<li><a href="#org0a91ddb">序列化与反序列化</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org756ee58" class="outline-2">
-<h2 id="org756ee58">1. The mental landscape</h2>
-<div class="outline-text-2" id="text-org756ee58">
-</div><div id="outline-container-orge00bf84" class="outline-3">
-<h3 id="orge00bf84">计算机概述</h3>
-<div class="outline-text-3" id="text-orge00bf84">
+<div id="outline-container-org12d2a72" class="outline-2">
+<h2 id="org12d2a72">1. The mental landscape</h2>
+<div class="outline-text-2" id="text-org12d2a72">
+</div><div id="outline-container-org05974a3" class="outline-3">
+<h3 id="org05974a3">计算机概述</h3>
+<div class="outline-text-3" id="text-org05974a3">
 <p>
 核心 CPU 执行机器语言，机器语言以指令形式保存于内存中，内存可以被线性寻址。
 指令与数据一起构成 program，程序的运行为一个进程。
@@ -272,10 +273,52 @@ CPU 的运行机制可以简单的归纳为 <code>fetch-and-execute cycle</code>
 </div>
 </div>
 </div>
+
+
+
+
+<div id="outline-container-org0a91ddb" class="outline-2">
+<h2 id="org0a91ddb">序列化与反序列化</h2>
+<div class="outline-text-2" id="text-org0a91ddb">
+</div><div id="outline-container-org29f0a30" class="outline-3">
+<h3 id="org29f0a30">Serilizable Interface</h3>
+</div>
+
+<div id="outline-container-orgf22ef58" class="outline-3">
+<h3 id="orgf22ef58">transient</h3>
+<div class="outline-text-3" id="text-orgf22ef58">
+<p>
+一旦变量被transient修饰，变量将不再是对象持久化的一部分，该变量内容在序列化后无法获得访问。
+</p>
+
+<p>
+transient关键字只能修饰变量，而不能修饰方法和类。注意，本地变量是不能被transient关键字修饰的。变量如果是用户自定义类变量，则该类需要实现Serializable接口。
+</p>
+
+<p>
+被transient关键字修饰的变量不再能被序列化，一个静态变量不管是否被transient修饰，均不能被序列化。
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgc57fed6" class="outline-3">
+<h3 id="orgc57fed6"></h3>
+</div>
+
+<div id="outline-container-orgbcece93" class="outline-3">
+<h3 id="orgbcece93">参考资料</h3>
+<div class="outline-text-3" id="text-orgbcece93">
+<ul class="org-ul">
+<li><a href="http://www.cnblogs.com/lanxuezaipiao/p/3369962.html">Java transient关键字使用小记</a></li>
+</ul>
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Larry</p>
-<p class="date">Created: 2017-08-26 六 09:10</p>
+<p class="date">Created: 2017-08-26 六 09:14</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

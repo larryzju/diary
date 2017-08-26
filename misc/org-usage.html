@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-08-26 六 09:10 -->
+<!-- 2017-08-26 六 09:14 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>org 模式小记</title>
@@ -238,32 +238,32 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgf58b0ca">Document Structure</a>
+<li><a href="#orgfec86c6">Document Structure</a>
 <ul>
-<li><a href="#org0073ff0">outline</a></li>
-<li><a href="#orgc7fa16c">headlines</a></li>
-<li><a href="#orgc978890">Visibility cycling</a></li>
+<li><a href="#org5e1f617">outline</a></li>
+<li><a href="#org0431fb7">headlines</a></li>
+<li><a href="#orge2d7e43">Visibility cycling</a></li>
 </ul>
 </li>
-<li><a href="#org9c34c4c">Hyperlinks</a></li>
-<li><a href="#org7dd4b39">Markup</a>
+<li><a href="#org8907c47">Hyperlinks</a></li>
+<li><a href="#orgd793a50">Markup</a>
 <ul>
-<li><a href="#org8934c88">title</a></li>
-<li><a href="#org43799d7">headings</a></li>
-<li><a href="#org61c4032">toc</a></li>
-<li><a href="#orgdd0e310">list</a></li>
-<li><a href="#org4facded">paragraphs</a></li>
-<li><a href="#orga9c6813">verbose</a></li>
-<li><a href="#orgd30eda8"><span class="todo TODO">TODO</span> footnote</a></li>
-<li><a href="#orga294354">emphasis 和 monospace</a></li>
-<li><a href="#org73ff30f">horizontal rules</a></li>
-<li><a href="#org36f609b">comment</a></li>
+<li><a href="#orge372529">title</a></li>
+<li><a href="#org04ad1f9">headings</a></li>
+<li><a href="#org724021d">toc</a></li>
+<li><a href="#orgc761f8a">list</a></li>
+<li><a href="#org353c114">paragraphs</a></li>
+<li><a href="#orgd4218d5">verbose</a></li>
+<li><a href="#org9ed1a10"><span class="todo TODO">TODO</span> footnote</a></li>
+<li><a href="#orgcc820cb">emphasis 和 monospace</a></li>
+<li><a href="#orgf1d49b5">horizontal rules</a></li>
+<li><a href="#orga19088a">comment</a></li>
 </ul>
 </li>
-<li><a href="#orgf23864e">小抄</a>
+<li><a href="#orgeeadb1a">小抄</a>
 <ul>
-<li><a href="#org0cf07ad"><span class="todo TODO">TODO</span> 如何跳转到下一个 <code>TODO</code></a></li>
-<li><a href="#orgd9b0c1f"><span class="todo TODO">TODO</span> github org 模式支持</a></li>
+<li><a href="#org37a5231"><span class="todo TODO">TODO</span> 如何跳转到下一个 <code>TODO</code></a></li>
+<li><a href="#org8155a18"><span class="todo TODO">TODO</span> github org 模式支持</a></li>
 </ul>
 </li>
 </ul>
@@ -271,12 +271,12 @@ for the JavaScript code in this tag.
 </nav>
 
 
-<div id="outline-container-orgf58b0ca" class="outline-2">
-<h2 id="orgf58b0ca">Document Structure</h2>
-<div class="outline-text-2" id="text-orgf58b0ca">
-</div><div id="outline-container-org0073ff0" class="outline-3">
-<h3 id="org0073ff0">outline</h3>
-<div class="outline-text-3" id="text-org0073ff0">
+<div id="outline-container-orgfec86c6" class="outline-2">
+<h2 id="orgfec86c6">Document Structure</h2>
+<div class="outline-text-2" id="text-orgfec86c6">
+</div><div id="outline-container-org5e1f617" class="outline-3">
+<h3 id="org5e1f617">outline</h3>
+<div class="outline-text-3" id="text-org5e1f617">
 <p>
 Org 基于 Outline 模式，将文档以层级形式组织。可以将具体的层级折叠起来，以获得对整体结构的把握，并专注于当前处理的部分。
 </p>
@@ -287,30 +287,30 @@ org 模型简化了 outline 的命令，通过 <code>org-cycle</code> （即 TAB
 </div>
 </div>
 
-<div id="outline-container-orgc7fa16c" class="outline-3">
-<h3 id="orgc7fa16c">headlines</h3>
-<div class="outline-text-3" id="text-orgc7fa16c">
+<div id="outline-container-org0431fb7" class="outline-3">
+<h3 id="org0431fb7">headlines</h3>
+<div class="outline-text-3" id="text-org0431fb7">
 <p>
 headlines 亦即“标题”。类似于 markdown header，用多个 <code>*</code> 表示不同的级别。
 </p>
 </div>
 
-<div id="outline-container-orge69e144" class="outline-4">
-<h4 id="orge69e144">clean view</h4>
-<div class="outline-text-4" id="text-orge69e144">
+<div id="outline-container-org13eca0c" class="outline-4">
+<h4 id="org13eca0c">clean view</h4>
+<div class="outline-text-4" id="text-org13eca0c">
 <p>
 过多的 <code>*</code> 可能造成混乱，clean view 用来解决这一问题
 </p>
 </div>
 </div>
 
-<div id="outline-container-org1efcafa" class="outline-4">
-<h4 id="org1efcafa"><span class="todo TODO">TODO</span> 如何添加一个内部链接？</h4>
+<div id="outline-container-orga9ceea8" class="outline-4">
+<h4 id="orga9ceea8"><span class="todo TODO">TODO</span> 如何添加一个内部链接？</h4>
 </div>
 </div>
-<div id="outline-container-orgc978890" class="outline-3">
-<h3 id="orgc978890">Visibility cycling</h3>
-<div class="outline-text-3" id="text-orgc978890">
+<div id="outline-container-orge2d7e43" class="outline-3">
+<h3 id="orge2d7e43">Visibility cycling</h3>
+<div class="outline-text-3" id="text-orge2d7e43">
 <p>
 通过 <code>&lt;TAB&gt;</code> 和 <code>S-&lt;TAB&gt;</code> 来进行层级的展开（可见性控制）。Super 前缀表示对全局进行操作。
 </p>
@@ -330,9 +330,9 @@ headlines 亦即“标题”。类似于 markdown header，用多个 <code>*</co
 
 
 
-<div id="outline-container-org9c34c4c" class="outline-2">
-<h2 id="org9c34c4c">Hyperlinks</h2>
-<div class="outline-text-2" id="text-org9c34c4c">
+<div id="outline-container-org8907c47" class="outline-2">
+<h2 id="org8907c47">Hyperlinks</h2>
+<div class="outline-text-2" id="text-org8907c47">
 <dl class="org-dl">
 <dt>完整写法</dt><dd><code>[[link][description]]</code></dd>
 <dt>简写法</dt><dd><code>[[link]]</code></dd>
@@ -344,17 +344,17 @@ emacs 会自动显示成最终输出的格式！但隐藏了链接地址，如�
 </div>
 </div>
 
-<div id="outline-container-org7dd4b39" class="outline-2">
-<h2 id="org7dd4b39">Markup</h2>
-<div class="outline-text-2" id="text-org7dd4b39">
+<div id="outline-container-orgd793a50" class="outline-2">
+<h2 id="orgd793a50">Markup</h2>
+<div class="outline-text-2" id="text-orgd793a50">
 <p>
 “层次结构” 比 “排版样式” 更重要！所谓大巧不工
 </p>
 </div>
 
-<div id="outline-container-org8934c88" class="outline-3">
-<h3 id="org8934c88">title</h3>
-<div class="outline-text-3" id="text-org8934c88">
+<div id="outline-container-orge372529" class="outline-3">
+<h3 id="orge372529">title</h3>
+<div class="outline-text-3" id="text-orge372529">
 <p>
 使用 #+TITLE 来进行标记，默认使用文件名
 </p>
@@ -362,9 +362,9 @@ emacs 会自动显示成最终输出的格式！但隐藏了链接地址，如�
 </div>
 
 
-<div id="outline-container-org43799d7" class="outline-3">
-<h3 id="org43799d7">headings</h3>
-<div class="outline-text-3" id="text-org43799d7">
+<div id="outline-container-org04ad1f9" class="outline-3">
+<h3 id="org04ad1f9">headings</h3>
+<div class="outline-text-3" id="text-org04ad1f9">
 <p>
 只有前三级的星级别被认为是 heading，再深的则被以 items 处理
 </p>
@@ -375,9 +375,9 @@ emacs 会自动显示成最终输出的格式！但隐藏了链接地址，如�
 </div>
 </div>
 
-<div id="outline-container-org61c4032" class="outline-3">
-<h3 id="org61c4032">toc</h3>
-<div class="outline-text-3" id="text-org61c4032">
+<div id="outline-container-org724021d" class="outline-3">
+<h3 id="org724021d">toc</h3>
+<div class="outline-text-3" id="text-org724021d">
 <p>
 自动生成，与 headlines 级别一致。可定义深度，可取消。
 </p>
@@ -393,9 +393,9 @@ emacs 会自动显示成最终输出的格式！但隐藏了链接地址，如�
 </div>
 </div>
 
-<div id="outline-container-orgdd0e310" class="outline-3">
-<h3 id="orgdd0e310">list</h3>
-<div class="outline-text-3" id="text-orgdd0e310">
+<div id="outline-container-orgc761f8a" class="outline-3">
+<h3 id="orgc761f8a">list</h3>
+<div class="outline-text-3" id="text-orgc761f8a">
 <p>
 分为三种：
 </p>
@@ -411,28 +411,28 @@ emacs 会自动显示成最终输出的格式！但隐藏了链接地址，如�
 </p>
 </div>
 </div>
-<div id="outline-container-org4facded" class="outline-3">
-<h3 id="org4facded">paragraphs</h3>
-<div class="outline-text-3" id="text-org4facded">
+<div id="outline-container-org353c114" class="outline-3">
+<h3 id="org353c114">paragraphs</h3>
+<div class="outline-text-3" id="text-org353c114">
 <p>
 段落以一个空行标识。
 </p>
 </div>
 </div>
-<div id="outline-container-orga9c6813" class="outline-3">
-<h3 id="orga9c6813">verbose</h3>
-<div class="outline-text-3" id="text-orga9c6813">
+<div id="outline-container-orgd4218d5" class="outline-3">
+<h3 id="orgd4218d5">verbose</h3>
+<div class="outline-text-3" id="text-orgd4218d5">
 <p>
 定义环境，关键字为 <code>VERSE</code> 或 <code>QUOTE</code> 或 <code>CENTER</code>
 </p>
 </div>
 </div>
-<div id="outline-container-orgd30eda8" class="outline-3">
-<h3 id="orgd30eda8"><span class="todo TODO">TODO</span> footnote</h3>
+<div id="outline-container-org9ed1a10" class="outline-3">
+<h3 id="org9ed1a10"><span class="todo TODO">TODO</span> footnote</h3>
 </div>
-<div id="outline-container-orga294354" class="outline-3">
-<h3 id="orga294354">emphasis 和 monospace</h3>
-<div class="outline-text-3" id="text-orga294354">
+<div id="outline-container-orgcc820cb" class="outline-3">
+<h3 id="orgcc820cb">emphasis 和 monospace</h3>
+<div class="outline-text-3" id="text-orgcc820cb">
 <dl class="org-dl">
 <dt><code>*xx*</code></dt><dd>bold</dd>
 <dt><code>/xx/</code></dt><dd>italic</dd>
@@ -444,17 +444,17 @@ emacs 会自动显示成最终输出的格式！但隐藏了链接地址，如�
 </div>
 </div>
 
-<div id="outline-container-org73ff30f" class="outline-3">
-<h3 id="org73ff30f">horizontal rules</h3>
-<div class="outline-text-3" id="text-org73ff30f">
+<div id="outline-container-orgf1d49b5" class="outline-3">
+<h3 id="orgf1d49b5">horizontal rules</h3>
+<div class="outline-text-3" id="text-orgf1d49b5">
 <p>
 使用 5 个以上的 dash 来表示一条水平线
 </p>
 </div>
 </div>
-<div id="outline-container-org36f609b" class="outline-3">
-<h3 id="org36f609b">comment</h3>
-<div class="outline-text-3" id="text-org36f609b">
+<div id="outline-container-orga19088a" class="outline-3">
+<h3 id="orga19088a">comment</h3>
+<div class="outline-text-3" id="text-orga19088a">
 <ul class="org-ul">
 <li>以 <code>#</code> 加空格开头，后面内容被视为注释</li>
 <li>或者关键字为 COMMENT 的环境</li>
@@ -466,26 +466,26 @@ emacs 会自动显示成最终输出的格式！但隐藏了链接地址，如�
 
 
 
-<div id="outline-container-orgf23864e" class="outline-2">
-<h2 id="orgf23864e">小抄</h2>
-<div class="outline-text-2" id="text-orgf23864e">
-</div><div id="outline-container-org0cf07ad" class="outline-3">
-<h3 id="org0cf07ad"><span class="todo TODO">TODO</span> 如何跳转到下一个 <code>TODO</code></h3>
-<div class="outline-text-3" id="text-org0cf07ad">
+<div id="outline-container-orgeeadb1a" class="outline-2">
+<h2 id="orgeeadb1a">小抄</h2>
+<div class="outline-text-2" id="text-orgeeadb1a">
+</div><div id="outline-container-org37a5231" class="outline-3">
+<h3 id="org37a5231"><span class="todo TODO">TODO</span> 如何跳转到下一个 <code>TODO</code></h3>
+<div class="outline-text-3" id="text-org37a5231">
 <dl class="org-dl">
 <dt>显示所有的 todo</dt><dd><code>C-c / t</code></dd>
 </dl>
 </div>
 </div>
 
-<div id="outline-container-orgd9b0c1f" class="outline-3">
-<h3 id="orgd9b0c1f"><span class="todo TODO">TODO</span> github org 模式支持</h3>
+<div id="outline-container-org8155a18" class="outline-3">
+<h3 id="org8155a18"><span class="todo TODO">TODO</span> github org 模式支持</h3>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Larry</p>
-<p class="date">Created: 2017-08-26 六 09:10</p>
+<p class="date">Created: 2017-08-26 六 09:14</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

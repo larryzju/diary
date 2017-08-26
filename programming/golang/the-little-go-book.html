@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-08-26 六 09:10 -->
+<!-- 2017-08-26 六 09:14 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Note on "The little Go Book"</title>
@@ -238,20 +238,20 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org64f167c">前言</a></li>
-<li><a href="#org8f60ca6">代码结构</a></li>
-<li><a href="#org18ac845">Basic</a></li>
-<li><a href="#orgd5cc6e7">Structure</a></li>
+<li><a href="#orgc14079a">前言</a></li>
+<li><a href="#orgee838bd">代码结构</a></li>
+<li><a href="#org82ed8d0">Basic</a></li>
+<li><a href="#org50788e5">Structure</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org64f167c" class="outline-2">
-<h2 id="org64f167c">前言</h2>
-<div class="outline-text-2" id="text-org64f167c">
-</div><div id="outline-container-org3861466" class="outline-3">
-<h3 id="org3861466">为什么不愿意学习新的语言</h3>
-<div class="outline-text-3" id="text-org3861466">
+<div id="outline-container-orgc14079a" class="outline-2">
+<h2 id="orgc14079a">前言</h2>
+<div class="outline-text-2" id="text-orgc14079a">
+</div><div id="outline-container-orgc327e36" class="outline-3">
+<h3 id="orgc327e36">为什么不愿意学习新的语言</h3>
+<div class="outline-text-3" id="text-orgc327e36">
 <ol class="org-ol">
 <li>语言相对基础，任何变动都会对上层产生影响</li>
 <li>语言细节多，学习涉及方方面面，付出与收效比例不相当</li>
@@ -259,9 +259,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgba4f4cc" class="outline-3">
-<h3 id="orgba4f4cc">为什么要学习 go</h3>
-<div class="outline-text-3" id="text-orgba4f4cc">
+<div id="outline-container-orgc425565" class="outline-3">
+<h3 id="orgc425565">为什么要学习 go</h3>
+<div class="outline-text-3" id="text-orgc425565">
 <ul class="org-ul">
 <li>语法和标准库相对简单</li>
 <li>社区活跃</li>
@@ -275,9 +275,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org8f60ca6" class="outline-2">
-<h2 id="org8f60ca6">代码结构</h2>
-<div class="outline-text-2" id="text-org8f60ca6">
+<div id="outline-container-orgee838bd" class="outline-2">
+<h2 id="orgee838bd">代码结构</h2>
+<div class="outline-text-2" id="text-orgee838bd">
 <ul class="org-ul">
 <li><code>${GOPATH}</code> 环境变量定义 workspace</li>
 <li>workspace 下保存目录代码和生成结果，如 <code>src</code>, <code>bin</code>, <code>pkg</code> 等</li>
@@ -285,15 +285,15 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org18ac845" class="outline-2">
-<h2 id="org18ac845">Basic</h2>
-<div class="outline-text-2" id="text-org18ac845">
-</div><div id="outline-container-orgae40f68" class="outline-3">
-<h3 id="orgae40f68">特点</h3>
-<div class="outline-text-3" id="text-orgae40f68">
-</div><div id="outline-container-org9623f3f" class="outline-4">
-<h4 id="org9623f3f">编译型</h4>
-<div class="outline-text-4" id="text-org9623f3f">
+<div id="outline-container-org82ed8d0" class="outline-2">
+<h2 id="org82ed8d0">Basic</h2>
+<div class="outline-text-2" id="text-org82ed8d0">
+</div><div id="outline-container-orgbacea00" class="outline-3">
+<h3 id="orgbacea00">特点</h3>
+<div class="outline-text-3" id="text-orgbacea00">
+</div><div id="outline-container-org0b131f2" class="outline-4">
+<h4 id="org0b131f2">编译型</h4>
+<div class="outline-text-4" id="text-org0b131f2">
 <ul class="org-ul">
 <li>编译速度快，能更快迭代</li>
 <li>运行速度相对解释型快</li>
@@ -302,9 +302,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org159c8f3" class="outline-4">
-<h4 id="org159c8f3">静态类型</h4>
-<div class="outline-text-4" id="text-org159c8f3">
+<div id="outline-container-org00d785b" class="outline-4">
+<h4 id="org00d785b">静态类型</h4>
+<div class="outline-text-4" id="text-org00d785b">
 <ul class="org-ul">
 <li>可以通过手动指定类型，或由编译器推导类型</li>
 <li>编译时可以检查出很多错误，增强可靠性</li>
@@ -312,9 +312,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org9db654c" class="outline-4">
-<h4 id="org9db654c">类 C 语法</h4>
-<div class="outline-text-4" id="text-org9db654c">
+<div id="outline-container-org0c42b6a" class="outline-4">
+<h4 id="org0c42b6a">类 C 语法</h4>
+<div class="outline-text-4" id="text-org0c42b6a">
 <ul class="org-ul">
 <li>去掉了 semi-colon terminated</li>
 <li>去掉了 parenthese around conditions</li>
@@ -323,9 +323,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org801d798" class="outline-4">
-<h4 id="org801d798">GC</h4>
-<div class="outline-text-4" id="text-org801d798">
+<div id="outline-container-orgf821af8" class="outline-4">
+<h4 id="orgf821af8">GC</h4>
+<div class="outline-text-4" id="text-orgf821af8">
 <ul class="org-ul">
 <li>keep track of values</li>
 <li>and free them when they're no longer used.</li>
@@ -346,9 +346,9 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-orgd114c2d" class="outline-3">
-<h3 id="orgd114c2d">running</h3>
-<div class="outline-text-3" id="text-orgd114c2d">
+<div id="outline-container-org072937a" class="outline-3">
+<h3 id="org072937a">running</h3>
+<div class="outline-text-3" id="text-org072937a">
 <ul class="org-ul">
 <li>使用 go run 来执行</li>
 <li>使用 go build 来编译，生成可执行文件</li>
@@ -363,9 +363,9 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-org06f5258" class="outline-3">
-<h3 id="org06f5258">Import</h3>
-<div class="outline-text-3" id="text-org06f5258">
+<div id="outline-container-org0f77890" class="outline-3">
+<h3 id="org0f77890">Import</h3>
+<div class="outline-text-3" id="text-org0f77890">
 <ul class="org-ul">
 <li>有一些默认的函数不需要导入，如 <code>len</code>, <code>cap</code>, <code>println</code></li>
 <li><code>import</code> 用于导入指定字符串对应的包，可以一次导入多个</li>
@@ -375,9 +375,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgb4baf54" class="outline-3">
-<h3 id="orgb4baf54">变量与申明</h3>
-<div class="outline-text-3" id="text-orgb4baf54">
+<div id="outline-container-orgf7273bf" class="outline-3">
+<h3 id="orgf7273bf">变量与申明</h3>
+<div class="outline-text-3" id="text-orgf7273bf">
 <ul class="org-ul">
 <li>使用 <code>var</code> 定义，类型在后</li>
 <li>或者使用 <code>:=</code> 来定义局部变量，类型由值推导而来</li>
@@ -387,9 +387,9 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 
-<div id="outline-container-org4440166" class="outline-4">
-<h4 id="org4440166">注意</h4>
-<div class="outline-text-4" id="text-org4440166">
+<div id="outline-container-orgc72b4e2" class="outline-4">
+<h4 id="orgc72b4e2">注意</h4>
+<div class="outline-text-4" id="text-orgc72b4e2">
 <ul class="org-ul">
 <li><code>:=</code> 会阻止重复定义</li>
 <li>但只要左值有一个是新的变量， <code>:=</code> 将允许赋值</li>
@@ -401,9 +401,9 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-org781531c" class="outline-3">
-<h3 id="org781531c">函数声明</h3>
-<div class="outline-text-3" id="text-org781531c">
+<div id="outline-container-orgbf2ca3a" class="outline-3">
+<h3 id="orgbf2ca3a">函数声明</h3>
+<div class="outline-text-3" id="text-orgbf2ca3a">
 <ul class="org-ul">
 <li>可以返回多个值</li>
 <li>使用 blank identifier ( "_" ) 来忽略赋值</li>
@@ -415,13 +415,13 @@ for the JavaScript code in this tag.
 </div>
 
 
-<div id="outline-container-orgd5cc6e7" class="outline-2">
-<h2 id="orgd5cc6e7">Structure</h2>
+<div id="outline-container-org50788e5" class="outline-2">
+<h2 id="org50788e5">Structure</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2017-08-26 六 09:10</p>
+<p class="date">Created: 2017-08-26 六 09:14</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

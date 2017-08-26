@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-08-26 六 09:10 -->
+<!-- 2017-08-26 六 09:14 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Note on 80386 reference</title>
@@ -260,21 +260,21 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgf3070fc">寄存器</a></li>
-<li><a href="#org5c0c142">数据类型</a></li>
-<li><a href="#orge3489a0">指令格式</a></li>
-<li><a href="#org60bdd81">控制指令</a></li>
-<li><a href="#org9d3d280">内存管理</a></li>
+<li><a href="#org99ce47a">寄存器</a></li>
+<li><a href="#org09ba853">数据类型</a></li>
+<li><a href="#org7c2e59d">指令格式</a></li>
+<li><a href="#orgb70cce8">控制指令</a></li>
+<li><a href="#orga61dae8">内存管理</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-orgf3070fc" class="outline-2">
-<h2 id="orgf3070fc">寄存器</h2>
-<div class="outline-text-2" id="text-orgf3070fc">
-</div><div id="outline-container-org744e86c" class="outline-3">
-<h3 id="org744e86c">分类</h3>
-<div class="outline-text-3" id="text-org744e86c">
+<div id="outline-container-org99ce47a" class="outline-2">
+<h2 id="org99ce47a">寄存器</h2>
+<div class="outline-text-2" id="text-org99ce47a">
+</div><div id="outline-container-orgbf5d4d3" class="outline-3">
+<h3 id="orgbf5d4d3">分类</h3>
+<div class="outline-text-3" id="text-orgbf5d4d3">
 <p>
 有三类寄存器（对应用程序开发）
 </p>
@@ -287,9 +287,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgb4b48bc" class="outline-3">
-<h3 id="orgb4b48bc">通用目的寄存器</h3>
-<div class="outline-text-3" id="text-orgb4b48bc">
+<div id="outline-container-org74eb2ba" class="outline-3">
+<h3 id="org74eb2ba">通用目的寄存器</h3>
+<div class="outline-text-3" id="text-org74eb2ba">
 <ul class="org-ul">
 <li>8 个通用寄存器（32位）用于保存基地址和进行运算</li>
 <li>分别是 EAX,ECX,EDX,EBX,ESP,EBP,ESI,EDI</li>
@@ -302,9 +302,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgdc58519" class="outline-3">
-<h3 id="orgdc58519">Segment Register</h3>
-<div class="outline-text-3" id="text-orgdc58519">
+<div id="outline-container-orgd29148c" class="outline-3">
+<h3 id="orgd29148c">Segment Register</h3>
+<div class="outline-text-3" id="text-orgd29148c">
 <ul class="org-ul">
 <li>程序可能由不同部件组成</li>
 <li>同一时刻只能有一部分段在使用</li>
@@ -314,9 +314,9 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 
-<div id="outline-container-orge3341c5" class="outline-4">
-<h4 id="orge3341c5">Stack Implements</h4>
-<div class="outline-text-4" id="text-orge3341c5">
+<div id="outline-container-orgbeeea99" class="outline-4">
+<h4 id="orgbeeea99">Stack Implements</h4>
+<div class="outline-text-4" id="text-orgbeeea99">
 <ol class="org-ol">
 <li>SS 寄存器。可以有多个栈，栈操作会自动引用 SS 中的段</li>
 <li>ESP（ Stack Pointer ），指向栈底，栈向低地址增长</li>
@@ -326,12 +326,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org9abd33b" class="outline-3">
-<h3 id="org9abd33b">Status and Instruction Register</h3>
-<div class="outline-text-3" id="text-org9abd33b">
-</div><div id="outline-container-org4d9d977" class="outline-4">
-<h4 id="org4d9d977">EFLAGS</h4>
-<div class="outline-text-4" id="text-org4d9d977">
+<div id="outline-container-orgb0d15e9" class="outline-3">
+<h3 id="orgb0d15e9">Status and Instruction Register</h3>
+<div class="outline-text-3" id="text-orgb0d15e9">
+</div><div id="outline-container-orgcb31ff1" class="outline-4">
+<h4 id="orgcb31ff1">EFLAGS</h4>
+<div class="outline-text-4" id="text-orgcb31ff1">
 <ul class="org-ul">
 <li>32 位，标志处理器状态</li>
 <li>低 16 位称为 FLAGS，用于兼容 8086 和 80286</li>
@@ -345,9 +345,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org6df88b2" class="outline-4">
-<h4 id="org6df88b2">EIP</h4>
-<div class="outline-text-4" id="text-org6df88b2">
+<div id="outline-container-org13e7ed5" class="outline-4">
+<h4 id="org13e7ed5">EIP</h4>
+<div class="outline-text-4" id="text-org13e7ed5">
 <ul class="org-ul">
 <li>Extended Instruction Pointer</li>
 <li>对程序员不可见，通过 control-transfer， interrupt 和 exception 进行修改</li>
@@ -358,12 +358,12 @@ for the JavaScript code in this tag.
 </div>
 
 
-<div id="outline-container-org5c0c142" class="outline-2">
-<h2 id="org5c0c142">数据类型</h2>
-<div class="outline-text-2" id="text-org5c0c142">
-</div><div id="outline-container-orgf2d7dee" class="outline-3">
-<h3 id="orgf2d7dee">基本类型</h3>
-<div class="outline-text-3" id="text-orgf2d7dee">
+<div id="outline-container-org09ba853" class="outline-2">
+<h2 id="org09ba853">数据类型</h2>
+<div class="outline-text-2" id="text-org09ba853">
+</div><div id="outline-container-org6c5d48f" class="outline-3">
+<h3 id="org6c5d48f">基本类型</h3>
+<div class="outline-text-3" id="text-org6c5d48f">
 <ul class="org-ul">
 <li>三种基本类型，分别是 byte, word, doubleword</li>
 <li>bit zero is the least significant bit</li>
@@ -377,9 +377,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org9f1bea0" class="outline-3">
-<h3 id="org9f1bea0">Additional Data Type</h3>
-<div class="outline-text-3" id="text-org9f1bea0">
+<div id="outline-container-orgfca0166" class="outline-3">
+<h3 id="orgfca0166">Additional Data Type</h3>
+<div class="outline-text-3" id="text-orgfca0166">
 <ul class="org-ul">
 <li>Integer，对应于 C 中的 char, short 和 int</li>
 <li>Ordinal, 无符号整型</li>
@@ -394,9 +394,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org05303b0" class="outline-3">
-<h3 id="org05303b0">图示</h3>
-<div class="outline-text-3" id="text-org05303b0">
+<div id="outline-container-org1c05a49" class="outline-3">
+<h3 id="org1c05a49">图示</h3>
+<div class="outline-text-3" id="text-org1c05a49">
 
 <figure>
 <img src="80386/FIG2-4.GIF" alt="FIG2-4.GIF">
@@ -415,12 +415,12 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-orge3489a0" class="outline-2">
-<h2 id="orge3489a0">指令格式</h2>
-<div class="outline-text-2" id="text-orge3489a0">
-</div><div id="outline-container-org5ee9f0e" class="outline-3">
-<h3 id="org5ee9f0e">概述</h3>
-<div class="outline-text-3" id="text-org5ee9f0e">
+<div id="outline-container-org7c2e59d" class="outline-2">
+<h2 id="org7c2e59d">指令格式</h2>
+<div class="outline-text-2" id="text-org7c2e59d">
+</div><div id="outline-container-org6520ee6" class="outline-3">
+<h3 id="org6520ee6">概述</h3>
+<div class="outline-text-3" id="text-org6520ee6">
 <ul class="org-ul">
 <li>指令中反映出操作类型、操作数类型、操作数位置；其中隐含有寻址的方式</li>
 <li>指令有可变长个元素组成，由 opcode 个可选个其它参数组成（用于表示操作数类型和位置）</li>
@@ -428,9 +428,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgf31e8f6" class="outline-3">
-<h3 id="orgf31e8f6">元素</h3>
-<div class="outline-text-3" id="text-orgf31e8f6">
+<div id="outline-container-org2f7eba6" class="outline-3">
+<h3 id="org2f7eba6">元素</h3>
+<div class="outline-text-3" id="text-org2f7eba6">
 <dl class="org-dl">
 <dt>Prefix</dt><dd>用于修饰指令操作数
 <dl class="org-dl">
@@ -452,12 +452,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org60bdd81" class="outline-2">
-<h2 id="org60bdd81">控制指令</h2>
-<div class="outline-text-2" id="text-org60bdd81">
-</div><div id="outline-container-org2172116" class="outline-3">
-<h3 id="org2172116">概述</h3>
-<div class="outline-text-3" id="text-org2172116">
+<div id="outline-container-orgb70cce8" class="outline-2">
+<h2 id="orgb70cce8">控制指令</h2>
+<div class="outline-text-2" id="text-orgb70cce8">
+</div><div id="outline-container-org54bea06" class="outline-3">
+<h3 id="org54bea06">概述</h3>
+<div class="outline-text-3" id="text-org54bea06">
 <ul class="org-ul">
 <li>包含两类跳转指令：有条件的和无条件的跳转指令</li>
 <li>跳转与处理器状态标记有关</li>
@@ -466,18 +466,18 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orga80c28f" class="outline-3">
-<h3 id="orga80c28f">无条件跳转</h3>
-<div class="outline-text-3" id="text-orga80c28f">
+<div id="outline-container-org970f7ea" class="outline-3">
+<h3 id="org970f7ea">无条件跳转</h3>
+<div class="outline-text-3" id="text-org970f7ea">
 <ul class="org-ul">
 <li>可将 CS 切换到另一个，称为 far control transfer</li>
 <li>在同一个 segment 内跳转，称为 near control transfer</li>
 </ul>
 </div>
 
-<div id="outline-container-org3ac4867" class="outline-4">
-<h4 id="org3ac4867">Jump Instruction</h4>
-<div class="outline-text-4" id="text-org3ac4867">
+<div id="outline-container-org3c0d61d" class="outline-4">
+<h4 id="org3c0d61d">Jump Instruction</h4>
+<div class="outline-text-4" id="text-org3c0d61d">
 <ul class="org-ul">
 <li>直接跳转，不会压栈</li>
 <li>地址可以是直接指定的，也可以是寄存器间接寻址的
@@ -494,9 +494,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgbaf53c9" class="outline-4">
-<h4 id="orgbaf53c9">Call Instruction</h4>
-<div class="outline-text-4" id="text-orgbaf53c9">
+<div id="outline-container-orgde25bdc" class="outline-4">
+<h4 id="orgde25bdc">Call Instruction</h4>
+<div class="outline-text-4" id="text-orgde25bdc">
 <ul class="org-ul">
 <li>Call Procedure，将 EIP 压栈，并在 RET 时弹出</li>
 <li>地址有 relative, direct, indirect 三种</li>
@@ -509,9 +509,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org1a72ad2" class="outline-4">
-<h4 id="org1a72ad2">Return and Return-From-Interrupt Instruction</h4>
-<div class="outline-text-4" id="text-org1a72ad2">
+<div id="outline-container-orgfd02314" class="outline-4">
+<h4 id="orgfd02314">Return and Return-From-Interrupt Instruction</h4>
+<div class="outline-text-4" id="text-orgfd02314">
 <dl class="org-dl">
 <dt>RET</dt><dd>从栈中恢复 EIP 到前一个 CALL 的位置，可以指定一个返回值（立即数）</dd>
 <dt>IRET</dt><dd>从中断处理中返回。不同于 RET，还会将栈上的 flags 恢复（中断时保存的现场）</dd>
@@ -521,17 +521,17 @@ for the JavaScript code in this tag.
 </div>
 
 
-<div id="outline-container-org458643d" class="outline-3">
-<h3 id="org458643d">有条件跳转</h3>
-<div class="outline-text-3" id="text-org458643d">
+<div id="outline-container-org128fbfa" class="outline-3">
+<h3 id="org128fbfa">有条件跳转</h3>
+<div class="outline-text-3" id="text-org128fbfa">
 <p>
 由 CPU 状态来决定是否跳转
 </p>
 </div>
 
-<div id="outline-container-orgd7b09ab" class="outline-4">
-<h4 id="orgd7b09ab">Conditional Jump Instruction</h4>
-<div class="outline-text-4" id="text-orgd7b09ab">
+<div id="outline-container-org12ca56b" class="outline-4">
+<h4 id="org12ca56b">Conditional Jump Instruction</h4>
+<div class="outline-text-4" id="text-org12ca56b">
 
 <figure>
 <img src="80386/TABLE3-2.PNG" alt="TABLE3-2.PNG">
@@ -545,9 +545,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org13adf0f" class="outline-4">
-<h4 id="org13adf0f">Loop Instructions</h4>
-<div class="outline-text-4" id="text-org13adf0f">
+<div id="outline-container-orge3a01fe" class="outline-4">
+<h4 id="orge3a01fe">Loop Instructions</h4>
+<div class="outline-text-4" id="text-orge3a01fe">
 <ul class="org-ul">
 <li>loop 也是条件跳转，使用 ECX 的值作为循环次数</li>
 <li>有五个循环指令： <code>LOOP</code>, <code>LOOPE</code>, <code>LOOPZ</code>, <code>LOOPNE</code>, <code>LOOPNZ</code></li>
@@ -555,7 +555,7 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 
-<ul class="org-ul"><li><a id="org92c820d"></a>LOOPE/LOOPZ<br><div class="outline-text-5" id="text-org92c820d">
+<ul class="org-ul"><li><a id="org515ffb9"></a>LOOPE/LOOPZ<br><div class="outline-text-5" id="text-org515ffb9">
 <ul class="org-ul">
 <li>LOOPE: Loop While Equal</li>
 <li>LOOPZ: Loop While Zero</li>
@@ -564,7 +564,7 @@ for the JavaScript code in this tag.
 </ul>
 </div></li>
 
-<li><a id="orga6cedd8"></a>LOOPNE/LOOPNZ<br><div class="outline-text-5" id="text-orga6cedd8">
+<li><a id="org535c148"></a>LOOPNE/LOOPNZ<br><div class="outline-text-5" id="text-org535c148">
 <ul class="org-ul">
 <li>当 <code>(ECX-- &amp;&amp; ZF==0)</code> 时，跳转到 LABEL 处</li>
 </ul>
@@ -572,9 +572,9 @@ for the JavaScript code in this tag.
 </div>
 
 
-<div id="outline-container-orgaf32d1b" class="outline-4">
-<h4 id="orgaf32d1b"><span class="todo TODO">TODO</span> Executing a Loop or Repeat Zero Times</h4>
-<div class="outline-text-4" id="text-orgaf32d1b">
+<div id="outline-container-orgf1c33d4" class="outline-4">
+<h4 id="orgf1c33d4"><span class="todo TODO">TODO</span> Executing a Loop or Repeat Zero Times</h4>
+<div class="outline-text-4" id="text-orgf1c33d4">
 <ul class="org-ul">
 <li>JCXZ ( Jump If ECX Zero )</li>
 <li>若 ECX 为 0，则跳转到 label 处</li>
@@ -586,12 +586,12 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-org01626fb" class="outline-3">
-<h3 id="org01626fb">软件中断</h3>
-<div class="outline-text-3" id="text-org01626fb">
-</div><div id="outline-container-orgd902a44" class="outline-4">
-<h4 id="orgd902a44">INT n</h4>
-<div class="outline-text-4" id="text-orgd902a44">
+<div id="outline-container-org84a6c28" class="outline-3">
+<h3 id="org84a6c28">软件中断</h3>
+<div class="outline-text-3" id="text-org84a6c28">
+</div><div id="outline-container-orgba784d2" class="outline-4">
+<h4 id="orgba784d2">INT n</h4>
+<div class="outline-text-4" id="text-orgba784d2">
 <ul class="org-ul">
 <li><code>INT n</code> 和 <code>BOUND</code> 允许跳转到配置的 interrupt service routine</li>
 <li><code>INT n</code> 调用第 n 号软件中断，可以指定 interrupt type</li>
@@ -601,9 +601,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgd4d10c9" class="outline-4">
-<h4 id="orgd4d10c9">INT0</h4>
-<div class="outline-text-4" id="text-orgd4d10c9">
+<div id="outline-container-orgb6caff3" class="outline-4">
+<h4 id="orgb6caff3">INT0</h4>
+<div class="outline-text-4" id="text-orgb6caff3">
 <ul class="org-ul">
 <li>Interrupt on Overflow</li>
 <li>若 OF 被置位，则调用中断 4</li>
@@ -611,9 +611,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org1cbae92" class="outline-4">
-<h4 id="org1cbae92">BOUND</h4>
-<div class="outline-text-4" id="text-org1cbae92">
+<div id="outline-container-orgcc82abe" class="outline-4">
+<h4 id="orgcc82abe">BOUND</h4>
+<div class="outline-text-4" id="text-orgcc82abe">
 <ul class="org-ul">
 <li>Detect Value Out of Range</li>
 <li>检查特定寄存器中的有符号值是否在范围内</li>
@@ -627,12 +627,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org9d3d280" class="outline-2">
-<h2 id="org9d3d280">内存管理</h2>
-<div class="outline-text-2" id="text-org9d3d280">
-</div><div id="outline-container-orgfdbc8ba" class="outline-3">
-<h3 id="orgfdbc8ba">概述</h3>
-<div class="outline-text-3" id="text-orgfdbc8ba">
+<div id="outline-container-orga61dae8" class="outline-2">
+<h2 id="orga61dae8">内存管理</h2>
+<div class="outline-text-2" id="text-orga61dae8">
+</div><div id="outline-container-org662a71c" class="outline-3">
+<h3 id="org662a71c">概述</h3>
+<div class="outline-text-3" id="text-org662a71c">
 <p>
 地址空间有三种视图：
 </p>
@@ -681,9 +681,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgeeaa8ea" class="outline-3">
-<h3 id="orgeeaa8ea"><span class="todo TODO">TODO</span> 流程图</h3>
-<div class="outline-text-3" id="text-orgeeaa8ea">
+<div id="outline-container-org00b999f" class="outline-3">
+<h3 id="org00b999f"><span class="todo TODO">TODO</span> 流程图</h3>
+<div class="outline-text-3" id="text-org00b999f">
 
 <figure>
 <img src="./80386/FIG5-1.GIF" alt="FIG5-1.GIF">
@@ -696,9 +696,9 @@ Paging enabled 的连线是否标注有误??
 </div>
 </div>
 
-<div id="outline-container-org0ccbdaf" class="outline-3">
-<h3 id="org0ccbdaf">segment 机制</h3>
-<div class="outline-text-3" id="text-org0ccbdaf">
+<div id="outline-container-org01fa9b1" class="outline-3">
+<h3 id="org01fa9b1">segment 机制</h3>
+<div class="outline-text-3" id="text-org01fa9b1">
 <p>
 提供二维地址访问方式，将 logical 地址转换为 linear 地址，并提供内存保护机制。
 </p>
@@ -755,9 +755,9 @@ segment descriptor 分为两种 Global 和 Local。
 </div>
 
 
-<div id="outline-container-org733a9ee" class="outline-4">
-<h4 id="org733a9ee">段偏移量</h4>
-<div class="outline-text-4" id="text-org733a9ee">
+<div id="outline-container-orgc81e2e3" class="outline-4">
+<h4 id="orgc81e2e3">段偏移量</h4>
+<div class="outline-text-4" id="text-orgc81e2e3">
 <ul class="org-ul">
 <li>包括三部分
 <ol class="org-ol">
@@ -769,9 +769,9 @@ segment descriptor 分为两种 Global 和 Local。
 </div>
 </div>
 
-<div id="outline-container-org95b8286" class="outline-4">
-<h4 id="org95b8286"><span class="todo TODO">TODO</span> 分段的意义</h4>
-<div class="outline-text-4" id="text-org95b8286">
+<div id="outline-container-org4b33286" class="outline-4">
+<h4 id="org4b33286"><span class="todo TODO">TODO</span> 分段的意义</h4>
+<div class="outline-text-4" id="text-org4b33286">
 <ol class="org-ol">
 <li>内存保护</li>
 <li>复用内存，将段交换到硬盘存储</li>
@@ -779,10 +779,10 @@ segment descriptor 分为两种 Global 和 Local。
 </div>
 </div>
 
-<div id="outline-container-org7de46e0" class="outline-4">
-<h4 id="org7de46e0">Segment Translation</h4>
-<div class="outline-text-4" id="text-org7de46e0">
-</div><ul class="org-ul"><li><a id="orga7ed0b9"></a>概述<br><div class="outline-text-5" id="text-orga7ed0b9">
+<div id="outline-container-org0b94732" class="outline-4">
+<h4 id="org0b94732">Segment Translation</h4>
+<div class="outline-text-4" id="text-org0b94732">
+</div><ul class="org-ul"><li><a id="org6bdb80f"></a>概述<br><div class="outline-text-5" id="text-org6bdb80f">
 <ul class="org-ul">
 <li>logical address 是多个分段下的连续地址, 分段以 base + limit 来指定</li>
 <li>要使用 logical address, 需要找到基地址，并指定偏移。即 base + offset</li>
@@ -793,7 +793,7 @@ segment descriptor 分为两种 Global 和 Local。
 </ul>
 </div></li>
 
-<li><a id="org52b723a"></a>转换流程图<br><div class="outline-text-5" id="text-org52b723a">
+<li><a id="org3e980cc"></a>转换流程图<br><div class="outline-text-5" id="text-org3e980cc">
 
 <figure>
 <img src="80386/FIG5-2.GIF" alt="FIG5-2.GIF">
@@ -801,7 +801,7 @@ segment descriptor 分为两种 Global 和 Local。
 </figure>
 </div></li>
 
-<li><a id="org6d6594e"></a>Descriptor<br><ul class="org-ul"><li><a id="org3e38e2c"></a>分类<br><div class="outline-text-6" id="text-org3e38e2c">
+<li><a id="orgb1bef04"></a>Descriptor<br><ul class="org-ul"><li><a id="orgf1094d2"></a>分类<br><div class="outline-text-6" id="text-orgf1094d2">
 <p>
 分为两类
 </p>
@@ -812,7 +812,7 @@ segment descriptor 分为两种 Global 和 Local。
 </ol>
 </div></li>
 
-<li><a id="org72161b0"></a>示意图<br><div class="outline-text-6" id="text-org72161b0">
+<li><a id="org58a535e"></a>示意图<br><div class="outline-text-6" id="text-org58a535e">
 
 <figure>
 <img src="80386/FIG5-3.GIF" alt="FIG5-3.GIF">
@@ -820,7 +820,7 @@ segment descriptor 分为两种 Global 和 Local。
 </figure>
 </div></li>
 
-<li><a id="orgb8510e1"></a>说明<br><div class="outline-text-6" id="text-orgb8510e1">
+<li><a id="orge327d26"></a>说明<br><div class="outline-text-6" id="text-orge327d26">
 <ul class="org-ul">
 <li>base 保存基地址，由三部分构成，共 32 位</li>
 <li>limit 由两部分构成，共 20 位</li>
@@ -835,7 +835,7 @@ segment descriptor 分为两种 Global 和 Local。
 
 
 
-<li><a id="org2053086"></a>Descriptor Tables<br><ul class="org-ul"><li><a id="org8823c02"></a>说明<br><div class="outline-text-6" id="text-org8823c02">
+<li><a id="orgf3d2489"></a>Descriptor Tables<br><ul class="org-ul"><li><a id="orge156815"></a>说明<br><div class="outline-text-6" id="text-orge156815">
 <ul class="org-ul">
 <li>分为 GDT 和 LDT 两类</li>
 <li>其中保存的是 descriptor 结构（8 个字节），长度可变，最长 8192 个 descriptor</li>
@@ -847,7 +847,7 @@ segment descriptor 分为两种 Global 和 Local。
 </div></li>
 
 
-<li><a id="org1becff8"></a>示意<br><div class="outline-text-6" id="text-org1becff8">
+<li><a id="orgf5b5e68"></a>示意<br><div class="outline-text-6" id="text-orgf5b5e68">
 
 <figure>
 <img src="80386/FIG5-5.GIF" alt="FIG5-5.GIF">
@@ -855,14 +855,14 @@ segment descriptor 分为两种 Global 和 Local。
 </figure>
 </div></li></ul></li>
 
-<li><a id="orgcb8eb04"></a>Selector<br><ul class="org-ul"><li><a id="orgfe069c2"></a>说明<br><div class="outline-text-6" id="text-orgfe069c2">
+<li><a id="org22c180d"></a>Selector<br><ul class="org-ul"><li><a id="orgddc99b5"></a>说明<br><div class="outline-text-6" id="text-orgddc99b5">
 <ul class="org-ul">
 <li>selector 是到 descriptor table 的具体 descriptor 的索引</li>
 <li>selector 的值一般由 linker 或 linking loader 来定义</li>
 </ul>
 </div></li>
 
-<li><a id="org374df13"></a>格式<br><div class="outline-text-6" id="text-org374df13">
+<li><a id="orgf3050e7"></a>格式<br><div class="outline-text-6" id="text-orgf3050e7">
 
 <figure>
 <img src="80386/FIG5-6.GIF" alt="FIG5-6.GIF">
@@ -878,7 +878,7 @@ segment descriptor 分为两种 Global 和 Local。
 </div></li></ul></li>
 
 
-<li><a id="orgc6d1b7c"></a>Segment Registers<br><ul class="org-ul"><li><a id="orgb317150"></a>图示<br><div class="outline-text-6" id="text-orgb317150">
+<li><a id="orgb3f4a55"></a>Segment Registers<br><ul class="org-ul"><li><a id="org841b4ce"></a>图示<br><div class="outline-text-6" id="text-org841b4ce">
 
 <figure>
 <img src="80386/FIG5-7.GIF" alt="FIG5-7.GIF">
@@ -886,7 +886,7 @@ segment descriptor 分为两种 Global 和 Local。
 </figure>
 </div></li>
 
-<li><a id="orgd45b163"></a>说明<br><div class="outline-text-6" id="text-orgd45b163">
+<li><a id="org1a56bc3"></a>说明<br><div class="outline-text-6" id="text-org1a56bc3">
 <ul class="org-ul">
 <li>segment register 包括了 CS, SS, DS，ES，FS，GS</li>
 <li>包括两部分，第一部分是可见的 16 位，保存 selector</li>
@@ -897,20 +897,20 @@ segment descriptor 分为两种 Global 和 Local。
 </div></li></ul></li></ul>
 </div>
 
-<div id="outline-container-orgd1bddca" class="outline-4">
-<h4 id="orgd1bddca">补充</h4>
+<div id="outline-container-orgd7b616a" class="outline-4">
+<h4 id="orgd7b616a">补充</h4>
 </div>
-<div id="outline-container-org53c0150" class="outline-4">
-<h4 id="org53c0150">问题</h4>
-<div class="outline-text-4" id="text-org53c0150">
-</div><ul class="org-ul"><li><a id="orgf2cbb4f"></a>为什么有 64T 寻址空间<br><div class="outline-text-5" id="text-orgf2cbb4f">
+<div id="outline-container-org22c1fdc" class="outline-4">
+<h4 id="org22c1fdc">问题</h4>
+<div class="outline-text-4" id="text-org22c1fdc">
+</div><ul class="org-ul"><li><a id="org675dd75"></a>为什么有 64T 寻址空间<br><div class="outline-text-5" id="text-org675dd75">
 <p>
 因为 selector 有 16 位，其中 descriptor table 的索引有 13 位，descriptor table 分为 GDT 和 LDT 两种，共 14 位，即 16K 空间。每个段内最大空间是 4G。因此最大可以寻址 64T 空间
 </p>
 </div></li>
 
-<li><a id="org66b6d06"></a><span class="todo TODO">TODO</span> 操作系统如 Windows, Linux 看到的完整的 4G 空间，是否意味着使用 flat 模式？<br></li>
-<li><a id="orgf1f2b6a"></a>不同进程中是否通过代码段切换？是否受 64k 的限制<br><div class="outline-text-5" id="text-orgf1f2b6a">
+<li><a id="org9ab9147"></a><span class="todo TODO">TODO</span> 操作系统如 Windows, Linux 看到的完整的 4G 空间，是否意味着使用 flat 模式？<br></li>
+<li><a id="orge0f988a"></a>不同进程中是否通过代码段切换？是否受 64k 的限制<br><div class="outline-text-5" id="text-orge0f988a">
 <ul class="org-ul">
 <li>segmented Model 将 16,383 个段映射到物理内存中，每个段最大有 4G 空间，最大寻址 64T</li>
 <li>16 位的段选择子，32 位的地址偏移，总共提供了 64T 的寻址空间</li>
@@ -922,7 +922,7 @@ segment descriptor 分为两种 Global 和 Local。
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2017-08-26 六 09:10</p>
+<p class="date">Created: 2017-08-26 六 09:14</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-08-26 六 09:10 -->
+<!-- 2017-08-26 六 09:14 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>操作系统启动说明</title>
@@ -238,28 +238,28 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org893edb1">说明</a></li>
-<li><a href="#org3a2719e">整体流程</a></li>
-<li><a href="#org238ad83">BIOS 加载</a></li>
-<li><a href="#org10afc36">The First Stage BootStrap Loader</a></li>
-<li><a href="#org0dda203">The Second Stage BootStrap Loader</a></li>
-<li><a href="#org0b8d4bc">FreeBSD/UNIX StartUp</a></li>
+<li><a href="#orgacb8af7">说明</a></li>
+<li><a href="#org4267a66">整体流程</a></li>
+<li><a href="#org8004255">BIOS 加载</a></li>
+<li><a href="#org7570b4f">The First Stage BootStrap Loader</a></li>
+<li><a href="#orge1edc87">The Second Stage BootStrap Loader</a></li>
+<li><a href="#org12a046a">FreeBSD/UNIX StartUp</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org893edb1" class="outline-2">
-<h2 id="org893edb1">说明</h2>
-<div class="outline-text-2" id="text-org893edb1">
+<div id="outline-container-orgacb8af7" class="outline-2">
+<h2 id="orgacb8af7">说明</h2>
+<div class="outline-text-2" id="text-orgacb8af7">
 <p>
 以下内容参考自 freebsd1.0/sys/i386/i386/README.MARCH
 </p>
 </div>
 </div>
 
-<div id="outline-container-org3a2719e" class="outline-2">
-<h2 id="org3a2719e">整体流程</h2>
-<div class="outline-text-2" id="text-org3a2719e">
+<div id="outline-container-org4267a66" class="outline-2">
+<h2 id="org4267a66">整体流程</h2>
+<div class="outline-text-2" id="text-org4267a66">
 <ol class="org-ol">
 <li>上电后由 BIOS 完成自检</li>
 <li>BIOS 加载  sector 1, track 0 到 0000:7c00H 处，进行第一步启动</li>
@@ -270,9 +270,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org238ad83" class="outline-2">
-<h2 id="org238ad83">BIOS 加载</h2>
-<div class="outline-text-2" id="text-org238ad83">
+<div id="outline-container-org8004255" class="outline-2">
+<h2 id="org8004255">BIOS 加载</h2>
+<div class="outline-text-2" id="text-org8004255">
 <ul class="org-ul">
 <li>读 sector 1, track 0 扇区到内存 0000:7c00H 处</li>
 <li>要求 0000:7DFEH（即 512 的最后两个字节）为 AA55H</li>
@@ -283,9 +283,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org10afc36" class="outline-2">
-<h2 id="org10afc36">The First Stage BootStrap Loader</h2>
-<div class="outline-text-2" id="text-org10afc36">
+<div id="outline-container-org7570b4f" class="outline-2">
+<h2 id="org7570b4f">The First Stage BootStrap Loader</h2>
+<div class="outline-text-2" id="text-org7570b4f">
 <ul class="org-ul">
 <li>被加载到 0000:7C00H</li>
 <li>作用是将自己和 second stage 加载到内存 0000:1000H
@@ -297,9 +297,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org0dda203" class="outline-2">
-<h2 id="org0dda203">The Second Stage BootStrap Loader</h2>
-<div class="outline-text-2" id="text-org0dda203">
+<div id="outline-container-orge1edc87" class="outline-2">
+<h2 id="orge1edc87">The Second Stage BootStrap Loader</h2>
+<div class="outline-text-2" id="text-orge1edc87">
 <ul class="org-ul">
 <li>用于加载内核</li>
 <li>由于内核比较大，因而在保护模式下进行</li>
@@ -316,9 +316,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org0b8d4bc" class="outline-2">
-<h2 id="org0b8d4bc">FreeBSD/UNIX StartUp</h2>
-<div class="outline-text-2" id="text-org0b8d4bc">
+<div id="outline-container-org12a046a" class="outline-2">
+<h2 id="org12a046a">FreeBSD/UNIX StartUp</h2>
+<div class="outline-text-2" id="text-org12a046a">
 <ul class="org-ul">
 <li>内核位于大于 1M 的内存位置，CPU 处于保护模式</li>
 <li>link-editor descriptor file( vuifile ) 决定 cs 和 ds 的位置在 1MB 以上的空间</li>
@@ -328,7 +328,7 @@ for the JavaScript code in this tag.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2017-08-26 六 09:10</p>
+<p class="date">Created: 2017-08-26 六 09:14</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

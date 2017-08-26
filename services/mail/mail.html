@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-08-26 六 09:10 -->
+<!-- 2017-08-26 六 09:14 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>邮件系统原理与搭建</title>
@@ -238,23 +238,23 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgd138688">历史</a></li>
-<li><a href="#org37782ac">vs 即时通讯</a></li>
-<li><a href="#orgfae6adc">架构</a></li>
-<li><a href="#orgcba18ef"><span class="todo TODO">TODO</span> postfix 搭建</a></li>
-<li><a href="#orgfab5800"><span class="todo TODO">TODO</span> dovecot 搭建</a></li>
-<li><a href="#org2b59d43"><span class="todo TODO">TODO</span> procmail 搭建</a></li>
-<li><a href="#org57459dc"><span class="todo TODO">TODO</span> dns 服务搭建</a></li>
-<li><a href="#org0950d97"><span class="todo TODO">TODO</span> 安全性</a></li>
-<li><a href="#org5d10c5a"><span class="todo TODO">TODO</span> 管理页面</a></li>
-<li><a href="#orgdb46509">参考资料</a></li>
+<li><a href="#orga21af44">历史</a></li>
+<li><a href="#org2191dfd">vs 即时通讯</a></li>
+<li><a href="#orga407c91">架构</a></li>
+<li><a href="#org578bde7"><span class="todo TODO">TODO</span> postfix 搭建</a></li>
+<li><a href="#orgd62b425"><span class="todo TODO">TODO</span> dovecot 搭建</a></li>
+<li><a href="#org473624f"><span class="todo TODO">TODO</span> procmail 搭建</a></li>
+<li><a href="#org73018d2"><span class="todo TODO">TODO</span> dns 服务搭建</a></li>
+<li><a href="#orgcddb6e7"><span class="todo TODO">TODO</span> 安全性</a></li>
+<li><a href="#org16e3c6f"><span class="todo TODO">TODO</span> 管理页面</a></li>
+<li><a href="#orga5bcf5c">参考资料</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-orgd138688" class="outline-2">
-<h2 id="orgd138688">历史</h2>
-<div class="outline-text-2" id="text-orgd138688">
+<div id="outline-container-orga21af44" class="outline-2">
+<h2 id="orga21af44">历史</h2>
+<div class="outline-text-2" id="text-orga21af44">
 <ol class="org-ol">
 <li>1960 年代出现</li>
 <li>1971 年通过网络发送第一份电子邮件</li>
@@ -263,9 +263,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org37782ac" class="outline-2">
-<h2 id="org37782ac">vs 即时通讯</h2>
-<div class="outline-text-2" id="text-org37782ac">
+<div id="outline-container-org2191dfd" class="outline-2">
+<h2 id="org2191dfd">vs 即时通讯</h2>
+<div class="outline-text-2" id="text-org2191dfd">
 <ul class="org-ul">
 <li>存档特性，可作为证据</li>
 <li>商业环境内使用，可控</li>
@@ -275,12 +275,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgfae6adc" class="outline-2">
-<h2 id="orgfae6adc">架构</h2>
-<div class="outline-text-2" id="text-orgfae6adc">
-</div><div id="outline-container-orgbd045d5" class="outline-3">
-<h3 id="orgbd045d5">原理图</h3>
-<div class="outline-text-3" id="text-orgbd045d5">
+<div id="outline-container-orga407c91" class="outline-2">
+<h2 id="orga407c91">架构</h2>
+<div class="outline-text-2" id="text-orga407c91">
+</div><div id="outline-container-org19eb815" class="outline-3">
+<h3 id="org19eb815">原理图</h3>
+<div class="outline-text-3" id="text-org19eb815">
 
 <figure>
 <img src="archicture.png" alt="archicture.png">
@@ -290,9 +290,9 @@ for the JavaScript code in this tag.
 </div>
 
 
-<div id="outline-container-org108ab51" class="outline-3">
-<h3 id="org108ab51">概述</h3>
-<div class="outline-text-3" id="text-org108ab51">
+<div id="outline-container-org46229de" class="outline-3">
+<h3 id="org46229de">概述</h3>
+<div class="outline-text-3" id="text-org46229de">
 <p>
 相对复杂，由很多部分组成，之间相互协作。外围有一些扩展，如安全性扩展。
 </p>
@@ -323,9 +323,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org4783722" class="outline-3">
-<h3 id="org4783722">MUA</h3>
-<div class="outline-text-3" id="text-org4783722">
+<div id="outline-container-orgec5e2d7" class="outline-3">
+<h3 id="orgec5e2d7">MUA</h3>
+<div class="outline-text-3" id="text-orgec5e2d7">
 <p>
 邮件客户端（user agent），主要用于收发邮件。
 </p>
@@ -345,9 +345,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgbe2ad7f" class="outline-3">
-<h3 id="orgbe2ad7f">MTA</h3>
-<div class="outline-text-3" id="text-orgbe2ad7f">
+<div id="outline-container-orgc4aeab1" class="outline-3">
+<h3 id="orgc4aeab1">MTA</h3>
+<div class="outline-text-3" id="text-orgc4aeab1">
 <p>
 邮件传输代理，亦即通常所说的邮件服务器（核心）。
 </p>
@@ -366,9 +366,9 @@ MTA 只负责传输，由 MDA 来进行具体的数据存储
 </div>
 </div>
 
-<div id="outline-container-orgb86d3e2" class="outline-3">
-<h3 id="orgb86d3e2">MDA</h3>
-<div class="outline-text-3" id="text-orgb86d3e2">
+<div id="outline-container-org6ae6fc5" class="outline-3">
+<h3 id="org6ae6fc5">MDA</h3>
+<div class="outline-text-3" id="text-org6ae6fc5">
 <p>
 邮件寄送代理，负责邮件的存储管理。与 MTA 关系密切。
 </p>
@@ -383,9 +383,9 @@ MTA 只负责传输，由 MDA 来进行具体的数据存储
 </div>
 </div>
 
-<div id="outline-container-orgc1be42c" class="outline-3">
-<h3 id="orgc1be42c">MRA</h3>
-<div class="outline-text-3" id="text-orgc1be42c">
+<div id="outline-container-org5feb56a" class="outline-3">
+<h3 id="org5feb56a">MRA</h3>
+<div class="outline-text-3" id="text-org5feb56a">
 <p>
 邮件接收代理，提供了 IMAP 或 POP3 协议服务。常用实现为 dovecot。
 </p>
@@ -396,9 +396,9 @@ MTA 只负责传输，由 MDA 来进行具体的数据存储
 </div>
 </div>
 
-<div id="outline-container-orgfc20be2" class="outline-3">
-<h3 id="orgfc20be2">DNS</h3>
-<div class="outline-text-3" id="text-orgfc20be2">
+<div id="outline-container-orgceb84a6" class="outline-3">
+<h3 id="orgceb84a6">DNS</h3>
+<div class="outline-text-3" id="text-orgceb84a6">
 <p>
 邮箱通过 <code>&lt;username&gt;@(&lt;hostname&gt;|&lt;domain-name&gt;)</code> 来标识。
 </p>
@@ -408,9 +408,9 @@ MTA 只负责传输，由 MDA 来进行具体的数据存储
 </p>
 </div>
 
-<div id="outline-container-org42ba1b6" class="outline-4">
-<h4 id="org42ba1b6">工具</h4>
-<div class="outline-text-4" id="text-org42ba1b6">
+<div id="outline-container-org384c5ee" class="outline-4">
+<h4 id="org384c5ee">工具</h4>
+<div class="outline-text-4" id="text-org384c5ee">
 <p>
 通过 dig 命令查看 mx 信息：
 </p>
@@ -429,33 +429,33 @@ MTA 只负责传输，由 MDA 来进行具体的数据存储
 </div>
 
 
-<div id="outline-container-orgcba18ef" class="outline-2">
-<h2 id="orgcba18ef"><span class="todo TODO">TODO</span> postfix 搭建</h2>
+<div id="outline-container-org578bde7" class="outline-2">
+<h2 id="org578bde7"><span class="todo TODO">TODO</span> postfix 搭建</h2>
 </div>
 
-<div id="outline-container-orgfab5800" class="outline-2">
-<h2 id="orgfab5800"><span class="todo TODO">TODO</span> dovecot 搭建</h2>
+<div id="outline-container-orgd62b425" class="outline-2">
+<h2 id="orgd62b425"><span class="todo TODO">TODO</span> dovecot 搭建</h2>
 </div>
 
-<div id="outline-container-org2b59d43" class="outline-2">
-<h2 id="org2b59d43"><span class="todo TODO">TODO</span> procmail 搭建</h2>
+<div id="outline-container-org473624f" class="outline-2">
+<h2 id="org473624f"><span class="todo TODO">TODO</span> procmail 搭建</h2>
 </div>
 
-<div id="outline-container-org57459dc" class="outline-2">
-<h2 id="org57459dc"><span class="todo TODO">TODO</span> dns 服务搭建</h2>
+<div id="outline-container-org73018d2" class="outline-2">
+<h2 id="org73018d2"><span class="todo TODO">TODO</span> dns 服务搭建</h2>
 </div>
 
-<div id="outline-container-org0950d97" class="outline-2">
-<h2 id="org0950d97"><span class="todo TODO">TODO</span> 安全性</h2>
+<div id="outline-container-orgcddb6e7" class="outline-2">
+<h2 id="orgcddb6e7"><span class="todo TODO">TODO</span> 安全性</h2>
 </div>
 
-<div id="outline-container-org5d10c5a" class="outline-2">
-<h2 id="org5d10c5a"><span class="todo TODO">TODO</span> 管理页面</h2>
+<div id="outline-container-org16e3c6f" class="outline-2">
+<h2 id="org16e3c6f"><span class="todo TODO">TODO</span> 管理页面</h2>
 </div>
 
-<div id="outline-container-orgdb46509" class="outline-2">
-<h2 id="orgdb46509">参考资料</h2>
-<div class="outline-text-2" id="text-orgdb46509">
+<div id="outline-container-orga5bcf5c" class="outline-2">
+<h2 id="orga5bcf5c">参考资料</h2>
+<div class="outline-text-2" id="text-orga5bcf5c">
 <ul class="org-ul">
 <li><a href="https://www.youtube.com/watch?v=U0j4Je7FgVE">LinuxCast-邮件服务原理及架构</a></li>
 </ul>
@@ -464,7 +464,7 @@ MTA 只负责传输，由 MDA 来进行具体的数据存储
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: 赵文彬</p>
-<p class="date">Created: 2017-08-26 六 09:10</p>
+<p class="date">Created: 2017-08-26 六 09:14</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

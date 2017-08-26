@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-08-26 六 09:10 -->
+<!-- 2017-08-26 六 09:14 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>8259a 笔记</title>
@@ -238,16 +238,16 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgf5e8c7b">小记</a></li>
-<li><a href="#org4586a68">参考资料</a></li>
+<li><a href="#org6d44c77">小记</a></li>
+<li><a href="#org773133b">参考资料</a></li>
 </ul>
 </div>
 </nav>
 
 
-<div id="outline-container-orgf5e8c7b" class="outline-2">
-<h2 id="orgf5e8c7b">小记</h2>
-<div class="outline-text-2" id="text-orgf5e8c7b">
+<div id="outline-container-org6d44c77" class="outline-2">
+<h2 id="org6d44c77">小记</h2>
+<div class="outline-text-2" id="text-org6d44c77">
 <p>
 8259a 是一个 PIC（programable interrupt controller）
 </p>
@@ -261,18 +261,18 @@ for the JavaScript code in this tag.
 </p>
 </div>
 
-<div id="outline-container-org4f89ce6" class="outline-3">
-<h3 id="org4f89ce6">中断矢量</h3>
-<div class="outline-text-3" id="text-org4f89ce6">
+<div id="outline-container-org135afb5" class="outline-3">
+<h3 id="org135afb5">中断矢量</h3>
+<div class="outline-text-3" id="text-org135afb5">
 <p>
 每一个外部中断都有一个唯一的标识（整数），该标识可以通过编程设定
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgfbbab7e" class="outline-3">
-<h3 id="orgfbbab7e">级联</h3>
-<div class="outline-text-3" id="text-orgfbbab7e">
+<div id="outline-container-org70a0bc3" class="outline-3">
+<h3 id="org70a0bc3">级联</h3>
+<div class="outline-text-3" id="text-org70a0bc3">
 <p>
 将从片的 INTR 中断接入到主片的 IRQ2 端口上，以实现级联
 </p>
@@ -283,9 +283,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgd5ed763" class="outline-3">
-<h3 id="orgd5ed763">IR,IM,IS</h3>
-<div class="outline-text-3" id="text-orgd5ed763">
+<div id="outline-container-orgcbfc0fa" class="outline-3">
+<h3 id="orgcbfc0fa">IR,IM,IS</h3>
+<div class="outline-text-3" id="text-orgcbfc0fa">
 <p>
 内部数据寄存器，需要通过 OCW 指令来操作（类似于类的成员变量，通过方法来操作）
 </p>
@@ -299,12 +299,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org4586a68" class="outline-2">
-<h2 id="org4586a68">参考资料</h2>
-<div class="outline-text-2" id="text-org4586a68">
-</div><div id="outline-container-org4e393b8" class="outline-3">
-<h3 id="org4e393b8"><a href="http://blog.csdn.net/activesys/article/details/17426609#">activesys的专栏</a></h3>
-<div class="outline-text-3" id="text-org4e393b8">
+<div id="outline-container-org773133b" class="outline-2">
+<h2 id="org773133b">参考资料</h2>
+<div class="outline-text-2" id="text-org773133b">
+</div><div id="outline-container-orga1e3b93" class="outline-3">
+<h3 id="orga1e3b93"><a href="http://blog.csdn.net/activesys/article/details/17426609#">activesys的专栏</a></h3>
+<div class="outline-text-3" id="text-orga1e3b93">
 <p>
 目前找到最好的介绍 8259a 的中文博客。条理清晰，而且简化了手册中复杂的 ICW 和 OCW 指令图。
 </p>
@@ -318,7 +318,7 @@ for the JavaScript code in this tag.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Larry</p>
-<p class="date">Created: 2017-08-26 六 09:10</p>
+<p class="date">Created: 2017-08-26 六 09:14</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
