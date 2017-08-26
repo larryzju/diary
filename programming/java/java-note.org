@@ -17,3 +17,23 @@ CPU 的运行机制可以简单的归纳为 =fetch-and-execute cycle= ，其中 
 中断提供的异步机制，使计算机成为真正的可以交互的工具，而非单纯的输入输出批处理机器。常见的键盘输入、数据读取都有中断机制参与。
 
 
+
+
+* 序列化与反序列化
+
+** Serilizable Interface
+
+** transient
+
+一旦变量被transient修饰，变量将不再是对象持久化的一部分，该变量内容在序列化后无法获得访问。
+
+transient关键字只能修饰变量，而不能修饰方法和类。注意，本地变量是不能被transient关键字修饰的。变量如果是用户自定义类变量，则该类需要实现Serializable接口。
+
+被transient关键字修饰的变量不再能被序列化，一个静态变量不管是否被transient修饰，均不能被序列化。
+
+
+** 
+
+** 参考资料
+
+- [[http://www.cnblogs.com/lanxuezaipiao/p/3369962.html][Java transient关键字使用小记]]
