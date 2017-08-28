@@ -1,0 +1,13 @@
+#+TITLE: Linux
+#+AUTHOR: 赵文彬
+
+* console and tty
+
+参考自 [[https://linux.cn/article-8243-1.html][你知道 Linux 中的主机、控制台和终端的起源么？]] 一文。
+
+console 是 PDP11 主机上自带的操作面板，可以做一些无法通过远程的操作。
+
+用户通过电传打字机 (teletype) —— 一种几乎纯机械的，通过键盘输入，将结果打印出来的装置—— 连接 PDP11 主机。实现多用户复用。
+现在的 TTY 缩写指的就是 teletype。
+
+PDP11 称为主机，而 teletype 称为终端。每个终端可以连接不同的主机，其中的交换是通过 “终端服务器” 来完成的。
