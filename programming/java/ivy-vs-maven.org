@@ -1,4 +1,4 @@
-#+TITLE: Ivy vs Maven
+#+TITLE: Ivy vs Maven 摘要
 #+AUTHOR: Zhao WenBin
 
 * 说明
@@ -9,7 +9,7 @@
 
 mavne 和 ivy 是两种不同类别的东西（plants and apples)，概括地说
 
-— maven 是项目管理工具和 comprehension tool
+- maven 是项目管理工具和 comprehension tool
 - ivy 是依赖赖管理工具，配合 Ant 构建管理项目
 - Ant + Ivy 可以与 Maven 进行比较
 
@@ -22,7 +22,7 @@ mavne 和 ivy 是两种不同类别的东西（plants and apples)，概括地说
 ** 文档
 
 - ivy 文档丰富，有大量的例子
-- maven 文档比较分散，书籍不构深刻
+- maven 文档比较分散，书籍不够深刻
 
 ** 冲突管理
 
