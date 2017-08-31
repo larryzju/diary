@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-08-26 六 09:14 -->
+<!-- 2017-08-31 四 14:05 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>linuxCast 视频笔记</title>
@@ -240,6 +240,7 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#org8ee9d91">操作系统安装</a></li>
 <li><a href="#org4413700">文件系统</a></li>
+<li><a href="#orgb525c54">基本操作</a></li>
 </ul>
 </div>
 </nav>
@@ -301,10 +302,85 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
+
+
+
+<div id="outline-container-orgb525c54" class="outline-2">
+<h2 id="orgb525c54">基本操作</h2>
+<div class="outline-text-2" id="text-orgb525c54">
+</div><div id="outline-container-org45e1909" class="outline-3">
+<h3 id="org45e1909">shell</h3>
+<div class="outline-text-3" id="text-org45e1909">
+<p>
+shell 是用户与操作系统内核交互的中间层，是一个概念，有多种方式。比如 GUI 或 CLI。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7779edc" class="outline-3">
+<h3 id="org7779edc">用户命令</h3>
+<div class="outline-text-3" id="text-org7779edc">
+<dl class="org-dl">
+<dt><code>su root</code></dt><dd>切换 root 权限，但目录保持不变</dd>
+<dt><code>su - root</code></dt><dd>切换 root 用户，重新登录</dd>
+<dt>快捷键 <code>ESC + .</code></dt><dd>重新调用前一个命令中的参数</dd>
+<dt><code>logout</code></dt><dd>退出当前 shell</dd>
+<dt><code>exit</code></dt><dd>退同当前账号身份</dd>
+</dl>
+</div>
+
+<div id="outline-container-org20369e5" class="outline-4">
+<h4 id="org20369e5">logout vs exit</h4>
+<div class="outline-text-4" id="text-org20369e5">
+<p>
+参考 <a href="https://superuser.com/questions/314869/nohup-and-the-difference-between-logout-and-exit-on-a-remote-shell">Nohup and the difference between logout and exit on a remote shell</a>
+</p>
+
+<p>
+<code>logout</code> 是个 shell 内置的命令，具体作用与 shell 有关。zsh 中与 <code>exit</code> 一样。
+</p>
+
+<p>
+唯一的区别在于对于 non-login shell，logout 的概念比较奇怪
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2017873" class="outline-3">
+<h3 id="org2017873">任务</h3>
+<div class="outline-text-3" id="text-org2017873">
+<p>
+<code>Ctrl+Z</code> 将当前进程放在后台执行，但切换后会变成 stopped 状态，用 <code>bg</code> 命令激活之
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc1c32d5" class="outline-3">
+<h3 id="orgc1c32d5">文件系统</h3>
+<div class="outline-text-3" id="text-orgc1c32d5">
+<dl class="org-dl">
+<dt><code>ls -ld</code></dt><dd>显示当前目录和链接信息</dd>
+<dt><code>cd -</code></dt><dd>切换到上一个工作目录</dd>
+</dl>
+</div>
+</div>
+
+
+<div id="outline-container-org6b23995" class="outline-3">
+<h3 id="org6b23995">其它命令</h3>
+<div class="outline-text-3" id="text-org6b23995">
+<dl class="org-dl">
+<dt><code>chvt</code></dt><dd>切换 TTY</dd>
+<dt><code>hdparm</code></dt><dd>查看硬盘参数调试性能</dd>
+</dl>
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2017-08-26 六 09:14</p>
+<p class="date">Created: 2017-08-31 四 14:05</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
