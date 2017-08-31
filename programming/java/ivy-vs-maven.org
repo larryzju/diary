@@ -1,0 +1,50 @@
+#+TITLE: Ivy vs Maven
+#+AUTHOR: Zhao WenBin
+
+* 说明
+
+摘自 [[https://ant.apache.org/ivy/m2comparison.html][Apache Ivy™ / Apache Maven™ Comparison]], 对 ivy2 有倾向的表扬。
+
+* 对比
+
+mavne 和 ivy 是两种不同类别的东西（plants and apples)，概括地说
+
+— maven 是项目管理工具和 comprehension tool
+- ivy 是依赖赖管理工具，配合 Ant 构建管理项目
+- Ant + Ivy 可以与 Maven 进行比较
+
+** 观点和概念不同
+
+- maven 有一些预定义的 scope，不同的 scope 有不同的依赖
+- ivy 核心是 **配置** ，配置可以依赖其它的配置
+- 相比，ivy 对依赖的控制更为精细
+
+** 文档
+
+- ivy 文档丰富，有大量的例子
+- maven 文档比较分散，书籍不构深刻
+
+** 冲突管理
+
+- maven 的原则是 get the nearest definition
+- ivy 可以为 module 单独配置冲突解决方案，可以自定义
+
+** 弹性
+
+- ivy 强调一切可配置，有 plugged in 机制
+- maven 也有插件机制，但相对不够灵活
+
+** 公共仓库
+
+- maven 自带 maven2 仓库，一些 module 的检查不够严格
+- ivy 兼容 maven2 元数据，默认使用 maven2 仓库
+- ivy 建议搭建私有仓库
+
+
+
+
+
+
+
+
+
