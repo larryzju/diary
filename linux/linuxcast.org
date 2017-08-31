@@ -37,3 +37,42 @@
 
 
 
+* 基本操作
+
+** shell
+
+shell 是用户与操作系统内核交互的中间层，是一个概念，有多种方式。比如 GUI 或 CLI。
+
+** 用户命令
+
+- =su root= :: 切换 root 权限，但目录保持不变
+- =su - root= :: 切换 root 用户，重新登录
+- 快捷键 =ESC + .= :: 重新调用前一个命令中的参数
+- =logout= :: 退出当前 shell
+- =exit= :: 退同当前账号身份
+
+*** logout vs exit
+
+参考 [[https://superuser.com/questions/314869/nohup-and-the-difference-between-logout-and-exit-on-a-remote-shell][Nohup and the difference between logout and exit on a remote shell]]
+
+=logout= 是个 shell 内置的命令，具体作用与 shell 有关。zsh 中与 =exit= 一样。
+
+唯一的区别在于对于 non-login shell，logout 的概念比较奇怪
+
+** 任务
+
+=Ctrl+Z= 将当前进程放在后台执行，但切换后会变成 stopped 状态，用 =bg= 命令激活之
+
+** 文件系统
+
+- =ls -ld= :: 显示当前目录和链接信息
+- =cd -= :: 切换到上一个工作目录
+
+
+** 其它命令
+
+- =chvt= :: 切换 TTY
+- =hdparm= :: 查看硬盘参数调试性能
+
+
+
