@@ -1,0 +1,130 @@
+#+TITLE: thrift 笔记
+#+AUTHOR: 赵文彬
+
+* 说明
+
+thrift 是软件栈，提供了跨语言的 RPC 功能。
+
+通过编写 =.thrift= 描述文件，通过 thrift 编译器生成相关语言的 client 和 server 代码，封装了数据传输、序列化、应用级处理相关内容。
+
+基本的 thrift 描述文件中定义了新的数据类型，以及 service interface 
+
+* 类型系统
+
+** 基本类型
+
+如 =bool=, =byte=, =i16=, =i32=, =i64=, =double=, =string= 。不支持 =unsigned= 修饰
+
+** 特殊类型
+
+- =binary= :: 未编码过的二进制序列
+
+** 结构体
+
+关键字为 =struct= ，与 C 的相似
+
+- 有多个成员
+- 需要指定其类型
+
+不同之处在于
+
+- 有唯一的标识 id （用于版本管理）
+- 可以指定 optional （类似于 java 中的 transient，不会序列化）
+
+** 容器
+
+有三种
+
+| type | java type | description |
+|------+-----------+-------------|
+| list | ArrayList |             |
+| set  | HashSet   |             |
+| map  | HashMap   |             |
+
+** 异常
+
+类似于 scala 中的 case class 构造方法
+
+** services
+
+翻译成 java 中的 interface，提供如下功能
+
+- 包括一组具名函数，函数有参数列表和返回类型，可以抛出异常
+- 定义的只是接口，需要具体语言通过扩展 =iface= 来实现
+
+
+* 协议栈
+
+** Runtime Library
+
+包括两部分：
+
+- protocol，指定序列化方法
+- transport, 指定传输方式（提供远程读写的管线）
+
+*** protocol layer 
+
+- =TBinaryProtocol=
+- =TCompactProtocol=
+- =TDenseProtocol=
+- =TJSONProtocol=
+- =TSimpleJSONProtocol=
+- =TDebugProtocol=
+
+*** transport layer
+
+- =TSocket=
+- =TFramedTransport=
+- =TFileTransport=
+- =TMemoryTransport=
+- =TZlibTransport=
+
+
+** Processor 
+
+封装 =Handler= （Handler 为用户按照 thrift service 定义实现类）。作用是对输入请求进行处理，生成输出。用在 Server 中。
+
+** Server
+
+提供了服务端的几种实现，用于响应客户端请求，调用 Process 处理
+
+可用的实现有
+
+- =TSimpleServer=
+- =TThreadPoolServer=
+- =TNonblockingServer=
+
+* 语法及命令
+
+- 使用 =thrift --gen <type> <thrift-file>= 来生成语言相关代码
+- =include <thrift-file>= 来包含其他的 thrift 文件，并用文件名作为 namespace 访问
+- =enum= 定义枚举，从 1 开始
+- services 中可以使用 =extends= 来扩展其它服务定义的函数
+- 函数 =oneway= 修饰符，用于表示客户端单向请求，不需要回应
+- =typedef= 定义别名
+- =map<string,string>= 常量定义可用 JSON 字面量来初始化
+
+* 开发
+
+** Server
+
+- 最终目标是定义一个 TServer 实例，并调用其 =server= 方法启动监听
+- =TServer= 有多种实现，如 =TSimpleServer=, =TThreadPoolServer= 等
+- Server 需要指定端口号，及 =Processor=
+- =Processor= 为服务的 Handler 实现的封装
+
+** Client
+
+- 与 Server 建立连接，并进行远程方法调用
+- 用 =Service.Client( protocol )= 生成连接实例
+- protocol 指定 transport 方式（ socket 或其它）
+
+* 参考资料
+
+- [[http://thrift-tutorial.readthedocs.io/en/latest/index.html][Thrift Tutorial]]
+- thrift 源码 tutorial 代码
+- [[http://jnb.ociweb.com/jnb/jnbJun2009.html][Apache Thrift]]
+- [[http://thrift.apache.org/static/files/thrift-20070401.pdf][Thrift: Scalable Cross-Language Services Implementation]]
+
+
+
