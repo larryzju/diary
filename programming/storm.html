@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-09-07 四 15:02 -->
+<!-- 2017-09-07 四 15:05 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>STORM 笔记</title>
@@ -239,6 +239,7 @@ for the JavaScript code in this tag.
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#org16fdac9">Concept</a></li>
+<li><a href="#orgedef5d9">Local Mode</a></li>
 <li><a href="#orgac02737">问题</a></li>
 </ul>
 </div>
@@ -390,6 +391,32 @@ Stream Groupings defines how that stream should be partitioned among the bolt's 
 </div>
 </div>
 
+<div id="outline-container-orgedef5d9" class="outline-2">
+<h2 id="orgedef5d9">Local Mode</h2>
+<div class="outline-text-2" id="text-orgedef5d9">
+<p>
+用于开发和本地调试，核心为 <code>LocalCluster</code> 类，其主要方法有
+</p>
+
+<dl class="org-dl">
+<dt><code>submitTopology</code></dt><dd>等效于 <code>StormSubmitter</code> 中同名函数，指定 name, config, topology 来提交 topology</dd>
+<dt><code>killTopology</code> </dt><dd>通过 name 来停止 topology</dd>
+<dt><code>shutdown</code></dt><dd>关闭本地 storm 环境</dd>
+</dl>
+</div>
+
+<div id="outline-container-org6493d8c" class="outline-3">
+<h3 id="org6493d8c">配置</h3>
+<div class="outline-text-3" id="text-org6493d8c">
+<dl class="org-dl">
+<dt><code>Config.TOPOLOGY_MAX_TASK_PARALLELISM</code></dt><dd>每个 component 最大的线程数</dd>
+<dt><code>Config.TOPOLOGY_DEBUG</code></dt><dd>spout 和 bolt emit 时会记一条日志</dd>
+</dl>
+</div>
+</div>
+</div>
+
+
 <div id="outline-container-orgac02737" class="outline-2">
 <h2 id="orgac02737">问题</h2>
 <div class="outline-text-2" id="text-orgac02737">
@@ -404,7 +431,7 @@ Stream Groupings defines how that stream should be partitioned among the bolt's 
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: 赵文彬</p>
-<p class="date">Created: 2017-09-07 四 15:02</p>
+<p class="date">Created: 2017-09-07 四 15:05</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
