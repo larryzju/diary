@@ -77,6 +77,20 @@ Stream Groupings defines how that stream should be partitioned among the bolt's 
 - 实现了集群的并发执行
 - 通过 =Config.TOPOLOGY_WORKERS= 来配置数量
 
+* Local Mode
+
+用于开发和本地调试，核心为 =LocalCluster= 类，其主要方法有
+
+- =submitTopology= :: 等效于 =StormSubmitter= 中同名函数，指定 name, config, topology 来提交 topology
+- =killTopology=  :: 通过 name 来停止 topology
+- =shutdown= :: 关闭本地 storm 环境
+
+** 配置
+
+- =Config.TOPOLOGY_MAX_TASK_PARALLELISM= :: 每个 component 最大的线程数
+- =Config.TOPOLOGY_DEBUG= :: spout 和 bolt emit 时会记一条日志
+
+
 * 问题
 
 ** TODO tuple field 是否定义了类型？
