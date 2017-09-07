@@ -1,0 +1,90 @@
+#+TITLE: STORM 笔记
+#+AUTHOR: 赵文彬
+
+* Concept
+
+** Topology
+
+A graph of spouts and bolts that are connected with stream grouping
+
+topology 定义了数据流向，类似于 oozie 流程，但会永远循环。
+
+内部实现是一个 thrift 结构， =TopologyBuilder= 封装了接口，生成 thrift 内容。
+
+topology 被提交到 storm 集群或 localCluster 来执行，并指定 config 配置行为。
+
+topology 有三个核心组件 spout, bolt 和 stream groupings，通过 bolt 的 =BoltDeclarer= 来指定与具体的 component 和 stream 的连接方式来表示 stream groupings
+
+** Streams
+
+- unbounded sequence of tuples，即时间轴上的 tuple
+- tuple 类似于 python 中 named tuple，有 schema 来定义各个 field
+- tuple 中的数据必须是可序列化的，默认基本类型可以被序列化
+- stream 通过 id 进行标识，默认为 "default"
+
+** Spout
+
+从外部数据源读取 tuple，将之发送到 topology 中去。分为 reliable 和 unreliable，前者会由 storm 重新调用
+
+Spout 可以发送多个 stream
+
+1. 通过 =OutputFieldsDeclarer.declareStream= 来定义 stream-id
+2. 在 =SpoutOutputCollector.emit= 函数中指定要发往的 stream id
+
+开发者要实现其中的
+
+1. =nextTuple= 方法，将数据以 tuple 形式发往 topology，也可以什么都不做，理论上不应对流程进行阻塞
+2. =ack= 和 =fail= , 在检测到成功或失败时调用，仅对 reliable 模式可用
+
+** Bolt
+
+Bolt 用于实现过滤、转换（function）、聚合（aggregation）、联合（join）、与数据库交互等操作
+
+与 Spout 类似，bolt 可以发射多个 stream
+
+1. 通过 =OutputFieldsDeclarer.declareStream= 来定义 stream-id
+2. 在 =OutputCollector.emit= 函数中指定要发往的 stream id
+
+bolt 的数据来源于其它 bolt 和 spout （合称为 component） 的 stream。通过 =InputDeclarer.shuffleGrouping( <comp-id>, [<stream-id>] )= 来订阅。
+
+Bolt 中主要要实现的方法为 =execute= 。其参数为输入 tuple，调用 OutputCollector 发送生成的 tuple。
+
+在成功处理 tuple 后需要调用 =ack= 方法来通知 storm 成功， =IBasicBolt= 实现了自动 ack 功能。
+
+** Stream Grouping
+
+Stream Groupings defines how that stream should be partitioned among the bolt's tasks.
+
+内置有八种 stream grouping 方式（如 shuffle, fields, partial key, all, global, none, direct, local or shuffle），可以通过 =CustomStreamGrouping= 来自定义
+
+** Reliability
+
+- Storm 会跟踪 tree of tuple
+- topology 有全局的 message timeout 配置
+- 若失败或超时，则会重试
+- =ack= / =fail= 来告诉 storm tuple 处理是否成功或失败
+
+** Tasks
+
+- spout 或 bolt 的运行实例
+- 等效于执行的一个线程
+- stream grouping 定义了 task 到 task 的 tuple 传输方式
+
+
+** Worker
+
+- 相当于 JVM 进程，其中可以有多个 task
+- 实现了集群的并发执行
+- 通过 =Config.TOPOLOGY_WORKERS= 来配置数量
+
+* 问题
+
+** TODO tuple field 是否定义了类型？
+
+** TODO task 是否只有一个 component 在其中，阻塞时不影响其它 task?
+
+
+
+
+
+
