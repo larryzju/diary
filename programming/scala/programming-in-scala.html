@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-08-26 六 09:14 -->
+<!-- 2018-01-25 Thu 16:17 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>note on "programming in scala 2ed"</title>
@@ -239,6 +239,7 @@ for the JavaScript code in this tag.
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#orgf9de343">Chapter 1</a></li>
+<li><a href="#org3388cdc">Chapter 8 Functions and closures</a></li>
 </ul>
 </div>
 </nav>
@@ -277,10 +278,209 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
+<div id="outline-container-org3388cdc" class="outline-2">
+<h2 id="org3388cdc">Chapter 8 Functions and closures</h2>
+<div class="outline-text-2" id="text-org3388cdc">
+</div><div id="outline-container-org98635df" class="outline-3">
+<h3 id="org98635df">scala functions vs java functions</h3>
+<div class="outline-text-3" id="text-org98635df">
+<ol class="org-ol">
+<li>对象的方法（类比于 java 静态方法）</li>
+<li>functions nested within function（闭包）</li>
+<li>function literal（sugar）</li>
+<li>function value（first class function）</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org2bbe39f" class="outline-3">
+<h3 id="org2bbe39f">local functions</h3>
+<div class="outline-text-3" id="text-org2bbe39f">
+<ul class="org-ul">
+<li>将函数功能限制在专门的范围，减少代码量，易维护，可重用</li>
+<li>避免 helper 函数（从一个函数调用另一个函数）污染 namespace</li>
+<li>同 java，可以添加 <code>private</code> 关键字来控制访问范围</li>
+<li>scala 中可以在函数中嵌套定义函数，用作 local function</li>
+<li>local function 可以认为是闭包的实际用法</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org57d8b33" class="outline-3">
+<h3 id="org57d8b33">function literal &amp; function value</h3>
+<div class="outline-text-3" id="text-org57d8b33">
+<p>
+语法示例如下：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala">(x:Int, y:Int) =&gt; x+y
+</pre>
+</div>
+
+<p>
+不同于 java 中的 method
+</p>
+
+<ul class="org-ul">
+<li>scala 中 function literal 被编译成 class，实例化后为一个 function value</li>
+<li>function value 既是对象，也可以当作函数来调用（protocol?）</li>
+<li>底层扩展实现了 <code>FunctionN</code> trait</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org3621f4d" class="outline-3">
+<h3 id="org3621f4d">short forms of function literals</h3>
+<div class="outline-text-3" id="text-org3621f4d">
+<ol class="org-ol">
+<li>在具体的调用处，可以省略类型，由编译器作类型推导。如 <code>seq.filter((x) =&gt; x &gt; 0)</code></li>
+<li>单参数时省略括号。如 <code>seq.filter(x =&gt; x &gt; 0)</code></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orge57b1b6" class="outline-3">
+<h3 id="orge57b1b6">placeholder syntax</h3>
+<div class="outline-text-3" id="text-orge57b1b6">
+<ul class="org-ul">
+<li>可以用 <code>'_'</code> 来代指参数</li>
+<li>必要时需要指定参数类型，如 <code>val = (_:Int) + (_:Int)</code></li>
+<li>注意上例中，是两个参数，而非同一个</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgcec1579" class="outline-3">
+<h3 id="orgcec1579">partially applied functions&#xa0;&#xa0;&#xa0;<span class="tag"><span class="attention">attention</span></span></h3>
+<div class="outline-text-3" id="text-orgcec1579">
+<ul class="org-ul">
+<li>类似于 python, clojure 中的偏函数</li>
+<li>有特殊的语法 <code>val a = println _</code></li>
+<li>上例中 '_' 代指整个参数列表（注意中间的空格）</li>
+<li>注意：a 相当于 println 函数的 wrap，不是同一个函数</li>
+<li><p>
+注意： <b>scala 中的 method 不能被赋给变量!!!</b>
+</p>
+<div class="org-src-container">
+<pre class="src src-scala">val c = sum // error
+</pre>
+</div></li>
+<li><p>
+可以预先指定部分参数如
+</p>
+<div class="org-src-container">
+<pre class="src src-scala">def sum(a: Int, b: Int, c: Int) = a + b + c
+val a = sum(1, _: Int, 3)
+a(2) // =&gt; 6
+</pre>
+</div></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb6bc100" class="outline-3">
+<h3 id="orgb6bc100">closure</h3>
+<div class="outline-text-3" id="text-orgb6bc100">
+</div><div id="outline-container-orgf86105e" class="outline-4">
+<h4 id="orgf86105e">定义</h4>
+<div class="outline-text-4" id="text-orgf86105e">
+<p>
+The function value (object) that's created at runtime from its function literal is called a <b>closure</b>
+</p>
+
+<p>
+闭包生成时，保存了当前环境（environment/scope）以及变量绑定情况。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org46cba5a" class="outline-4">
+<h4 id="org46cba5a">分类</h4>
+<div class="outline-text-4" id="text-org46cba5a">
+<p>
+按是否有自由变量(free variable) 分为两种
+</p>
+<ol class="org-ol">
+<li>无自由变量，称为 closed term，是闭包的特殊情况</li>
+<li>有自由变量，称为 open term</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org171f9e2" class="outline-4">
+<h4 id="org171f9e2">补充</h4>
+<div class="outline-text-4" id="text-org171f9e2">
+<p>
+scala 中自由变量在闭包生成后改变，会被闭包感知到。
+</p>
+
+<p>
+Cause scala's closures capture variables themseleves, not the value to which variable refer.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1b081a5" class="outline-4">
+<h4 id="org1b081a5"><span class="todo TODO">TODO</span> 讨论: 闭包引入自由变量是否会造成多线程安全问题？</h4>
+<div class="outline-text-4" id="text-org1b081a5">
+<ul class="org-ul">
+<li>闭包多用在函数式风格中，自由变量不可变</li>
+<li>与引用类型和值类型有关（scala 中相当于引用类型，会发生改变）</li>
+<li>多线程通过闭包访问同一引用类型可能会出问题</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5900c4d" class="outline-3">
+<h3 id="org5900c4d">Special function call forms</h3>
+<div class="outline-text-3" id="text-org5900c4d">
+</div><div id="outline-container-org77046fb" class="outline-4">
+<h4 id="org77046fb">repeated parameter</h4>
+<div class="outline-text-4" id="text-org77046fb">
+<ul class="org-ul">
+<li>类比于 C 中的 vargs，或 clojure 中的 <code>&amp;</code> ， 或 python 中的 <code>*</code></li>
+<li>函数定义语法上写作 <code>def echo(args: String*) = for(arg &lt;- args) println(arg)</code></li>
+<li>函数调用语法上写作 <code>echo(arr: _*)</code> ， 其中 arr 本身是 <code>Array[T]</code> 类型（类比于 clojure apply）</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgc9ef5ff" class="outline-4">
+<h4 id="orgc9ef5ff">named arguments</h4>
+<div class="outline-text-4" id="text-orgc9ef5ff">
+<p>
+按参数名传参，可改变顺序，如 <code>speed(distance=100,time=10)</code>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org391fc2d" class="outline-4">
+<h4 id="org391fc2d">default parameter value</h4>
+<div class="outline-text-4" id="text-org391fc2d">
+<p>
+函数定义时提供默认参数，配合 named arguments 使用更佳
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org38babe0" class="outline-3">
+<h3 id="org38babe0">Tail recursive</h3>
+<div class="outline-text-3" id="text-org38babe0">
+<ul class="org-ul">
+<li>tail-recursive function will not build a new stack frame for each calls; all calls will execute in a single frame</li>
+<li>scalac 中加参数 <code>-g:notailcalls</code> 禁用尾递归优化（方便调试）</li>
+<li>受 JVM 限制，对间接调用递归模式，scala 编译器无法进行优化</li>
+</ul>
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: zhaowenbin</p>
-<p class="date">Created: 2017-08-26 六 09:14</p>
+<p class="date">Created: 2018-01-25 Thu 16:17</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

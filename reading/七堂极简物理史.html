@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-01-25 四 16:19 -->
+<!-- 2018-01-25 Thu 16:00 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title></title>
+<title>七堂极简物理史——笔记</title>
 <meta name="generator" content="Org mode">
 <meta name="author" content="Larry">
 <style type="text/css">
@@ -229,154 +229,200 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
-<nav id="table-of-contents">
+<header>
+<h1 class="title">七堂极简物理史——笔记</h1>
+</header><nav id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org927eb8e">pom</a></li>
-<li><a href="#org507a89f">dependency 插件</a></li>
-<li><a href="#orgcab2958">repositories 配置</a></li>
-<li><a href="#orge8c4e50">mirror 配置</a></li>
-<li><a href="#org78a2dbf">build classpath</a></li>
+<li><a href="#orgaddc59a">第一课</a></li>
+<li><a href="#org5a1ebc1">第二课 量子</a></li>
+<li><a href="#orgc4ac3a7">第三课 宇宙的构造</a></li>
+<li><a href="#orgc6b5e97">第四课 粒子</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org927eb8e" class="outline-2">
-<h2 id="org927eb8e">pom</h2>
-<div class="outline-text-2" id="text-org927eb8e">
+
+<div id="outline-container-orgaddc59a" class="outline-2">
+<h2 id="orgaddc59a">第一课</h2>
+<div class="outline-text-2" id="text-orgaddc59a">
+</div><div id="outline-container-orgd8874f1" class="outline-3">
+<h3 id="orgd8874f1">浪费？</h3>
+<div class="outline-text-3" id="text-orgd8874f1">
 <p>
-maven 的核心为 pom, 通过 pom.xml 配置，定义了 project，包括配置和源码。
-</p>
-
-<p>
-配置包括与开发者相关的，缺陷跟踪系统，组织和许可，项目 URL，项目信赖以及其他。
-</p>
-
-<p>
-pom.xml 中的核心元素包括
-</p>
-
-<dl class="org-dl">
-<dt>project</dt><dd>声明一些命名空间及 xsd（让第三方工具快速编辑 pom）</dd>
-<dt>modelVersion</dt><dd><code>4.0.0</code> （对于 maven2 和 maven3）</dd>
-<dt>groupId</dt><dd></dd>
-
-<dt>artifactId</dt><dd></dd>
-
-<dt>version</dt><dd></dd>
-
-<dt>name</dt><dd>建议每个 pom 声明 name，指定项目名称</dd>
-<dt>dependencies/dependicy</dt><dd>坐标依赖</dd>
-<dt>scope</dt><dd>依赖范围</dd>
-</dl>
-</div>
-</div>
-
-<div id="outline-container-org507a89f" class="outline-2">
-<h2 id="org507a89f">dependency 插件</h2>
-<div class="outline-text-2" id="text-org507a89f">
-<p>
-从外网攒 jar 包，用 <code>dependency:get</code> 插件，具体用法如：
-</p>
-
-<div class="org-src-container">
-<pre class="src src-shell">mvn dependency:get -DartifactId=spark-sql_2.11 -DgroupId=org.apache.spark -Dversion=2.1.1 -Dclassifier=sources
-</pre>
-</div>
-
-<p>
-其中 classifier 为可选的，用于下载 javadoc 或 sources
+少年时代的爱因斯坦曾度过一年无所事事的时光。很可惜，现在很多青少年的父母经常会忘记这样一个道理:一个没有“浪费”过时间的人 终将一事无成。
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgcab2958" class="outline-2">
-<h2 id="orgcab2958">repositories 配置</h2>
-<div class="outline-text-2" id="text-orgcab2958">
-</div><div id="outline-container-org515e013" class="outline-3">
-<h3 id="org515e013"><span class="todo TODO">TODO</span> 在工程 pom.xml 配置</h3>
-<div class="outline-text-3" id="text-org515e013">
+<div id="outline-container-org9febdb5" class="outline-3">
+<h3 id="org9febdb5">1905奇迹年</h3>
+<div class="outline-text-3" id="text-org9febdb5">
 <p>
-待补充
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgcbc5ea3" class="outline-3">
-<h3 id="orgcbc5ea3">在 settings.xml 配置</h3>
-<div class="outline-text-3" id="text-orgcbc5ea3">
-<p>
-在 <code>~/.m2/settings.xml</code> 中 profiles 一节中添加配置，如下
-</p>
-
-<div class="org-src-container">
-<pre class="src src-xml">&lt;profile&gt;
-  &lt;id&gt;cloudera&lt;/id&gt;
-  &lt;repositories&gt;
-    &lt;repository&gt;
-      &lt;id&gt;cloudera&lt;/id&gt;
-      &lt;name&gt;cloudera repo&lt;/name&gt;
-      &lt;url&gt;https://repository.cloudera.com/artifactory/cloudera-repos/&lt;/url&gt;
-    &lt;/repository&gt;
-  &lt;/repositories&gt;
-&lt;/profile&gt;
-</pre>
-</div>
-
-<p>
-使用时，需要为 maven 指定 profile，如 <code>mvn -Pcloudera</code>
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orge8c4e50" class="outline-2">
-<h2 id="orge8c4e50">mirror 配置</h2>
-<div class="outline-text-2" id="text-orge8c4e50">
-<p>
-国内中央镜像源可以使用阿里镜像，在 <code>~/.m2/settings.xml</code> 中添加
-</p>
-
-<div class="org-src-container">
-<pre class="src src-xml">&lt;mirrors&gt;
-  &lt;mirror&gt;
-    &lt;id&gt;aliyun&lt;/id&gt;
-    &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
-    &lt;name&gt;Human Readable Name for this Mirror.&lt;/name&gt;
-    &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;
-  &lt;/mirror&gt;
-&lt;/mirrors&gt;
-</pre>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-org78a2dbf" class="outline-2">
-<h2 id="org78a2dbf">build classpath</h2>
-<div class="outline-text-2" id="text-org78a2dbf">
-<p>
-<code>maven dependency:build-classpath</code> 可以从当前工程（pom.xml）中生成 classpath
-</p>
-
-<p>
-比如 spark hive 需要指定 classpath，可以
+爱因斯坦向《物理学年鉴》投寄三篇文章，指出
 </p>
 
 <ol class="org-ol">
-<li>从 <code>hive-exec</code> jar 包中提取 pom.xml</li>
-<li>使用 <code>maven dependency:build-classpath</code> 命令生成 classpath</li>
-<li>classpath 中补充 hive-exec 所在的本地 jar 包路径</li>
+<li>原子的存在</li>
+<li>奠定量子力学的基础</li>
+<li>狭义相对论：对每个人来说，时间的流逝速度可以不一样（？）</li>
 </ol>
 </div>
+</div>
+
+<div id="outline-container-org48314f8" class="outline-3">
+<h3 id="org48314f8">广义相对论</h3>
+<div class="outline-text-3" id="text-org48314f8">
+<p>
+为了与牛顿“万有引力”调合，花十年时间来解决这一问题。
+</p>
+
+<p>
+在这十年里，他疯狂研究，反复尝试，不断犯错，陷入混沌。他发表过错误的论文，有过各种灵光乍现的想法，也曾误入歧途。终于，在1915年11月，他发表了一篇论文，给出了完整的解答——这是一个全新的引力理论，他称之为“广义相对论”，这是他的杰作。
+</p>
+
+<p>
+世界上有许多感人至深、无与伦比的伟大作品，比如莫扎特的《安魂曲》、荷马的《奥德赛》、西斯廷礼拜堂的穹顶画、莎士比亚的《李尔王》&#x2026;&#x2026; <b>想要领悟这些作品的妙处，都要经历一个从头学起的过程，但最终获得的回报将是百分之百美的享受。</b> 其实，除了美感之外，这些作品还能为我们提供一个观察世界的全新视角。广义相对论，这颗爱因斯坦的明珠，正是这样一件杰作。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4e538b9" class="outline-3">
+<h3 id="org4e538b9">引力场与空间</h3>
+<div class="outline-text-3" id="text-org4e538b9">
+<p>
+受法拉第与麦克斯韦的电磁场理论启发，牛顿的万有引力是否存在引力场。
+</p>
+
+<p>
+爱因斯坦解释：引力场就是空间。空间是一种物质，可以波动、弯曲和变形，而空间会在物质的地方弯曲：
+</p>
+
+<ol class="org-ol">
+<li>太阳使光线偏折</li>
+<li>时间会弯曲（山上兄弟老的快？）</li>
+<li>坍塌的恒星形成黑洞</li>
+<li>宇宙膨胀与宇宙大爆炸理论</li>
+</ol>
+
+<p>
+空间和引力场本是一回事。这一切也可以归结为一个简洁的方程:
+</p>
+
+<p>
+\[ R_{ab} - \frac{1}{2} R g_{ab} = T_{ab} \]
+</p>
+
+<p>
+要先学习和消化黎曼的数学才能解读和使用这个方程，要花些工夫、付出些辛苦才做得到。但这总比感悟贝多芬晚期弦乐四重奏的神秘之美要容易得多。无论是欣赏艺术，还是领悟科学，我们最终得到的将是美的享受和看待世界的全新视角。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org5a1ebc1" class="outline-2">
+<h2 id="org5a1ebc1">第二课 量子</h2>
+<div class="outline-text-2" id="text-org5a1ebc1">
+<p>
+广义相对论试图说明引力、时间、空间的统一的观点；量子理论诞生于 1900 年，因为能量不连续假设。
+</p>
+
+<p>
+爱因斯坦指出光是由成包的光粒子构成的，今天我们称之为“光子”。
+</p>
+
+<p>
+“在我看来，如果我们假设光的能量在空间中的分布是不连续的，我们就能更好地理解有关黑体辐射、荧光、紫外线产生的阴极射线，以及其他有关光的发射和转化的现象。依据这个假设，点光源发射出的一束光线的能量，并不会在越来越广的空间中连续分布，而是由有限数目的‘能量量子’组成，它们在空间中点状分布，作为能量发射和吸收的最小单元，能量量子不可再分。”
+</p>
+
+<p>
+这几句话说得简单而又清晰，是量子理论诞生的真正宣言。请注意这段话一开始“在我看来”这几个不同凡响的字眼，这不禁让人联想到，达尔文在自己的笔记中以“我认为”这几个字为开端来介绍他物种进化的伟大思想，而法拉第在其著作中第一次介绍电磁场这个具有革命意义的概念时，则提及自己“犹豫不决”。 <b>伟大的天才都懂得三思而行。</b>
+</p>
+</div>
+
+<div id="outline-container-org03a22b4" class="outline-3">
+<h3 id="org03a22b4">伟大的头脑</h3>
+<div class="outline-text-3" id="text-org03a22b4">
+<ul class="org-ul">
+<li>普朗克，提出不连续假设</li>
+<li>爱因斯坦，提出能量子名称</li>
+<li>玻尔，能级跃迁</li>
+<li>门捷列夫，元素周期表</li>
+<li>海森堡，测不准原则</li>
+</ul>
+
+<p>
+爱因斯坦与玻尔的光子盒讨论，相互反驳，并共同推进发展。
+</p>
+
+<p>
+爱因斯坦去世的时候，玻尔——他最强劲的对手——表达了对他的敬仰之情，感人至深。几年后，当玻尔也去世的时候，有人 拍下了他书房黑板的照片。黑板上画着一幅图，是爱因斯坦思想实验中那个“充满光的盒子”。直到生命的最后一刻，他仍在挑 战自己，仍然想要知道得更多。直到最后一刻，他仍未停止怀疑。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4f646cc" class="outline-3">
+<h3 id="org4f646cc">量子物理</h3>
+<div class="outline-text-3" id="text-org4f646cc">
+<p>
+不描述物理系统内发生了什么，而只说明如何去影响另一系统
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc4ac3a7" class="outline-2">
+<h2 id="orgc4ac3a7">第三课 宇宙的构造</h2>
+<div class="outline-text-2" id="text-orgc4ac3a7">
+<p>
+对宇宙的认识经过了各阶段或颠覆，或继承的过程：
+</p>
+
+<ol class="org-ol">
+<li>天在上，地在下</li>
+<li>天围绕地，地球是飘浮在空中的大石头，球体是均匀性的合理解释</li>
+<li>亚里士多德：地心说</li>
+<li>哥白尼：日心说</li>
+<li>去中心说，星云、星系、恒星、行星</li>
+</ol>
+
+<p>
+宇宙爆炸之前还有什么东西存在吗?
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc6b5e97" class="outline-2">
+<h2 id="orgc6b5e97">第四课 粒子</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Larry</p>
-<p class="date">Created: 2018-01-25 四 16:19</p>
+<p class="date">Created: 2018-01-25 Thu 16:00</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

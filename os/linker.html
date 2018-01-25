@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-01-25 四 16:19 -->
+<!-- 2018-01-25 Thu 16:00 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title></title>
+<title>GNU LD NOTE</title>
 <meta name="generator" content="Org mode">
-<meta name="author" content="Larry">
+<meta name="author" content="赵文彬">
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -232,151 +232,237 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<nav id="table-of-contents">
+<header>
+<h1 class="title">GNU LD NOTE</h1>
+</header><nav id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org927eb8e">pom</a></li>
-<li><a href="#org507a89f">dependency 插件</a></li>
-<li><a href="#orgcab2958">repositories 配置</a></li>
-<li><a href="#orge8c4e50">mirror 配置</a></li>
-<li><a href="#org78a2dbf">build classpath</a></li>
+<li><a href="#orgeab9041">说明</a></li>
+<li><a href="#org0ea9058">概述</a></li>
+<li><a href="#org4da57c3">命令行</a></li>
+<li><a href="#orge6a7364">环境变量</a></li>
+<li><a href="#org3f9bb68">Command Language</a></li>
+<li><a href="#orgb79b884">linux 下的 ld</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org927eb8e" class="outline-2">
-<h2 id="org927eb8e">pom</h2>
-<div class="outline-text-2" id="text-org927eb8e">
+
+<div id="outline-container-orgeab9041" class="outline-2">
+<h2 id="orgeab9041">说明</h2>
+<div class="outline-text-2" id="text-orgeab9041">
 <p>
-maven 的核心为 pom, 通过 pom.xml 配置，定义了 project，包括配置和源码。
+整理自 GNU LD MANUAL （ Version 2，Jan. 1994 ）
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org0ea9058" class="outline-2">
+<h2 id="org0ea9058">概述</h2>
+<div class="outline-text-2" id="text-org0ea9058">
+<p>
+<code>GNU ld</code> 将多个 object 和 archive files 链接起来，重新定位其中的 data，并将 symbol 引用一一对应。=ld= 有自己的 <b>Linker Command Language</b> 来配置链接的细节。
 </p>
 
 <p>
-配置包括与开发者相关的，缺陷跟踪系统，组织和许可，项目 URL，项目信赖以及其他。
+<code>ld</code> 通过 <code>BFD</code> 库来兼容不同的对象文件格式（如 COFF 或 elf 等）
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4da57c3" class="outline-2">
+<h2 id="org4da57c3">命令行</h2>
+<div class="outline-text-2" id="text-org4da57c3">
+<p>
+有很多参数用来配置 ld 的行为，非参数外的内容被作为要链接的 object 文件。ld 会自动推测文件的格式类型。
 </p>
 
 <p>
-pom.xml 中的核心元素包括
+常用命名行参数：
 </p>
 
 <dl class="org-dl">
-<dt>project</dt><dd>声明一些命名空间及 xsd（让第三方工具快速编辑 pom）</dd>
-<dt>modelVersion</dt><dd><code>4.0.0</code> （对于 maven2 和 maven3）</dd>
-<dt>groupId</dt><dd></dd>
-
-<dt>artifactId</dt><dd></dd>
-
-<dt>version</dt><dd></dd>
-
-<dt>name</dt><dd>建议每个 pom 声明 name，指定项目名称</dd>
-<dt>dependencies/dependicy</dt><dd>坐标依赖</dd>
-<dt>scope</dt><dd>依赖范围</dd>
+<dt><code>-o</code></dt><dd>指定生成文件名，如未指定，生成 <code>a.out</code></dd>
+<dt><code>-larchive</code></dt><dd>添加 archive 文件到要链接列表中，可多次引用</dd>
+<dt><code>-b / --format</code></dt><dd>指定输入文件类型格式</dd>
+<dt><code>-m</code></dt><dd>emulate the emulation linker，有默认值</dd>
+<dt><code>-v / -V</code></dt><dd>显示版本， <code>-V</code> 同时显示支持的 emulations</dd>
+<dt><code>-T</code></dt><dd>指定 linker sciprt</dd>
 </dl>
 </div>
 </div>
 
-<div id="outline-container-org507a89f" class="outline-2">
-<h2 id="org507a89f">dependency 插件</h2>
-<div class="outline-text-2" id="text-org507a89f">
+<div id="outline-container-orge6a7364" class="outline-2">
+<h2 id="orge6a7364">环境变量</h2>
+<div class="outline-text-2" id="text-orge6a7364">
 <p>
-从外网攒 jar 包，用 <code>dependency:get</code> 插件，具体用法如：
+有两个环境变量 <code>GNUTARGET</code> 和 <code>LDEMULATION</code> 对 ld 有影响
 </p>
 
-<div class="org-src-container">
-<pre class="src src-shell">mvn dependency:get -DartifactId=spark-sql_2.11 -DgroupId=org.apache.spark -Dversion=2.1.1 -Dclassifier=sources
-</pre>
+<dl class="org-dl">
+<dt><code>GNUTARGET</code></dt><dd>同 <code>-b</code> 参数，指定输入文件格式类型；设置为 <code>default</code> 将自动推测</dd>
+<dt><code>LDEMULATION</code></dt><dd>同 <code>-m</code> ，使用 <code>-v</code> 查看有哪些可用的模拟选项</dd>
+</dl>
+</div>
 </div>
 
+<div id="outline-container-org3f9bb68" class="outline-2">
+<h2 id="org3f9bb68">Command Language</h2>
+<div class="outline-text-2" id="text-org3f9bb68">
 <p>
-其中 classifier 为可选的，用于下载 javadoc 或 sources
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgcab2958" class="outline-2">
-<h2 id="orgcab2958">repositories 配置</h2>
-<div class="outline-text-2" id="text-orgcab2958">
-</div><div id="outline-container-org515e013" class="outline-3">
-<h3 id="org515e013"><span class="todo TODO">TODO</span> 在工程 pom.xml 配置</h3>
-<div class="outline-text-3" id="text-org515e013">
-<p>
-待补充
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgcbc5ea3" class="outline-3">
-<h3 id="orgcbc5ea3">在 settings.xml 配置</h3>
-<div class="outline-text-3" id="text-orgcbc5ea3">
-<p>
-在 <code>~/.m2/settings.xml</code> 中 profiles 一节中添加配置，如下
-</p>
-
-<div class="org-src-container">
-<pre class="src src-xml">&lt;profile&gt;
-  &lt;id&gt;cloudera&lt;/id&gt;
-  &lt;repositories&gt;
-    &lt;repository&gt;
-      &lt;id&gt;cloudera&lt;/id&gt;
-      &lt;name&gt;cloudera repo&lt;/name&gt;
-      &lt;url&gt;https://repository.cloudera.com/artifactory/cloudera-repos/&lt;/url&gt;
-    &lt;/repository&gt;
-  &lt;/repositories&gt;
-&lt;/profile&gt;
-</pre>
-</div>
-
-<p>
-使用时，需要为 maven 指定 profile，如 <code>mvn -Pcloudera</code>
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orge8c4e50" class="outline-2">
-<h2 id="orge8c4e50">mirror 配置</h2>
-<div class="outline-text-2" id="text-orge8c4e50">
-<p>
-国内中央镜像源可以使用阿里镜像，在 <code>~/.m2/settings.xml</code> 中添加
-</p>
-
-<div class="org-src-container">
-<pre class="src src-xml">&lt;mirrors&gt;
-  &lt;mirror&gt;
-    &lt;id&gt;aliyun&lt;/id&gt;
-    &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
-    &lt;name&gt;Human Readable Name for this Mirror.&lt;/name&gt;
-    &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;
-  &lt;/mirror&gt;
-&lt;/mirrors&gt;
-</pre>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-org78a2dbf" class="outline-2">
-<h2 id="org78a2dbf">build classpath</h2>
-<div class="outline-text-2" id="text-org78a2dbf">
-<p>
-<code>maven dependency:build-classpath</code> 可以从当前工程（pom.xml）中生成 classpath
-</p>
-
-<p>
-比如 spark hive 需要指定 classpath，可以
+显式控制链接过程，如
 </p>
 
 <ol class="org-ol">
-<li>从 <code>hive-exec</code> jar 包中提取 pom.xml</li>
-<li>使用 <code>maven dependency:build-classpath</code> 命令生成 classpath</li>
-<li>classpath 中补充 hive-exec 所在的本地 jar 包路径</li>
+<li>input files</li>
+<li>file formats</li>
+<li>output file layout</li>
+<li>addresses of sections</li>
+<li>placement of common blocks</li>
 </ol>
+
+<p>
+控制文件脚本被称为 linker script，通过 <code>-T</code> 参数指定。
+</p>
+</div>
+
+<div id="outline-container-orga7574dd" class="outline-3">
+<h3 id="orga7574dd">linker scripts</h3>
+<div class="outline-text-3" id="text-orga7574dd">
+<p>
+由 statement 构成，基本操作有两种：一设置参数，二选择和分组
+</p>
+
+<p>
+最常用的 statement 是 <code>SECTIONS</code> 命令，指定了输出文件的分布情况，是必选的。
+</p>
+
+<p>
+<code>MEMORY</code> 命令补全 <code>SECTIONS</code> 功能，描述了目标架构中的一种可用内存分布
+</p>
+</div>
+</div>
+
+<div id="outline-container-org602557f" class="outline-3">
+<h3 id="org602557f">Expressions</h3>
+<div class="outline-text-3" id="text-org602557f">
+<p>
+基本的数学运算，类似于 C 的语法，不同之处在于
+</p>
+
+<ul class="org-ul">
+<li>只有整数，分为 long 和 unsigned long</li>
+<li>所有的常量是整数</li>
+<li>所有的 C 算法都支持</li>
+<li>可以引用、定义和创建全局变量</li>
+<li>可以调用通过目的内置函数</li>
+</ul>
+</div>
+
+<div id="outline-container-org35b508a" class="outline-4">
+<h4 id="org35b508a">整数</h4>
+<div class="outline-text-4" id="text-org35b508a">
+<p>
+可以后缀以 <code>K</code> 和 <code>M</code> 来表示相应大小
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5297a26" class="outline-4">
+<h4 id="org5297a26">Symbol Names</h4>
+<div class="outline-text-4" id="text-org5297a26">
+<p>
+正常的命名应该以字母、下划线或 point 开头，跟着任务长度的字母、数字、point 及横线。且不应该与关键字重名。
+</p>
+
+<p>
+用双引号包起来的字符串可以不受上面条件的限制
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge608245" class="outline-4">
+<h4 id="orge608245">Location Counter</h4>
+<div class="outline-text-4" id="text-orge608245">
+<p>
+特殊变量 <code>'.'</code> 表示当前位置计数器，表示输出 section 中的位置。只能用在 <code>SECTION</code> 命令中。该变量可以增加以生成空洞，但不能减少。
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org8fd20e9" class="outline-4">
+<h4 id="org8fd20e9">Evaluation</h4>
+<div class="outline-text-4" id="text-org8fd20e9">
+<p>
+对表达式进行惰性求值。一般如变量开始地址，区域的内存大小会在加载时被首先计算。其它值则在存储位置确定后、被使用时计算。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7c769ba" class="outline-4">
+<h4 id="org7c769ba">赋值</h4>
+<div class="outline-text-4" id="text-org7c769ba">
+<pre class="example">
+symbol = expression ;
+symbol &amp;= expression ;
+symbol += expression ;
+symbol -= expression ;
+symbol *= expression ;
+symbol /= expression ;
+</pre>
+
+<p>
+末尾的分号是必须的。赋值操作可以出现在：
+</p>
+
+<ol class="org-ol">
+<li>ld script 中作为 command</li>
+<li>在 <code>SECTIONS</code> 命令中作为独立的 statement</li>
+<li>在 <code>SECTIONS</code> 中作为 section 定义的一部分，定义相对于 section 的地址</li>
+</ol>
+
+<p>
+变量中保存的是绝对地址或可重定位地址：
+</p>
+
+<dl class="org-dl">
+<dt>绝对表达类型</dt><dd>symbol 中包括了的值，在整个输出文件中的偏移量</dd>
+<dt>可重定位表达类型</dt><dd>相对于 section 的固定偏移量</dd>
+</dl>
+
+<p>
+表达式类型由其在脚本中所处的位置决定。在 section 定义中的赋值则为相对地址，在其它位置赋值则作为绝对符号。使用 <code>ABSOLUTE</code> 来显式地指定绝对符号。
+</p>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgb79b884" class="outline-2">
+<h2 id="orgb79b884">linux 下的 ld</h2>
+<div class="outline-text-2" id="text-orgb79b884">
+<div class="org-src-container">
+<pre class="src src-shell">ld -o output /lib/crt0.o hello.o -lc
+</pre>
+</div>
+
+<p>
+参数意义如下：
+</p>
+
+<ul class="org-ul">
+<li><code>/lib/crt0.o</code> : ??</li>
+</ul>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: Larry</p>
-<p class="date">Created: 2018-01-25 四 16:19</p>
+<p class="author">Author: 赵文彬</p>
+<p class="date">Created: 2018-01-25 Thu 16:00</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

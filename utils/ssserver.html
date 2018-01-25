@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-01-25 四 16:19 -->
+<!-- 2018-01-25 Thu 16:00 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title></title>
+<title>debian 安装 ssserver 小记</title>
 <meta name="generator" content="Org mode">
 <meta name="author" content="Larry">
 <style type="text/css">
@@ -232,151 +232,63 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<nav id="table-of-contents">
+<header>
+<h1 class="title">debian 安装 ssserver 小记</h1>
+</header><nav id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org927eb8e">pom</a></li>
-<li><a href="#org507a89f">dependency 插件</a></li>
-<li><a href="#orgcab2958">repositories 配置</a></li>
-<li><a href="#orge8c4e50">mirror 配置</a></li>
-<li><a href="#org78a2dbf">build classpath</a></li>
+<li><a href="#org58c4022">GFW</a></li>
+<li><a href="#org9d6d846">安装小记</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org927eb8e" class="outline-2">
-<h2 id="org927eb8e">pom</h2>
-<div class="outline-text-2" id="text-org927eb8e">
+
+<div id="outline-container-org58c4022" class="outline-2">
+<h2 id="org58c4022">GFW</h2>
+<div class="outline-text-2" id="text-org58c4022">
 <p>
-maven 的核心为 pom, 通过 pom.xml 配置，定义了 project，包括配置和源码。
+我不能阻止被束缚，但我至少要摆脱对墙的妥协
 </p>
-
-<p>
-配置包括与开发者相关的，缺陷跟踪系统，组织和许可，项目 URL，项目信赖以及其他。
-</p>
-
-<p>
-pom.xml 中的核心元素包括
-</p>
-
-<dl class="org-dl">
-<dt>project</dt><dd>声明一些命名空间及 xsd（让第三方工具快速编辑 pom）</dd>
-<dt>modelVersion</dt><dd><code>4.0.0</code> （对于 maven2 和 maven3）</dd>
-<dt>groupId</dt><dd></dd>
-
-<dt>artifactId</dt><dd></dd>
-
-<dt>version</dt><dd></dd>
-
-<dt>name</dt><dd>建议每个 pom 声明 name，指定项目名称</dd>
-<dt>dependencies/dependicy</dt><dd>坐标依赖</dd>
-<dt>scope</dt><dd>依赖范围</dd>
-</dl>
 </div>
 </div>
 
-<div id="outline-container-org507a89f" class="outline-2">
-<h2 id="org507a89f">dependency 插件</h2>
-<div class="outline-text-2" id="text-org507a89f">
-<p>
-从外网攒 jar 包，用 <code>dependency:get</code> 插件，具体用法如：
-</p>
-
+<div id="outline-container-org9d6d846" class="outline-2">
+<h2 id="org9d6d846">安装小记</h2>
+<div class="outline-text-2" id="text-org9d6d846">
+</div><div id="outline-container-org0da3d42" class="outline-3">
+<h3 id="org0da3d42">安装 ss 软件</h3>
+<div class="outline-text-3" id="text-org0da3d42">
 <div class="org-src-container">
-<pre class="src src-shell">mvn dependency:get -DartifactId=spark-sql_2.11 -DgroupId=org.apache.spark -Dversion=2.1.1 -Dclassifier=sources
-</pre>
-</div>
-
-<p>
-其中 classifier 为可选的，用于下载 javadoc 或 sources
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgcab2958" class="outline-2">
-<h2 id="orgcab2958">repositories 配置</h2>
-<div class="outline-text-2" id="text-orgcab2958">
-</div><div id="outline-container-org515e013" class="outline-3">
-<h3 id="org515e013"><span class="todo TODO">TODO</span> 在工程 pom.xml 配置</h3>
-<div class="outline-text-3" id="text-org515e013">
-<p>
-待补充
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgcbc5ea3" class="outline-3">
-<h3 id="orgcbc5ea3">在 settings.xml 配置</h3>
-<div class="outline-text-3" id="text-orgcbc5ea3">
-<p>
-在 <code>~/.m2/settings.xml</code> 中 profiles 一节中添加配置，如下
-</p>
-
-<div class="org-src-container">
-<pre class="src src-xml">&lt;profile&gt;
-  &lt;id&gt;cloudera&lt;/id&gt;
-  &lt;repositories&gt;
-    &lt;repository&gt;
-      &lt;id&gt;cloudera&lt;/id&gt;
-      &lt;name&gt;cloudera repo&lt;/name&gt;
-      &lt;url&gt;https://repository.cloudera.com/artifactory/cloudera-repos/&lt;/url&gt;
-    &lt;/repository&gt;
-  &lt;/repositories&gt;
-&lt;/profile&gt;
-</pre>
-</div>
-
-<p>
-使用时，需要为 maven 指定 profile，如 <code>mvn -Pcloudera</code>
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orge8c4e50" class="outline-2">
-<h2 id="orge8c4e50">mirror 配置</h2>
-<div class="outline-text-2" id="text-orge8c4e50">
-<p>
-国内中央镜像源可以使用阿里镜像，在 <code>~/.m2/settings.xml</code> 中添加
-</p>
-
-<div class="org-src-container">
-<pre class="src src-xml">&lt;mirrors&gt;
-  &lt;mirror&gt;
-    &lt;id&gt;aliyun&lt;/id&gt;
-    &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
-    &lt;name&gt;Human Readable Name for this Mirror.&lt;/name&gt;
-    &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;
-  &lt;/mirror&gt;
-&lt;/mirrors&gt;
+<pre class="src src-shell">apt-get install python-pip
+pip install git+https://github.com/shadowsocks/shadowsocks.git@master
 </pre>
 </div>
 </div>
 </div>
 
+<div id="outline-container-org15f33c2" class="outline-3">
+<h3 id="org15f33c2">配置服务</h3>
+<div class="outline-text-3" id="text-org15f33c2">
+</div><div id="outline-container-org5479915" class="outline-4">
+<h4 id="org5479915">命令行方式</h4>
+<div class="outline-text-4" id="text-org5479915">
+<div class="org-src-container">
+<pre class="src src-shell">sudo ssserver -p 443 -k password -m aes-256-cfb --user nobody -d start
+</pre>
+</div>
+</div>
+</div>
 
-<div id="outline-container-org78a2dbf" class="outline-2">
-<h2 id="org78a2dbf">build classpath</h2>
-<div class="outline-text-2" id="text-org78a2dbf">
-<p>
-<code>maven dependency:build-classpath</code> 可以从当前工程（pom.xml）中生成 classpath
-</p>
-
-<p>
-比如 spark hive 需要指定 classpath，可以
-</p>
-
-<ol class="org-ol">
-<li>从 <code>hive-exec</code> jar 包中提取 pom.xml</li>
-<li>使用 <code>maven dependency:build-classpath</code> 命令生成 classpath</li>
-<li>classpath 中补充 hive-exec 所在的本地 jar 包路径</li>
-</ol>
+<div id="outline-container-orgd6efe14" class="outline-4">
+<h4 id="orgd6efe14"><span class="todo TODO">TODO</span> 配置文件方式</h4>
+</div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Larry</p>
-<p class="date">Created: 2018-01-25 四 16:19</p>
+<p class="date">Created: 2018-01-25 Thu 16:00</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

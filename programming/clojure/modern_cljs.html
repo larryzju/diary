@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-01-25 四 16:19 -->
+<!-- 2018-01-25 Thu 16:00 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title></title>
+<title>modern cljs 笔记</title>
 <meta name="generator" content="Org mode">
-<meta name="author" content="Larry">
+<meta name="author" content="赵文彬">
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -232,151 +232,200 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<nav id="table-of-contents">
+<header>
+<h1 class="title">modern cljs 笔记</h1>
+</header><nav id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org927eb8e">pom</a></li>
-<li><a href="#org507a89f">dependency 插件</a></li>
-<li><a href="#orgcab2958">repositories 配置</a></li>
-<li><a href="#orge8c4e50">mirror 配置</a></li>
-<li><a href="#org78a2dbf">build classpath</a></li>
+<li><a href="#org93f31da">写作的原因</a></li>
+<li><a href="#org079b357">NREPL</a></li>
+<li><a href="#orgc7d5f3e">Tutorial 1</a></li>
+<li><a href="#org5614032">Tutorial 2 - Immediate Feedback Principle</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org927eb8e" class="outline-2">
-<h2 id="org927eb8e">pom</h2>
-<div class="outline-text-2" id="text-org927eb8e">
+
+<div id="outline-container-org93f31da" class="outline-2">
+<h2 id="org93f31da">写作的原因</h2>
+<div class="outline-text-2" id="text-org93f31da">
 <p>
-maven 的核心为 pom, 通过 pom.xml 配置，定义了 project，包括配置和源码。
+最近打算好好学习前端知识，奈何隔行如隔山，当年掌握的 jquery 知识在面对当前各种 react/vue/angularjs 等库和框架，无不令人眼花缭乱。
 </p>
 
 <p>
-配置包括与开发者相关的，缺陷跟踪系统，组织和许可，项目 URL，项目信赖以及其他。
+而 clojure 又是我一年以来下功夫使用和学习的语言，对其 lisp 语法和 REPL 开发方式特别满义。
 </p>
 
 <p>
-pom.xml 中的核心元素包括
-</p>
-
-<dl class="org-dl">
-<dt>project</dt><dd>声明一些命名空间及 xsd（让第三方工具快速编辑 pom）</dd>
-<dt>modelVersion</dt><dd><code>4.0.0</code> （对于 maven2 和 maven3）</dd>
-<dt>groupId</dt><dd></dd>
-
-<dt>artifactId</dt><dd></dd>
-
-<dt>version</dt><dd></dd>
-
-<dt>name</dt><dd>建议每个 pom 声明 name，指定项目名称</dd>
-<dt>dependencies/dependicy</dt><dd>坐标依赖</dd>
-<dt>scope</dt><dd>依赖范围</dd>
-</dl>
-</div>
-</div>
-
-<div id="outline-container-org507a89f" class="outline-2">
-<h2 id="org507a89f">dependency 插件</h2>
-<div class="outline-text-2" id="text-org507a89f">
-<p>
-从外网攒 jar 包，用 <code>dependency:get</code> 插件，具体用法如：
-</p>
-
-<div class="org-src-container">
-<pre class="src src-shell">mvn dependency:get -DartifactId=spark-sql_2.11 -DgroupId=org.apache.spark -Dversion=2.1.1 -Dclassifier=sources
-</pre>
-</div>
-
-<p>
-其中 classifier 为可选的，用于下载 javadoc 或 sources
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgcab2958" class="outline-2">
-<h2 id="orgcab2958">repositories 配置</h2>
-<div class="outline-text-2" id="text-orgcab2958">
-</div><div id="outline-container-org515e013" class="outline-3">
-<h3 id="org515e013"><span class="todo TODO">TODO</span> 在工程 pom.xml 配置</h3>
-<div class="outline-text-3" id="text-org515e013">
-<p>
-待补充
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgcbc5ea3" class="outline-3">
-<h3 id="orgcbc5ea3">在 settings.xml 配置</h3>
-<div class="outline-text-3" id="text-orgcbc5ea3">
-<p>
-在 <code>~/.m2/settings.xml</code> 中 profiles 一节中添加配置，如下
-</p>
-
-<div class="org-src-container">
-<pre class="src src-xml">&lt;profile&gt;
-  &lt;id&gt;cloudera&lt;/id&gt;
-  &lt;repositories&gt;
-    &lt;repository&gt;
-      &lt;id&gt;cloudera&lt;/id&gt;
-      &lt;name&gt;cloudera repo&lt;/name&gt;
-      &lt;url&gt;https://repository.cloudera.com/artifactory/cloudera-repos/&lt;/url&gt;
-    &lt;/repository&gt;
-  &lt;/repositories&gt;
-&lt;/profile&gt;
-</pre>
-</div>
-
-<p>
-使用时，需要为 maven 指定 profile，如 <code>mvn -Pcloudera</code>
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orge8c4e50" class="outline-2">
-<h2 id="orge8c4e50">mirror 配置</h2>
-<div class="outline-text-2" id="text-orge8c4e50">
-<p>
-国内中央镜像源可以使用阿里镜像，在 <code>~/.m2/settings.xml</code> 中添加
-</p>
-
-<div class="org-src-container">
-<pre class="src src-xml">&lt;mirrors&gt;
-  &lt;mirror&gt;
-    &lt;id&gt;aliyun&lt;/id&gt;
-    &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
-    &lt;name&gt;Human Readable Name for this Mirror.&lt;/name&gt;
-    &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;
-  &lt;/mirror&gt;
-&lt;/mirrors&gt;
-</pre>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-org78a2dbf" class="outline-2">
-<h2 id="org78a2dbf">build classpath</h2>
-<div class="outline-text-2" id="text-org78a2dbf">
-<p>
-<code>maven dependency:build-classpath</code> 可以从当前工程（pom.xml）中生成 classpath
-</p>
-
-<p>
-比如 spark hive 需要指定 classpath，可以
+虽然不很了解前端技术更新的路线，但就目前学习到的来看，主要有以下几个方面，clojurescript 似乎是个不错的选择
 </p>
 
 <ol class="org-ol">
-<li>从 <code>hive-exec</code> jar 包中提取 pom.xml</li>
-<li>使用 <code>maven dependency:build-classpath</code> 命令生成 classpath</li>
-<li>classpath 中补充 hive-exec 所在的本地 jar 包路径</li>
+<li>javascript 有多种标准，且本身语法过于简单，而不够严格。实际上会以 typescript, coffeescript, es6 等写作，由编译器翻译成实际的 javascript 代码在浏览器中执行。</li>
+
+<li>virtual dom：DOM 标准过于具象化，直接在上面操作比较困难。一般在其上面抽象出一个虚拟的视图，程序操作虚拟视图，并由框架来映射到具体的 DOM 上。类似于 clojure 之与 JVM，C 之与处理器， luajit 之与 lua 语言？</li>
+
+<li>统一 html, javascript, css 为统一的软件栈。如果后台是　clojure，那么甚至从前向后都可能统一起来。</li>
 </ol>
+
+<p>
+之前学习 clojure 的过程中，借助它与 Java 互操作的特性，学习到了很多 java 和 jvm 的知识。特别是因为所在的角度不同，可能也因为资料相对较少，学习到的知识比较丰富，且充分。希望学习 clojurescript 也能帮我理解前端的技术发展到底痛点在哪里？解释为什么会有这么多的框架和技术演进。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org079b357" class="outline-2">
+<h2 id="org079b357">NREPL</h2>
+<div class="outline-text-2" id="text-org079b357">
+</div><div id="outline-container-org572f583" class="outline-3">
+<h3 id="org572f583">希望</h3>
+<div class="outline-text-3" id="text-org572f583">
+<p>
+clojure 最大的特点，从工程角度来讲，我认为是 NREPL 的渐进式开发流程。特别是像开发 java 程序时避免了大量的重复打包、启动、准备现场的流程。
+</p>
+
+<p>
+学习 clojurescript 的一个主要的希望也是能够渐进式的，可以探索的方式进行开发。最好能够如同 lisp 开发一样，在编译器级别进行语言调试。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc7d5f3e" class="outline-2">
+<h2 id="orgc7d5f3e">Tutorial 1</h2>
+<div class="outline-text-2" id="text-orgc7d5f3e">
+</div><div id="outline-container-org4c77028" class="outline-3">
+<h3 id="org4c77028">boot</h3>
+<div class="outline-text-3" id="text-org4c77028">
+<p>
+modern cljs 中使用的是 boot 工具。之前比较熟悉 leiningen 工具，两者之前应该大部分是相通的。
+</p>
+</div>
+
+<div id="outline-container-org99cb86b" class="outline-4">
+<h4 id="org99cb86b">目录结构</h4>
+<div class="outline-text-4" id="text-org99cb86b">
+<p>
+boot 的目录结构同 leiningen 相似
+</p>
+
+<ol class="org-ol">
+<li>built.boot</li>
+<li><code>src/cljs/&lt;namespace&gt;/core.cljs</code> 代码目录</li>
+<li>html/index.html，类比于 resources 目录</li>
+</ol>
+
+<p>
+注意 clojurescript 的后缀是 cljs
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbe26fe7" class="outline-4">
+<h4 id="orgbe26fe7">工具链</h4>
+<div class="outline-text-4" id="text-orgbe26fe7">
+<ul class="org-ul">
+<li>mac 上使用 <code>brew install boot-clj</code></li>
+<li>或下载 boot.sh，第一次执行脚本时会从网络上获取，同 leiningen</li>
+<li>可恶的网络，几乎无法下载相关的包，只能配置 ss 服务来下载</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orgcfa886c" class="outline-4">
+<h4 id="orgcfa886c">工程文件</h4>
+<div class="outline-text-4" id="text-orgcfa886c">
+<p>
+<code>built.boot</code> 是工程文件，类似于 leiningen 的 project.clj，sbt 的 built.sbt ，maven 的 pom.xml
+</p>
+
+<div class="org-src-container">
+<pre class="src src-clojure">(set-env!
+ ;; 指定源文件和资源文件路径
+ :source-paths #{"src/cljs"}
+ :resource-paths #{"html"}
+
+ ;; 添加 plugin
+ :dependencies '[[adzerk/boot-cljs "1.7.228-2"]])
+
+;; 起别名，可以作为 boot 子命令，类似于 hdfs dfs 之类
+(require '[adzerk/boot-cljs :refer [cljs]])
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org4c85d79" class="outline-4">
+<h4 id="org4c85d79">cljs 插件</h4>
+<div class="outline-text-4" id="text-org4c85d79">
+<p>
+编译 clojurescript 代码，并打包生成 <code>main.js</code> 文件，可以直接在 html 页面中 script tag 中加入。
+</p>
+
+<p>
+使用命令 <code>boot cljs target</code> 来编译并生成到 target 目录中。其中包括
+</p>
+
+<ol class="org-ol">
+<li>原始的静态资源和源码</li>
+<li>一堆的 js 代码</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org73cf82d" class="outline-4">
+<h4 id="org73cf82d">boot 版本控制</h4>
+<div class="outline-text-4" id="text-org73cf82d">
+<p>
+命令 <code>boot -V &gt; boot.properties</code> 生成一个控制文件，内容如下
+</p>
+
+<pre class="example">
+#http://boot-clj.com
+#Thu Mar 09 14:56:52 CET 2017
+BOOT_CLOJURE_NAME=org.clojure/clojure
+BOOT_CLOJURE_VERSION=1.7.0
+BOOT_VERSION=2.7.1
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org9bc38c4" class="outline-4">
+<h4 id="org9bc38c4">浏览结果</h4>
+<div class="outline-text-4" id="text-org9bc38c4">
+<p>
+打开 <code>target/index.html</code> 浏览结果
+</p>
+
+<p>
+boot 编译如同 org publish 一样，不会修改原来的 resources 和 src，只会在 target 目录下生成新的内容
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5614032" class="outline-2">
+<h2 id="org5614032">Tutorial 2 - Immediate Feedback Principle</h2>
+<div class="outline-text-2" id="text-org5614032">
+<p>
+讲解 boot 如何来完成 REPL 环境搭建（类似于 leiningen nrepl），主要有以下插件
+</p>
+
+<dl class="org-dl">
+<dt>boot-http</dt><dd>基于 http server 的 clojure 环境</dd>
+<dt>boot-reload</dt><dd>自动重载静态文件</dd>
+<dt>boot-cljs-repl</dt><dd>cljs 开发的 nrepl 环境</dd>
+</dl>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: Larry</p>
-<p class="date">Created: 2018-01-25 四 16:19</p>
+<p class="author">Author: 赵文彬</p>
+<p class="date">Created: 2018-01-25 Thu 16:00</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

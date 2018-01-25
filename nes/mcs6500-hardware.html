@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-01-25 四 16:19 -->
+<!-- 2018-01-25 Thu 16:00 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title></title>
+<title>MCS6500 HARDWARE 笔记</title>
 <meta name="generator" content="Org mode">
 <meta name="author" content="Larry">
 <style type="text/css">
@@ -232,151 +232,314 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<nav id="table-of-contents">
+<header>
+<h1 class="title">MCS6500 HARDWARE 笔记</h1>
+</header><nav id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org927eb8e">pom</a></li>
-<li><a href="#org507a89f">dependency 插件</a></li>
-<li><a href="#orgcab2958">repositories 配置</a></li>
-<li><a href="#orge8c4e50">mirror 配置</a></li>
-<li><a href="#org78a2dbf">build classpath</a></li>
+<li><a href="#org65de28e">说明</a></li>
+<li><a href="#orgaf245c9">chapter 1. Microcomputer System</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org927eb8e" class="outline-2">
-<h2 id="org927eb8e">pom</h2>
-<div class="outline-text-2" id="text-org927eb8e">
+
+<div id="outline-container-org65de28e" class="outline-2">
+<h2 id="org65de28e">说明</h2>
+<div class="outline-text-2" id="text-org65de28e">
 <p>
-maven 的核心为 pom, 通过 pom.xml 配置，定义了 project，包括配置和源码。
-</p>
-
-<p>
-配置包括与开发者相关的，缺陷跟踪系统，组织和许可，项目 URL，项目信赖以及其他。
-</p>
-
-<p>
-pom.xml 中的核心元素包括
-</p>
-
-<dl class="org-dl">
-<dt>project</dt><dd>声明一些命名空间及 xsd（让第三方工具快速编辑 pom）</dd>
-<dt>modelVersion</dt><dd><code>4.0.0</code> （对于 maven2 和 maven3）</dd>
-<dt>groupId</dt><dd></dd>
-
-<dt>artifactId</dt><dd></dd>
-
-<dt>version</dt><dd></dd>
-
-<dt>name</dt><dd>建议每个 pom 声明 name，指定项目名称</dd>
-<dt>dependencies/dependicy</dt><dd>坐标依赖</dd>
-<dt>scope</dt><dd>依赖范围</dd>
-</dl>
-</div>
-</div>
-
-<div id="outline-container-org507a89f" class="outline-2">
-<h2 id="org507a89f">dependency 插件</h2>
-<div class="outline-text-2" id="text-org507a89f">
-<p>
-从外网攒 jar 包，用 <code>dependency:get</code> 插件，具体用法如：
-</p>
-
-<div class="org-src-container">
-<pre class="src src-shell">mvn dependency:get -DartifactId=spark-sql_2.11 -DgroupId=org.apache.spark -Dversion=2.1.1 -Dclassifier=sources
-</pre>
-</div>
-
-<p>
-其中 classifier 为可选的，用于下载 javadoc 或 sources
+研究 FC/NES 原理，因此翻到了这本古老的手册。在其中我看到了当年计算机幼年的说教，但也看到了它从一开始就带有的特质。
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgcab2958" class="outline-2">
-<h2 id="orgcab2958">repositories 配置</h2>
-<div class="outline-text-2" id="text-orgcab2958">
-</div><div id="outline-container-org515e013" class="outline-3">
-<h3 id="org515e013"><span class="todo TODO">TODO</span> 在工程 pom.xml 配置</h3>
-<div class="outline-text-3" id="text-org515e013">
+<div id="outline-container-orgaf245c9" class="outline-2">
+<h2 id="orgaf245c9">chapter 1. Microcomputer System</h2>
+<div class="outline-text-2" id="text-orgaf245c9">
 <p>
-待补充
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgcbc5ea3" class="outline-3">
-<h3 id="orgcbc5ea3">在 settings.xml 配置</h3>
-<div class="outline-text-3" id="text-orgcbc5ea3">
-<p>
-在 <code>~/.m2/settings.xml</code> 中 profiles 一节中添加配置，如下
-</p>
-
-<div class="org-src-container">
-<pre class="src src-xml">&lt;profile&gt;
-  &lt;id&gt;cloudera&lt;/id&gt;
-  &lt;repositories&gt;
-    &lt;repository&gt;
-      &lt;id&gt;cloudera&lt;/id&gt;
-      &lt;name&gt;cloudera repo&lt;/name&gt;
-      &lt;url&gt;https://repository.cloudera.com/artifactory/cloudera-repos/&lt;/url&gt;
-    &lt;/repository&gt;
-  &lt;/repositories&gt;
-&lt;/profile&gt;
-</pre>
-</div>
-
-<p>
-使用时，需要为 maven 指定 profile，如 <code>mvn -Pcloudera</code>
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orge8c4e50" class="outline-2">
-<h2 id="orge8c4e50">mirror 配置</h2>
-<div class="outline-text-2" id="text-orge8c4e50">
-<p>
-国内中央镜像源可以使用阿里镜像，在 <code>~/.m2/settings.xml</code> 中添加
-</p>
-
-<div class="org-src-container">
-<pre class="src src-xml">&lt;mirrors&gt;
-  &lt;mirror&gt;
-    &lt;id&gt;aliyun&lt;/id&gt;
-    &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
-    &lt;name&gt;Human Readable Name for this Mirror.&lt;/name&gt;
-    &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;
-  &lt;/mirror&gt;
-&lt;/mirrors&gt;
-</pre>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-org78a2dbf" class="outline-2">
-<h2 id="org78a2dbf">build classpath</h2>
-<div class="outline-text-2" id="text-org78a2dbf">
-<p>
-<code>maven dependency:build-classpath</code> 可以从当前工程（pom.xml）中生成 classpath
+近来几年（1976年前后）大规模集成单板芯片发展迅速。其好处是能大大减少设计其个逻辑电路的成本，而只需要使用通用的硬件环境，通过 ROM 中的“程序”来适应不同的应用。
 </p>
 
 <p>
-比如 spark hive 需要指定 classpath，可以
+设计程序与设计逻辑电路殊途同归，分以下五个步骤
 </p>
 
 <ol class="org-ol">
-<li>从 <code>hive-exec</code> jar 包中提取 pom.xml</li>
-<li>使用 <code>maven dependency:build-classpath</code> 命令生成 classpath</li>
-<li>classpath 中补充 hive-exec 所在的本地 jar 包路径</li>
+<li>确定需求</li>
+<li>设计结构，权衡其成本、性能及扩展性</li>
+<li>完善细节</li>
+<li>构造和验证原型</li>
+<li>完成设计并指生产</li>
 </ol>
+</div>
+
+
+<div id="outline-container-org2ffedb2" class="outline-3">
+<h3 id="org2ffedb2">基本构成</h3>
+<div class="outline-text-3" id="text-org2ffedb2">
+<p>
+主要关注构成的基本元素，以及之间的数据关联。
+</p>
+
+<p>
+对于计算机程序，一个主要的原则是分治。将复杂的任务拆分成足够简单的任务，通过一个周期内的指令来完成。
+</p>
+
+
+<figure>
+<img src="microcompter-orginaztion.png" alt="microcompter-orginaztion.png">
+
+</figure>
+</div>
+
+<div id="outline-container-orgdd4f860" class="outline-4">
+<h4 id="orgdd4f860">处理器</h4>
+<div class="outline-text-4" id="text-orgdd4f860">
+<p>
+功能是取址、译址和执行指令。它通过
+</p>
+
+<ol class="org-ol">
+<li>地址总线</li>
+<li>双向的数据总线</li>
+<li>Write-Enable Switch</li>
+</ol>
+
+<p>
+来控制整个系统及外设。此外 interrupt 机制使它能更好的完成异步操作，而不需要效率低下的轮循。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb33b690" class="outline-4">
+<h4 id="orgb33b690">地址</h4>
+<div class="outline-text-4" id="text-orgb33b690">
+<p>
+地址表示处理器可以访问的位置。地址空间有 16 位，可访问 64k 空间。
+</p>
+
+<p>
+将地址分为高低两个字节 ADH 和 ADL，即分为 256 个页，每个页有 256 个字节。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5700190" class="outline-4">
+<h4 id="org5700190">clock generator</h4>
+<div class="outline-text-4" id="text-org5700190">
+<p>
+用于提供心跳（拍子），使处理器和其它组件协同工作
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgdf90705" class="outline-4">
+<h4 id="orgdf90705">program memory</h4>
+<div class="outline-text-4" id="text-orgdf90705">
+<p>
+ROM，存储指令，只读内存
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgfeb658f" class="outline-4">
+<h4 id="orgfeb658f">data memory</h4>
+<div class="outline-text-4" id="text-orgfeb658f">
+<p>
+RAM，易失。通过 Write-Enable 开关来控制读写
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7b9785d" class="outline-4">
+<h4 id="org7b9785d">I/O 设备</h4>
+<div class="outline-text-4" id="text-org7b9785d">
+<p>
+与 RAM 类似，处理器通过地址进行读写操作
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgcadebe4" class="outline-3">
+<h3 id="orgcadebe4">产品线</h3>
+<div class="outline-text-3" id="text-orgcadebe4">
+<ol class="org-ol">
+<li>MCS6501，兼容 M6800，16 位数据总线，8 位数据总线，有两个中断</li>
+<li>MCS6502, 同 6501，片上带时钟电路和驱动</li>
+<li>MCS605[3-5]，28 脚封装，其数据总线有所减少</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org876e90d" class="outline-3">
+<h3 id="org876e90d">核心概念</h3>
+<div class="outline-text-3" id="text-org876e90d">
+</div><div id="outline-container-orgd6457c1" class="outline-4">
+<h4 id="orgd6457c1">总线结构</h4>
+<div class="outline-text-4" id="text-orgd6457c1">
+<p>
+总线分为地址和数据两种，
+</p>
+
+<ol class="org-ol">
+<li>地址总线只能由操作器操作（单向写）</li>
+<li>数据总线为双向读写，方向由 READ/WRITE LINE 控制</li>
+</ol>
+
+<p>
+地址总线设定地址，数据总线从指定地址进行数据读写。两者通过双方波叠加时钟信号进行协调。
+</p>
+
+<p>
+时钟分为两个相位：
+</p>
+
+<ol class="org-ol">
+<li>相位一，修改地址总线信息</li>
+<li>相位二，数据传输</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgafbe089" class="outline-4">
+<h4 id="orgafbe089">中断</h4>
+<div class="outline-text-4" id="text-orgafbe089">
+<p>
+中断应该用在必要的地方，使外设能向处理器提出服务请求。中断分为 IRQ 和 NMI 两种，两者响应方式不同，但服务方式没有区别。
+</p>
+
+<p>
+使用中断时，我们需要关注两个方面：
+</p>
+
+<ol class="org-ol">
+<li>哪些信号需要中断</li>
+<li>中断时需要触发何种服务</li>
+<li>中断优先级</li>
+</ol>
+</div>
+
+<ul class="org-ul"><li><a id="org09f501e"></a>什么时候需要中断<br><div class="outline-text-5" id="text-org09f501e">
+<p>
+需要中断的场景比如：
+</p>
+
+<ol class="org-ol">
+<li>Fully-Decoded Keyboard，其特征是不频繁，且处理简单</li>
+<li>Scanned Display，特征是周期性事务</li>
+</ol>
+
+<p>
+总结中断的应该场景多为：并发需要（如周期性事务）或不频繁的事件处理
+</p>
+</div></li>
+
+<li><a id="orgafa70c6"></a>中断触发服务<br><div class="outline-text-5" id="text-orgafa70c6">
+<p>
+中断信号低电平时触发中断服务，在指令周期结束后被检查是否有中断信号。
+</p>
+
+<p>
+中断时处理器将保存上下文（如 PC 和 PSR 到栈），跳转到中断服务处执行指令
+</p>
+</div></li>
+
+<li><a id="org7c3ddca"></a>中断优先级<br><div class="outline-text-5" id="text-org7c3ddca">
+<p>
+不同的中断源需要按优先级进行排列，需要有硬件的支持，支持软件的控制。有两种方式：
+</p>
+
+<ol class="org-ol">
+<li>优先级编码器（硬件）：选中最高优先级的中断并排队</li>
+<li>polled interrupt：中断将触发 polling 中断，由软件决定进行何种操作</li>
+</ol>
+
+<p>
+另外硬件上可以通过 WIRE-OR 机制（类似于 x86 中断控制器）来同时接入多种中断。
+</p>
+</div></li></ul>
+</div>
+
+
+
+
+<div id="outline-container-org320e08b" class="outline-4">
+<h4 id="org320e08b">IRQ</h4>
+<div class="outline-text-4" id="text-org320e08b">
+<p>
+通过 PSR 寄存器中的 interrupt disable flag (I) 标记，标记在 RET 时由程序主动清除
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga4c13ff" class="outline-4">
+<h4 id="orga4c13ff">NMI</h4>
+<div class="outline-text-4" id="text-orga4c13ff">
+<p>
+在下降沿触发，不可屏蔽
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd7574b2" class="outline-4">
+<h4 id="orgd7574b2">RESET</h4>
+<div class="outline-text-4" id="text-orgd7574b2">
+<p>
+RESET 信号应同时连接到处理器和外设的 RESET 口。
+</p>
+
+<p>
+处理器重置后 PC 被重置，应首先初始化中断服务（其间不接收中断请求）。
+</p>
+
+<p>
+另外需要保证外设的初始化状态正确。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgda9b3e8" class="outline-3">
+<h3 id="orgda9b3e8">处理器核心</h3>
+<div class="outline-text-3" id="text-orgda9b3e8">
+<p>
+处理器中重点关注 register 和 data paths。按照功能和地位的不同，分为两部分
+</p>
+
+<ol class="org-ol">
+<li>register section，具体的取址执行流程</li>
+<li>control section，其它操作</li>
+</ol>
+
+
+<figure>
+<img src="internal-architecture.png" alt="internal-architecture.png">
+
+</figure>
+
+<p>
+具体的单元如下所示：
+</p>
+
+<dl class="org-dl">
+<dt>时间控制单元</dt><dd>协调时序操作</dd>
+<dt>Processor Status Register</dt><dd>标识状态，控制功能</dd>
+<dt>data bus</dt><dd>在时序 Pharse2 最后 100ns 传输指令，并加载到相应寄存器</dd>
+<dt>Program counter</dt><dd>由两部分 PCL 和 PCH 组成，自增</dd>
+<dt>ALU</dt><dd>算术单元，不能存储，只能作 SUM、AND、OR 等计算</dd>
+<dt>Accumulator(A)</dt><dd>8 位寄存器</dd>
+<dt>Stack Pointer(S)</dt><dd>8 位寄存器</dd>
+<dt>Index Register</dt><dd>A 和 B，均为 8 位寄存器</dd>
+<dt>Address Bus</dt><dd>ABL 和 ABH 组成</dd>
+</dl>
+</div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Larry</p>
-<p class="date">Created: 2018-01-25 四 16:19</p>
+<p class="date">Created: 2018-01-25 Thu 16:00</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

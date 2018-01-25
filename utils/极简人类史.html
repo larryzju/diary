@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-01-25 四 16:19 -->
+<!-- 2018-01-25 Thu 16:00 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title></title>
+<title>《极简人类史》笔记</title>
 <meta name="generator" content="Org mode">
-<meta name="author" content="Larry">
+<meta name="author" content="赵文彬">
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -232,151 +232,57 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<nav id="table-of-contents">
+<header>
+<h1 class="title">《极简人类史》笔记</h1>
+</header><nav id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org927eb8e">pom</a></li>
-<li><a href="#org507a89f">dependency 插件</a></li>
-<li><a href="#orgcab2958">repositories 配置</a></li>
-<li><a href="#orge8c4e50">mirror 配置</a></li>
-<li><a href="#org78a2dbf">build classpath</a></li>
+<li><a href="#org40f6054">初衷</a></li>
+<li><a href="#org8b877b5">叙事线索</a></li>
+<li><a href="#org45167ff">扩展</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org927eb8e" class="outline-2">
-<h2 id="org927eb8e">pom</h2>
-<div class="outline-text-2" id="text-org927eb8e">
+
+<div id="outline-container-org40f6054" class="outline-2">
+<h2 id="org40f6054">初衷</h2>
+<div class="outline-text-2" id="text-org40f6054">
 <p>
-maven 的核心为 pom, 通过 pom.xml 配置，定义了 project，包括配置和源码。
+看人类历史，会发现一些有趣有重要的东西。相对于地球和生命的时间久远，人类是第一个能将知识代代相传的物种。使人在短时间内学会运用各种方式掌控环境，开发利用生物圈中各种资源与能源。交流、分享与学习是其中关键。
 </p>
 
 <p>
-配置包括与开发者相关的，缺陷跟踪系统，组织和许可，项目 URL，项目信赖以及其他。
+能力越大，责任越大，人类可以决定自己以及地球的命运。只有从局部视角中退后一步，将人类历史当成整体来审视，才能更好理解人类这个物种的特殊性，以及要面对的挑战。将人类史置于更宏大的地球史及宇宙史中来观察，即大历史观。
 </p>
+</div>
+</div>
 
-<p>
-pom.xml 中的核心元素包括
-</p>
 
+<div id="outline-container-org8b877b5" class="outline-2">
+<h2 id="org8b877b5">叙事线索</h2>
+<div class="outline-text-2" id="text-org8b877b5">
 <dl class="org-dl">
-<dt>project</dt><dd>声明一些命名空间及 xsd（让第三方工具快速编辑 pom）</dd>
-<dt>modelVersion</dt><dd><code>4.0.0</code> （对于 maven2 和 maven3）</dd>
-<dt>groupId</dt><dd></dd>
-
-<dt>artifactId</dt><dd></dd>
-
-<dt>version</dt><dd></dd>
-
-<dt>name</dt><dd>建议每个 pom 声明 name，指定项目名称</dd>
-<dt>dependencies/dependicy</dt><dd>坐标依赖</dd>
-<dt>scope</dt><dd>依赖范围</dd>
+<dt>熵增原理</dt><dd>复杂度不断提升，必须不断从周围的环境中摄取能是，应该能维持稳态平衡的存续。能力与可持续危机</dd>
+<dt>集体知识</dt><dd>个体学习同时，知识存储到在群体和物种的集体记忆中</dd>
 </dl>
 </div>
 </div>
 
-<div id="outline-container-org507a89f" class="outline-2">
-<h2 id="org507a89f">dependency 插件</h2>
-<div class="outline-text-2" id="text-org507a89f">
-<p>
-从外网攒 jar 包，用 <code>dependency:get</code> 插件，具体用法如：
-</p>
 
-<div class="org-src-container">
-<pre class="src src-shell">mvn dependency:get -DartifactId=spark-sql_2.11 -DgroupId=org.apache.spark -Dversion=2.1.1 -Dclassifier=sources
-</pre>
-</div>
-
-<p>
-其中 classifier 为可选的，用于下载 javadoc 或 sources
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgcab2958" class="outline-2">
-<h2 id="orgcab2958">repositories 配置</h2>
-<div class="outline-text-2" id="text-orgcab2958">
-</div><div id="outline-container-org515e013" class="outline-3">
-<h3 id="org515e013"><span class="todo TODO">TODO</span> 在工程 pom.xml 配置</h3>
-<div class="outline-text-3" id="text-org515e013">
-<p>
-待补充
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgcbc5ea3" class="outline-3">
-<h3 id="orgcbc5ea3">在 settings.xml 配置</h3>
-<div class="outline-text-3" id="text-orgcbc5ea3">
-<p>
-在 <code>~/.m2/settings.xml</code> 中 profiles 一节中添加配置，如下
-</p>
-
-<div class="org-src-container">
-<pre class="src src-xml">&lt;profile&gt;
-  &lt;id&gt;cloudera&lt;/id&gt;
-  &lt;repositories&gt;
-    &lt;repository&gt;
-      &lt;id&gt;cloudera&lt;/id&gt;
-      &lt;name&gt;cloudera repo&lt;/name&gt;
-      &lt;url&gt;https://repository.cloudera.com/artifactory/cloudera-repos/&lt;/url&gt;
-    &lt;/repository&gt;
-  &lt;/repositories&gt;
-&lt;/profile&gt;
-</pre>
-</div>
-
-<p>
-使用时，需要为 maven 指定 profile，如 <code>mvn -Pcloudera</code>
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orge8c4e50" class="outline-2">
-<h2 id="orge8c4e50">mirror 配置</h2>
-<div class="outline-text-2" id="text-orge8c4e50">
-<p>
-国内中央镜像源可以使用阿里镜像，在 <code>~/.m2/settings.xml</code> 中添加
-</p>
-
-<div class="org-src-container">
-<pre class="src src-xml">&lt;mirrors&gt;
-  &lt;mirror&gt;
-    &lt;id&gt;aliyun&lt;/id&gt;
-    &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
-    &lt;name&gt;Human Readable Name for this Mirror.&lt;/name&gt;
-    &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;
-  &lt;/mirror&gt;
-&lt;/mirrors&gt;
-</pre>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-org78a2dbf" class="outline-2">
-<h2 id="org78a2dbf">build classpath</h2>
-<div class="outline-text-2" id="text-org78a2dbf">
-<p>
-<code>maven dependency:build-classpath</code> 可以从当前工程（pom.xml）中生成 classpath
-</p>
-
-<p>
-比如 spark hive 需要指定 classpath，可以
-</p>
-
-<ol class="org-ol">
-<li>从 <code>hive-exec</code> jar 包中提取 pom.xml</li>
-<li>使用 <code>maven dependency:build-classpath</code> 命令生成 classpath</li>
-<li>classpath 中补充 hive-exec 所在的本地 jar 包路径</li>
-</ol>
+<div id="outline-container-org45167ff" class="outline-2">
+<h2 id="org45167ff">扩展</h2>
+<div class="outline-text-2" id="text-org45167ff">
+<ul class="org-ul">
+<li>霍金《时间简史》</li>
+<li>麦克尼尔父子《人类之网——鸟瞰世界历史》</li>
+</ul>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: Larry</p>
-<p class="date">Created: 2018-01-25 四 16:19</p>
+<p class="author">Author: 赵文彬</p>
+<p class="date">Created: 2018-01-25 Thu 16:00</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
