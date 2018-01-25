@@ -20,3 +20,116 @@
 **** 扩展控制结构
 
 以 Erlang 的消息传递方式，在 scala 中以 actor 方式来实现
+* Chapter 8 Functions and closures
+
+** scala functions vs java functions
+
+1. 对象的方法（类比于 java 静态方法）
+2. functions nested within function（闭包）
+3. function literal（sugar）
+4. function value（first class function）
+
+** local functions
+
+- 将函数功能限制在专门的范围，减少代码量，易维护，可重用
+- 避免 helper 函数（从一个函数调用另一个函数）污染 namespace
+- 同 java，可以添加 =private= 关键字来控制访问范围
+- scala 中可以在函数中嵌套定义函数，用作 local function
+- local function 可以认为是闭包的实际用法
+
+** function literal & function value
+
+语法示例如下：
+
+#+BEGIN_SRC scala
+(x:Int, y:Int) => x+y
+#+END_SRC
+
+不同于 java 中的 method
+
+- scala 中 function literal 被编译成 class，实例化后为一个 function value
+- function value 既是对象，也可以当作函数来调用（protocol?）
+- 底层扩展实现了 =FunctionN= trait
+
+** short forms of function literals
+
+1. 在具体的调用处，可以省略类型，由编译器作类型推导。如 ~seq.filter((x) => x > 0)~
+2. 单参数时省略括号。如 ~seq.filter(x => x > 0)~
+
+** placeholder syntax
+
+- 可以用 ='_'= 来代指参数
+- 必要时需要指定参数类型，如 ~val = (_:Int) + (_:Int)~
+- 注意上例中，是两个参数，而非同一个
+
+** partially applied functions                                    :attention:
+
+- 类似于 python, clojure 中的偏函数
+- 有特殊的语法 ~val a = println _~
+- 上例中 '_' 代指整个参数列表（注意中间的空格）
+- 注意：a 相当于 println 函数的 wrap，不是同一个函数
+- 注意： *scala 中的 method 不能被赋给变量!!!*
+  #+BEGIN_SRC scala
+  val c = sum // error
+  #+END_SRC
+- 可以预先指定部分参数如
+  #+BEGIN_SRC scala
+  def sum(a: Int, b: Int, c: Int) = a + b + c
+  val a = sum(1, _: Int, 3)
+  a(2) // => 6
+  #+END_SRC
+
+** closure
+
+*** 定义
+
+The function value (object) that's created at runtime from its function literal is called a *closure*
+
+闭包生成时，保存了当前环境（environment/scope）以及变量绑定情况。
+
+*** 分类
+
+按是否有自由变量(free variable) 分为两种
+1. 无自由变量，称为 closed term，是闭包的特殊情况
+2. 有自由变量，称为 open term
+
+*** 补充
+
+scala 中自由变量在闭包生成后改变，会被闭包感知到。
+
+Cause scala's closures capture variables themseleves, not the value to which variable refer.
+
+*** TODO 讨论: 闭包引入自由变量是否会造成多线程安全问题？
+
+- 闭包多用在函数式风格中，自由变量不可变
+- 与引用类型和值类型有关（scala 中相当于引用类型，会发生改变）
+- 多线程通过闭包访问同一引用类型可能会出问题
+
+** Special function call forms
+
+*** repeated parameter
+
+- 类比于 C 中的 vargs，或 clojure 中的 =&= ， 或 python 中的 =*=
+- 函数定义语法上写作 ~def echo(args: String*) = for(arg <- args) println(arg)~
+- 函数调用语法上写作 ~echo(arr: _*)~ ， 其中 arr 本身是 =Array[T]= 类型（类比于 clojure apply）
+
+*** named arguments
+
+按参数名传参，可改变顺序，如 ~speed(distance=100,time=10)~
+
+*** default parameter value
+
+函数定义时提供默认参数，配合 named arguments 使用更佳
+
+** Tail recursive
+
+- tail-recursive function will not build a new stack frame for each calls; all calls will execute in a single frame
+- scalac 中加参数 ~-g:notailcalls~ 禁用尾递归优化（方便调试）
+- 受 JVM 限制，对间接调用递归模式，scala 编译器无法进行优化
+
+
+
+
+
+
+
