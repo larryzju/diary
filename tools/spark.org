@@ -1,0 +1,41 @@
+#+TITLE: spark 笔记
+#+AUTHOR: Zhao WenBin
+
+
+* *pivot*: reshaping the data
+
+** 概述
+
+Spark 1.6 中引入了 pivot tables 功能，转置表结构，把某列的内容作为新的列名。可以用于窄表向宽表的转换。
+
+本质上是进行聚合操作： A pivot is an aggregation where one (or more) of the grouping columns has its distinct values transposed into individual columns.
+
+部分 RDBM 及数据分析工具都提供了类型的功能，但在语法上各有不同
+
+** 语法
+
+按 A，B 列进行分组，以 C 为旋转轴，对 D 列进行求和。分别用 pandas(Python), reshapes2(R) 和 spark(Scala) 表示，语法如下（作为比较，增强理解）
+
+| library/language | syntax                                                                        |
+|------------------+-------------------------------------------------------------------------------|
+| pandas           | ~pivot_table(df, values='D', index=['A','B'], columns=['C'], aggfunc=np.sum)~ |
+| reshape2         | ~dcast(df, A+B~C, sum)~                                                       |
+| spark            | ~df.groupBy("A","B").pivot("C").sum("D")~                                     |
+
+spark 的 pivot 范式如下
+
+#+BEGIN_SRC scala
+df.groupBy(grouping_columns)
+  .pivot(pivot_columns, [values])
+  .agg(aggregate_expressions)
+#+END_SRC
+
+** 性能优化建议
+
+1. pivot 支持第二个参数，指定 pivot column，表示 pivot 列可能的取值，提高效率。如 ~.pivot("C",Seq("small","large"))~
+2. 指定 pivot column 提前排好序
+3. spark 不支持直接对多列进行 pivot。需要对多列作 pivot 作计算时，可以用 concat 生成新列
+
+
+
+
