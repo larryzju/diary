@@ -160,7 +160,7 @@ b, a = a, b
 #+BEGIN_SRC python
   # naive
   navs = {}
-  for ( portfolio, equity, position ) in data:
+  for (portfolio, equity, position) in data:
       if portfolio not in navs:
           navs[portfolio] = 0
       navs[portfolio] += position * prices[equity]
@@ -168,8 +168,8 @@ b, a = a, b
 
   # better
   navs = {}
-  for ( position, equity, position ) in data:
-      navs[position] = (navs.get(portfolio,0) + position * prices[equity])
+  for (portfolio, equity, position) in data:
+      navs[portfolio] = (navs.get(portfolio,0) + position * prices[equity])
 #+END_SRC
 ** Dictionary =setdefault= Method
 
@@ -360,7 +360,7 @@ month_codes = dict((fn(i+1), code)
 ** Sorting
 
 - =list.sort()= 在原数组上排序
-- 可以指定排序方法 cmp, 可以比较慢
+- 可以指定排序方法 cmp, 可能比较慢
 - 更好的方法是指定 key 方法
 
 
@@ -399,7 +399,7 @@ month_codes = dict((fn(i+1), code)
 
 - ~if __name__ == '__main__':~ 来保存可执行语句
 - 被导入时， ~__name__~ 被设置成模块的名称，因此不会执行
-- 当直接运行时， ~__name__~ 被设置成 "__main__"
+- 当直接运行时， ~__name__~ 被设置成 ="__main__"=
 
 
 ** Module Structure
