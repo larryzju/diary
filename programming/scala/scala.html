@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-08-26 六 09:14 -->
+<!-- 2018-01-26 五 10:23 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>scala 笔记</title>
@@ -241,6 +241,7 @@ for the JavaScript code in this tag.
 <li><a href="#org5f20c67">Collection</a></li>
 <li><a href="#orgded68a6">String Interpolation</a></li>
 <li><a href="#org18d4867">REPL</a></li>
+<li><a href="#orge4c36e8">trait</a></li>
 </ul>
 </div>
 </nav>
@@ -561,10 +562,84 @@ scala repl 将代码按模板进行封装（wrap with template)，编译并执�
 </table>
 </div>
 </div>
+<div id="outline-container-orge4c36e8" class="outline-2">
+<h2 id="orge4c36e8">trait</h2>
+<div class="outline-text-2" id="text-orge4c36e8">
+</div><div id="outline-container-org2f29d90" class="outline-3">
+<h3 id="概述"><a id="org2f29d90"></a>概述</h3>
+<div class="outline-text-3" id="text-概述">
+<p>
+trait 类似 java 的 interface，用于定义类的方法模板。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5d17ff9" class="outline-3">
+<h3 id="继承inherit与混成mixin"><a id="org5d17ff9"></a>继承(inherit)与混成(mixin)</h3>
+<div class="outline-text-3" id="text-继承inherit与混成mixin">
+<p>
+mixin
+类比于电影中合成技术（混成），对于两个相同规格的场景（基础类），混成出一个全新的场景（extends
+&#x2026; with）。
+</p>
+
+<p>
+trait 可以扩展(extends) 抽象类，实现扩展的方法。并在同样继承(inherit)
+抽象类的类中，混成 trait 扩展的方法。
+</p>
+
+<p>
+优点在于，将扩展的通用实现加入到朴素的原始数据结构中。
+</p>
+
+<p>
+如：
+</p>
+
+<pre class="example">
+abstract class AbsIterator {
+  type T
+  def hasNext: Boolean
+  def next: T
+}
+
+trait RichIterator extends AbsIterator {
+  def foreach( f: T =&gt; Unit ) { while ( hasNext ) f(next) }
+}
+
+class StringIterator( s: String ) extends AbsIterator {
+  type T = Char
+  private var i = 0
+  def hasNext = i &lt; s.length()
+  def next  = { val ch = s charAt i; i += 1; ch }
+}
+
+object StringIteratorTest {
+  def main( args: Array[String] ) {
+    class Iter extends StringIterator( args(0) ) with RichIterator
+    val iter = new Iter
+    iter foreach println
+  }
+}
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgb36d3ce" class="outline-3">
+<h3 id="注意事项"><a id="orgb36d3ce"></a>注意事项</h3>
+<div class="outline-text-3" id="text-注意事项">
+<ul class="org-ul">
+<li>trait 不能有构造函数</li>
+<li>定义的函数可以是抽象的，也可以是具体的</li>
+<li>具体的函数可以依赖于抽象函数</li>
+</ul>
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: 赵文彬</p>
-<p class="date">Created: 2017-08-26 六 09:14</p>
+<p class="date">Created: 2018-01-26 五 10:23</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
