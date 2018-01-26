@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-01-26 Fri 08:54 -->
+<!-- 2018-01-26 五 08:59 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>debian 安装 ssserver 小记</title>
+<title></title>
 <meta name="generator" content="Org mode">
 <meta name="author" content="Larry">
 <style type="text/css">
@@ -232,63 +232,225 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<header>
-<h1 class="title">debian 安装 ssserver 小记</h1>
-</header><nav id="table-of-contents">
+<nav id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org58c4022">GFW</a></li>
-<li><a href="#org9d6d846">安装小记</a></li>
+<li><a href="#org1b54561">pom</a></li>
+<li><a href="#org14a440a">dependency 插件</a></li>
+<li><a href="#orga9c2368">repositories 配置</a></li>
+<li><a href="#orgeaad435">mirror 配置</a></li>
+<li><a href="#orgb8feb8f">build classpath</a></li>
+<li><a href="#orgff15d30">archetype generate</a></li>
 </ul>
 </div>
 </nav>
-
-<div id="outline-container-org58c4022" class="outline-2">
-<h2 id="org58c4022">GFW</h2>
-<div class="outline-text-2" id="text-org58c4022">
+<div id="outline-container-org1b54561" class="outline-2">
+<h2 id="org1b54561">pom</h2>
+<div class="outline-text-2" id="text-org1b54561">
 <p>
-我不能阻止被束缚，但我至少要摆脱对墙的妥协
+maven 的核心为 pom, 通过 pom.xml 配置，定义了 project，包括配置和源码。
+</p>
+
+<p>
+配置包括与开发者相关的，缺陷跟踪系统，组织和许可，项目 URL，项目信赖以及其他。
+</p>
+
+<p>
+pom.xml 中的核心元素包括
+</p>
+
+<dl class="org-dl">
+<dt>project</dt><dd>声明一些命名空间及 xsd（让第三方工具快速编辑 pom）</dd>
+<dt>modelVersion</dt><dd><code>4.0.0</code> （对于 maven2 和 maven3）</dd>
+<dt>groupId</dt><dd></dd>
+
+<dt>artifactId</dt><dd></dd>
+
+<dt>version</dt><dd></dd>
+
+<dt>name</dt><dd>建议每个 pom 声明 name，指定项目名称</dd>
+<dt>dependencies/dependicy</dt><dd>坐标依赖</dd>
+<dt>scope</dt><dd>依赖范围</dd>
+</dl>
+</div>
+</div>
+
+<div id="outline-container-org14a440a" class="outline-2">
+<h2 id="org14a440a">dependency 插件</h2>
+<div class="outline-text-2" id="text-org14a440a">
+<p>
+从外网攒 jar 包，用 <code>dependency:get</code> 插件，具体用法如：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">mvn dependency:get -DartifactId=spark-sql_2.11 -DgroupId=org.apache.spark -Dversion=2.1.1 -Dclassifier=sources
+</pre>
+</div>
+
+<p>
+其中 classifier 为可选的，用于下载 javadoc 或 sources
 </p>
 </div>
 </div>
 
-<div id="outline-container-org9d6d846" class="outline-2">
-<h2 id="org9d6d846">安装小记</h2>
-<div class="outline-text-2" id="text-org9d6d846">
-</div><div id="outline-container-org0da3d42" class="outline-3">
-<h3 id="org0da3d42">安装 ss 软件</h3>
-<div class="outline-text-3" id="text-org0da3d42">
+<div id="outline-container-orga9c2368" class="outline-2">
+<h2 id="orga9c2368">repositories 配置</h2>
+<div class="outline-text-2" id="text-orga9c2368">
+</div><div id="outline-container-orga3d69bc" class="outline-3">
+<h3 id="orga3d69bc"><span class="todo TODO">TODO</span> 在工程 pom.xml 配置</h3>
+<div class="outline-text-3" id="text-orga3d69bc">
+<p>
+待补充
+</p>
+</div>
+</div>
+
+<div id="outline-container-org14bcacc" class="outline-3">
+<h3 id="org14bcacc">在 settings.xml 配置</h3>
+<div class="outline-text-3" id="text-org14bcacc">
+<p>
+在 <code>~/.m2/settings.xml</code> 中 profiles 一节中添加配置，如下
+</p>
+
 <div class="org-src-container">
-<pre class="src src-shell">apt-get install python-pip
-pip install git+https://github.com/shadowsocks/shadowsocks.git@master
+<pre class="src src-xml">&lt;profile&gt;
+  &lt;id&gt;cloudera&lt;/id&gt;
+  &lt;repositories&gt;
+    &lt;repository&gt;
+      &lt;id&gt;cloudera&lt;/id&gt;
+      &lt;name&gt;cloudera repo&lt;/name&gt;
+      &lt;url&gt;https://repository.cloudera.com/artifactory/cloudera-repos/&lt;/url&gt;
+    &lt;/repository&gt;
+  &lt;/repositories&gt;
+&lt;/profile&gt;
+</pre>
+</div>
+
+<p>
+使用时，需要为 maven 指定 profile，如 <code>mvn -Pcloudera</code>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgeaad435" class="outline-2">
+<h2 id="orgeaad435">mirror 配置</h2>
+<div class="outline-text-2" id="text-orgeaad435">
+<p>
+国内中央镜像源可以使用阿里镜像，在 <code>~/.m2/settings.xml</code> 中添加
+</p>
+
+<div class="org-src-container">
+<pre class="src src-xml">&lt;mirrors&gt;
+  &lt;mirror&gt;
+    &lt;id&gt;aliyun&lt;/id&gt;
+    &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
+    &lt;name&gt;Human Readable Name for this Mirror.&lt;/name&gt;
+    &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;
+  &lt;/mirror&gt;
+&lt;/mirrors&gt;
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org15f33c2" class="outline-3">
-<h3 id="org15f33c2">配置服务</h3>
-<div class="outline-text-3" id="text-org15f33c2">
-</div><div id="outline-container-org5479915" class="outline-4">
-<h4 id="org5479915">命令行方式</h4>
-<div class="outline-text-4" id="text-org5479915">
-<div class="org-src-container">
-<pre class="src src-shell">sudo ssserver -p 443 -k password -m aes-256-cfb --user nobody -d start
-</pre>
+<div id="outline-container-orgb8feb8f" class="outline-2">
+<h2 id="orgb8feb8f">build classpath</h2>
+<div class="outline-text-2" id="text-orgb8feb8f">
+<p>
+<code>maven dependency:build-classpath</code> 可以从当前工程（pom.xml）中生成 classpath
+</p>
+
+<p>
+比如 spark hive 需要指定 classpath，可以
+</p>
+
+<ol class="org-ol">
+<li>从 <code>hive-exec</code> jar 包中提取 pom.xml</li>
+<li>使用 <code>maven dependency:build-classpath</code> 命令生成 classpath</li>
+<li>classpath 中补充 hive-exec 所在的本地 jar 包路径</li>
+</ol>
 </div>
+</div>
+<div id="outline-container-orgff15d30" class="outline-2">
+<h2 id="orgff15d30">archetype generate</h2>
+<div class="outline-text-2" id="text-orgff15d30">
+</div><div id="outline-container-org09eda9e" class="outline-3">
+<h3 id="说明"><a id="org09eda9e"></a>说明</h3>
+<div class="outline-text-3" id="text-说明">
+<p>
+使用 maven-archetype-plugin 建立一个新的工程
+</p>
+
+<pre class="example">
+mvn archetype:generate
+</pre>
+
+<p>
+默认情况会从两个位置下载 XML 文件：
+</p>
+
+<ol class="org-ol">
+<li>remote: <a href="https://repo.maven.apache.org/maven2/archetype-catalog.xml">https://repo.maven.apache.org/maven2/archetype-catalog.xml</a></li>
+<li>local: 当前目录下的 archetype-catalog.xml</li>
+</ol>
+
+<p>
+然后进入一个交互式选择模式，通过指定模板编号，填写相应的 GAV
+名称，生成一个空的项目
+</p>
 </div>
 </div>
 
-<div id="outline-container-orgd6efe14" class="outline-4">
-<h4 id="orgd6efe14"><span class="todo TODO">TODO</span> 配置文件方式</h4>
+<div id="outline-container-org64fe968" class="outline-3">
+<h3 id="示例"><a id="org64fe968"></a>示例</h3>
+<div class="outline-text-3" id="text-示例">
+<p>
+如果需要新建一个 scala 工程，需要以下步骤
+</p>
+
+<ol class="org-ol">
+<li><code>mvn archetype:generate</code> 进入交互式命令行（可能需要一段时间）</li>
+<li>输入 <code>scala</code> 来筛选 scala 相关的模板</li>
+<li>选择具体的编号，这里选择
+<code>7: remote -&gt; net.alchim31.maven:scala-archetype-simple</code></li>
+<li>填写 GAV 信息，按 "Y" 生成工程</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org36031ae" class="outline-3">
+<h3 id="问题"><a id="org36031ae"></a>问题</h3>
+<div class="outline-text-3" id="text-问题">
+<p>
+aliyun 的 mirrors 会导致 remote 下载异常？
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgaeeb85d" class="outline-3">
+<h3 id="速度"><a id="orgaeeb85d"></a>速度</h3>
+<div class="outline-text-3" id="text-速度">
+<p>
+xml 文件有 5M 大小，网络比较慢的情况下，下载时间过长。
+</p>
+
+<p>
+可以先用 wget 下载文件到 <code>~/.m2/repository</code> 目录下，使用
+<code>mvn  archetype:generate -DarchetypeCatalog=local</code> 加载之
+</p>
+
+<p>
+另外，可以为 <code>maven -X</code> 参数打开 debug 来调试
+</p>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Larry</p>
-<p class="date">Created: 2018-01-26 Fri 08:54</p>
+<p class="date">Created: 2018-01-26 五 08:59</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

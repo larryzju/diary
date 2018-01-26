@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-01-25 四 16:21 -->
+<!-- 2018-01-26 Fri 08:54 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title></title>
@@ -241,6 +241,7 @@ for the JavaScript code in this tag.
 <li><a href="#orgcab2958">repositories 配置</a></li>
 <li><a href="#orge8c4e50">mirror 配置</a></li>
 <li><a href="#org78a2dbf">build classpath</a></li>
+<li><a href="#org9ecce44">archetype generate</a></li>
 </ul>
 </div>
 </nav>
@@ -354,7 +355,6 @@ pom.xml 中的核心元素包括
 </div>
 </div>
 
-
 <div id="outline-container-org78a2dbf" class="outline-2">
 <h2 id="org78a2dbf">build classpath</h2>
 <div class="outline-text-2" id="text-org78a2dbf">
@@ -373,10 +373,84 @@ pom.xml 中的核心元素包括
 </ol>
 </div>
 </div>
+<div id="outline-container-org9ecce44" class="outline-2">
+<h2 id="org9ecce44">archetype generate</h2>
+<div class="outline-text-2" id="text-org9ecce44">
+</div><div id="outline-container-org3373942" class="outline-3">
+<h3 id="说明"><a id="org3373942"></a>说明</h3>
+<div class="outline-text-3" id="text-说明">
+<p>
+使用 maven-archetype-plugin 建立一个新的工程
+</p>
+
+<pre class="example">
+mvn archetype:generate
+</pre>
+
+<p>
+默认情况会从两个位置下载 XML 文件：
+</p>
+
+<ol class="org-ol">
+<li>remote: <a href="https://repo.maven.apache.org/maven2/archetype-catalog.xml">https://repo.maven.apache.org/maven2/archetype-catalog.xml</a></li>
+<li>local: 当前目录下的 archetype-catalog.xml</li>
+</ol>
+
+<p>
+然后进入一个交互式选择模式，通过指定模板编号，填写相应的 GAV
+名称，生成一个空的项目
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7e958bf" class="outline-3">
+<h3 id="示例"><a id="org7e958bf"></a>示例</h3>
+<div class="outline-text-3" id="text-示例">
+<p>
+如果需要新建一个 scala 工程，需要以下步骤
+</p>
+
+<ol class="org-ol">
+<li><code>mvn archetype:generate</code> 进入交互式命令行（可能需要一段时间）</li>
+<li>输入 <code>scala</code> 来筛选 scala 相关的模板</li>
+<li>选择具体的编号，这里选择
+<code>7: remote -&gt; net.alchim31.maven:scala-archetype-simple</code></li>
+<li>填写 GAV 信息，按 "Y" 生成工程</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgdf7875f" class="outline-3">
+<h3 id="问题"><a id="orgdf7875f"></a>问题</h3>
+<div class="outline-text-3" id="text-问题">
+<p>
+aliyun 的 mirrors 会导致 remote 下载异常？
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6a3e5ca" class="outline-3">
+<h3 id="速度"><a id="org6a3e5ca"></a>速度</h3>
+<div class="outline-text-3" id="text-速度">
+<p>
+xml 文件有 5M 大小，网络比较慢的情况下，下载时间过长。
+</p>
+
+<p>
+可以先用 wget 下载文件到 <code>~/.m2/repository</code> 目录下，使用
+<code>mvn  archetype:generate -DarchetypeCatalog=local</code> 加载之
+</p>
+
+<p>
+另外，可以为 <code>maven -X</code> 参数打开 debug 来调试
+</p>
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Larry</p>
-<p class="date">Created: 2018-01-25 四 16:21</p>
+<p class="date">Created: 2018-01-26 Fri 08:54</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

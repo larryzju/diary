@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-01-26 Fri 08:54 -->
+<!-- 2018-01-26 五 08:59 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>debian 安装 ssserver 小记</title>
+<title></title>
 <meta name="generator" content="Org mode">
 <meta name="author" content="Larry">
 <style type="text/css">
@@ -232,63 +232,86 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<header>
-<h1 class="title">debian 安装 ssserver 小记</h1>
-</header><nav id="table-of-contents">
+<nav id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org58c4022">GFW</a></li>
-<li><a href="#org9d6d846">安装小记</a></li>
+<li><a href="#derby-tutorial-备忘">derby tutorial 备忘</a></li>
 </ul>
 </div>
 </nav>
+<div id="outline-container-orgade157f" class="outline-2">
+<h2 id="derby-tutorial-备忘"><a id="orgade157f"></a>derby tutorial 备忘</h2>
+<div class="outline-text-2" id="text-derby-tutorial-备忘">
+</div>
 
-<div id="outline-container-org58c4022" class="outline-2">
-<h2 id="org58c4022">GFW</h2>
-<div class="outline-text-2" id="text-org58c4022">
+<div id="outline-container-org7312586" class="outline-3">
+<h3 id="安装与验证"><a id="org7312586"></a>安装与验证</h3>
+<div class="outline-text-3" id="text-安装与验证">
+<ol class="org-ol">
+<li>解压</li>
+<li>设置 <code>DERBY_INSTALL</code> 环境变量，并使用 <code>./bin/setXXXX</code> 来设置
+CLASSPATH</li>
+<li>或者手动设置 CLASSPATH
+
+<ul class="org-ul">
+<li>derby.jar: 基本的 embedded 服务</li>
+<li>derbytools.jar: ij, sysinfo 工具</li>
+<li>derbynet.jar: Network Server</li>
+<li>derbyrun.jar: 服务管理</li>
+</ul></li>
+
+<li>使用 <code>java org.apache.derby.tools.sysinfo</code> 来验证</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org558dc98" class="outline-3">
+<h3 id="ij-命令"><a id="org558dc98"></a>ij 命令</h3>
+<div class="outline-text-3" id="text-ij-命令">
+<blockquote>
 <p>
-我不能阻止被束缚，但我至少要摆脱对墙的妥协
+类似于 beeline 之于 hive
 </p>
+</blockquote>
+
+<p>
+通过 <code>java org.apache.derby.tools.ij</code> 进入
+</p>
+
+<ul class="org-ul">
+<li><code>connect 'jdbc:derby:MyDbTest;create=true'</code></li>
+<li><code>run 'my_file.sql'</code></li>
+</ul>
 </div>
 </div>
 
-<div id="outline-container-org9d6d846" class="outline-2">
-<h2 id="org9d6d846">安装小记</h2>
-<div class="outline-text-2" id="text-org9d6d846">
-</div><div id="outline-container-org0da3d42" class="outline-3">
-<h3 id="org0da3d42">安装 ss 软件</h3>
-<div class="outline-text-3" id="text-org0da3d42">
-<div class="org-src-container">
-<pre class="src src-shell">apt-get install python-pip
-pip install git+https://github.com/shadowsocks/shadowsocks.git@master
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org15f33c2" class="outline-3">
-<h3 id="org15f33c2">配置服务</h3>
-<div class="outline-text-3" id="text-org15f33c2">
-</div><div id="outline-container-org5479915" class="outline-4">
-<h4 id="org5479915">命令行方式</h4>
-<div class="outline-text-4" id="text-org5479915">
-<div class="org-src-container">
-<pre class="src src-shell">sudo ssserver -p 443 -k password -m aes-256-cfb --user nobody -d start
-</pre>
-</div>
+<div id="outline-container-org8aa0e59" class="outline-3">
+<h3 id="embedded-vs-network-server"><a id="org8aa0e59"></a>embedded vs network server</h3>
+<div class="outline-text-3" id="text-embedded-vs-network-server">
+<ul class="org-ul">
+<li>嵌入模式下 derby 实例与 JDBC 运行在同一个 JVM 中，同一时刻只能有一个
+JVM 操作库</li>
+<li>network server 通过框架启动 derby 实例，并以 JDBC ( network client )
+方式处理多客户端请求</li>
+</ul>
 </div>
 </div>
 
-<div id="outline-container-orgd6efe14" class="outline-4">
-<h4 id="orgd6efe14"><span class="todo TODO">TODO</span> 配置文件方式</h4>
+<div id="outline-container-org8acbab3" class="outline-3">
+<h3 id="启动-network-server"><a id="org8acbab3"></a>启动 network server</h3>
+<div class="outline-text-3" id="text-启动-network-server">
+<ul class="org-ul">
+<li><code>bin/startNetworkServer</code> 启动监听 1527 端口</li>
+<li><code>java -jar derbyrun.jar server start</code></li>
+</ul>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Larry</p>
-<p class="date">Created: 2018-01-26 Fri 08:54</p>
+<p class="date">Created: 2018-01-26 五 08:59</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
