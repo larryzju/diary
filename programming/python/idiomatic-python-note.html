@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-08-26 六 09:14 -->
+<!-- 2018-01-26 五 09:12 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Note on "Code Like a Pythonista: Idiomatic Python"</title>
@@ -238,7 +238,7 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgb42a257">说明</a></li>
+<li><a href="#orgc6702a2">说明</a></li>
 <li><a href="#org6f13fd7">Zen of Python</a></li>
 <li><a href="#org4236098">Coding Style</a></li>
 <li><a href="#orgb069c78">Practicality vs Purity</a></li>
@@ -248,9 +248,9 @@ for the JavaScript code in this tag.
 </div>
 </nav>
 
-<div id="outline-container-orgb42a257" class="outline-2">
-<h2 id="orgb42a257">说明</h2>
-<div class="outline-text-2" id="text-orgb42a257">
+<div id="outline-container-orgc6702a2" class="outline-2">
+<h2 id="orgc6702a2">说明</h2>
+<div class="outline-text-2" id="text-orgc6702a2">
 <p>
 笔记摘录自 <a href="http://python.net/~goodger/projects/pycon/2007/idiomatic/handout.html#simple-is-better-than-complex">Code Like a Pythonista: Idiomatic Python</a>
 </p>
@@ -425,9 +425,9 @@ quotes\
 </div><div id="outline-container-org7c60d0b" class="outline-3">
 <h3 id="org7c60d0b">Swap Values</h3>
 <div class="outline-text-3" id="text-org7c60d0b">
-</div><div id="outline-container-org94b633d" class="outline-4">
-<h4 id="org94b633d">例子</h4>
-<div class="outline-text-4" id="text-org94b633d">
+</div><div id="outline-container-org7177bf8" class="outline-4">
+<h4 id="org7177bf8">例子</h4>
+<div class="outline-text-4" id="text-org7177bf8">
 <div class="org-src-container">
 <pre class="src src-python">b, a = a, b
 </pre>
@@ -435,9 +435,9 @@ quotes\
 </div>
 </div>
 
-<div id="outline-container-org5198e88" class="outline-4">
-<h4 id="org5198e88">说明</h4>
-<div class="outline-text-4" id="text-org5198e88">
+<div id="outline-container-org54a2276" class="outline-4">
+<h4 id="org54a2276">说明</h4>
+<div class="outline-text-4" id="text-org54a2276">
 <ul class="org-ul">
 <li>右侧为 Tuple 的构造形式</li>
 <li>赋值的同时进行解构（destructure），类似于 Clojure</li>
@@ -509,7 +509,7 @@ quotes\
 <div class="org-src-container">
 <pre class="src src-python"># naive
 navs = {}
-for ( portfolio, equity, position ) in data:
+for (portfolio, equity, position) in data:
     if portfolio not in navs:
 	navs[portfolio] = 0
     navs[portfolio] += position * prices[equity]
@@ -517,8 +517,8 @@ for ( portfolio, equity, position ) in data:
 
 # better
 navs = {}
-for ( position, equity, position ) in data:
-    navs[position] = (navs.get(portfolio,0) + position * prices[equity])
+for (portfolio, equity, position) in data:
+    navs[portfolio] = (navs.get(portfolio,0) + position * prices[equity])
 </pre>
 </div>
 </div>
@@ -531,9 +531,9 @@ for ( position, equity, position ) in data:
 </p>
 </div>
 
-<div id="outline-container-orge968d4a" class="outline-4">
-<h4 id="orge968d4a">示例</h4>
-<div class="outline-text-4" id="text-orge968d4a">
+<div id="outline-container-org9c4c516" class="outline-4">
+<h4 id="org9c4c516">示例</h4>
+<div class="outline-text-4" id="text-org9c4c516">
 <p>
 不好的方法是
 </p>
@@ -561,9 +561,9 @@ for ( portfolio, equity ) in data:
 </div>
 </div>
 
-<div id="outline-container-orge0be49c" class="outline-4">
-<h4 id="orge0be49c">说明</h4>
-<div class="outline-text-4" id="text-orge0be49c">
+<div id="outline-container-org5adc914" class="outline-4">
+<h4 id="org5adc914">说明</h4>
+<div class="outline-text-4" id="text-org5adc914">
 <ul class="org-ul">
 <li><code>setdefault( key, default )</code> 进行 get 或先 set 后 get</li>
 <li>只有在 key 不存在时都会设置 default</li>
@@ -576,7 +576,7 @@ for ( portfolio, equity ) in data:
 <div id="outline-container-org8614f70" class="outline-4">
 <h4 id="org8614f70">defaultdict</h4>
 <div class="outline-text-4" id="text-org8614f70">
-</div><ul class="org-ul"><li><a id="org6f96c0f"></a>说明<br><div class="outline-text-5" id="text-org6f96c0f">
+</div><ul class="org-ul"><li><a id="org94c12f8"></a>说明<br><div class="outline-text-5" id="text-org94c12f8">
 <ul class="org-ul">
 <li>在 <code>collections.defaultdict</code> 定义</li>
 <li>加入了默认的工厂函数</li>
@@ -584,7 +584,7 @@ for ( portfolio, equity ) in data:
 </ul>
 </div></li>
 
-<li><a id="org9c4c516"></a>示例<br><div class="outline-text-5" id="text-org9c4c516">
+<li><a id="org65ec0f4"></a>示例<br><div class="outline-text-5" id="text-org65ec0f4">
 <div class="org-src-container">
 <pre class="src src-python">from collctions import defaultdict
 
@@ -687,9 +687,9 @@ Python 中为 False 的值包括
 <div id="outline-container-org695dfc3" class="outline-3">
 <h3 id="org695dfc3">Default Parameter Values</h3>
 <div class="outline-text-3" id="text-org695dfc3">
-</div><div id="outline-container-orga82b207" class="outline-4">
-<h4 id="orga82b207">例子</h4>
-<div class="outline-text-4" id="text-orga82b207">
+</div><div id="outline-container-org62a47b2" class="outline-4">
+<h4 id="org62a47b2">例子</h4>
+<div class="outline-text-4" id="text-org62a47b2">
 <div class="org-src-container">
 <pre class="src src-python">def bad_append( new_item, a_list=[] ):
     a_list.append( new_item )
@@ -703,9 +703,9 @@ print bad_append( "two" )
 </div>
 
 
-<div id="outline-container-orgbbd3a7c" class="outline-4">
-<h4 id="orgbbd3a7c">说明</h4>
-<div class="outline-text-4" id="text-orgbbd3a7c">
+<div id="outline-container-org732ee21" class="outline-4">
+<h4 id="org732ee21">说明</h4>
+<div class="outline-text-4" id="text-org732ee21">
 <ul class="org-ul">
 <li>函数的参数的默认值在函数定义处被调用</li>
 <li>每次函数调用中使用的 <code>a_list</code> 都是同一个</li>
@@ -786,9 +786,9 @@ print ('Hello %(name)s, you have %(message)i messages' % locals())
 <div id="outline-container-orgb02b766" class="outline-3">
 <h3 id="orgb02b766">Generator Expression</h3>
 <div class="outline-text-3" id="text-orgb02b766">
-</div><div id="outline-container-org7177bf8" class="outline-4">
-<h4 id="org7177bf8">例子</h4>
-<div class="outline-text-4" id="text-org7177bf8">
+</div><div id="outline-container-org85884a2" class="outline-4">
+<h4 id="org85884a2">例子</h4>
+<div class="outline-text-4" id="text-org85884a2">
 <div class="org-src-container">
 <pre class="src src-python">print sum([num*num for num in range(1,101)])
 print sum( num*num for num in range(1,101))
@@ -802,9 +802,9 @@ month_codes = dict((fn(i+1), code)
 </div>
 </div>
 
-<div id="outline-container-orgc6702a2" class="outline-4">
-<h4 id="orgc6702a2">说明</h4>
-<div class="outline-text-4" id="text-orgc6702a2">
+<div id="outline-container-org6472168" class="outline-4">
+<h4 id="org6472168">说明</h4>
+<div class="outline-text-4" id="text-org6472168">
 <ul class="org-ul">
 <li>简称 genexps</li>
 <li>类似于 list comprehensions</li>
@@ -824,7 +824,7 @@ month_codes = dict((fn(i+1), code)
 <div class="outline-text-3" id="text-org5fc3dc1">
 <ul class="org-ul">
 <li><code>list.sort()</code> 在原数组上排序</li>
-<li>可以指定排序方法 cmp, 可以比较慢</li>
+<li>可以指定排序方法 cmp, 可能比较慢</li>
 <li>更好的方法是指定 key 方法</li>
 </ul>
 </div>
@@ -883,7 +883,7 @@ month_codes = dict((fn(i+1), code)
 <ul class="org-ul">
 <li><code>if __name__ == '__main__':</code> 来保存可执行语句</li>
 <li>被导入时， <code>__name__</code> 被设置成模块的名称，因此不会执行</li>
-<li>当直接运行时， <code>__name__</code> 被设置成 "<span class="underline"><span class="underline">main</span></span>"</li>
+<li>当直接运行时， <code>__name__</code> 被设置成 <code>"__main__"</code></li>
 </ul>
 </div>
 </div>
@@ -970,7 +970,7 @@ Debugging is twice as hard as writing the code in the first place. Therefore, if
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2017-08-26 六 09:14</p>
+<p class="date">Created: 2018-01-26 五 09:12</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
