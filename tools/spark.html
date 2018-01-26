@@ -4,9 +4,9 @@
 <!-- 2018-01-26 五 10:03 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>生词本</title>
+<title>spark 笔记</title>
 <meta name="generator" content="Org mode">
-<meta name="author" content="Larry">
+<meta name="author" content="Zhao WenBin">
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -233,31 +233,103 @@ for the JavaScript code in this tag.
 <body>
 <div id="content">
 <header>
-<h1 class="title">生词本</h1>
+<h1 class="title">spark 笔记</h1>
 </header><nav id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org7ee1670">差额选举&#xa0;&#xa0;&#xa0;<span class="tag"><span class="politic">politic</span></span></a></li>
+<li><a href="#org4092bb5"><b>pivot</b>: reshaping the data</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org7ee1670" class="outline-2">
-<h2 id="org7ee1670">差额选举&#xa0;&#xa0;&#xa0;<span class="tag"><span class="politic">politic</span></span></h2>
-<div class="outline-text-2" id="text-org7ee1670">
+
+<div id="outline-container-org4092bb5" class="outline-2">
+<h2 id="org4092bb5"><b>pivot</b>: reshaping the data</h2>
+<div class="outline-text-2" id="text-org4092bb5">
+</div><div id="outline-container-org68750ef" class="outline-3">
+<h3 id="org68750ef">概述</h3>
+<div class="outline-text-3" id="text-org68750ef">
 <p>
-候选人多于实际选举人，会产生淘汰。与之相对的是等额选举。
+Spark 1.6 中引入了 pivot tables 功能，转置表结构，把某列的内容作为新的列名。可以用于窄表向宽表的转换。
 </p>
 
 <p>
-我国目前采用的是差额与等额选举并存的选举机制。
+本质上是进行聚合操作： A pivot is an aggregation where one (or more) of the grouping columns has its distinct values transposed into individual columns.
 </p>
+
+<p>
+部分 RDBM 及数据分析工具都提供了类型的功能，但在语法上各有不同
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8a9ce17" class="outline-3">
+<h3 id="org8a9ce17">语法</h3>
+<div class="outline-text-3" id="text-org8a9ce17">
+<p>
+按 A，B 列进行分组，以 C 为旋转轴，对 D 列进行求和。分别用 pandas(Python), reshapes2(R) 和 spark(Scala) 表示，语法如下（作为比较，增强理解）
+</p>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">library/language</th>
+<th scope="col" class="org-left">syntax</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">pandas</td>
+<td class="org-left"><code>pivot_table(df, values='D', index=['A','B'], columns=['C'], aggfunc=np.sum)</code></td>
+</tr>
+
+<tr>
+<td class="org-left">reshape2</td>
+<td class="org-left"><code>dcast(df, A+B~C, sum)</code></td>
+</tr>
+
+<tr>
+<td class="org-left">spark</td>
+<td class="org-left"><code>df.groupBy("A","B").pivot("C").sum("D")</code></td>
+</tr>
+</tbody>
+</table>
+
+<p>
+spark 的 pivot 范式如下
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala">df.groupBy(grouping_columns)
+  .pivot(pivot_columns, [values])
+  .agg(aggregate_expressions)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org603c26d" class="outline-3">
+<h3 id="org603c26d">性能优化建议</h3>
+<div class="outline-text-3" id="text-org603c26d">
+<ol class="org-ol">
+<li>pivot 支持第二个参数，指定 pivot column，表示 pivot 列可能的取值，提高效率。如 <code>.pivot("C",Seq("small","large"))</code></li>
+<li>指定 pivot column 提前排好序</li>
+<li>spark 不支持直接对多列进行 pivot。需要对多列作 pivot 作计算时，可以用 concat 生成新列</li>
+</ol>
+</div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: Larry</p>
+<p class="author">Author: Zhao WenBin</p>
 <p class="date">Created: 2018-01-26 五 10:03</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
