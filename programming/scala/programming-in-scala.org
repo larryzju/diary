@@ -20,7 +20,132 @@
 **** 扩展控制结构
 
 以 Erlang 的消息传递方式，在 scala 中以 actor 方式来实现
-* Chapter 8 Functions and closures
+* Chapter 6. Functional Object
+
+functional object 指 objects that don't have any mutable state，
+即符合函数式的对象类型
+
+** A specification for class =Rational=
+
+以实现一个分数类 Rational 为例，要求支持四则运算（操作符重载），其状态不可变
+
+** Constructing a =Rational=
+
+- scala class 支持参数，称为 class parameter
+- scala 将 body 中非 field 和 method definition 作为主构造器
+- 简化了 java 中手写构造函数
+- 同 case class 一样，不一定要有 body
+- class parameter 仅在初始化构造中可见
+
+*** immutable object 的特点
+
+- 优势
+  + 无可变状态
+  + 不用去通过拷贝来保证引用安全
+  + 线程安全
+  + 可以作为 hash table key
+- 劣势
+  + 修改只能通过拷贝，影响性能
+
+实际使用时，需要在 mutable 和 immutable 中作出折衷
+
+** Reimplementing to =toString= method
+
+- 重载 =toString= 方法， ~override def toString = ...~
+- 类比于 python 中的 =__str__= 或 =__repr__= 函数重载
+- 是一种协议 (protocol) ，没有理由
+
+** Check preconditions
+
+- 在构造函数中对参数进行检查，并抛出异常
+- =Predef= 包中包含了多种方法，如 =require=, =assert= 等
+- =require= 抛出异常 =IllegalArgumentException=
+
+** Adding Fields
+
+如上所说，class parameter 仅用于 constructor (scala compiler will not emit fields of them)
+
+如要作为成员变量访问，需要在 body 中赋值为新的变量
+
+** Auxiliary Constructors
+
+- 除了 primary constructors 的构造器被称为 *辅助构造器*
+- 定义 =this(...)= 的多态函数
+- 但必须调用主构造器或其它构造器来完成初始化
+- scala 不同于 java，只有主构造器中可以调用 superclass constructor
+
+** Private fields and methods
+
+使用 =private= 修饰符来修饰 =val= 或 =def= 定义 [fn:1]
+
+** Defining Operators
+
+可以用 ~def + (...) {...}~ 直接重载操作符
+
+有以下特点
+- 不同于 python，python 重载的是 =__add__= 方法
+- 不用加 override 修饰符
+- 类似于 clojure/lisp，因为 scala 放宽了对标识符的限制
+- 需要使用多态，来满足对不同类型的操作
+- =x+y= 等价为 =x.+(y)=
+- 重载操作符不会修改算子的优先级顺序
+
+** Identifiers in Scala
+
+scala 中标识符命名相对自由
+
+1. 普通变量
+   - =alnum + $= ， =$= 由 scala 编译器使用
+   - 用 CamelCase 命名，避免使用下划线风格（与解析有关）
+   - 类和 Trait 应该以大写字母开头
+   - Constant 以在写字母开头
+2. operator identifier，如 =+=, =:::=, =#=, =:->=
+3. mixed identifier，如 =unary_+= 或 =myvar_=
+4. literal identifier，用于使用一些保留字，如 =Thread.`yield`()=
+
+
+** Method Overloading
+
+- Overload: each name is been used by multiple methods
+- 静态编译时展开（被选择）
+- 当编译器因为类型模糊无法选择，报 ambiguous reference error
+
+** Implicit Conversion
+
+通过操作符重载可以让 Rational 对象与整数进行计算 =r*2= ，但如果反过来 =2*r= 则不能用。
+因为 Int 为标准类型，我们无法在应用中重载标准库的方法。
+
+Scala 的解决方法是: Create an implicit conversions that automatically converts
+integers to rational numbers when need.
+
+在 *当前 scope* 中定义一句 ~implicit def intToRational(x:Int) = new Rational(x)~
+编译器将会对 Int 进行隐式转换。
+
+参见 [[Chapter 21. Implicit Conversions and Parameters][Chapter21]] 关于隐式转换的详细说明
+
+*** TODO 问题
+
+1. 隐式转换的机制是什么
+2. 命名是否有要求？
+3. 开销有多大
+4. 是否会出现匹配错误的问题？
+
+
+** A word of caution
+
+- Bear in mind that with power comes resposibility
+- 谨慎使用操作符重载和隐式转换，避免造成额外的心智负担
+- 在追求简洁性的同时，保证可读性和易理解性
+- Conciseness will often be a big part of that readability, but you can take conciseness too far.
+
+** Conclusion
+
+- 本章的主要内容有：类参数、辅助构造器、方法重载、隐式转换
+- [[Chapter 21. Implicit Conversions and Parameters][Chapter 21]] 中提供了有关隐式转换的详细说明
+- [[Chapter 30. Object Equality][Chapter 30]] 提到两个特殊的、需要被重载的方法 =equals= 和 =hashCode=
+
+
+* Chapter 8. Functions and closures
 
 ** scala functions vs java functions
 
@@ -133,3 +258,9 @@ Cause scala's closures capture variables themseleves, not the value to which var
 
 
 
+* TODO Chapter 21. Implicit Conversions and Parameters
+* TODO Chapter 30. Object Equality
+
+* Footnotes
+
+[fn:1] 是否有 =protect= 修饰符？
