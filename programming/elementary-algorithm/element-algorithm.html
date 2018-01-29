@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-01-29 Mon 17:10 -->
+<!-- 2018-01-29 Mon 17:11 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>OS64</title>
+<title>note on "elementary algorithm"</title>
 <meta name="generator" content="Org mode">
-<meta name="author" content="Larry">
+<meta name="author" content="Zhao WenBin">
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -233,148 +233,103 @@ for the JavaScript code in this tag.
 <body>
 <div id="content">
 <header>
-<h1 class="title">OS64</h1>
+<h1 class="title">note on "elementary algorithm"</h1>
 </header><nav id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org2cda0d6">计算机启动过程</a></li>
-<li><a href="#org03e043b">MBR</a></li>
-<li><a href="#org55e0a8d"><span class="todo TODO">TODO</span> 硬盘结构</a></li>
-<li><a href="#org05b7444">FAT12</a></li>
+<li><a href="#org85008c4">Part I</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org2cda0d6" class="outline-2">
-<h2 id="org2cda0d6">计算机启动过程</h2>
-<div class="outline-text-2" id="text-org2cda0d6">
-</div><div id="outline-container-org6b540f2" class="outline-3">
-<h3 id="org6b540f2">基本流程</h3>
-<div class="outline-text-3" id="text-org6b540f2">
+<div id="outline-container-org85008c4" class="outline-2">
+<h2 id="org85008c4">Part I</h2>
+<div class="outline-text-2" id="text-org85008c4">
+</div><div id="outline-container-org6218c8e" class="outline-3">
+<h3 id="org6218c8e">Preface</h3>
+<div class="outline-text-3" id="text-org6218c8e">
+</div><div id="outline-container-orgf75f7ea" class="outline-4">
+<h4 id="orgf75f7ea">为什么需要算法</h4>
+<div class="outline-text-4" id="text-orgf75f7ea">
+</div><ul class="org-ul"><li><a id="org9c12e65"></a>选取最小可用的 ID 算法<br><ul class="org-ul"><li><a id="orgdfc95d7"></a>暴力求解<br><div class="outline-text-6" id="text-orgdfc95d7">
 <p>
-计算机的整个启动过程分成四个阶段：
+依次用 <code>1..N+1</code> 检查是否被使用过，复杂度为 O(n<sup>2</sup>)
 </p>
+</div></li>
 
-<ol class="org-ol">
-<li>BIOS, 被固化在芯片里的程序
-<ol class="org-ol">
-<li>硬件自检 （ Power-On Self-Test ）</li>
-<li>交出控制权给下一阶段的启动程序</li>
-</ol></li>
-<li>MBR 引导</li>
-<li>硬盘启动
+<li><a id="org1e61af8"></a>优化一<br><div class="outline-text-6" id="text-org1e61af8">
 <ul class="org-ul">
-<li>bootloader</li>
-<li>VBR（激活分区的第一个扇区）</li>
-<li>扩展分区机制</li>
-</ul></li>
-<li>操作系统</li>
-</ol>
-</div>
-</div>
-
-
-<div id="outline-container-org5cc14d2" class="outline-3">
-<h3 id="org5cc14d2">细节</h3>
-<div class="outline-text-3" id="text-org5cc14d2">
-</div><div id="outline-container-org7cc5755" class="outline-4">
-<h4 id="org7cc5755">MBR</h4>
-<div class="outline-text-4" id="text-org7cc5755">
-<p>
-512 字节构成，分为三部分：
-</p>
-
-<dl class="org-dl">
-<dt><code>[1,416]</code></dt><dd>指令</dd>
-<dt><code>[447,510]</code></dt><dd>分区表，64字节，四个主分区</dd>
-<dt><code>{0x55,0xAA}</code></dt><dd>MBR 标识</dd>
-</dl>
-</div>
-</div>
-
-<div id="outline-container-org0877424" class="outline-4">
-<h4 id="org0877424"><span class="todo TODO">TODO</span> 扇区</h4>
-</div>
-
-<div id="outline-container-orga39c8c0" class="outline-4">
-<h4 id="orga39c8c0"><span class="todo TODO">TODO</span> GPT</h4>
-</div>
-
-<div id="outline-container-org38af739" class="outline-4">
-<h4 id="org38af739"><span class="todo TODO">TODO</span> 0x7c00</h4>
-</div>
-</div>
-
-
-<div id="outline-container-org888f031" class="outline-3">
-<h3 id="org888f031">资料</h3>
-<div class="outline-text-3" id="text-org888f031">
-<ul class="org-ul">
-<li>阮一峰<a href="http://www.ruanyifeng.com/blog/2013/02/booting.html">计算机是如何启动的？</a></li>
+<li>基于事实如下事实：如果 N 个元素中，存在 v &gt; N，则一定有 e &lt;= N 为可用的 ID；否则返回 N+1</li>
+<li>用一个 bool array 表示每个元素是否大于 N，再检查是否存在一个元素未被设标识，复杂度为 O(n)</li>
+<li>空间复杂度也为 O(n)，可以用位视图来减少内存使用</li>
 </ul>
-</div>
-</div>
-</div>
+</div></li>
 
-<div id="outline-container-org03e043b" class="outline-2">
-<h2 id="org03e043b">MBR</h2>
-<div class="outline-text-2" id="text-org03e043b">
+
+<li><a id="orgc0ad2be"></a>优化二：分治<br><div class="outline-text-6" id="text-orgc0ad2be">
 <p>
-MBR 位于硬盘的 0 柱面、0 磁头、1 扇区<a href="#org6984483">。参考“柱面、磁头、扇区”</a>
+时间复杂度为 O(n) ( <code>O(n) + O(n/2) + O(n/4) + ... = O(2n)</code> )
 </p>
 
-<p>
-MBR 分为三个部分：
-</p>
 
-<pre class="example">
-struct mbr {
-  struct mbr_boot_proc proc;
-  struct mbr_dpt;
-  char end_flag[2]; // 0x55, 0xAA
-}
-</pre>
+<figure>
+<img src="p1.i2.png" alt="p1.i2.png">
 
-<p>
-DPT 共 64 个字节，以 16 个字节为分区表项
-</p>
+</figure>
 
 <div class="org-src-container">
-<pre class="src src-c">struct mbr_dpt_item {
-  unsigned char active_flag;  // 0x80
-  unsigned char starting_head;
-  unsigned short starting_sector : 6;
-  unsigned short startting_cylinder : 10;
-  unsigned char ending_head;
-  unsigned short ending_sector : 6;
-  unsigned short ending_cyclinder : 10;
-  unsigned short relative_sectors;
-  unsigned short total_sectors;
-};
+<pre class="src src-python">def minfree(A):
+    return search(A,0,len(A))
 
-struct mbr_dpt {
-  struct mbr_dpt_item pinfo[4];
-};
+def span(lst,pred):
+    take, drop = [], []
+    for e in lst:
+	if pred(e):
+	    take.append(e)
+	else:
+	    drop.append(e)
+    return take, drop
+
+def search(A,l,u):
+    if not A:
+	return l
+
+    m = (u + l) // 2
+    X,Y = span(A, lambda x: x &lt;= m)
+    if len(X) == m - l + 1:
+	return search(Y,m+1,u)
+    else:
+	return search(X,l,m+1)
+
+print(minfree([]))
+print(minfree([0]))
+print(minfree([1]))
+print(minfree([0,1,3]))
+print(minfree(range(0,10000)))
+print(minfree(range(0,1000000)))
 </pre>
 </div>
 </div>
-</div>
 
-<div id="outline-container-org55e0a8d" class="outline-2">
-<h2 id="org55e0a8d"><span class="todo TODO">TODO</span> 硬盘结构</h2>
-<div class="outline-text-2" id="text-org55e0a8d">
-</div><div id="outline-container-org6984483" class="outline-3">
-<h3 id="org6984483">柱面、磁头、扇区</h3>
+
+
+<ul class="org-ul"><li><a id="org066e049"></a>Expression and Performance<br><div class="outline-text-7" id="text-org066e049">
+<p>
+分治方法以二分法进行处理，需要进行 O(lg(n)) 次递归（占用相应次数的栈）
+</p>
+
+<p>
+函数式语言中可以通过尾递归优化消除不必要的栈使用，在 C 中可以按如下的方式来实现
+</p>
+</div></li></ul></li></ul></li></ul>
 </div>
 </div>
-<div id="outline-container-org05b7444" class="outline-2">
-<h2 id="org05b7444">FAT12</h2>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: Larry</p>
-<p class="date">Created: 2018-01-29 Mon 17:10</p>
+<p class="author">Author: Zhao WenBin</p>
+<p class="date">Created: 2018-01-29 Mon 17:11</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-01-26 五 10:03 -->
+<!-- 2018-01-29 Mon 17:10 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>spark 笔记</title>
@@ -238,18 +238,18 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org4092bb5"><b>pivot</b>: reshaping the data</a></li>
+<li><a href="#org6fef731"><b>pivot</b>: reshaping the data</a></li>
 </ul>
 </div>
 </nav>
 
 
-<div id="outline-container-org4092bb5" class="outline-2">
-<h2 id="org4092bb5"><b>pivot</b>: reshaping the data</h2>
-<div class="outline-text-2" id="text-org4092bb5">
-</div><div id="outline-container-org68750ef" class="outline-3">
-<h3 id="org68750ef">概述</h3>
-<div class="outline-text-3" id="text-org68750ef">
+<div id="outline-container-org6fef731" class="outline-2">
+<h2 id="org6fef731"><b>pivot</b>: reshaping the data</h2>
+<div class="outline-text-2" id="text-org6fef731">
+</div><div id="outline-container-org996ec59" class="outline-3">
+<h3 id="org996ec59">概述</h3>
+<div class="outline-text-3" id="text-org996ec59">
 <p>
 Spark 1.6 中引入了 pivot tables 功能，转置表结构，把某列的内容作为新的列名。可以用于窄表向宽表的转换。
 </p>
@@ -264,9 +264,9 @@ Spark 1.6 中引入了 pivot tables 功能，转置表结构，把某列的内�
 </div>
 </div>
 
-<div id="outline-container-org8a9ce17" class="outline-3">
-<h3 id="org8a9ce17">语法</h3>
-<div class="outline-text-3" id="text-org8a9ce17">
+<div id="outline-container-org846dea6" class="outline-3">
+<h3 id="org846dea6">语法</h3>
+<div class="outline-text-3" id="text-org846dea6">
 <p>
 按 A，B 列进行分组，以 C 为旋转轴，对 D 列进行求和。分别用 pandas(Python), reshapes2(R) 和 spark(Scala) 表示，语法如下（作为比较，增强理解）
 </p>
@@ -316,9 +316,9 @@ spark 的 pivot 范式如下
 </div>
 </div>
 
-<div id="outline-container-org603c26d" class="outline-3">
-<h3 id="org603c26d">性能优化建议</h3>
-<div class="outline-text-3" id="text-org603c26d">
+<div id="outline-container-orgf7d2c30" class="outline-3">
+<h3 id="orgf7d2c30">性能优化建议</h3>
+<div class="outline-text-3" id="text-orgf7d2c30">
 <ol class="org-ol">
 <li>pivot 支持第二个参数，指定 pivot column，表示 pivot 列可能的取值，提高效率。如 <code>.pivot("C",Seq("small","large"))</code></li>
 <li>指定 pivot column 提前排好序</li>
@@ -330,7 +330,7 @@ spark 的 pivot 范式如下
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2018-01-26 五 10:03</p>
+<p class="date">Created: 2018-01-29 Mon 17:10</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-01-26 五 09:12 -->
+<!-- 2018-01-29 Mon 17:10 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Note on "Code Like a Pythonista: Idiomatic Python"</title>
@@ -435,9 +435,9 @@ quotes\
 </div>
 </div>
 
-<div id="outline-container-org54a2276" class="outline-4">
-<h4 id="org54a2276">说明</h4>
-<div class="outline-text-4" id="text-org54a2276">
+<div id="outline-container-orgbd295d4" class="outline-4">
+<h4 id="orgbd295d4">说明</h4>
+<div class="outline-text-4" id="text-orgbd295d4">
 <ul class="org-ul">
 <li>右侧为 Tuple 的构造形式</li>
 <li>赋值的同时进行解构（destructure），类似于 Clojure</li>
@@ -561,9 +561,9 @@ for ( portfolio, equity ) in data:
 </div>
 </div>
 
-<div id="outline-container-org5adc914" class="outline-4">
-<h4 id="org5adc914">说明</h4>
-<div class="outline-text-4" id="text-org5adc914">
+<div id="outline-container-org896732c" class="outline-4">
+<h4 id="org896732c">说明</h4>
+<div class="outline-text-4" id="text-org896732c">
 <ul class="org-ul">
 <li><code>setdefault( key, default )</code> 进行 get 或先 set 后 get</li>
 <li>只有在 key 不存在时都会设置 default</li>
@@ -576,7 +576,7 @@ for ( portfolio, equity ) in data:
 <div id="outline-container-org8614f70" class="outline-4">
 <h4 id="org8614f70">defaultdict</h4>
 <div class="outline-text-4" id="text-org8614f70">
-</div><ul class="org-ul"><li><a id="org94c12f8"></a>说明<br><div class="outline-text-5" id="text-org94c12f8">
+</div><ul class="org-ul"><li><a id="org0572f86"></a>说明<br><div class="outline-text-5" id="text-org0572f86">
 <ul class="org-ul">
 <li>在 <code>collections.defaultdict</code> 定义</li>
 <li>加入了默认的工厂函数</li>
@@ -584,7 +584,7 @@ for ( portfolio, equity ) in data:
 </ul>
 </div></li>
 
-<li><a id="org65ec0f4"></a>示例<br><div class="outline-text-5" id="text-org65ec0f4">
+<li><a id="orga769d63"></a>示例<br><div class="outline-text-5" id="text-orga769d63">
 <div class="org-src-container">
 <pre class="src src-python">from collctions import defaultdict
 
@@ -687,9 +687,9 @@ Python 中为 False 的值包括
 <div id="outline-container-org695dfc3" class="outline-3">
 <h3 id="org695dfc3">Default Parameter Values</h3>
 <div class="outline-text-3" id="text-org695dfc3">
-</div><div id="outline-container-org62a47b2" class="outline-4">
-<h4 id="org62a47b2">例子</h4>
-<div class="outline-text-4" id="text-org62a47b2">
+</div><div id="outline-container-orgfbfed0e" class="outline-4">
+<h4 id="orgfbfed0e">例子</h4>
+<div class="outline-text-4" id="text-orgfbfed0e">
 <div class="org-src-container">
 <pre class="src src-python">def bad_append( new_item, a_list=[] ):
     a_list.append( new_item )
@@ -703,9 +703,9 @@ print bad_append( "two" )
 </div>
 
 
-<div id="outline-container-org732ee21" class="outline-4">
-<h4 id="org732ee21">说明</h4>
-<div class="outline-text-4" id="text-org732ee21">
+<div id="outline-container-orgd6e24e9" class="outline-4">
+<h4 id="orgd6e24e9">说明</h4>
+<div class="outline-text-4" id="text-orgd6e24e9">
 <ul class="org-ul">
 <li>函数的参数的默认值在函数定义处被调用</li>
 <li>每次函数调用中使用的 <code>a_list</code> 都是同一个</li>
@@ -786,9 +786,9 @@ print ('Hello %(name)s, you have %(message)i messages' % locals())
 <div id="outline-container-orgb02b766" class="outline-3">
 <h3 id="orgb02b766">Generator Expression</h3>
 <div class="outline-text-3" id="text-orgb02b766">
-</div><div id="outline-container-org85884a2" class="outline-4">
-<h4 id="org85884a2">例子</h4>
-<div class="outline-text-4" id="text-org85884a2">
+</div><div id="outline-container-orged42984" class="outline-4">
+<h4 id="orged42984">例子</h4>
+<div class="outline-text-4" id="text-orged42984">
 <div class="org-src-container">
 <pre class="src src-python">print sum([num*num for num in range(1,101)])
 print sum( num*num for num in range(1,101))
@@ -802,9 +802,9 @@ month_codes = dict((fn(i+1), code)
 </div>
 </div>
 
-<div id="outline-container-org6472168" class="outline-4">
-<h4 id="org6472168">说明</h4>
-<div class="outline-text-4" id="text-org6472168">
+<div id="outline-container-org40bd803" class="outline-4">
+<h4 id="org40bd803">说明</h4>
+<div class="outline-text-4" id="text-org40bd803">
 <ul class="org-ul">
 <li>简称 genexps</li>
 <li>类似于 list comprehensions</li>
@@ -970,7 +970,7 @@ Debugging is twice as hard as writing the code in the first place. Therefore, if
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2018-01-26 五 09:12</p>
+<p class="date">Created: 2018-01-29 Mon 17:10</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

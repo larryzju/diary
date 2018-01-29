@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-01-29 一 15:31 -->
+<!-- 2018-01-29 Mon 17:10 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>note on "programming in scala 2ed"</title>
@@ -239,10 +239,10 @@ for the JavaScript code in this tag.
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#orgf9de343">Chapter 1</a></li>
-<li><a href="#org9a0cc4e">Chapter 6. Functional Object</a></li>
-<li><a href="#orgc9c0e31">Chapter 8. Functions and closures</a></li>
-<li><a href="#org652a72a"><span class="todo TODO">TODO</span> Chapter 21. Implicit Conversions and Parameters</a></li>
-<li><a href="#orgbd208b9"><span class="todo TODO">TODO</span> Chapter 30. Object Equality</a></li>
+<li><a href="#org4487700">Chapter 6. Functional Object</a></li>
+<li><a href="#org6964a1d">Chapter 8. Functions and closures</a></li>
+<li><a href="#orge47075d"><span class="todo TODO">TODO</span> Chapter 21. Implicit Conversions and Parameters</a></li>
+<li><a href="#org209a7b7"><span class="todo TODO">TODO</span> Chapter 30. Object Equality</a></li>
 </ul>
 </div>
 </nav>
@@ -281,27 +281,27 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org9a0cc4e" class="outline-2">
-<h2 id="org9a0cc4e">Chapter 6. Functional Object</h2>
-<div class="outline-text-2" id="text-org9a0cc4e">
+<div id="outline-container-org4487700" class="outline-2">
+<h2 id="org4487700">Chapter 6. Functional Object</h2>
+<div class="outline-text-2" id="text-org4487700">
 <p>
 functional object 指 objects that don't have any mutable state，
 即符合函数式的对象类型
 </p>
 </div>
 
-<div id="outline-container-orgfa36f3c" class="outline-3">
-<h3 id="orgfa36f3c">A specification for class <code>Rational</code></h3>
-<div class="outline-text-3" id="text-orgfa36f3c">
+<div id="outline-container-org3cc1223" class="outline-3">
+<h3 id="org3cc1223">A specification for class <code>Rational</code></h3>
+<div class="outline-text-3" id="text-org3cc1223">
 <p>
 以实现一个分数类 Rational 为例，要求支持四则运算（操作符重载），其状态不可变
 </p>
 </div>
 </div>
 
-<div id="outline-container-orga5db4a8" class="outline-3">
-<h3 id="orga5db4a8">Constructing a <code>Rational</code></h3>
-<div class="outline-text-3" id="text-orga5db4a8">
+<div id="outline-container-org928b85d" class="outline-3">
+<h3 id="org928b85d">Constructing a <code>Rational</code></h3>
+<div class="outline-text-3" id="text-org928b85d">
 <ul class="org-ul">
 <li>scala class 支持参数，称为 class parameter</li>
 <li>scala 将 body 中非 field 和 method definition 作为主构造器</li>
@@ -311,9 +311,9 @@ functional object 指 objects that don't have any mutable state，
 </ul>
 </div>
 
-<div id="outline-container-org6121332" class="outline-4">
-<h4 id="org6121332">immutable object 的特点</h4>
-<div class="outline-text-4" id="text-org6121332">
+<div id="outline-container-org1d2ba67" class="outline-4">
+<h4 id="org1d2ba67">immutable object 的特点</h4>
+<div class="outline-text-4" id="text-org1d2ba67">
 <ul class="org-ul">
 <li>优势
 <ul class="org-ul">
@@ -335,9 +335,9 @@ functional object 指 objects that don't have any mutable state，
 </div>
 </div>
 
-<div id="outline-container-org3aa88c7" class="outline-3">
-<h3 id="org3aa88c7">Reimplementing to <code>toString</code> method</h3>
-<div class="outline-text-3" id="text-org3aa88c7">
+<div id="outline-container-orge3b9b8d" class="outline-3">
+<h3 id="orge3b9b8d">Reimplementing to <code>toString</code> method</h3>
+<div class="outline-text-3" id="text-orge3b9b8d">
 <ul class="org-ul">
 <li>重载 <code>toString</code> 方法， <code>override def toString = ...</code></li>
 <li>类比于 python 中的 <code>__str__</code> 或 <code>__repr__</code> 函数重载</li>
@@ -346,9 +346,9 @@ functional object 指 objects that don't have any mutable state，
 </div>
 </div>
 
-<div id="outline-container-org6618be3" class="outline-3">
-<h3 id="org6618be3">Check preconditions</h3>
-<div class="outline-text-3" id="text-org6618be3">
+<div id="outline-container-orgb8e4089" class="outline-3">
+<h3 id="orgb8e4089">Check preconditions</h3>
+<div class="outline-text-3" id="text-orgb8e4089">
 <ul class="org-ul">
 <li>在构造函数中对参数进行检查，并抛出异常</li>
 <li><code>Predef</code> 包中包含了多种方法，如 <code>require</code>, <code>assert</code> 等</li>
@@ -357,9 +357,9 @@ functional object 指 objects that don't have any mutable state，
 </div>
 </div>
 
-<div id="outline-container-org3ae65e3" class="outline-3">
-<h3 id="org3ae65e3">Adding Fields</h3>
-<div class="outline-text-3" id="text-org3ae65e3">
+<div id="outline-container-orgfd972af" class="outline-3">
+<h3 id="orgfd972af">Adding Fields</h3>
+<div class="outline-text-3" id="text-orgfd972af">
 <p>
 如上所说，class parameter 仅用于 constructor (scala compiler will not emit fields of them)
 </p>
@@ -370,9 +370,9 @@ functional object 指 objects that don't have any mutable state，
 </div>
 </div>
 
-<div id="outline-container-org7a06399" class="outline-3">
-<h3 id="org7a06399">Auxiliary Constructors</h3>
-<div class="outline-text-3" id="text-org7a06399">
+<div id="outline-container-orgf9fb820" class="outline-3">
+<h3 id="orgf9fb820">Auxiliary Constructors</h3>
+<div class="outline-text-3" id="text-orgf9fb820">
 <ul class="org-ul">
 <li>除了 primary constructors 的构造器被称为 <b>辅助构造器</b></li>
 <li>定义 <code>this(...)</code> 的多态函数</li>
@@ -382,18 +382,18 @@ functional object 指 objects that don't have any mutable state，
 </div>
 </div>
 
-<div id="outline-container-orgc093c17" class="outline-3">
-<h3 id="orgc093c17">Private fields and methods</h3>
-<div class="outline-text-3" id="text-orgc093c17">
+<div id="outline-container-org41c1f5f" class="outline-3">
+<h3 id="org41c1f5f">Private fields and methods</h3>
+<div class="outline-text-3" id="text-org41c1f5f">
 <p>
 使用 <code>private</code> 修饰符来修饰 <code>val</code> 或 <code>def</code> 定义 <sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgfcf9b0c" class="outline-3">
-<h3 id="orgfcf9b0c">Defining Operators</h3>
-<div class="outline-text-3" id="text-orgfcf9b0c">
+<div id="outline-container-orgd8e370c" class="outline-3">
+<h3 id="orgd8e370c">Defining Operators</h3>
+<div class="outline-text-3" id="text-orgd8e370c">
 <p>
 可以用 <code>def + (...) {...}</code> 直接重载操作符
 </p>
@@ -412,9 +412,9 @@ functional object 指 objects that don't have any mutable state，
 </div>
 </div>
 
-<div id="outline-container-org6f20d38" class="outline-3">
-<h3 id="org6f20d38">Identifiers in Scala</h3>
-<div class="outline-text-3" id="text-org6f20d38">
+<div id="outline-container-org2e7c0c3" class="outline-3">
+<h3 id="org2e7c0c3">Identifiers in Scala</h3>
+<div class="outline-text-3" id="text-org2e7c0c3">
 <p>
 scala 中标识符命名相对自由
 </p>
@@ -435,9 +435,9 @@ scala 中标识符命名相对自由
 </div>
 
 
-<div id="outline-container-orgc0e0508" class="outline-3">
-<h3 id="orgc0e0508">Method Overloading</h3>
-<div class="outline-text-3" id="text-orgc0e0508">
+<div id="outline-container-orgc6c0ad2" class="outline-3">
+<h3 id="orgc6c0ad2">Method Overloading</h3>
+<div class="outline-text-3" id="text-orgc6c0ad2">
 <ul class="org-ul">
 <li>Overload: each name is been used by multiple methods</li>
 <li>静态编译时展开（被选择）</li>
@@ -446,9 +446,9 @@ scala 中标识符命名相对自由
 </div>
 </div>
 
-<div id="outline-container-org125c4b5" class="outline-3">
-<h3 id="org125c4b5">Implicit Conversion</h3>
-<div class="outline-text-3" id="text-org125c4b5">
+<div id="outline-container-org82955a0" class="outline-3">
+<h3 id="org82955a0">Implicit Conversion</h3>
+<div class="outline-text-3" id="text-org82955a0">
 <p>
 通过操作符重载可以让 Rational 对象与整数进行计算 <code>r*2</code> ，但如果反过来 <code>2*r</code> 则不能用。
 因为 Int 为标准类型，我们无法在应用中重载标准库的方法。
@@ -465,13 +465,13 @@ integers to rational numbers when need.
 </p>
 
 <p>
-参见 <a href="#org652a72a">Chapter21</a> 关于隐式转换的详细说明
+参见 <a href="#orge47075d">Chapter21</a> 关于隐式转换的详细说明
 </p>
 </div>
 
-<div id="outline-container-org1b6354e" class="outline-4">
-<h4 id="org1b6354e"><span class="todo TODO">TODO</span> 问题</h4>
-<div class="outline-text-4" id="text-org1b6354e">
+<div id="outline-container-org7e96074" class="outline-4">
+<h4 id="org7e96074"><span class="todo TODO">TODO</span> 问题</h4>
+<div class="outline-text-4" id="text-org7e96074">
 <ol class="org-ol">
 <li>隐式转换的机制是什么</li>
 <li>命名是否有要求？</li>
@@ -483,9 +483,9 @@ integers to rational numbers when need.
 </div>
 
 
-<div id="outline-container-org79f2ed6" class="outline-3">
-<h3 id="org79f2ed6">A word of caution</h3>
-<div class="outline-text-3" id="text-org79f2ed6">
+<div id="outline-container-orge001e76" class="outline-3">
+<h3 id="orge001e76">A word of caution</h3>
+<div class="outline-text-3" id="text-orge001e76">
 <ul class="org-ul">
 <li>Bear in mind that with power comes resposibility</li>
 <li>谨慎使用操作符重载和隐式转换，避免造成额外的心智负担</li>
@@ -495,22 +495,22 @@ integers to rational numbers when need.
 </div>
 </div>
 
-<div id="outline-container-org0479e04" class="outline-3">
-<h3 id="org0479e04">Conclusion</h3>
-<div class="outline-text-3" id="text-org0479e04">
+<div id="outline-container-org6a91789" class="outline-3">
+<h3 id="org6a91789">Conclusion</h3>
+<div class="outline-text-3" id="text-org6a91789">
 <ul class="org-ul">
 <li>本章的主要内容有：类参数、辅助构造器、方法重载、隐式转换</li>
-<li><a href="#org652a72a">Chapter 21</a> 中提供了有关隐式转换的详细说明</li>
-<li><a href="#orgbd208b9">Chapter 30</a> 提到两个特殊的、需要被重载的方法 <code>equals</code> 和 <code>hashCode</code></li>
+<li><a href="#orge47075d">Chapter 21</a> 中提供了有关隐式转换的详细说明</li>
+<li><a href="#org209a7b7">Chapter 30</a> 提到两个特殊的、需要被重载的方法 <code>equals</code> 和 <code>hashCode</code></li>
 </ul>
 </div>
 </div>
 </div>
 
 
-<div id="outline-container-orgc9c0e31" class="outline-2">
-<h2 id="orgc9c0e31">Chapter 8. Functions and closures</h2>
-<div class="outline-text-2" id="text-orgc9c0e31">
+<div id="outline-container-org6964a1d" class="outline-2">
+<h2 id="org6964a1d">Chapter 8. Functions and closures</h2>
+<div class="outline-text-2" id="text-org6964a1d">
 </div><div id="outline-container-org98635df" class="outline-3">
 <h3 id="org98635df">scala functions vs java functions</h3>
 <div class="outline-text-3" id="text-org98635df">
@@ -714,11 +714,11 @@ Cause scala's closures capture variables themseleves, not the value to which var
 
 
 
-<div id="outline-container-org652a72a" class="outline-2">
-<h2 id="org652a72a"><span class="todo TODO">TODO</span> Chapter 21. Implicit Conversions and Parameters</h2>
+<div id="outline-container-orge47075d" class="outline-2">
+<h2 id="orge47075d"><span class="todo TODO">TODO</span> Chapter 21. Implicit Conversions and Parameters</h2>
 </div>
-<div id="outline-container-orgbd208b9" class="outline-2">
-<h2 id="orgbd208b9"><span class="todo TODO">TODO</span> Chapter 30. Object Equality</h2>
+<div id="outline-container-org209a7b7" class="outline-2">
+<h2 id="org209a7b7"><span class="todo TODO">TODO</span> Chapter 30. Object Equality</h2>
 </div>
 <div id="footnotes">
 <h2 class="footnotes">Footnotes: </h2>
@@ -733,7 +733,7 @@ Cause scala's closures capture variables themseleves, not the value to which var
 </div></div>
 <div id="postamble" class="status">
 <p class="author">Author: zhaowenbin</p>
-<p class="date">Created: 2018-01-29 一 15:31</p>
+<p class="date">Created: 2018-01-29 Mon 17:10</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
