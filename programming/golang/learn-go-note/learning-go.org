@@ -24,7 +24,7 @@
 
 * 基础
 
-** TODO hello world
+** hello world
 
 #+BEGIN_SRC go
 package main
@@ -38,8 +38,7 @@ func main() {
 
 - 可执行程序包名必须是 =main=
 - 可执行程序的入口是 =main.main()=
-- main 的参数由 sys 传入?（类似 python）
-
+- main 的参数由 os.Args 传入（第一个参数为程序名）
 
 ** 编译执行
 
@@ -66,13 +65,12 @@ var a int
 
 *** 声明与初始化可以写在一起
 
-如 ~var a = 15; a := 15~ 等价于 ~a = 15~
-
-~:=~ 是赋值语句，只能用在函数内部
+- 如 ~var a; a = 15~ 等价于 ~var a = 15~
+- 在函数内部，还可以写作 ~a := 15~
 
 *** 多个变量申明
 
-多变量申明可以放于一起，类似的还有 =const= 和 =import=，如
+多变量申明可以放于一起，类似的还有 =const= 和 =import= ，如
 
 #+BEGIN_SRC go
 var (
