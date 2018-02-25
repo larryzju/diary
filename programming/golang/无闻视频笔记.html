@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-02-25 日 11:09 -->
+<!-- 2018-02-25 日 12:16 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>无闻 Go 视频教程笔记</title>
@@ -241,6 +241,8 @@ for the JavaScript code in this tag.
 <li><a href="#org6404d29">Go 开发环境搭建</a></li>
 <li><a href="#org64bead5">Go 基础知识</a></li>
 <li><a href="#org994be23">类型与变量</a></li>
+<li><a href="#orgee16d8d">常量与运算符</a></li>
+<li><a href="#orgaa37ead">常用库</a></li>
 <li><a href="#org69a4827">问题</a></li>
 <li><a href="#org7b160c0">外部链接</a></li>
 </ul>
@@ -416,6 +418,7 @@ go 通过环境变量来设置参数，常见的有
 <li>用 <code>type</code> 来定义别名</li>
 <li>使用单独的类型，使逻辑更清晰（也可以定义不同方法）</li>
 <li><code>type</code> 可以同 import, var, const 使用圆括号一次定义多个</li>
+<li>别名类型之间需要显式的转换（但 uint8 与 byte, int32 与 rune 之间不需要）</li>
 </ul>
 </div>
 </div>
@@ -437,7 +440,7 @@ math 模块中有 MaxXX 与 MinXX，表示了不同类型的取值范围
 <li><code>=</code> 进行赋值，可以对多个变量赋值</li>
 <li>声明与赋值可以放在一起进行，这时编译器会自动推导类型，因此类型标注可以省略</li>
 <li>在函数内可以用 <code>:=</code> 语法来进行声明与赋值</li>
-<li>函数内不可以用 <code>var()</code> 定义多个变量</li>
+<li>函数内可以用 <code>var()</code> 定义多个变量 （但不建议使用）</li>
 <li>全局不能使用 <code>:=</code> 语法</li>
 </ul>
 </div>
@@ -455,13 +458,87 @@ math 模块中有 MaxXX 与 MinXX，表示了不同类型的取值范围
 <div id="outline-container-orgd015b3f" class="outline-3">
 <h3 id="orgd015b3f">类型转换</h3>
 <div class="outline-text-3" id="text-orgd015b3f">
-<p>
-只能在兼容的类型之间进行
-</p>
+<ul class="org-ul">
+<li>只能在兼容的类型之间进行</li>
+</ul>
 </div>
 </div>
 </div>
 
+<div id="outline-container-orgee16d8d" class="outline-2">
+<h2 id="orgee16d8d">常量与运算符</h2>
+<div class="outline-text-2" id="text-orgee16d8d">
+</div><div id="outline-container-org7acb5af" class="outline-3">
+<h3 id="org7acb5af">常量</h3>
+<div class="outline-text-3" id="text-org7acb5af">
+<ul class="org-ul">
+<li>常量的值在编译时确定</li>
+<li>常量定义时，右值为常量（字面）或常量表达式（使用内置函数进行计算）</li>
+<li>如果未指定右值，则使用上行表达式</li>
+<li>通过 const 组与 iota 计数器模拟枚举类型（iota 在组内，每定义一个常量增大一）</li>
+<li>常量一般命名成全大写（加下划线）或骆驼写法</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org4e45ab3" class="outline-3">
+<h3 id="org4e45ab3">范式</h3>
+<div class="outline-text-3" id="text-org4e45ab3">
+<div class="org-src-container">
+<pre class="src src-go">const (
+	Readble = 1 &lt;&lt; iota
+	Writable
+	Executable
+)
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgcac2ad5" class="outline-3">
+<h3 id="orgcac2ad5">运算符</h3>
+<div class="outline-text-3" id="text-orgcac2ad5">
+<p>
+Go 中的运算符统一从左向右结合
+</p>
+
+<p>
+下面举例说明
+</p>
+
+<ul class="org-ul">
+<li>一元取反 <code>^</code></li>
+<li><code>&lt;&lt;</code>, <code>&gt;&gt;</code> 左右移</li>
+<li>二元位运算符 <code>&amp;</code> <code>|</code> <code>^</code> <code>&amp;^</code> (AND NOT, bit clean，反向取 mask 作用，可以将 <code>a&amp;^b</code> 看作 <code>a&amp;(^b)</code>)</li>
+<li><code>&lt;-</code> channel 专用</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgaa37ead" class="outline-2">
+<h2 id="orgaa37ead">常用库</h2>
+<div class="outline-text-2" id="text-orgaa37ead">
+</div><div id="outline-container-org1fd6933" class="outline-3">
+<h3 id="org1fd6933">strconv</h3>
+<div class="outline-text-3" id="text-org1fd6933">
+<ul class="org-ul">
+<li>Itoa 转换数字到字符串</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org60696ca" class="outline-3">
+<h3 id="org60696ca">math</h3>
+<div class="outline-text-3" id="text-org60696ca">
+<ul class="org-ul">
+<li>MaxXX, MinXX 记录类型的取值范围</li>
+</ul>
+</div>
+</div>
+</div>
 
 <div id="outline-container-org69a4827" class="outline-2">
 <h2 id="org69a4827">问题</h2>
@@ -494,7 +571,7 @@ math 模块中有 MaxXX 与 MinXX，表示了不同类型的取值范围
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2018-02-25 日 11:09</p>
+<p class="date">Created: 2018-02-25 日 12:16</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
