@@ -263,6 +263,44 @@ f := [...][3]int{
 - 扩容将生成新的底层数组，涉及数据的拷贝，如果已经确定大小，可以预先放大 cap 容量
 - =copy(dst, src []type)= 对索引进行拷贝
 - 使用 ~c := a[:]~ 来生成完全的索引
+- 指向同一个底层数组的的 slices 会相互影响，应小心 append 对底层数组的修改
+
+* Map
+
+类比于 python 中的 dict，要求 key 类型支持 ~==~ 和 ~!=~ 比较操作
+
+** 创建方式
+
+1. ~var m map[int]string = map[int]string{}~
+2. ~m := make(map[int]string)~
+3. ~m := map[int]string{1:"a"}~
+
+** 访问与操作
+
+- 通过 ~m[k] = x~ 来赋值
+- 通过 ~a := m[k]~ 来取值，如果 k 不存在，返回空值
+- 为了判定空值，有第二个返回值 ~a, ok := m[k]~ ，键不存在时，ok 返回 false
+- map 的空值为 nil，要特别小心复杂类型的初始化，如 ~map[int]map[int]string~ 或 ~[]map[int]string~ 等
+
+** for range
+
+- 对于 slice，返回 index, ~for i, v := range slice~
+- 对于 map, 返回 k, v, ~for k, v := range map~
+- 注意 v 值是拷贝类型，在循环内修改 v 的内容是无效的
+
+** 对 map 按 key 排序
+
+思路是将 map 的 key 拷贝到相同长度的 slice 中，再用 sort.Ints 对 slice 排序（索引）
+
+** 交换 key 和 value
+
+#+BEGIN_SRC go
+m := map[int]string{1:"a", 2:"b", 3:"c", 4:"d", 5:"e"}
+n := map[string]int{}
+for k, v := range m {
+    n[v] = k
+}
+#+END_SRC
 
 * 常用库
 
