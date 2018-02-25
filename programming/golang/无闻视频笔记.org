@@ -138,8 +138,18 @@ const (
         Writable
         Executable
 )
-#+END_SRC
 
+const (
+        B float64 = 1 << (iota * 10)
+        KB
+        MB
+        GB
+        TB
+        PB
+        ZB
+        EB
+)
+#+END_SRC
 
 ** 运算符
 
@@ -152,6 +162,54 @@ Go 中的运算符统一从左向右结合
 - 二元位运算符 =&= =|= =^= =&^= (AND NOT, bit clean，反向取 mask 作用，可以将 =a&^b= 看作 =a&(^b)=)
 - =<-= channel 专用
 
+* 控制语句
+
+** 指针
+
+- 不支持指针运算
+- 没有 =->= 操作符
+- 默认指针空值为 =nil=
+- 用 =&= 取址，用 =*= 解引用
+- =++=, =--= 为语句（statement），而非表达式（expression）
+
+
+** 判断 if
+
+- 条件不用加括号
+- 支持一个初始化表达式（值作用域限定在 if 块中）
+- ={= 必须与 if 放在同一行
+
+** 循环语句
+
+1. ~for {}~
+2. ~for a < 3 {}~
+3. ~for i := 0; i < 10; i++~
+
+** switch 语句
+
+- 可以用任何类型和表达式作分支
+- 支持初始化表达式（同 if）
+- 不用为每个 case 作 break，相反应该加入 fallthrough 如果不需要跳出
+
+例子如下
+
+#+BEGIN_SRC go
+switch a {
+  case 0: fmt.Println("0")
+  case 1: fmt.Println("1")
+  default: fmt.Println("other")
+}
+
+switch {
+  case a < 0: fmt.Println("invalid")
+  case a < 10: fmt.Println("good")
+  default: fmt.Println("too large")
+}
+#+END_SRC
+
+** 跳转语句（goto, continue, break)
+
+continue 和 break 均支持标签（label），将跳转到与标签同级的循环中
 
 * 常用库
 
@@ -172,6 +230,7 @@ Go 中的运算符统一从左向右结合
 ** TODO =[10]int= 与 =[]int= 的区别
 
 ** TODO =[...]int{1,2,3}= 与 =[]int{1,2,3}= 的区别
+** TODO ~for i := 0; i < len(a); i++~ 中 =len(a)= 是否会造成额外的开销
 
 * 外部链接
 
