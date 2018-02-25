@@ -251,7 +251,6 @@ f := [...][3]int{
 }
 #+END_SRC
 
-
 * 切片 Slice
 
 - 切片是对底层数组结构的引用类型（可以建立对同一数组的多个引用，也可以对切片建立新的引用切片）
@@ -301,6 +300,87 @@ for k, v := range m {
     n[v] = k
 }
 #+END_SRC
+
+* 函数 function
+
+** 特点
+
+- 不支持嵌套、重载和默认参数
+- 无需声明原型
+- 不定长度变参（例如 ~func(a ...int){}~ ）
+- 多返回值
+- 命名返回值参数（例如 ~func (a, b int, others ...int) (res int)~ ）
+- 匿名函数
+- 闭包
+
+** 值类型与引用类型
+
+函数的参数分为值类型与引用类型，在函数内对引用类型进行修改，会影响到外界
+
+常见的修改外界参数类型有：
+
+1. 指针
+2. map
+3. slice
+4. chan
+
+** defer 与 panic/recover
+
+Go 中没有 Java 一样的异常机制，使用 panic/recover 原语来处理错误
+
+panic 可以在任何地方触发，而 recover 只有在 defer 中才能调用
+
+defer 相当于 OO 中的析构函数，有以下特点：
+- 按调用的相反顺序执行
+- 常用于资源清理和 panic recover
+- 调用时生成闭包，保存当前变量
+- 即使发生严重错误 (panic) 也会执行
+
+panic/recover 的例子如下
+
+#+BEGIN_SRC go
+func main() {
+        a()
+        b()
+        c()
+}
+
+func a() {
+        fmt.Println("a")
+}
+
+func b() {
+        defer func() {
+                if err := recover(); err != nil {
+                        fmt.Println("recover in b")
+                }
+        }()
+        panic("panic in b")
+}
+
+func c() {
+        fmt.Println("c")
+}
+#+END_SRC
+
+** 闭包
+
+#+BEGIN_SRC go
+func main() {
+        var fs = [4]func(){}
+
+        for i := 0; i < 4; i++ {
+                defer fmt.Println("defer i = ", i) // 0,1,2,3 ?
+                defer func() { fmt.Println("defer_closure i = ", i) }() // 为 4
+                fs[i] = func() { fmt.Println("closure i = ", i) }
+        }
+
+        for _, f := range fs {
+                f()  // 首先打印，闭包中引用 i 对象，值为 4
+        }
+}
+#+END_SRC
+
 
 * 常用库
 
