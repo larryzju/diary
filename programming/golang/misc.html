@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-01-29 Mon 17:18 -->
+<!-- 2018-02-25 日 09:19 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title></title>
+<title>杂记</title>
 <meta name="generator" content="Org mode">
 <meta name="author" content="Larry">
 <style type="text/css">
@@ -232,393 +232,159 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<nav id="table-of-contents">
+<header>
+<h1 class="title">杂记</h1>
+</header><nav id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgbb40eb3">基本功能</a></li>
-<li><a href="#orgb422edf">配置</a></li>
-<li><a href="#org001cfd5">文档结构</a></li>
-<li><a href="#org8166d5c">Tables</a></li>
-<li><a href="#orgd7d0e6c">Hyperlinks</a></li>
-<li><a href="#org964f7a4"><span class="underline">TODO</span> Items</a></li>
+<li><a href="#orga4bd3f3">Rob Pike, Less is More</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgbb40eb3" class="outline-2">
-<h2 id="orgbb40eb3">基本功能</h2>
-<div class="outline-text-2" id="text-orgbb40eb3">
-<ul class="org-ul">
-<li>keeping notes</li>
-<li>maintaining TODO lists</li>
-<li>planning</li>
-<li>authoring and pulishing</li>
-<li>literal programming</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgb422edf" class="outline-2">
-<h2 id="orgb422edf">配置</h2>
-<div class="outline-text-2" id="text-orgb422edf">
-</div><div id="outline-container-org8822fa6" class="outline-3">
-<h3 id="org8822fa6">快捷键</h3>
-<div class="outline-text-3" id="text-org8822fa6">
-<div class="org-src-container">
-<pre class="src src-emacs-lisp">;; The following lines are always needed.  Choose your own keys.
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-cb" 'org-iswitchb)
-</pre>
-</div>
-</div>
-</div>
-</div>
-<div id="outline-container-org001cfd5" class="outline-2">
-<h2 id="org001cfd5">文档结构</h2>
-<div class="outline-text-2" id="text-org001cfd5">
-</div><div id="outline-container-org50f7698" class="outline-3">
-<h3 id="org50f7698">outlines</h3>
-<div class="outline-text-3" id="text-org50f7698">
+
+
+<div id="outline-container-orga4bd3f3" class="outline-2">
+<h2 id="orga4bd3f3">Rob Pike, Less is More</h2>
+<div class="outline-text-2" id="text-orga4bd3f3">
+</div><div id="outline-container-orgaf48e03" class="outline-3">
+<h3 id="orgaf48e03">Go 的设计承继</h3>
+<div class="outline-text-3" id="text-orgaf48e03">
 <p>
-将文档以层次结构进行组织，适用于笔记记录。从整体结构上把握文档内容。
+Go 以 C 为原型，以 C++ 为目标设计，最终却与两者大相径庭
 </p>
 
 <p>
-核心是 <code>org-cycle</code> ，快捷键是 <code>TAB</code>
-</p>
-</div>
-</div>
-
-<div id="outline-container-org4741145" class="outline-3">
-<h3 id="org4741145">headlines</h3>
-<div class="outline-text-3" id="text-org4741145">
-</div><div id="outline-container-org58f5460" class="outline-4">
-<h4 id="org58f5460"><span class="todo TODO">TODO</span> org-footnote-section</h4>
-<div class="outline-text-4" id="text-org58f5460">
-<p>
-可以在 <code>org-footnote-section</code> 后进行脚注。其后的章节将被忽略
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgc41b1b3" class="outline-4">
-<h4 id="orgc41b1b3"><span class="todo TODO">TODO</span> 避免过多的 star</h4>
-</div>
-</div>
-
-<div id="outline-container-org150e9c0" class="outline-3">
-<h3 id="org150e9c0">visibility cycling</h3>
-<div class="outline-text-3" id="text-org150e9c0">
-</div><div id="outline-container-orgd99f0f4" class="outline-4">
-<h4 id="orgd99f0f4">TAB</h4>
-<div class="outline-text-4" id="text-orgd99f0f4">
-<p>
-substree cycling:
-</p>
-
-<ul class="org-ul">
-<li>FOLDED</li>
-<li>CHILDREN</li>
-<li>SUBTREE</li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-org634ff1e" class="outline-4">
-<h4 id="org634ff1e">S-TAB</h4>
-<div class="outline-text-4" id="text-org634ff1e">
-<p>
-Global cycling
-</p>
-
-<ul class="org-ul">
-<li>OVERVIEW</li>
-<li>CONTENTS</li>
-<li>SHOW ALL</li>
-</ul>
-</div>
-</div>
-
-
-<div id="outline-container-orgf61dc52" class="outline-4">
-<h4 id="orgf61dc52">默认启动显示方式</h4>
-<div class="outline-text-4" id="text-orgf61dc52">
-<p>
-在文件开头指定： <code>overview</code>, <code>content</code>, <code>showall</code>
-</p>
-
-<pre class="example">
-#+STARTUP: content
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org38d3bce" class="outline-3">
-<h3 id="org38d3bce">motion</h3>
-<div class="outline-text-3" id="text-org38d3bce">
-<table>
-
-
-<colgroup>
-<col  class="org-left">
-
-<col  class="org-left">
-</colgroup>
-<tbody>
-<tr>
-<td class="org-left"><code>C-c C-n</code></td>
-<td class="org-left">Next heading</td>
-</tr>
-
-<tr>
-<td class="org-left"><code>C-c C-p</code></td>
-<td class="org-left">Previous heading</td>
-</tr>
-
-<tr>
-<td class="org-left"><code>C-c C-f</code></td>
-<td class="org-left">Next heading same level</td>
-</tr>
-
-<tr>
-<td class="org-left"><code>C-c C-b</code></td>
-<td class="org-left">Previous heading same level</td>
-</tr>
-
-<tr>
-<td class="org-left"><code>C-c C-u</code></td>
-<td class="org-left">Backward to higher level heading</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<div id="outline-container-org404a49c" class="outline-3">
-<h3 id="org404a49c">Structure editing</h3>
-<div class="outline-text-3" id="text-org404a49c">
-<table>
-
-
-<colgroup>
-<col  class="org-left">
-
-<col  class="org-left">
-</colgroup>
-<tbody>
-<tr>
-<td class="org-left"><code>M-RET</code></td>
-<td class="org-left">插入新的 heading（同级）</td>
-</tr>
-
-<tr>
-<td class="org-left"><code>M-S-RET</code></td>
-<td class="org-left">同上，设为 TODO</td>
-</tr>
-
-<tr>
-<td class="org-left"><code>M-left/right</code></td>
-<td class="org-left">Promote/demote heading</td>
-</tr>
-
-<tr>
-<td class="org-left"><code>M-S-left/right</code></td>
-<td class="org-left">Promote/demote current subtree</td>
-</tr>
-
-<tr>
-<td class="org-left"><code>M-S-up/down</code></td>
-<td class="org-left">move subtree up/down</td>
-</tr>
-
-<tr>
-<td class="org-left"><code>C-c C-w</code></td>
-<td class="org-left">Refile to a difference location</td>
-</tr>
-
-<tr>
-<td class="org-left"><code>C-x n s/w</code></td>
-<td class="org-left">narrow buffer to current subtree</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<div id="outline-container-orga8c6e6b" class="outline-3">
-<h3 id="orga8c6e6b">Sparse trees</h3>
-<div class="outline-text-3" id="text-orga8c6e6b">
-<p>
-折叠全部内容，除了匹配的章节
-</p>
-
-<p>
-例如可以用 TODO, tags, properties 过滤
-</p>
-
-<table>
-
-
-<colgroup>
-<col  class="org-left">
-
-<col  class="org-left">
-</colgroup>
-<tbody>
-<tr>
-<td class="org-left"><code>C-c /</code></td>
-<td class="org-left">select a sparse-tree</td>
-</tr>
-
-<tr>
-<td class="org-left"><code>C-c / r</code></td>
-<td class="org-left">match is also highlighted</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<div id="outline-container-org9291e9b" class="outline-3">
-<h3 id="org9291e9b">Plain Lists</h3>
-<div class="outline-text-3" id="text-org9291e9b">
-<p>
-即 items，用过提供额外的层级表示
-</p>
-
-<ul class="org-ul">
-<li>Unordered list: <code>-</code>, <code>+</code>, <code>*</code></li>
-<li>Ordered list: <code>1.</code>, <code>1)</code></li>
-<li>Description list: <code>::</code>, 分割 description 与 term</li>
-</ul>
-
-<p>
-缩进很重要（类似于 python），不一致的缩进或者两个空行表示结束
-</p>
-
-<dl class="org-dl">
-<dt><code>TAB</code></dt><dd>折叠</dd>
-<dt><code>M-RET</code></dt><dd>插入同级别， <code>C-u M-RET</code> 插入 heading</dd>
-<dt><code>M-S-RET</code></dt><dd>插入 checkbox</dd>
-<dt><code>M-S-up/down</code></dt><dd>上下移动</dd>
-<dt><code>M-left/right</code></dt><dd>减少/增大缩进</dd>
-<dt><code>M-S-left/right</code></dt><dd>同上，包括 subitems</dd>
-<dt><code>C-c C-c</code></dt><dd>切换 checkbox 状态</dd>
-<dt><code>C-c -</code></dt><dd>切换不同的 bullets 标识</dd>
-</dl>
-</div>
-</div>
-</div>
-<div id="outline-container-org8166d5c" class="outline-2">
-<h2 id="org8166d5c">Tables</h2>
-<div class="outline-text-2" id="text-org8166d5c">
-<p>
-表以 <code>"|"</code> 开头，如下所示
-</p>
-
-<pre class="example">
-|Name |Phone|Age| 
-|-------+-------+-----|
-|Peter| 1234| 17|
-|Anna | 4321| 25|
-</pre>
-
-<ul class="org-ul">
-<li>通过 <code>TAB</code> 或 <code>RET</code> 或 <code>C-c C-c</code> 来对齐</li>
-<li><code>‘|-’</code> 开头表示这是一条水平线,或者 <code>C-c RET</code></li>
-</ul>
-
-<p>
-常用快捷键有：
-</p>
-<ul class="org-ul">
-<li>Creation and convertion
-<dl class="org-dl">
-<dt><code>C-c |</code></dt><dd>convert the active region to table</dd>
-</dl></li>
-<li>Re-aligning the field montion
-<dl class="org-dl">
-<dt><code>C-c C-c</code></dt><dd>Re-align the table</dd>
-<dt><code>TAB</code></dt><dd>Re-align, and move to the next field</dd>
-<dt><code>S-TAB</code></dt><dd>Re-align, and move to previous field</dd>
-<dt><code>RET</code></dt><dd>Re-align, and move down the next row</dd>
-</dl></li>
-<li>Column and row editing
-<dl class="org-dl">
-<dt><code>M-left/Right</code></dt><dd>向左向右移动一列</dd>
-<dt><code>M-S-left</code></dt><dd>删除当前列</dd>
-<dt><code>M-S-right</code></dt><dd>在左边插入一列</dd>
-<dt><code>M-up/down</code></dt><dd>向上向下一行</dd>
-<dt><code>M-S-up</code></dt><dd>删除当前行</dd>
-<dt><code>M-S-down</code></dt><dd>插入一个新行</dd>
-<dt><code>C-c -</code></dt><dd>插入水平线</dd>
-<dt><code>C-c RET</code></dt><dd>同上，并移动光标向下一行</dd>
-<dt><code>C-c ^</code></dt><dd>排序</dd>
-</dl></li>
-</ul>
-</div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-<div id="outline-container-orgd7d0e6c" class="outline-2">
-<h2 id="orgd7d0e6c">Hyperlinks</h2>
-<div class="outline-text-2" id="text-orgd7d0e6c">
-</div><div id="outline-container-org3086139" class="outline-3">
-<h3 id="org3086139">link format</h3>
-<div class="outline-text-3" id="text-org3086139">
-<p>
-有两种写法：
+作者认为
 </p>
 
 <ol class="org-ol">
-<li><code>[[link][description]]</code></li>
-<li><code>[[link]]</code></li>
+<li>编写软件时应设计一门更适合解决这个问题的编程语言</li>
+<li>C++ 编译慢，而标准委员会试图加入更多的新特性</li>
+<li>简化 C++ 可能比加入新特性是更大的成就</li>
 </ol>
 
 <p>
-通过 <code>C-c C-l</code> 来交互编辑链接地址
+作者于 80 年代设计 Newsqueak 语言，Go 的一些设计由中而来
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgc1d91f6" class="outline-3">
-<h3 id="orgc1d91f6"><span class="todo TODO">TODO</span> Internal links</h3>
-<div class="outline-text-3" id="text-orgc1d91f6">
-<p>
-链接地址有几种：
-</p>
-
+<div id="outline-container-org8b6bf5e" class="outline-3">
+<h3 id="org8b6bf5e">Go 语言特点</h3>
+<div class="outline-text-3" id="text-org8b6bf5e">
 <ul class="org-ul">
-<li>URL</li>
-<li><code>[[#my-custome-id]]</code> 链接到 entry with CUSTOM-ID</li>
+<li>GC</li>
+<li>无头文件</li>
+<li>明确的依赖，无循环依赖</li>
+<li>大写可见性</li>
+<li>任何类型都有方法</li>
+<li>没有子类继承</li>
+<li>没有类型转换</li>
+<li>接口的隐式实现</li>
+<li>嵌入机制</li>
+<li><code>i++</code> 是 statement，而不是 expression</li>
+<li>没有指针运算</li>
+<li>初始化为零值</li>
+<li>没有 <code>this</code></li>
+<li>分段的堆栈</li>
+<li>没有 static 等修饰符</li>
+<li>没有异常</li>
 </ul>
 </div>
 </div>
+
+<div id="outline-container-orgc6016d4" class="outline-3">
+<h3 id="orgc6016d4">Go vs C++/Java</h3>
+<div class="outline-text-3" id="text-orgc6016d4">
+<p>
+C++/Java 的核心是类的层次和分类，而 Go 的核心是 composition（组合）
+</p>
+
+<blockquote>
+<p>
+大软件需要确定的理念，但强依赖管理、整洁的接口、抽象化以及优秀的文档工具这些更为重要！不幸的是，这些没一个是C++的强项（不过这点Java明显就好得多）。
+</p>
+</blockquote>
+
+<p>
+Go 中有一些特有的机制
+</p>
+
+<ul class="org-ul">
+<li>slice</li>
+<li>map</li>
+<li>composite literal</li>
+<li>top level of file</li>
+<li>reflection</li>
+<li>gc</li>
+<li>concurrent</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org1c3d61e" class="outline-3">
+<h3 id="org1c3d61e">泛型</h3>
+<div class="outline-text-3" id="text-org1c3d61e">
+<p>
+关于 Go 的泛型问题，作者认为这可以通过类型系统来完成，而不需要额外的多态或原语
+</p>
+</div>
 </div>
 
 
+<div id="outline-container-org62f410e" class="outline-3">
+<h3 id="org62f410e">为什么Go从头到尾都是以C++为目标来设计的却无法吸引到C++程序员？</h3>
+<div class="outline-text-3" id="text-org62f410e">
+<blockquote>
+<p>
+Joke认为，这可能是因为Go和C++的设计理念相差甚大吧。
+</p>
 
+<p>
+C++希望所有解决方案都能很容易得到/使用。我在C++11 FAQ（常见问题）上看到了这句话：
+</p>
 
+<p>
+  C++能够优美地、灵活地并且零成本地表现出抽象事物的能力，相比专门编写的代码要高效很多。
+这种思考方式和Go的运转方式并不一样 。零成本不是目标，至少零CPU成本不是。Go的目标是解放程序员！
+</p>
 
-<div id="outline-container-org964f7a4" class="outline-2">
-<h2 id="org964f7a4"><span class="underline">TODO</span> Items</h2>
+<p>
+Go并没有包罗万象，你不要期待它什么都有，你也无法精确地控制每一个细节。例如：Go没有RAII，但是你可以使用一个垃圾清理器做替代，虽然你甚至无法使用内存释放函数。
+</p>
+
+<p>
+你可以从Go中得到很多易于理解但是强大的工具集来组合出问题的解决方案。它跟别的语言比起来也许没有那么快或者精致，但肯定写起来更简单、读起来更容易，也更易于理解，也许还更安全。
+</p>
+
+<p>
+从另一个角度看，Go肯定更加简化：
+</p>
+
+<p>
+Python和Ruby程序员转向Go是因为他们不需要学更多的关心却可以获得更好的性能，甚至还可以使用并发特性。
+</p>
+
+<p>
+C++程序员不愿意转向Go是因为他们竭尽全力只为了对自己的程序的完全掌控，并不希望这样改变。对于他们，软件并不仅是完成工作，而是做好工作。
+</p>
+
+<p>
+现在的问题在于，如果Go成功了，会颠覆他们的世界观。
+</p>
+
+<p>
+而且我们应该在一开始就注意到：对C++11新特性感兴趣的人是不会对一个功能如此简洁的语言感兴趣的，即使它能完成更多的任务
+</p>
+</blockquote>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Larry</p>
-<p class="date">Created: 2018-01-29 Mon 17:18</p>
+<p class="date">Created: 2018-02-25 日 09:19</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
