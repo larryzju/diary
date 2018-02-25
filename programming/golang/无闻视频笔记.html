@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-02-25 日 13:03 -->
+<!-- 2018-02-25 日 17:29 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>无闻 Go 视频教程笔记</title>
@@ -243,6 +243,9 @@ for the JavaScript code in this tag.
 <li><a href="#org994be23">类型与变量</a></li>
 <li><a href="#orgee16d8d">常量与运算符</a></li>
 <li><a href="#org1e701b3">控制语句</a></li>
+<li><a href="#org433ed9f">数组 Array</a></li>
+<li><a href="#org9d02fa9">切片 Slice</a></li>
+<li><a href="#org7bbdbdd">Map</a></li>
 <li><a href="#orgaa37ead">常用库</a></li>
 <li><a href="#org69a4827">问题</a></li>
 <li><a href="#org7b160c0">外部链接</a></li>
@@ -424,9 +427,9 @@ go 通过环境变量来设置参数，常见的有
 </div>
 </div>
 
-<div id="outline-container-org60696ca" class="outline-3">
-<h3 id="org60696ca">math</h3>
-<div class="outline-text-3" id="text-org60696ca">
+<div id="outline-container-orgcf03d52" class="outline-3">
+<h3 id="orgcf03d52">math</h3>
+<div class="outline-text-3" id="text-orgcf03d52">
 <p>
 math 模块中有 MaxXX 与 MinXX，表示了不同类型的取值范围
 </p>
@@ -607,6 +610,153 @@ continue 和 break 均支持标签（label），将跳转到与标签同级的�
 </div>
 </div>
 
+<div id="outline-container-org433ed9f" class="outline-2">
+<h2 id="org433ed9f">数组 Array</h2>
+<div class="outline-text-2" id="text-org433ed9f">
+<p>
+Go 的数组类型由元素类型（type）和长度（n）构成。不同于 C 或其它语言，Go 的数组是值类型，意味着做为参数传递时，会进行拷贝。
+</p>
+
+<p>
+同类型数组对象，可以用 <code>==</code> 和 <code>!=</code> 进行比较，可以用 <code>=</code> 进行赋值（拷贝）
+</p>
+</div>
+
+<div id="outline-container-orgc12ef15" class="outline-3">
+<h3 id="orgc12ef15">数组指针</h3>
+<div class="outline-text-3" id="text-orgc12ef15">
+<ul class="org-ul">
+<li>可以用 <code>new([10]int)</code> 来创建一个指向数组的指针</li>
+<li>也可以引用数组的地址，生成一个数组的指针： <code>var p *[100]int = &amp;a</code></li>
+<li>无论数组本身，还是数组指针，都可以使用下标来索引内容，如 <code>p[99]</code> 或 <code>a[10]</code></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org904b318" class="outline-3">
+<h3 id="org904b318">指针的数组</h3>
+<div class="outline-text-3" id="text-org904b318">
+<p>
+表示数组的内容为指针
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go">a := 10
+b := 10
+c := [...]*int{&amp;a, &amp;b}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org51bd704" class="outline-3">
+<h3 id="org51bd704">字面量</h3>
+<div class="outline-text-3" id="text-org51bd704">
+<div class="org-src-container">
+<pre class="src src-go">a := [2]int{1}
+b := [2]int{1,2}
+c := [20]int{19:1}
+d := [...]int{99:1}
+e := [2][3]int{
+  {1:1},
+  {2:2},
+}
+// 多维数组第一维可以自动推导
+f := [...][3]int{
+  {1:1},
+  {2:2},
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org9d02fa9" class="outline-2">
+<h2 id="org9d02fa9">切片 Slice</h2>
+<div class="outline-text-2" id="text-org9d02fa9">
+<ul class="org-ul">
+<li>切片是对底层数组结构的引用类型（可以建立对同一数组的多个引用，也可以对切片建立新的引用切片）</li>
+<li>做为变长数组的替代方案，关联到底层数组的全部或局部</li>
+<li>对 slice 作切片（reslice），以 slice 切片为准，不能超出 cap 索引，否则会越界错误</li>
+<li>除了类型和长度外，还有 cap 属性</li>
+<li>通过 <code>make([]type, len, cap)</code> 来创建一个 slice</li>
+<li><code>append(slice, e1, e2, ..., en)</code> 向 slice 添加元素，如果需要将扩容（一倍）</li>
+<li>扩容将生成新的底层数组，涉及数据的拷贝，如果已经确定大小，可以预先放大 cap 容量</li>
+<li><code>copy(dst, src []type)</code> 对索引进行拷贝</li>
+<li>使用 <code>c := a[:]</code> 来生成完全的索引</li>
+<li>指向同一个底层数组的的 slices 会相互影响，应小心 append 对底层数组的修改</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org7bbdbdd" class="outline-2">
+<h2 id="org7bbdbdd">Map</h2>
+<div class="outline-text-2" id="text-org7bbdbdd">
+<p>
+类比于 python 中的 dict，要求 key 类型支持 <code>==</code> 和 <code>!=</code> 比较操作
+</p>
+</div>
+
+<div id="outline-container-org40c8be1" class="outline-3">
+<h3 id="org40c8be1">创建方式</h3>
+<div class="outline-text-3" id="text-org40c8be1">
+<ol class="org-ol">
+<li><code>var m map[int]string = map[int]string{}</code></li>
+<li><code>m := make(map[int]string)</code></li>
+<li><code>m := map[int]string{1:"a"}</code></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org47eae22" class="outline-3">
+<h3 id="org47eae22">访问与操作</h3>
+<div class="outline-text-3" id="text-org47eae22">
+<ul class="org-ul">
+<li>通过 <code>m[k] = x</code> 来赋值</li>
+<li>通过 <code>a := m[k]</code> 来取值，如果 k 不存在，返回空值</li>
+<li>为了判定空值，有第二个返回值 <code>a, ok := m[k]</code> ，键不存在时，ok 返回 false</li>
+<li>map 的空值为 nil，要特别小心复杂类型的初始化，如 <code>map[int]map[int]string</code> 或 <code>[]map[int]string</code> 等</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orga2d2905" class="outline-3">
+<h3 id="orga2d2905">for range</h3>
+<div class="outline-text-3" id="text-orga2d2905">
+<ul class="org-ul">
+<li>对于 slice，返回 index, <code>for i, v := range slice</code></li>
+<li>对于 map, 返回 k, v, <code>for k, v := range map</code></li>
+<li>注意 v 值是拷贝类型，在循环内修改 v 的内容是无效的</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb1cd3c3" class="outline-3">
+<h3 id="orgb1cd3c3">对 map 按 key 排序</h3>
+<div class="outline-text-3" id="text-orgb1cd3c3">
+<p>
+思路是将 map 的 key 拷贝到相同长度的 slice 中，再用 sort.Ints 对 slice 排序（索引）
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9ca9a02" class="outline-3">
+<h3 id="org9ca9a02">交换 key 和 value</h3>
+<div class="outline-text-3" id="text-org9ca9a02">
+<div class="org-src-container">
+<pre class="src src-go">m := map[int]string{1:"a", 2:"b", 3:"c", 4:"d", 5:"e"}
+n := map[string]int{}
+for k, v := range m {
+    n[v] = k
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
 <div id="outline-container-orgaa37ead" class="outline-2">
 <h2 id="orgaa37ead">常用库</h2>
 <div class="outline-text-2" id="text-orgaa37ead">
@@ -619,9 +769,9 @@ continue 和 break 均支持标签（label），将跳转到与标签同级的�
 </div>
 </div>
 
-<div id="outline-container-orgf472f10" class="outline-3">
-<h3 id="orgf472f10">math</h3>
-<div class="outline-text-3" id="text-orgf472f10">
+<div id="outline-container-orgea40bd2" class="outline-3">
+<h3 id="orgea40bd2">math</h3>
+<div class="outline-text-3" id="text-orgea40bd2">
 <ul class="org-ul">
 <li>MaxXX, MinXX 记录类型的取值范围</li>
 </ul>
@@ -663,7 +813,7 @@ continue 和 break 均支持标签（label），将跳转到与标签同级的�
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2018-02-25 日 13:03</p>
+<p class="date">Created: 2018-02-25 日 17:29</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
