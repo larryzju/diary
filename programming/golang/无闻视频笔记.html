@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-02-25 日 12:16 -->
+<!-- 2018-02-25 日 13:03 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>无闻 Go 视频教程笔记</title>
@@ -242,6 +242,7 @@ for the JavaScript code in this tag.
 <li><a href="#org64bead5">Go 基础知识</a></li>
 <li><a href="#org994be23">类型与变量</a></li>
 <li><a href="#orgee16d8d">常量与运算符</a></li>
+<li><a href="#org1e701b3">控制语句</a></li>
 <li><a href="#orgaa37ead">常用库</a></li>
 <li><a href="#org69a4827">问题</a></li>
 <li><a href="#org7b160c0">外部链接</a></li>
@@ -423,9 +424,9 @@ go 通过环境变量来设置参数，常见的有
 </div>
 </div>
 
-<div id="outline-container-orga9b28b6" class="outline-3">
-<h3 id="orga9b28b6">math</h3>
-<div class="outline-text-3" id="text-orga9b28b6">
+<div id="outline-container-org60696ca" class="outline-3">
+<h3 id="org60696ca">math</h3>
+<div class="outline-text-3" id="text-org60696ca">
 <p>
 math 模块中有 MaxXX 与 MinXX，表示了不同类型的取值范围
 </p>
@@ -490,11 +491,21 @@ math 模块中有 MaxXX 与 MinXX，表示了不同类型的取值范围
 	Writable
 	Executable
 )
+
+const (
+	B float64 = 1 &lt;&lt; (iota * 10)
+	KB
+	MB
+	GB
+	TB
+	PB
+	ZB
+	EB
+)
 </pre>
 </div>
 </div>
 </div>
-
 
 <div id="outline-container-orgcac2ad5" class="outline-3">
 <h3 id="orgcac2ad5">运算符</h3>
@@ -517,6 +528,84 @@ Go 中的运算符统一从左向右结合
 </div>
 </div>
 
+<div id="outline-container-org1e701b3" class="outline-2">
+<h2 id="org1e701b3">控制语句</h2>
+<div class="outline-text-2" id="text-org1e701b3">
+</div><div id="outline-container-org8943d37" class="outline-3">
+<h3 id="org8943d37">指针</h3>
+<div class="outline-text-3" id="text-org8943d37">
+<ul class="org-ul">
+<li>不支持指针运算</li>
+<li>没有 <code>-&gt;</code> 操作符</li>
+<li>默认指针空值为 <code>nil</code></li>
+<li>用 <code>&amp;</code> 取址，用 <code>*</code> 解引用</li>
+<li><code>++</code>, <code>--</code> 为语句（statement），而非表达式（expression）</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orgc73b84a" class="outline-3">
+<h3 id="orgc73b84a">判断 if</h3>
+<div class="outline-text-3" id="text-orgc73b84a">
+<ul class="org-ul">
+<li>条件不用加括号</li>
+<li>支持一个初始化表达式（值作用域限定在 if 块中）</li>
+<li><code>{</code> 必须与 if 放在同一行</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgaae3788" class="outline-3">
+<h3 id="orgaae3788">循环语句</h3>
+<div class="outline-text-3" id="text-orgaae3788">
+<ol class="org-ol">
+<li><code>for {}</code></li>
+<li><code>for a &lt; 3 {}</code></li>
+<li><code>for i := 0; i &lt; 10; i++</code></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgc154f26" class="outline-3">
+<h3 id="orgc154f26">switch 语句</h3>
+<div class="outline-text-3" id="text-orgc154f26">
+<ul class="org-ul">
+<li>可以用任何类型和表达式作分支</li>
+<li>支持初始化表达式（同 if）</li>
+<li>不用为每个 case 作 break，相反应该加入 fallthrough 如果不需要跳出</li>
+</ul>
+
+<p>
+例子如下
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go">switch a {
+  case 0: fmt.Println("0")
+  case 1: fmt.Println("1")
+  default: fmt.Println("other")
+}
+
+switch {
+  case a &lt; 0: fmt.Println("invalid")
+  case a &lt; 10: fmt.Println("good")
+  default: fmt.Println("too large")
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org32925da" class="outline-3">
+<h3 id="org32925da">跳转语句（goto, continue, break)</h3>
+<div class="outline-text-3" id="text-org32925da">
+<p>
+continue 和 break 均支持标签（label），将跳转到与标签同级的循环中
+</p>
+</div>
+</div>
+</div>
 
 <div id="outline-container-orgaa37ead" class="outline-2">
 <h2 id="orgaa37ead">常用库</h2>
@@ -530,9 +619,9 @@ Go 中的运算符统一从左向右结合
 </div>
 </div>
 
-<div id="outline-container-org60696ca" class="outline-3">
-<h3 id="org60696ca">math</h3>
-<div class="outline-text-3" id="text-org60696ca">
+<div id="outline-container-orgf472f10" class="outline-3">
+<h3 id="orgf472f10">math</h3>
+<div class="outline-text-3" id="text-orgf472f10">
 <ul class="org-ul">
 <li>MaxXX, MinXX 记录类型的取值范围</li>
 </ul>
@@ -558,6 +647,9 @@ Go 中的运算符统一从左向右结合
 <div id="outline-container-org88d75ea" class="outline-3">
 <h3 id="org88d75ea"><span class="todo TODO">TODO</span> <code>[...]int{1,2,3}</code> 与 <code>[]int{1,2,3}</code> 的区别</h3>
 </div>
+<div id="outline-container-org95eb61c" class="outline-3">
+<h3 id="org95eb61c"><span class="todo TODO">TODO</span> <code>for i := 0; i &lt; len(a); i++</code> 中 <code>len(a)</code> 是否会造成额外的开销</h3>
+</div>
 </div>
 
 <div id="outline-container-org7b160c0" class="outline-2">
@@ -571,7 +663,7 @@ Go 中的运算符统一从左向右结合
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2018-02-25 日 12:16</p>
+<p class="date">Created: 2018-02-25 日 13:03</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
