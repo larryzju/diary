@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-02-25 日 17:29 -->
+<!-- 2018-02-25 日 18:08 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>无闻 Go 视频教程笔记</title>
@@ -246,6 +246,7 @@ for the JavaScript code in this tag.
 <li><a href="#org433ed9f">数组 Array</a></li>
 <li><a href="#org9d02fa9">切片 Slice</a></li>
 <li><a href="#org7bbdbdd">Map</a></li>
+<li><a href="#orgf2b6eea">函数 function</a></li>
 <li><a href="#orgaa37ead">常用库</a></li>
 <li><a href="#org69a4827">问题</a></li>
 <li><a href="#org7b160c0">外部链接</a></li>
@@ -427,9 +428,9 @@ go 通过环境变量来设置参数，常见的有
 </div>
 </div>
 
-<div id="outline-container-orgcf03d52" class="outline-3">
-<h3 id="orgcf03d52">math</h3>
-<div class="outline-text-3" id="text-orgcf03d52">
+<div id="outline-container-orgea40bd2" class="outline-3">
+<h3 id="orgea40bd2">math</h3>
+<div class="outline-text-3" id="text-orgea40bd2">
 <p>
 math 模块中有 MaxXX 与 MinXX，表示了不同类型的取值范围
 </p>
@@ -672,7 +673,6 @@ f := [...][3]int{
 </div>
 </div>
 
-
 <div id="outline-container-org9d02fa9" class="outline-2">
 <h2 id="org9d02fa9">切片 Slice</h2>
 <div class="outline-text-2" id="text-org9d02fa9">
@@ -757,6 +757,121 @@ for k, v := range m {
 </div>
 </div>
 
+<div id="outline-container-orgf2b6eea" class="outline-2">
+<h2 id="orgf2b6eea">函数 function</h2>
+<div class="outline-text-2" id="text-orgf2b6eea">
+</div><div id="outline-container-org4a99bdb" class="outline-3">
+<h3 id="org4a99bdb">特点</h3>
+<div class="outline-text-3" id="text-org4a99bdb">
+<ul class="org-ul">
+<li>不支持嵌套、重载和默认参数</li>
+<li>无需声明原型</li>
+<li>不定长度变参（例如 <code>func(a ...int){}</code> ）</li>
+<li>多返回值</li>
+<li>命名返回值参数（例如 <code>func (a, b int, others ...int) (res int)</code> ）</li>
+<li>匿名函数</li>
+<li>闭包</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org9a603dc" class="outline-3">
+<h3 id="org9a603dc">值类型与引用类型</h3>
+<div class="outline-text-3" id="text-org9a603dc">
+<p>
+函数的参数分为值类型与引用类型，在函数内对引用类型进行修改，会影响到外界
+</p>
+
+<p>
+常见的修改外界参数类型有：
+</p>
+
+<ol class="org-ol">
+<li>指针</li>
+<li>map</li>
+<li>slice</li>
+<li>chan</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org5dff9a2" class="outline-3">
+<h3 id="org5dff9a2">defer 与 panic/recover</h3>
+<div class="outline-text-3" id="text-org5dff9a2">
+<p>
+Go 中没有 Java 一样的异常机制，使用 panic/recover 原语来处理错误
+</p>
+
+<p>
+panic 可以在任何地方触发，而 recover 只有在 defer 中才能调用
+</p>
+
+<p>
+defer 相当于 OO 中的析构函数，有以下特点：
+</p>
+<ul class="org-ul">
+<li>按调用的相反顺序执行</li>
+<li>常用于资源清理和 panic recover</li>
+<li>调用时生成闭包，保存当前变量</li>
+<li>即使发生严重错误 (panic) 也会执行</li>
+</ul>
+
+<p>
+panic/recover 的例子如下
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go">func main() {
+	a()
+	b()
+	c()
+}
+
+func a() {
+	fmt.Println("a")
+}
+
+func b() {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println("recover in b")
+		}
+	}()
+	panic("panic in b")
+}
+
+func c() {
+	fmt.Println("c")
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgcf47847" class="outline-3">
+<h3 id="orgcf47847">闭包</h3>
+<div class="outline-text-3" id="text-orgcf47847">
+<div class="org-src-container">
+<pre class="src src-go">func main() {
+	var fs = [4]func(){}
+
+	for i := 0; i &lt; 4; i++ {
+		defer fmt.Println("defer i = ", i) // 0,1,2,3 ?
+		defer func() { fmt.Println("defer_closure i = ", i) }() // 为 4
+		fs[i] = func() { fmt.Println("closure i = ", i) }
+	}
+
+	for _, f := range fs {
+		f()  // 首先打印，闭包中引用 i 对象，值为 4
+	}
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
 <div id="outline-container-orgaa37ead" class="outline-2">
 <h2 id="orgaa37ead">常用库</h2>
 <div class="outline-text-2" id="text-orgaa37ead">
@@ -769,9 +884,9 @@ for k, v := range m {
 </div>
 </div>
 
-<div id="outline-container-orgea40bd2" class="outline-3">
-<h3 id="orgea40bd2">math</h3>
-<div class="outline-text-3" id="text-orgea40bd2">
+<div id="outline-container-org8abdf48" class="outline-3">
+<h3 id="org8abdf48">math</h3>
+<div class="outline-text-3" id="text-org8abdf48">
 <ul class="org-ul">
 <li>MaxXX, MinXX 记录类型的取值范围</li>
 </ul>
@@ -813,7 +928,7 @@ for k, v := range m {
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2018-02-25 日 17:29</p>
+<p class="date">Created: 2018-02-25 日 18:08</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
