@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-02-25 日 18:08 -->
+<!-- 2018-02-27 二 07:32 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>无闻 Go 视频教程笔记</title>
@@ -247,6 +247,7 @@ for the JavaScript code in this tag.
 <li><a href="#org9d02fa9">切片 Slice</a></li>
 <li><a href="#org7bbdbdd">Map</a></li>
 <li><a href="#orgf2b6eea">函数 function</a></li>
+<li><a href="#org50d1081">结构 struct</a></li>
 <li><a href="#orgaa37ead">常用库</a></li>
 <li><a href="#org69a4827">问题</a></li>
 <li><a href="#org7b160c0">外部链接</a></li>
@@ -428,9 +429,9 @@ go 通过环境变量来设置参数，常见的有
 </div>
 </div>
 
-<div id="outline-container-orgea40bd2" class="outline-3">
-<h3 id="orgea40bd2">math</h3>
-<div class="outline-text-3" id="text-orgea40bd2">
+<div id="outline-container-org8abdf48" class="outline-3">
+<h3 id="org8abdf48">math</h3>
+<div class="outline-text-3" id="text-org8abdf48">
 <p>
 math 模块中有 MaxXX 与 MinXX，表示了不同类型的取值范围
 </p>
@@ -769,7 +770,7 @@ for k, v := range m {
 <li>不定长度变参（例如 <code>func(a ...int){}</code> ）</li>
 <li>多返回值</li>
 <li>命名返回值参数（例如 <code>func (a, b int, others ...int) (res int)</code> ）</li>
-<li>匿名函数</li>
+<li>匿名函数（不能作为顶级函数）</li>
 <li>闭包</li>
 </ul>
 </div>
@@ -867,9 +868,64 @@ func c() {
 }
 </pre>
 </div>
+
+<p>
+<code>defer i</code> 能正常输出，因为在定义 defer 时求值，对 i 按值进行拷贝
+</p>
+
+<p>
+与之相反，闭包保留了 i 变量的地址，因此最后其值为 4
+</p>
 </div>
 </div>
 </div>
+
+<div id="outline-container-org50d1081" class="outline-2">
+<h2 id="org50d1081">结构 struct</h2>
+<div class="outline-text-2" id="text-org50d1081">
+<ul class="org-ul">
+<li>与 C 相似，go 中没有 class</li>
+<li>支持指向自身的指针类型成员</li>
+<li>支持匿名结构，可以在结构定义中嵌套定义结构</li>
+<li>为值类型，可以进行 <code>==</code> 和 <code>!=</code> 比较</li>
+<li>可以使用字面量进行初始化</li>
+<li><code>(*a).x</code> 等价于 <code>a.x</code> ，即允许直接通过指针来读写结构成员</li>
+<li>相同类型的成员可以进行直接拷贝赋值</li>
+<li>结构中可以嵌入匿名字字段或结构，但字面量初始化需要小心</li>
+<li>通过嵌入模拟继承</li>
+</ul>
+</div>
+
+<div id="outline-container-org1d38209" class="outline-3">
+<h3 id="org1d38209">示例</h3>
+<div class="outline-text-3" id="text-org1d38209">
+<div class="org-src-container">
+<pre class="src src-go">func main() {
+	t2 := Teacher{Person{"haah", 19}, "math", 30}
+	t3 := Teacher{Person: Person{"haa", 18}}
+	fmt.Println(t2, t3, t2.Age, t2.Person.Age)
+}
+
+type Person struct {
+	Name string
+	Age  int
+}
+
+type Teacher struct {
+	Person
+	Title string
+	Age   int
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+
 
 
 <div id="outline-container-orgaa37ead" class="outline-2">
@@ -884,15 +940,25 @@ func c() {
 </div>
 </div>
 
-<div id="outline-container-org8abdf48" class="outline-3">
-<h3 id="org8abdf48">math</h3>
-<div class="outline-text-3" id="text-org8abdf48">
+<div id="outline-container-org69b8aae" class="outline-3">
+<h3 id="org69b8aae">math</h3>
+<div class="outline-text-3" id="text-org69b8aae">
 <ul class="org-ul">
 <li>MaxXX, MinXX 记录类型的取值范围</li>
 </ul>
 </div>
 </div>
+
+<div id="outline-container-org4846b92" class="outline-3">
+<h3 id="org4846b92">sort</h3>
+<div class="outline-text-3" id="text-org4846b92">
+<ul class="org-ul">
+<li><code>sort.Ints</code></li>
+</ul>
 </div>
+</div>
+</div>
+
 
 <div id="outline-container-org69a4827" class="outline-2">
 <h2 id="org69a4827">问题</h2>
@@ -928,7 +994,7 @@ func c() {
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2018-02-25 日 18:08</p>
+<p class="date">Created: 2018-02-27 二 07:32</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
