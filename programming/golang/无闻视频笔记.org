@@ -310,7 +310,7 @@ for k, v := range m {
 - 不定长度变参（例如 ~func(a ...int){}~ ）
 - 多返回值
 - 命名返回值参数（例如 ~func (a, b int, others ...int) (res int)~ ）
-- 匿名函数
+- 匿名函数（不能作为顶级函数）
 - 闭包
 
 ** 值类型与引用类型
@@ -381,6 +381,48 @@ func main() {
 }
 #+END_SRC
 
+=defer i= 能正常输出，因为在定义 defer 时求值，对 i 按值进行拷贝
+
+与之相反，闭包保留了 i 变量的地址，因此最后其值为 4
+
+* 结构 struct
+
+- 与 C 相似，go 中没有 class
+- 支持指向自身的指针类型成员
+- 支持匿名结构，可以在结构定义中嵌套定义结构
+- 为值类型，可以进行 ~==~ 和 ~!=~ 比较
+- 可以使用字面量进行初始化
+- =(*a).x= 等价于 =a.x= ，即允许直接通过指针来读写结构成员
+- 相同类型的成员可以进行直接拷贝赋值
+- 结构中可以嵌入匿名字字段或结构，但字面量初始化需要小心
+- 通过嵌入模拟继承
+
+** 示例
+
+#+BEGIN_SRC go
+func main() {
+        t2 := Teacher{Person{"haah", 19}, "math", 30}
+        t3 := Teacher{Person: Person{"haa", 18}}
+        fmt.Println(t2, t3, t2.Age, t2.Person.Age)
+}
+
+type Person struct {
+        Name string
+        Age  int
+}
+
+type Teacher struct {
+        Person
+        Title string
+        Age   int
+}
+#+END_SRC
+
+
+
+
+
+
 
 * 常用库
 
@@ -391,6 +433,11 @@ func main() {
 ** math
 
 - MaxXX, MinXX 记录类型的取值范围
+
+** sort
+
+- =sort.Ints=
+
 
 * 问题
 
