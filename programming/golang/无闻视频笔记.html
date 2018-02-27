@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-02-27 二 07:32 -->
+<!-- 2018-02-27 二 08:04 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>无闻 Go 视频教程笔记</title>
@@ -248,6 +248,7 @@ for the JavaScript code in this tag.
 <li><a href="#org7bbdbdd">Map</a></li>
 <li><a href="#orgf2b6eea">函数 function</a></li>
 <li><a href="#org50d1081">结构 struct</a></li>
+<li><a href="#org0bf37f9">方法 method</a></li>
 <li><a href="#orgaa37ead">常用库</a></li>
 <li><a href="#org69a4827">问题</a></li>
 <li><a href="#org7b160c0">外部链接</a></li>
@@ -429,9 +430,9 @@ go 通过环境变量来设置参数，常见的有
 </div>
 </div>
 
-<div id="outline-container-org8abdf48" class="outline-3">
-<h3 id="org8abdf48">math</h3>
-<div class="outline-text-3" id="text-org8abdf48">
+<div id="outline-container-org69b8aae" class="outline-3">
+<h3 id="org69b8aae">math</h3>
+<div class="outline-text-3" id="text-org69b8aae">
 <p>
 math 模块中有 MaxXX 与 MinXX，表示了不同类型的取值范围
 </p>
@@ -892,7 +893,8 @@ func c() {
 <li><code>(*a).x</code> 等价于 <code>a.x</code> ，即允许直接通过指针来读写结构成员</li>
 <li>相同类型的成员可以进行直接拷贝赋值</li>
 <li>结构中可以嵌入匿名字字段或结构，但字面量初始化需要小心</li>
-<li>通过嵌入模拟继承</li>
+<li>通过嵌入模拟继承，若嵌套结构中有同名，则不会提升该字段</li>
+<li>多个同级嵌套结构中不能有同名字段</li>
 </ul>
 </div>
 
@@ -927,6 +929,20 @@ type Teacher struct {
 
 
 
+<div id="outline-container-org0bf37f9" class="outline-2">
+<h2 id="org0bf37f9">方法 method</h2>
+<div class="outline-text-2" id="text-org0bf37f9">
+<ul class="org-ul">
+<li>语法上类似于函数定义，多了一个 Receiver 对象</li>
+<li>Receiver 对象可以按指针（引用）传递，也可以按值传递。看是否要修改，或是否为了减少拷贝</li>
+<li>任何类型都可以添加方法，但方法必须和类型定义位于同一个包（实际上不能为 int 添加方法）</li>
+<li>别名定义不会复制方法</li>
+<li>方法也可以写成 method express 形式，如 <code>(*TZ)Print(&amp;z)</code></li>
+<li>方法也有嵌套提升特性，同结构体嵌套</li>
+<li>方法内可以访问私有变量（因为位于同一 package 内，可见性由 package 和控制）</li>
+</ul>
+</div>
+</div>
 
 <div id="outline-container-orgaa37ead" class="outline-2">
 <h2 id="orgaa37ead">常用库</h2>
@@ -940,9 +956,9 @@ type Teacher struct {
 </div>
 </div>
 
-<div id="outline-container-org69b8aae" class="outline-3">
-<h3 id="org69b8aae">math</h3>
-<div class="outline-text-3" id="text-org69b8aae">
+<div id="outline-container-orge2cf5c5" class="outline-3">
+<h3 id="orge2cf5c5">math</h3>
+<div class="outline-text-3" id="text-orge2cf5c5">
 <ul class="org-ul">
 <li>MaxXX, MinXX 记录类型的取值范围</li>
 </ul>
@@ -994,7 +1010,7 @@ type Teacher struct {
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2018-02-27 二 07:32</p>
+<p class="date">Created: 2018-02-27 二 08:04</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
