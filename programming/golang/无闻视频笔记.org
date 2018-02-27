@@ -434,6 +434,21 @@ type Teacher struct {
 - 方法也有嵌套提升特性，同结构体嵌套
 - 方法内可以访问私有变量（因为位于同一 package 内，可见性由 package 和控制）
 
+* 接口 interface
+
+- 定义了一组函数的签名集合，没有实现
+- 相对于 Java/C++ 中的继承实现，称为 structural typing
+- 类似于动态语言中的鸭子类型
+- 同 struct 一样，支持嵌入接口，支持匿名字段
+- 可以使用空接口 ( =interface{}= ) 来实现通用容器
+- 对象可以被转换为接口（拷贝）
+- 接口之间可以由具体向抽象转换
+- 在函数调用时，不需要显式转换，只要对象符合 interface 即可
+- 在函数内，可以进行类型判断，如 ~if pc,ok := usb.(PhoneConnector); ok {...}~
+- type switch 语法，提供了更简单的类型多态处理方式： ~switch v := usb.(type) {case Type: xxx; ...}~
+- 空接口，只有其存储类型和对象均为 nil 时，才等于 nil
+- Go 接口称为非入侵式接口，无有 Java/C++ 中的继承关系
+
 * 常用库
 
 ** strconv
