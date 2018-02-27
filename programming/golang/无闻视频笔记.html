@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-02-27 二 08:04 -->
+<!-- 2018-02-28 三 07:40 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>无闻 Go 视频教程笔记</title>
@@ -249,6 +249,7 @@ for the JavaScript code in this tag.
 <li><a href="#orgf2b6eea">函数 function</a></li>
 <li><a href="#org50d1081">结构 struct</a></li>
 <li><a href="#org0bf37f9">方法 method</a></li>
+<li><a href="#org94952f1">接口 interface</a></li>
 <li><a href="#orgaa37ead">常用库</a></li>
 <li><a href="#org69a4827">问题</a></li>
 <li><a href="#org7b160c0">外部链接</a></li>
@@ -430,9 +431,9 @@ go 通过环境变量来设置参数，常见的有
 </div>
 </div>
 
-<div id="outline-container-org69b8aae" class="outline-3">
-<h3 id="org69b8aae">math</h3>
-<div class="outline-text-3" id="text-org69b8aae">
+<div id="outline-container-orge2cf5c5" class="outline-3">
+<h3 id="orge2cf5c5">math</h3>
+<div class="outline-text-3" id="text-orge2cf5c5">
 <p>
 math 模块中有 MaxXX 与 MinXX，表示了不同类型的取值范围
 </p>
@@ -944,6 +945,26 @@ type Teacher struct {
 </div>
 </div>
 
+<div id="outline-container-org94952f1" class="outline-2">
+<h2 id="org94952f1">接口 interface</h2>
+<div class="outline-text-2" id="text-org94952f1">
+<ul class="org-ul">
+<li>定义了一组函数的签名集合，没有实现</li>
+<li>相对于 Java/C++ 中的继承实现，称为 structural typing</li>
+<li>类似于动态语言中的鸭子类型</li>
+<li>同 struct 一样，支持嵌入接口，支持匿名字段</li>
+<li>可以使用空接口 ( <code>interface{}</code> ) 来实现通用容器</li>
+<li>对象可以被转换为接口（拷贝）</li>
+<li>接口之间可以由具体向抽象转换</li>
+<li>在函数调用时，不需要显式转换，只要对象符合 interface 即可</li>
+<li>在函数内，可以进行类型判断，如 <code>if pc,ok := usb.(PhoneConnector); ok {...}</code></li>
+<li>type switch 语法，提供了更简单的类型多态处理方式： <code>switch v := usb.(type) {case Type: xxx; ...}</code></li>
+<li>空接口，只有其存储类型和对象均为 nil 时，才等于 nil</li>
+<li>Go 接口称为非入侵式接口，无有 Java/C++ 中的继承关系</li>
+</ul>
+</div>
+</div>
+
 <div id="outline-container-orgaa37ead" class="outline-2">
 <h2 id="orgaa37ead">常用库</h2>
 <div class="outline-text-2" id="text-orgaa37ead">
@@ -956,9 +977,9 @@ type Teacher struct {
 </div>
 </div>
 
-<div id="outline-container-orge2cf5c5" class="outline-3">
-<h3 id="orge2cf5c5">math</h3>
-<div class="outline-text-3" id="text-orge2cf5c5">
+<div id="outline-container-orgfbdc642" class="outline-3">
+<h3 id="orgfbdc642">math</h3>
+<div class="outline-text-3" id="text-orgfbdc642">
 <ul class="org-ul">
 <li>MaxXX, MinXX 记录类型的取值范围</li>
 </ul>
@@ -1010,7 +1031,7 @@ type Teacher struct {
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2018-02-27 二 08:04</p>
+<p class="date">Created: 2018-02-28 三 07:40</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
