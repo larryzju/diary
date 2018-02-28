@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-02-28 三 07:40 -->
+<!-- 2018-02-28 三 08:14 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>无闻 Go 视频教程笔记</title>
@@ -250,6 +250,7 @@ for the JavaScript code in this tag.
 <li><a href="#org50d1081">结构 struct</a></li>
 <li><a href="#org0bf37f9">方法 method</a></li>
 <li><a href="#org94952f1">接口 interface</a></li>
+<li><a href="#orgd3297f8">反射 reflect</a></li>
 <li><a href="#orgaa37ead">常用库</a></li>
 <li><a href="#org69a4827">问题</a></li>
 <li><a href="#org7b160c0">外部链接</a></li>
@@ -431,9 +432,9 @@ go 通过环境变量来设置参数，常见的有
 </div>
 </div>
 
-<div id="outline-container-orge2cf5c5" class="outline-3">
-<h3 id="orge2cf5c5">math</h3>
-<div class="outline-text-3" id="text-orge2cf5c5">
+<div id="outline-container-orgfbdc642" class="outline-3">
+<h3 id="orgfbdc642">math</h3>
+<div class="outline-text-3" id="text-orgfbdc642">
 <p>
 math 模块中有 MaxXX 与 MinXX，表示了不同类型的取值范围
 </p>
@@ -929,7 +930,6 @@ type Teacher struct {
 
 
 
-
 <div id="outline-container-org0bf37f9" class="outline-2">
 <h2 id="org0bf37f9">方法 method</h2>
 <div class="outline-text-2" id="text-org0bf37f9">
@@ -965,6 +965,36 @@ type Teacher struct {
 </div>
 </div>
 
+<div id="outline-container-orgd3297f8" class="outline-2">
+<h2 id="orgd3297f8">反射 reflect</h2>
+<div class="outline-text-2" id="text-orgd3297f8">
+<p>
+reflect 库提供了相关函数，可以从对象中获取相关的结构类型信息。常配合 <code>interface{}</code> 来使用。在不确定类型的情况下使用对象，或提供更复杂的对象社会问题
+</p>
+</div>
+
+<div id="outline-container-org3982b13" class="outline-3">
+<h3 id="org3982b13">常用方法</h3>
+<div class="outline-text-3" id="text-org3982b13">
+<ul class="org-ul">
+<li><code>TypeOf</code> : 取类型</li>
+<li><code>ValueOf</code></li>
+<li><code>TypeOf().Kind()</code></li>
+<li><code>Elem()</code></li>
+<li><code>Elem().SetInt()</code></li>
+<li><code>reflect.Ptr</code></li>
+<li><code>Elem().CanSet()</code></li>
+<li><code>FieldByIndex</code> （相当于 clojure <code>get-in</code> ）, <code>FieldByName</code>, <code>MethodByIndex</code>, <code>MethodByName</code></li>
+<li><code>reflect.Value()</code></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org271d992" class="outline-3">
+<h3 id="org271d992"><span class="todo TODO">TODO</span> 示例</h3>
+</div>
+</div>
+
 <div id="outline-container-orgaa37ead" class="outline-2">
 <h2 id="orgaa37ead">常用库</h2>
 <div class="outline-text-2" id="text-orgaa37ead">
@@ -977,9 +1007,9 @@ type Teacher struct {
 </div>
 </div>
 
-<div id="outline-container-orgfbdc642" class="outline-3">
-<h3 id="orgfbdc642">math</h3>
-<div class="outline-text-3" id="text-orgfbdc642">
+<div id="outline-container-orgd3034ec" class="outline-3">
+<h3 id="orgd3034ec">math</h3>
+<div class="outline-text-3" id="text-orgd3034ec">
 <ul class="org-ul">
 <li>MaxXX, MinXX 记录类型的取值范围</li>
 </ul>
@@ -995,7 +1025,6 @@ type Teacher struct {
 </div>
 </div>
 </div>
-
 
 <div id="outline-container-org69a4827" class="outline-2">
 <h2 id="org69a4827">问题</h2>
@@ -1031,7 +1060,7 @@ type Teacher struct {
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2018-02-28 三 07:40</p>
+<p class="date">Created: 2018-02-28 三 08:14</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
