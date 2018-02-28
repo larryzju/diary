@@ -423,7 +423,6 @@ type Teacher struct {
 
 
 
-
 * 方法 method
 
 - 语法上类似于函数定义，多了一个 Receiver 对象
@@ -449,6 +448,24 @@ type Teacher struct {
 - 空接口，只有其存储类型和对象均为 nil 时，才等于 nil
 - Go 接口称为非入侵式接口，无有 Java/C++ 中的继承关系
 
+* 反射 reflect
+
+reflect 库提供了相关函数，可以从对象中获取相关的结构类型信息。常配合 =interface{}= 来使用。在不确定类型的情况下使用对象，或提供更复杂的对象社会问题
+
+** 常用方法
+
+- =TypeOf= : 取类型
+- =ValueOf=
+- =TypeOf().Kind()=
+- =Elem()=
+- =Elem().SetInt()=
+- =reflect.Ptr=
+- =Elem().CanSet()=
+- =FieldByIndex= （相当于 clojure =get-in= ）, =FieldByName=, =MethodByIndex=, =MethodByName=
+- =reflect.Value()=
+
+** TODO 示例
+
 * 常用库
 
 ** strconv
@@ -462,7 +479,6 @@ type Teacher struct {
 ** sort
 
 - =sort.Ints=
-
 
 * 问题
 
