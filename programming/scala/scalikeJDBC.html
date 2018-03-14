@@ -4,9 +4,9 @@
 <!-- 2018-03-14 三 12:07 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>cscpp</title>
+<title>scalikeJDBC 笔记</title>
 <meta name="generator" content="Org mode">
-<meta name="author" content="Zhao WenBin">
+<meta name="author" content="Larry">
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -233,196 +233,142 @@ for the JavaScript code in this tag.
 <body>
 <div id="content">
 <header>
-<h1 class="title">cscpp</h1>
+<h1 class="title">scalikeJDBC 笔记</h1>
 </header><nav id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org29d0932">计算机系统漫游</a></li>
-<li><a href="#org613c9c6">第一部分 程序结构和执行</a></li>
+<li><a href="#org71868cb">question</a></li>
+<li><a href="#orgff78e79">dependencies</a></li>
+<li><a href="#orgd63f433">example</a></li>
+<li><a href="#org3648e25">流程</a></li>
+<li><a href="#org485f87f">API</a></li>
+<li><a href="#org2717fd8">特点</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org29d0932" class="outline-2">
-<h2 id="org29d0932">计算机系统漫游</h2>
-<div class="outline-text-2" id="text-org29d0932">
-</div><div id="outline-container-org2d7a7fd" class="outline-3">
-<h3 id="org2d7a7fd">为什么</h3>
-<div class="outline-text-3" id="text-org2d7a7fd">
+<div id="outline-container-org71868cb" class="outline-2">
+<h2 id="org71868cb">question</h2>
+<div class="outline-text-2" id="text-org71868cb">
 <ul class="org-ul">
-<li>硬件与软件共同构成了计算机系统</li>
-<li>万变不离其宗，只有学好了计算机原理方能写好程序</li>
+<li class="off"><code>[&#xa0;]</code> Commons DBCP</li>
+<li class="off"><code>[&#xa0;]</code> c3p0 though ConnectionPool implementation</li>
+<li class="off"><code>[&#xa0;]</code> <code>ConnectionPool.singleton</code></li>
+<li class="off"><code>[&#xa0;]</code> <code>implicit val session = AutoSession</code></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgad38ad0" class="outline-3">
-<h3 id="orgad38ad0">存储</h3>
-<div class="outline-text-3" id="text-orgad38ad0">
-</div><div id="outline-container-orgb27b642" class="outline-4">
-<h4 id="orgb27b642">主存、磁盘、寄存器、IO 设备</h4>
-<div class="outline-text-4" id="text-orgb27b642">
-<p>
-程序的一个主要开销在于，将数据在不同的存储和 I/O 设备之间搬移。
-</p>
 
-<p>
-寄存器速度高于主存速度，而且差距会更加加大。在两者之前通过高速缓存来提供速度与容量的折中。缓存一般有 L1,L2 或 L3 三级。
-</p>
+<div id="outline-container-orgff78e79" class="outline-2">
+<h2 id="orgff78e79">dependencies</h2>
+<div class="outline-text-2" id="text-orgff78e79">
+<ul class="org-ul">
+<li>scalikeJDBC</li>
+<li>jdbc driver</li>
+<li>slf4j implementation</li>
+</ul>
 </div>
 </div>
 
-<div id="outline-container-org73a10a3" class="outline-4">
-<h4 id="org73a10a3">存储器层次结构</h4>
-<div class="outline-text-4" id="text-org73a10a3">
 
-<figure>
-<img src="./storage_level.png" alt="storage_level.png">
+<div id="outline-container-orgd63f433" class="outline-2">
+<h2 id="orgd63f433">example</h2>
+<div class="outline-text-2" id="text-orgd63f433">
+<div class="org-src-container">
+<pre class="src src-scala">import scalikejdbc._
 
-</figure>
+// initialize JDBC driver &amp; connection pool
+Class.forName("org.h2.Driver")
+ConnectionPool.singleton("jdbc:h2:mem:hello", "user", "pass")
+
+// ad-hoc session provider on the REPL
+implicit val session = AutoSession
+
+// table creation, you can run DDL by using #execute as same as JDBC
+sql"""
+create table members (
+  id serial not null primary key,
+  name varchar(64),
+  created_at timestamp not null
+)
+""".execute.apply()
+
+// insert initial data
+Seq("Alice", "Bob", "Chris") foreach { name =&gt;
+  sql"insert into members (name, created_at) values (${name}, current_timestamp)".update.apply()
+}
+
+// for now, retrieves all data as Map value
+val entities: List[Map[String, Any]] = sql"select * from members".map(_.toMap).list.apply()
+
+// defines entity object and extractor
+import java.time._
+case class Member(id: Long, name: Option[String], createdAt: ZonedDateTime)
+object Member extends SQLSyntaxSupport[Member] {
+  override val tableName = "members"
+  def apply(rs: WrappedResultSet) = new Member(
+    rs.long("id"), rs.stringOpt("name"), rs.zonedDateTime("created_at"))
+}
+
+// find all members
+val members: List[Member] = sql"select * from members".map(rs =&gt; Member(rs)).list.apply()
+
+// use paste mode (:paste) on the Scala REPL
+val m = Member.syntax("m")
+val name = "Alice"
+val alice: Option[Member] = withSQL {
+  select.from(Member as m).where.eq(m.name, name)
+}.map(rs =&gt; Member(rs)).single.apply()
+</pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org461010d" class="outline-3">
-<h3 id="org461010d">操作系统</h3>
-<div class="outline-text-3" id="text-org461010d">
-</div><div id="outline-container-org87074ee" class="outline-4">
-<h4 id="org87074ee">作用</h4>
-<div class="outline-text-4" id="text-org87074ee">
+<div id="outline-container-org3648e25" class="outline-2">
+<h2 id="org3648e25">流程</h2>
+<div class="outline-text-2" id="text-org3648e25">
 <ol class="org-ol">
-<li>防止失控的程序对硬件的滥用</li>
-<li>提供高层次的硬件功能抽象</li>
+<li>init jdbc driver</li>
+<li>init connection pool</li>
+<li>implicit session ( AutoSession )</li>
 </ol>
 </div>
 </div>
 
-<div id="outline-container-org6101d3c" class="outline-4">
-<h4 id="org6101d3c">部件</h4>
-<div class="outline-text-4" id="text-org6101d3c">
+<div id="outline-container-org485f87f" class="outline-2">
+<h2 id="org485f87f">API</h2>
+<div class="outline-text-2" id="text-org485f87f">
 <ul class="org-ul">
-<li>虚拟存储器</li>
-<li>进程</li>
-<li>文件</li>
+<li><code>SQL.{execute,update,list,map,single}.apply</code></li>
+<li><code>extends SQLSyntaxSupport[T]</code></li>
+<li>Type-safe SDL，&lt;case class&gt; as name，类似于 spark sql api</li>
 </ul>
 </div>
-
-<ul class="org-ul"><li><a id="org33e83d3"></a>进程<br><div class="outline-text-5" id="text-org33e83d3">
-<p>
-进程是操作系统正在运行的程序的一个抽象。
-</p>
-
-<p>
-多个进程被 CPU 调度执行，涉及操作系统之间的上下文切换。进程的上下文切换需要通过操作系统保存进程的状态，如 PC、寄存器的值、内存
-</p>
-</div></li>
-
-<li><a id="org7fb5c9d"></a>线程<br><div class="outline-text-5" id="text-org7fb5c9d">
-<p>
-进程中可以有多个线程。线程之间共享代码和全局数据，更方便进行共享数据，某些场景下比进程更加高效
-</p>
-</div></li>
-
-<li><a id="orgd281c42"></a>虚拟存储器<br><div class="outline-text-5" id="text-orgd281c42">
-<p>
-为进程提供一个干净的工作环境，使进程看到的是独立完整的主存空间
-</p>
-
-
-<figure>
-<img src="./virtual_address_space.png" alt="virtual_address_space.png">
-
-</figure>
 </div>
 
-<ul class="org-ul"><li><a id="orgf1b3c30"></a><span class="todo TODO">TODO</span> 共享库映射区域为什么夹在堆和栈之间？<br></li></ul></li></ul>
+<div id="outline-container-org2717fd8" class="outline-2">
+<h2 id="org2717fd8">特点</h2>
+<div class="outline-text-2" id="text-org2717fd8">
+<ul class="org-ul">
+<li>SDL</li>
+<li>纯 scala 语法</li>
+<li>transcation control
+<ul class="org-ul">
+<li>DB autoCommit { implicit session =&gt; &#x2026;}</li>
+<li>DB localTx { implicit session =&gt; &#x2026;}</li>
+<li>DB withinTx { implicit session =&gt; &#x2026;}</li>
+<li>DB readOnly { implicit session =&gt; &#x2026;}</li>
+</ul></li>
+<li>Useful Query Inspections：显示 executed sql debug 信息</li>
+<li>testing support</li>
+</ul>
 </div>
-</div>
-
-<div id="outline-container-org0023c8b" class="outline-3">
-<h3 id="org0023c8b">并发与并行</h3>
-<div class="outline-text-3" id="text-org0023c8b">
-<p>
-计算机的发展有两个目标：更多和更快。并发 (concurrency) 目的是更多，并行 (parallelism) 是更快。
-但实践中两者普遍同时存在不同的层次中。
-</p>
-</div>
-
-<div id="outline-container-org11ea6e8" class="outline-4">
-<h4 id="org11ea6e8">线程级并发</h4>
-<div class="outline-text-4" id="text-org11ea6e8">
-<p>
-在单处理器硬件上，通过进行上下文切换模拟出多个线程同时进行的“假象”。不仅有利于对交互性的支持，同时有利于对于 I/O 密集性操作的性能优化。
-</p>
-
-<p>
-在出现多核和超线程系统后，利用硬件提供的并行能力，真正提供了更好的并行性能
-</p>
-</div>
-</div>
-
-<div id="outline-container-orga70e488" class="outline-4">
-<h4 id="orga70e488">指令级并发</h4>
-<div class="outline-text-4" id="text-orga70e488">
-<p>
-基本原理上一个指令需要多个时钟周期来完成。
-</p>
-
-<p>
-通过流水线技术，可以优化到多个时钟周期内执行多个指令。
-</p>
-
-<p>
-而超标量技术甚至可以使用一个时钟周期内执行多个指令。
-</p>
-</div>
-</div>
-
-<div id="outline-container-org9a78046" class="outline-4">
-<h4 id="org9a78046">单指令，多数据并行</h4>
-<div class="outline-text-4" id="text-org9a78046">
-<p>
-SIMD 技术，常用于多媒体的处理。GCC 编译中提供特殊的向量数据进行此类数据优化处理。
-</p>
-</div>
-</div>
-</div>
-<div id="outline-container-org901815a" class="outline-3">
-<h3 id="org901815a">抽象</h3>
-<div class="outline-text-3" id="text-org901815a">
-</div><div id="outline-container-orge8db6c9" class="outline-4">
-<h4 id="orge8db6c9">API 对细节的抽象</h4>
-</div>
-
-<div id="outline-container-org805460e" class="outline-4">
-<h4 id="org805460e">指令集对处理器的抽象</h4>
-</div>
-
-<div id="outline-container-org34350f6" class="outline-4">
-<h4 id="org34350f6">文件对 I/O 的抽象</h4>
-</div>
-
-<div id="outline-container-org0535298" class="outline-4">
-<h4 id="org0535298">虚拟存储对程序存储的抽象</h4>
-</div>
-
-<div id="outline-container-org9d58737" class="outline-4">
-<h4 id="org9d58737">进程对程序执行的抽象</h4>
-</div>
-
-<div id="outline-container-org8bc2ec3" class="outline-4">
-<h4 id="org8bc2ec3">虚拟机对整个计算机的抽象</h4>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org613c9c6" class="outline-2">
-<h2 id="org613c9c6">第一部分 程序结构和执行</h2>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: Zhao WenBin</p>
+<p class="author">Author: Larry</p>
 <p class="date">Created: 2018-03-14 三 12:07</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
