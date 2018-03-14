@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-03-13 二 20:29 -->
+<!-- 2018-03-14 三 12:04 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>小甲鱼-数据结构与算法-视频教程笔记</title>
@@ -251,7 +251,7 @@ for the JavaScript code in this tag.
 <li><code>[0/1]</code> 绪论</li>
 <li><code>[0/1]</code> 谈谈算法</li>
 <li><code>[0/3]</code> 时间和空间复杂度</li>
-<li><code>[2/17]</code> 线性表</li>
+<li><code>[4/17]</code> 线性表</li>
 <li><code>[0/7]</code> 栈与队列</li>
 <li><code>[0/70]</code> 其它</li>
 </ul>
@@ -304,7 +304,6 @@ for the JavaScript code in this tag.
 </div>
 
 
-
 <div id="outline-container-org3e750f7" class="outline-3">
 <h3 id="org3e750f7">常用操作</h3>
 <div class="outline-text-3" id="text-org3e750f7">
@@ -329,11 +328,63 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 </div>
+
+<div id="outline-container-org9979dfd" class="outline-3">
+<h3 id="org9979dfd">实现方式</h3>
+<div class="outline-text-3" id="text-org9979dfd">
+<p>
+有两种存储结构来实现线性表
+</p>
+<ol class="org-ol">
+<li>顺序表，使用连贯的内存地址来存放数据，需要记录数据的长度和空间的容量</li>
+<li>链式表，不需要连续地址存放数据，用一个指针域指向下一个后继元素</li>
+</ol>
+</div>
+
+<div id="outline-container-orgd97c200" class="outline-4">
+<h4 id="orgd97c200"><span class="todo TODO">TODO</span> 顺序表</h4>
+<div class="outline-text-4" id="text-orgd97c200">
+<p>
+实现参见代码 [?]()
+</p>
+
+<p>
+优点:
+</p>
+<ol class="org-ol">
+<li>空间紧凑（因为隐式地使用了地址作为下标）</li>
+<li>快速存取</li>
+</ol>
+
+<p>
+缺点：
+</p>
+<ol class="org-ol">
+<li>容量固定，扩容可能造成“碎片”化</li>
+<li>插入、删除开销大</li>
+</ol>
+</div>
+</div>
+
+
+<div id="outline-container-org700d83c" class="outline-4">
+<h4 id="org700d83c"><span class="todo TODO">TODO</span> 链式表</h4>
+<div class="outline-text-4" id="text-org700d83c">
+<p>
+单鍡实现参见代码 [?]() 通过头结点可以访问整个链表，尾指针指向空（null）
+</p>
+
+<p>
+包括两个基本域：数据域和指针域
+</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2018-03-13 二 20:29</p>
+<p class="date">Created: 2018-03-14 三 12:04</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
