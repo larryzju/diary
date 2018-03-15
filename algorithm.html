@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-03-15 四 17:33 -->
+<!-- 2018-03-15 Thu 17:09 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>cscpp</title>
+<title></title>
 <meta name="generator" content="Org mode">
-<meta name="author" content="Zhao WenBin">
+<meta name="author" content="Larry">
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -229,201 +229,230 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
-<header>
-<h1 class="title">cscpp</h1>
-</header><nav id="table-of-contents">
+<nav id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org29d0932">计算机系统漫游</a></li>
-<li><a href="#org613c9c6">第一部分 程序结构和执行</a></li>
+<li><a href="#org7e8936f">Sorting</a></li>
 </ul>
 </div>
 </nav>
-
-<div id="outline-container-org29d0932" class="outline-2">
-<h2 id="org29d0932">计算机系统漫游</h2>
-<div class="outline-text-2" id="text-org29d0932">
-</div><div id="outline-container-org2d7a7fd" class="outline-3">
-<h3 id="org2d7a7fd">为什么</h3>
-<div class="outline-text-3" id="text-org2d7a7fd">
-<ul class="org-ul">
-<li>硬件与软件共同构成了计算机系统</li>
-<li>万变不离其宗，只有学好了计算机原理方能写好程序</li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-orgad38ad0" class="outline-3">
-<h3 id="orgad38ad0">存储</h3>
-<div class="outline-text-3" id="text-orgad38ad0">
-</div><div id="outline-container-orgb27b642" class="outline-4">
-<h4 id="orgb27b642">主存、磁盘、寄存器、IO 设备</h4>
-<div class="outline-text-4" id="text-orgb27b642">
+<div id="outline-container-org7e8936f" class="outline-2">
+<h2 id="org7e8936f">Sorting</h2>
+<div class="outline-text-2" id="text-org7e8936f">
 <p>
-程序的一个主要开销在于，将数据在不同的存储和 I/O 设备之间搬移。
+从两方面来考虑排序的性能：
 </p>
 
-<p>
-寄存器速度高于主存速度，而且差距会更加加大。在两者之前通过高速缓存来提供速度与容量的折中。缓存一般有 L1,L2 或 L3 三级。
-</p>
-</div>
-</div>
-
-<div id="outline-container-org73a10a3" class="outline-4">
-<h4 id="org73a10a3">存储器层次结构</h4>
-<div class="outline-text-4" id="text-org73a10a3">
-
-<figure>
-<img src="./storage_level.png" alt="storage_level.png">
-
-</figure>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org461010d" class="outline-3">
-<h3 id="org461010d">操作系统</h3>
-<div class="outline-text-3" id="text-org461010d">
-</div><div id="outline-container-org87074ee" class="outline-4">
-<h4 id="org87074ee">作用</h4>
-<div class="outline-text-4" id="text-org87074ee">
 <ol class="org-ol">
-<li>防止失控的程序对硬件的滥用</li>
-<li>提供高层次的硬件功能抽象</li>
+<li>时间</li>
+<li>额外的空间占用</li>
+</ol>
+</div>
+
+
+<div id="outline-container-orga55918e" class="outline-3">
+<h3 id="orga55918e">Elementary Sorts</h3>
+<div class="outline-text-3" id="text-orga55918e">
+</div><div id="outline-container-org732808f" class="outline-4">
+<h4 id="org732808f">Select sort</h4>
+<div class="outline-text-4" id="text-org732808f">
+<p>
+选中剩余数列中的最小一个，与开头的元素交换
+</p>
+
+<p>
+进行 \(N^2/2\) 次比较，N 次交换
+</p>
+
+<p>
+特点：
+</p>
+<ol class="org-ol">
+<li>运行时间与输入元素顺序无关</li>
+<li>交换次数最少！</li>
+</ol>
+
+
+<div class="org-src-container">
+<pre class="src src-java">public void sort(Comparable[] a ) {
+    int N = a.lenght;
+    for ( int i = 0; i &lt; N; i++ ) {
+	min = i
+	for ( int j = i+1; j &lt; N; j++ ) {
+	    if ( less(a[j], a[min]) ) {
+		min = j;
+	    }
+	}
+	exch(a, min, i );
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga09b4c5" class="outline-4">
+<h4 id="orga09b4c5">Insert sort</h4>
+<div class="outline-text-4" id="text-orga09b4c5">
+<p>
+将新的元素插入到已经排好序的子序列中，插入操作涉及到局部的后移
+</p>
+
+<p>
+平均需要 \(N^2/2\) 次比较和 \(N^2/2\) 次交换
+</p>
+
+<p>
+特点有：
+</p>
+<ol class="org-ol">
+<li>对于已经有序的输入，其需要比较 \(N-1\) 次，不需要交换，性能大大优于选择排序</li>
+<li>对于 partial sorted array，插入排序优势明显</li>
+<li>The number of exchanges used by insertion sort is equal to the number of inversions in the array</li>
+<li>the number of compares is at least equal to the number of inversions and at most equal to the number of inversions plus the array size minus 1.</li>
+</ol>
+
+
+
+<div class="org-src-container">
+<pre class="src src-java">public void sort(Comparable[] a) {
+    int N = a.length;
+    for ( int i = 1; i &lt; N; i++ ) {
+	for ( int j = i; j &gt;= 0 &amp;&amp; less(a[j], a[j-1]); j-- ) {
+	    exch( a, j, i-1 );
+	}
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb24798c" class="outline-4">
+<h4 id="orgb24798c">Shell sort</h4>
+<div class="outline-text-4" id="text-orgb24798c">
+<p>
+对 Insert Sort 的优化：由于 insert sort 比较仅针对前一个元素，如果数组逆序严重，则需要太多次的比较和交换
+</p>
+
+<p>
+Shell Sort 增大了比较的跨度，生成 partially sorted array，优化 insert sort 速度
+</p>
+
+<p>
+Shell Sort 选择一个合适的 h 值，h 从大到小减小到 1，每次排序后生成 h-sorted array
+</p>
+
+<p>
+书中给出的经验公式为 \(h = \frac{1}{2} ( 3^k - 1 )\)
+</p>
+
+<p>
+Shellsort gains efficiency by making a tradeoff between size and partial order in the subsequences.
+</p>
+
+<p>
+最差情况下，shell sort 的时间复杂度为 \(N^\frac{3}{2}\)
+</p>
+
+<div class="org-src-container">
+<pre class="src src-java">public static void sort(Comparable[] a) {
+    int N = a.length;
+    int h = 1;
+    while( h &lt; N/3 ) h = 3*h + 1;
+    while( h &gt;= 1 ) {
+	for ( int i = h; i &lt; N; i++ ) {
+	    for ( int j = i; j &gt;= 0 &amp;&amp; less(a[j], a[j-h]); j-=h ) {
+		exch(a, j, j-h);
+	    }
+	}
+	h = h/3;
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org3bcd6c5" class="outline-4">
+<h4 id="org3bcd6c5">SelectSort vs InsertSort</h4>
+<div class="outline-text-4" id="text-org3bcd6c5">
+<dl class="org-dl">
+<dt>Property D.</dt><dd>The running times of insertion sort and selection sort are quadratic and within a small constant factor of one another for randomly ordered arrays of distinct values.</dd>
+</dl>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org0ec37ce" class="outline-3">
+<h3 id="org0ec37ce">Merge sort</h3>
+<div class="outline-text-3" id="text-org0ec37ce">
+<p>
+分治的思路 (divide and conquer)，将数组分成两部分分别进行排序，将已经排序好的两个序列进行合并
+</p>
+
+<p>
+优势在于它的复杂度为 \(N \log(N)\) ，劣势在于需要额外的 N 的空间来进行合并
+</p>
+
+<dl class="org-dl">
+<dt>PropositionF.</dt><dd>Top-down mergesort uses between 1⁄2NlgN and NlgN compares to sort any array of length N.</dd>
+<dt>PropositionG.</dt><dd>Top-down mergesort uses at most 6NlgN array accesses to sort an array of length N.</dd>
+<dt>PropositionH.</dt><dd>Bottom-upmergesortusesbetween1⁄2NlgNandNlgNcompares and at most 6N lg N array accesses to sort an array of length N.</dd>
+</dl>
+
+
+<p>
+优化思路：
+</p>
+<ol class="org-ol">
+<li>对于足够小的数组，使用 insert sort 替换 merge sort （如 15 个元素以下）</li>
+<li>合并前判断 mid 与 mid+1 是否已经有序</li>
+<li>去掉额外的用于合并结构存储空间</li>
 </ol>
 </div>
 </div>
 
-<div id="outline-container-org6101d3c" class="outline-4">
-<h4 id="org6101d3c">部件</h4>
-<div class="outline-text-4" id="text-org6101d3c">
-<ul class="org-ul">
-<li>虚拟存储器</li>
-<li>进程</li>
-<li>文件</li>
-</ul>
+
+
+
+
+<div id="outline-container-orgce2508c" class="outline-3">
+<h3 id="orgce2508c">QuickSort</h3>
 </div>
 
-<ul class="org-ul"><li><a id="org33e83d3"></a>进程<br><div class="outline-text-5" id="text-org33e83d3">
-<p>
-进程是操作系统正在运行的程序的一个抽象。
-</p>
-
-<p>
-多个进程被 CPU 调度执行，涉及操作系统之间的上下文切换。进程的上下文切换需要通过操作系统保存进程的状态，如 PC、寄存器的值、内存
-</p>
-</div></li>
-
-<li><a id="org7fb5c9d"></a>线程<br><div class="outline-text-5" id="text-org7fb5c9d">
-<p>
-进程中可以有多个线程。线程之间共享代码和全局数据，更方便进行共享数据，某些场景下比进程更加高效
-</p>
-</div></li>
-
-<li><a id="orgd281c42"></a>虚拟存储器<br><div class="outline-text-5" id="text-orgd281c42">
-<p>
-为进程提供一个干净的工作环境，使进程看到的是独立完整的主存空间
-</p>
-
-
-<figure>
-<img src="./virtual_address_space.png" alt="virtual_address_space.png">
-
-</figure>
+<div id="outline-container-orgb4464fd" class="outline-3">
+<h3 id="orgb4464fd">HeapSort</h3>
 </div>
-
-<ul class="org-ul"><li><a id="orgf1b3c30"></a><span class="todo TODO">TODO</span> 共享库映射区域为什么夹在堆和栈之间？<br></li></ul></li></ul>
-</div>
-</div>
-
-<div id="outline-container-org0023c8b" class="outline-3">
-<h3 id="org0023c8b">并发与并行</h3>
-<div class="outline-text-3" id="text-org0023c8b">
-<p>
-计算机的发展有两个目标：更多和更快。并发 (concurrency) 目的是更多，并行 (parallelism) 是更快。
-但实践中两者普遍同时存在不同的层次中。
-</p>
-</div>
-
-<div id="outline-container-org11ea6e8" class="outline-4">
-<h4 id="org11ea6e8">线程级并发</h4>
-<div class="outline-text-4" id="text-org11ea6e8">
-<p>
-在单处理器硬件上，通过进行上下文切换模拟出多个线程同时进行的“假象”。不仅有利于对交互性的支持，同时有利于对于 I/O 密集性操作的性能优化。
-</p>
-
-<p>
-在出现多核和超线程系统后，利用硬件提供的并行能力，真正提供了更好的并行性能
-</p>
-</div>
-</div>
-
-<div id="outline-container-orga70e488" class="outline-4">
-<h4 id="orga70e488">指令级并发</h4>
-<div class="outline-text-4" id="text-orga70e488">
-<p>
-基本原理上一个指令需要多个时钟周期来完成。
-</p>
-
-<p>
-通过流水线技术，可以优化到多个时钟周期内执行多个指令。
-</p>
-
-<p>
-而超标量技术甚至可以使用一个时钟周期内执行多个指令。
-</p>
-</div>
-</div>
-
-<div id="outline-container-org9a78046" class="outline-4">
-<h4 id="org9a78046">单指令，多数据并行</h4>
-<div class="outline-text-4" id="text-org9a78046">
-<p>
-SIMD 技术，常用于多媒体的处理。GCC 编译中提供特殊的向量数据进行此类数据优化处理。
-</p>
-</div>
-</div>
-</div>
-<div id="outline-container-org901815a" class="outline-3">
-<h3 id="org901815a">抽象</h3>
-<div class="outline-text-3" id="text-org901815a">
-</div><div id="outline-container-orge8db6c9" class="outline-4">
-<h4 id="orge8db6c9">API 对细节的抽象</h4>
-</div>
-
-<div id="outline-container-org805460e" class="outline-4">
-<h4 id="org805460e">指令集对处理器的抽象</h4>
-</div>
-
-<div id="outline-container-org34350f6" class="outline-4">
-<h4 id="org34350f6">文件对 I/O 的抽象</h4>
-</div>
-
-<div id="outline-container-org0535298" class="outline-4">
-<h4 id="org0535298">虚拟存储对程序存储的抽象</h4>
-</div>
-
-<div id="outline-container-org9d58737" class="outline-4">
-<h4 id="org9d58737">进程对程序执行的抽象</h4>
-</div>
-
-<div id="outline-container-org8bc2ec3" class="outline-4">
-<h4 id="org8bc2ec3">虚拟机对整个计算机的抽象</h4>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org613c9c6" class="outline-2">
-<h2 id="org613c9c6">第一部分 程序结构和执行</h2>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2018-03-15 四 17:33</p>
+<p class="author">Author: Larry</p>
+<p class="date">Created: 2018-03-15 Thu 17:09</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
