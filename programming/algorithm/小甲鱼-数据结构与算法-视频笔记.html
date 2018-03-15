@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-03-15 四 17:33 -->
+<!-- 2018-03-15 四 20:43 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>小甲鱼-数据结构与算法-视频教程笔记</title>
@@ -239,7 +239,10 @@ for the JavaScript code in this tag.
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#org59f8488">Roadmap</a></li>
-<li><a href="#orga8c9fbc">线性表</a></li>
+<li><a href="#orga060792">绪论</a></li>
+<li><a href="#orge314b4e">谈谈算法</a></li>
+<li><a href="#org6807083"><code>[0/3]</code> 时间和空间复杂度</a></li>
+<li><a href="#orga8c9fbc"><code>[11/17]</code> 线性表</a></li>
 </ul>
 </div>
 </nav>
@@ -248,18 +251,121 @@ for the JavaScript code in this tag.
 <h2 id="org59f8488">Roadmap</h2>
 <div class="outline-text-2" id="text-org59f8488">
 <ul class="org-ul">
-<li><code>[0/1]</code> 绪论</li>
-<li><code>[0/1]</code> 谈谈算法</li>
+<li><code>[1/1]</code> 绪论</li>
+<li><code>[1/1]</code> 谈谈算法</li>
 <li><code>[0/3]</code> 时间和空间复杂度</li>
-<li><code>[10/17]</code> 线性表</li>
-<li><code>[0/7]</code> 栈与队列</li>
-<li><code>[0/70]</code> 其它</li>
+<li><code>[11/17]</code> 线性表</li>
+<li><code>[0/8]</code> 栈与队列</li>
+<li><code>[0/4]</code> 递归与分治思想</li>
+<li><code>[0/5]</code> 字符串</li>
+<li><code>[0/3]</code> 树</li>
 </ul>
 </div>
 </div>
 
+<div id="outline-container-orga060792" class="outline-2">
+<h2 id="orga060792">绪论</h2>
+<div class="outline-text-2" id="text-orga060792">
+</div><div id="outline-container-org0d7eacc" class="outline-3">
+<h3 id="org0d7eacc">为什么数据结构与算法课程不好学？</h3>
+<div class="outline-text-3" id="text-org0d7eacc">
+<ol class="org-ol">
+<li>拼脑力</li>
+<li>教授方式（老师只为重复讲解而缺少吸引力）</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org4636a2f" class="outline-3">
+<h3 id="org4636a2f">什么是数据结构</h3>
+<div class="outline-text-3" id="text-org4636a2f">
+<ul class="org-ul">
+<li>研究非数值计算和程序设计问题的操作对象及它们之间的关系和操作</li>
+<li>程序等于数据结构 + 算法</li>
+</ul>
+</div>
+
+<div id="outline-container-org01416e4" class="outline-4">
+<h4 id="org01416e4">逻辑结构和物理结构</h4>
+<div class="outline-text-4" id="text-org01416e4">
+<ul class="org-ul">
+<li>逻辑结构：指对象间的朴素关系</li>
+<li>物理结构：指数据的逻辑结构在计算机中的存储形式</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org99bdca8" class="outline-4">
+<h4 id="org99bdca8">四大逻辑结构</h4>
+<div class="outline-text-4" id="text-org99bdca8">
+<ol class="org-ol">
+<li>集合结构</li>
+<li>线性结构（一对一）</li>
+<li>树形结构（一对多）</li>
+<li>图形结构（多对多）</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org969162d" class="outline-4">
+<h4 id="org969162d">物理存储结构</h4>
+<div class="outline-text-4" id="text-org969162d">
+<ul class="org-ul">
+<li>与存储器有关，如内存、硬盘</li>
+<li>按访问方式分为两种
+<ol class="org-ol">
+<li>顺序存储结构（地址连续）</li>
+<li>链式存储结构（相对前缀和后继）</li>
+</ol></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge314b4e" class="outline-2">
+<h2 id="orge314b4e">谈谈算法</h2>
+<div class="outline-text-2" id="text-orge314b4e">
+<p>
+数据结构与算法有密切的关系
+</p>
+</div>
+
+<div id="outline-container-org77cd1b7" class="outline-3">
+<h3 id="org77cd1b7">什么是算法</h3>
+</div>
+
+<div id="outline-container-org406f328" class="outline-3">
+<h3 id="org406f328">算法的特性</h3>
+<div class="outline-text-3" id="text-org406f328">
+<ul class="org-ul">
+<li>输入</li>
+<li>输出</li>
+<li>有穷性</li>
+<li>确定性</li>
+<li>可行性</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org7226c7a" class="outline-3">
+<h3 id="org7226c7a">算法的设计要求</h3>
+<div class="outline-text-3" id="text-org7226c7a">
+<ul class="org-ul">
+<li>正确性（没有语法错误，对合法输入，对非法输入，对于边界条件输入）</li>
+<li>可读性</li>
+<li>健壮性</li>
+<li>时间效率高和存储量低</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6807083" class="outline-2">
+<h2 id="org6807083"><code>[0/3]</code> 时间和空间复杂度</h2>
+</div>
 <div id="outline-container-orga8c9fbc" class="outline-2">
-<h2 id="orga8c9fbc">线性表</h2>
+<h2 id="orga8c9fbc"><code>[11/17]</code> 线性表</h2>
 <div class="outline-text-2" id="text-orga8c9fbc">
 <p>
 线性表是一个有限的有序数列，每一个元素都有唯一有前驱和唯一的后继（除开头和结尾）
@@ -715,13 +821,37 @@ func (s *StaticList) Delete(v interface{}) error {
 <li>进行插入时，从备用链表中取出一个可用空间，插入到实际链表中</li>
 <li>进行删除时，删除元素放回到备用链表中</li>
 </ul>
+
+<p>
+静态链表的优缺点
+</p>
+<ul class="org-ul">
+<li>优点
+<ul class="org-ul">
+<li>插入和删除，只需要修改游标，不需要移动元素</li>
+</ul></li>
+<li>缺点
+<ul class="org-ul">
+<li>没有解决连续存储分配带来的表长确定的问题</li>
+<li>失去了顺序存储结构随机存取的优势</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org79f6442" class="outline-3">
+<h3 id="org79f6442">例题</h3>
+<div class="outline-text-3" id="text-org79f6442">
+<ul class="org-ul">
+<li>快速找到求知长度单链表的中间节点：快慢指针方法</li>
+</ul>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2018-03-15 四 17:33</p>
+<p class="date">Created: 2018-03-15 四 20:43</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
