@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-03-15 四 15:08 -->
+<!-- 2018-03-15 四 15:20 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>小甲鱼-数据结构与算法-视频教程笔记</title>
@@ -251,7 +251,7 @@ for the JavaScript code in this tag.
 <li><code>[0/1]</code> 绪论</li>
 <li><code>[0/1]</code> 谈谈算法</li>
 <li><code>[0/3]</code> 时间和空间复杂度</li>
-<li><code>[7/17]</code> 线性表</li>
+<li><code>[8/17]</code> 线性表</li>
 <li><code>[0/7]</code> 栈与队列</li>
 <li><code>[0/70]</code> 其它</li>
 </ul>
@@ -387,6 +387,19 @@ for the JavaScript code in this tag.
 </ol>
 
 <p>
+对单链表循环删除整表操作时，用一个临时变量来删除
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go">for p != nil {
+    q := p.next
+    free(p) // go 不需要显式的释放空间， p.next = nil
+    p = q
+}
+</pre>
+</div>
+
+<p>
 单链实现代码如下所示（go 语言）
 </p>
 
@@ -477,12 +490,62 @@ func (s *LinkedList) ToArray() []interface{} {
 </div>
 </div>
 </div>
+
+
+<div id="outline-container-orgcc898cb" class="outline-4">
+<h4 id="orgcc898cb">单链表与顺序存储比较</h4>
+<div class="outline-text-4" id="text-orgcc898cb">
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">比较项</th>
+<th scope="col" class="org-left">单链表</th>
+<th scope="col" class="org-left">顺序表</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">查找</td>
+<td class="org-left">O(n)</td>
+<td class="org-left">O(1)</td>
+</tr>
+
+<tr>
+<td class="org-left">插入</td>
+<td class="org-left">O(1)</td>
+<td class="org-left">O(n)</td>
+</tr>
+
+<tr>
+<td class="org-left">空间性能</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">预分配空间，造成空间浪费或溢出</td>
+</tr>
+</tbody>
+</table>
+
+<ul class="org-ul">
+<li>频繁查找，考虑用顺序存储</li>
+<li>频繁修改，考虑用链表存储</li>
+<li>元素个数不确定，或变化大，考虑用链表存储</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2018-03-15 四 15:08</p>
+<p class="date">Created: 2018-03-15 四 15:20</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
