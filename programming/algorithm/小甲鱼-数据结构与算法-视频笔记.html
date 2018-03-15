@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-03-14 三 12:04 -->
+<!-- 2018-03-15 四 15:08 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>小甲鱼-数据结构与算法-视频教程笔记</title>
@@ -251,7 +251,7 @@ for the JavaScript code in this tag.
 <li><code>[0/1]</code> 绪论</li>
 <li><code>[0/1]</code> 谈谈算法</li>
 <li><code>[0/3]</code> 时间和空间复杂度</li>
-<li><code>[4/17]</code> 线性表</li>
+<li><code>[7/17]</code> 线性表</li>
 <li><code>[0/7]</code> 栈与队列</li>
 <li><code>[0/70]</code> 其它</li>
 </ul>
@@ -303,7 +303,6 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-
 <div id="outline-container-org3e750f7" class="outline-3">
 <h3 id="org3e750f7">常用操作</h3>
 <div class="outline-text-3" id="text-org3e750f7">
@@ -341,6 +340,7 @@ for the JavaScript code in this tag.
 </ol>
 </div>
 
+
 <div id="outline-container-orgd97c200" class="outline-4">
 <h4 id="orgd97c200"><span class="todo TODO">TODO</span> 顺序表</h4>
 <div class="outline-text-4" id="text-orgd97c200">
@@ -371,12 +371,110 @@ for the JavaScript code in this tag.
 <h4 id="org700d83c"><span class="todo TODO">TODO</span> 链式表</h4>
 <div class="outline-text-4" id="text-org700d83c">
 <p>
-单鍡实现参见代码 [?]() 通过头结点可以访问整个链表，尾指针指向空（null）
+包括两个基本域：数据域和指针域
 </p>
 
 <p>
-包括两个基本域：数据域和指针域
+习惯上留置一个头结点作为列表开头，可以在其数据域中存储列表的长度，这样有助于统一列表的访问接口。通过头结点可以访问整个链表，尾指针指向空（null）
 </p>
+
+<p>
+单链表的建立方式
+</p>
+<ol class="org-ol">
+<li>头插法，新建节点指向头节点，将链表指向新建节点，生成链表元素顺序与插入顺序相反</li>
+<li>尾插法，维护一个临时的指向链表最后一个元素的 node，每次向 node.next 加入新元素，并将 node 后移</li>
+</ol>
+
+<p>
+单链实现代码如下所示（go 语言）
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go">package fishc
+
+import "errors"
+
+type Element struct {
+	value interface{}
+	next  *Element
+}
+
+type LinkedList struct {
+	root Element
+	len  int
+}
+
+func NewLinkedList() *LinkedList {
+	return &amp;LinkedList{}
+}
+
+func (s *LinkedList) IsEmpty() bool {
+	return s.root.next == nil
+}
+
+func (s *LinkedList) Len() int {
+	p := s.root.next
+	len := 0
+	for p != nil {
+		p = p.next
+		len++
+	}
+	return len
+}
+
+func (s *LinkedList) Insert(i int, v interface{}) (err error) {
+	p := &amp;s.root
+
+	for p != nil &amp;&amp; i &gt; 0 {
+		p = p.next
+		i--
+	}
+
+	if p == nil {
+		return errors.New("out of index")
+	}
+
+	p.next = &amp;Element{v, p.next}
+	return
+}
+
+func (s *LinkedList) Delete(v interface{}) (err error) {
+	p := s.root.next
+	for p.next != nil &amp;&amp; p.next.value == v {
+		p = p.next
+	}
+
+	p.next = p.next.next
+	return
+}
+
+func (s *LinkedList) Get(i int) interface{} {
+	p := s.root.next
+	for j := 1; j &lt; i; j++ {
+		if p == nil {
+			return nil
+		}
+		p = p.next
+	}
+
+	return p.value
+}
+
+func (s *LinkedList) ToArray() []interface{} {
+	p := s.root.next
+	len := s.Len()
+	r := make([]interface{}, len)
+
+	for i := 0; i &lt; len; i++ {
+		r[i] = p.value
+		p = p.next
+	}
+
+	return r
+}
+</pre>
+</div>
 </div>
 </div>
 </div>
@@ -384,7 +482,7 @@ for the JavaScript code in this tag.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2018-03-14 三 12:04</p>
+<p class="date">Created: 2018-03-15 四 15:08</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
