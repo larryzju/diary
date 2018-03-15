@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-03-15 四 15:20 -->
+<!-- 2018-03-15 四 17:07 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>小甲鱼-数据结构与算法-视频教程笔记</title>
@@ -340,7 +340,6 @@ for the JavaScript code in this tag.
 </ol>
 </div>
 
-
 <div id="outline-container-orgd97c200" class="outline-4">
 <h4 id="orgd97c200"><span class="todo TODO">TODO</span> 顺序表</h4>
 <div class="outline-text-4" id="text-orgd97c200">
@@ -366,9 +365,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-
 <div id="outline-container-org700d83c" class="outline-4">
-<h4 id="org700d83c"><span class="todo TODO">TODO</span> 链式表</h4>
+<h4 id="org700d83c">链式表</h4>
 <div class="outline-text-4" id="text-org700d83c">
 <p>
 包括两个基本域：数据域和指针域
@@ -491,7 +489,6 @@ func (s *LinkedList) ToArray() []interface{} {
 </div>
 </div>
 
-
 <div id="outline-container-orgcc898cb" class="outline-4">
 <h4 id="orgcc898cb">单链表与顺序存储比较</h4>
 <div class="outline-text-4" id="text-orgcc898cb">
@@ -540,12 +537,37 @@ func (s *LinkedList) ToArray() []interface{} {
 </ul>
 </div>
 </div>
+<div id="outline-container-org5f0a09d" class="outline-4">
+<h4 id="org5f0a09d">静态链表</h4>
+<div class="outline-text-4" id="text-org5f0a09d">
+<p>
+C 语言的指针提供了极大的灵活性（面向对象使用对象引用机制间接的实现了指针的某些功能），是实现链表的语言基础。
+</p>
+
+<p>
+在早期（如 basic, fortran）中，以数组代替指针来描述单链表。这种方式称为游标实现法
+</p>
+
+<ul class="org-ul">
+<li>每个元素由游标和数据组成</li>
+<li>整体上 N 个元素构成，</li>
+<li>第 N-1 个元素的游标指向第一个元素</li>
+<li>第 0 个元素的游标指向最后一个元素</li>
+<li>第一个和最后一个元素 data 不存放数据</li>
+<li>其它元素的游标指向下一个元素的下标</li>
+</ul>
+
+<p>
+代码实现如下所示
+</p>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2018-03-15 四 15:20</p>
+<p class="date">Created: 2018-03-15 四 17:07</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
