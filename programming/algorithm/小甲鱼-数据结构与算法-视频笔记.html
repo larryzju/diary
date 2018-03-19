@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-03-15 四 20:43 -->
+<!-- 2018-03-19 一 10:16 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>小甲鱼-数据结构与算法-视频教程笔记</title>
@@ -229,6 +229,28 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
@@ -243,6 +265,11 @@ for the JavaScript code in this tag.
 <li><a href="#orge314b4e">谈谈算法</a></li>
 <li><a href="#org6807083"><code>[0/3]</code> 时间和空间复杂度</a></li>
 <li><a href="#orga8c9fbc"><code>[11/17]</code> 线性表</a></li>
+<li><a href="#org5f35d9e"><code>[0/8]</code> 栈与队列</a></li>
+<li><a href="#orga5c506a"><code>[0/4]</code> 递归与分治思想</a></li>
+<li><a href="#org9f9d85c"><code>[0/5]</code> 字符串</a></li>
+<li><a href="#org430bfdb"><code>[0/3]</code> 树</a></li>
+<li><a href="#org0ad6e48">图</a></li>
 </ul>
 </div>
 </nav>
@@ -259,9 +286,11 @@ for the JavaScript code in this tag.
 <li><code>[0/4]</code> 递归与分治思想</li>
 <li><code>[0/5]</code> 字符串</li>
 <li><code>[0/3]</code> 树</li>
+<li>[0/10+] 图</li>
 </ul>
 </div>
 </div>
+
 
 <div id="outline-container-orga060792" class="outline-2">
 <h2 id="orga060792">绪论</h2>
@@ -271,7 +300,7 @@ for the JavaScript code in this tag.
 <div class="outline-text-3" id="text-org0d7eacc">
 <ol class="org-ol">
 <li>拼脑力</li>
-<li>教授方式（老师只为重复讲解而缺少吸引力）</li>
+<li>教授方式枯燥（老师因为重复讲解而缺少吸引力）</li>
 </ol>
 </div>
 </div>
@@ -289,7 +318,7 @@ for the JavaScript code in this tag.
 <h4 id="org01416e4">逻辑结构和物理结构</h4>
 <div class="outline-text-4" id="text-org01416e4">
 <ul class="org-ul">
-<li>逻辑结构：指对象间的朴素关系</li>
+<li>逻辑结构：指对象间的相互关系</li>
 <li>物理结构：指数据的逻辑结构在计算机中的存储形式</li>
 </ul>
 </div>
@@ -649,13 +678,12 @@ func (s *LinkedList) ToArray() []interface{} {
 <h3 id="org5f0a09d">静态链表</h3>
 <div class="outline-text-3" id="text-org5f0a09d">
 <p>
-C 语言的指针提供了极大的灵活性（面向对象使用对象引用机制间接的实现了指针的某些功能），是实现链表的语言基础。
+C 语言的指针提供了极大的灵活性（面向对象使用对象引用机制间接的实现了指针的某些功能），指针是实现链表的语言基础。
 </p>
 
 <p>
-在早期（如 basic, fortran）中，以数组代替指针来描述单链表。这种方式称为游标实现法
+在早期（如 basic, fortran）语言中，以数组下标代替指针来描述单链表。这种方式称为游标实现法，有以下特征
 </p>
-
 <ul class="org-ul">
 <li>每个元素由游标和数据组成</li>
 <li>整体上 N 个元素构成，</li>
@@ -839,6 +867,34 @@ func (s *StaticList) Delete(v interface{}) error {
 </div>
 </div>
 
+<div id="outline-container-org9879485" class="outline-3">
+<h3 id="org9879485">循环链表</h3>
+<div class="outline-text-3" id="text-org9879485">
+<ul class="org-ul">
+<li>链表的尾部指向表头</li>
+<li>因为单链表必须从头出发，否则无法访问到全部结点</li>
+<li>与单链表的区别在于如何判断链表为空</li>
+<li>空表 <code>head-&gt;next = head</code></li>
+</ul>
+</div>
+
+<div id="outline-container-org6824e1d" class="outline-4">
+<h4 id="org6824e1d">示例代码</h4>
+<div class="outline-text-4" id="text-org6824e1d">
+<p>
+初始化
+插入（位置，值）
+删除位置（2）
+查找元素的位置
+查看列表
+退出
+</p>
+</div>
+</div>
+</div>
+
+
+
 <div id="outline-container-org79f6442" class="outline-3">
 <h3 id="org79f6442">例题</h3>
 <div class="outline-text-3" id="text-org79f6442">
@@ -848,10 +904,111 @@ func (s *StaticList) Delete(v interface{}) error {
 </div>
 </div>
 </div>
+<div id="outline-container-org5f35d9e" class="outline-2">
+<h2 id="org5f35d9e"><code>[0/8]</code> 栈与队列</h2>
+</div>
+<div id="outline-container-orga5c506a" class="outline-2">
+<h2 id="orga5c506a"><code>[0/4]</code> 递归与分治思想</h2>
+</div>
+<div id="outline-container-org9f9d85c" class="outline-2">
+<h2 id="org9f9d85c"><code>[0/5]</code> 字符串</h2>
+</div>
+<div id="outline-container-org430bfdb" class="outline-2">
+<h2 id="org430bfdb"><code>[0/3]</code> 树</h2>
+</div>
+<div id="outline-container-org0ad6e48" class="outline-2">
+<h2 id="org0ad6e48">图</h2>
+<div class="outline-text-2" id="text-org0ad6e48">
+</div><div id="outline-container-org93a8cf0" class="outline-3">
+<h3 id="org93a8cf0">概念</h3>
+<div class="outline-text-3" id="text-org93a8cf0">
+</div><div id="outline-container-orgc7c1ed4" class="outline-4">
+<h4 id="orgc7c1ed4">基本概念</h4>
+<div class="outline-text-4" id="text-orgc7c1ed4">
+<p>
+图（Graph）由有穷非空的点（Vertex）和边（Edge）构成。
+</p>
+
+<p>
+与线性表和树相比：
+</p>
+<ul class="org-ul">
+<li>线性表表示链式关系，一对一</li>
+<li>树表示层次关系，一对多</li>
+<li>图表示网关系，多对多</li>
+<li>图的顶点集合不能为空，而线性表和树可以为空</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org72ce899" class="outline-4">
+<h4 id="org72ce899">边</h4>
+<div class="outline-text-4" id="text-org72ce899">
+<p>
+按是否有方向，分为有向边和无向边
+</p>
+<ul class="org-ul">
+<li><code>(Vi,Vj)</code> 无向边</li>
+<li><code>&lt;Vi,Vj&gt;</code> 有向边</li>
+<li>有向边也称为弧（Arc），起点称为弧头，终点称为弧尾</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org5da2498" class="outline-4">
+<h4 id="org5da2498">图的表示</h4>
+<div class="outline-text-4" id="text-org5da2498">
+<p>
+用点和边来表示图，如
+</p>
+<p class="verse">
+G1 = {V1, E1}<br>
+E1 = {(A,B), (B,C), (C,D), (A,C)<br>
+V1 = {A,B,C,D}<br>
+</p>
+
+<p>
+同理，可以表示有向图
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2a1ef86" class="outline-4">
+<h4 id="org2a1ef86">图的分类</h4>
+<div class="outline-text-4" id="text-org2a1ef86">
+<ul class="org-ul">
+<li>简单图，不含重复的边，且没有指向点本身的边</li>
+<li>无向完全图，点两两之间相连，共有 n(n-1)/2 条边</li>
+<li>有向完全图，共有 n(n-1) 条边</li>
+<li>稀疏图和稠密图，约定边（弧）小于 \(n\log(n)\) 为稀疏图</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org3ca14e7" class="outline-4">
+<h4 id="org3ca14e7">网（Network）</h4>
+<div class="outline-text-4" id="text-org3ca14e7">
+<ul class="org-ul">
+<li>边（弧）上附有关联数值，该数值称为权。常用于表示距离或价值</li>
+<li>带权的图称为网（Network）</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org4926a80" class="outline-4">
+<h4 id="org4926a80">子图</h4>
+<div class="outline-text-4" id="text-org4926a80">
+<p>
+G2 为 G1 的子图，当 V2 包含于 V1, 且 E2 包含于 E1
+</p>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2018-03-15 四 20:43</p>
+<p class="date">Created: 2018-03-19 一 10:16</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
