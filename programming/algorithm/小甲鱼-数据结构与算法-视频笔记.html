@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-03-19 一 10:16 -->
+<!-- 2018-03-19 一 10:48 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>小甲鱼-数据结构与算法-视频教程笔记</title>
@@ -286,7 +286,7 @@ for the JavaScript code in this tag.
 <li><code>[0/4]</code> 递归与分治思想</li>
 <li><code>[0/5]</code> 字符串</li>
 <li><code>[0/3]</code> 树</li>
-<li>[0/10+] 图</li>
+<li>[2/10+] 图</li>
 </ul>
 </div>
 </div>
@@ -1003,12 +1003,86 @@ G2 为 G1 的子图，当 V2 包含于 V1, 且 E2 包含于 E1
 </p>
 </div>
 </div>
+
+
+<div id="outline-container-org01c200b" class="outline-4">
+<h4 id="org01c200b">顶点与边</h4>
+<div class="outline-text-4" id="text-org01c200b">
+<ul class="org-ul">
+<li>（无向图）当 (V1,V2) 构成 E，则 V1 和 V2 称为邻接点（Adjacent）</li>
+<li>（无向图）E 依附（Incident）于顶点 V1 和 V2</li>
+<li>（无向图）也说 E 与 V1 和 V2 相关联</li>
+<li>（有向图）当 &lt;V1,V2&gt; 构成 E，则 V1 邻接到 V2，或者说 V2 邻接至 V1</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgd3f44e8" class="outline-4">
+<h4 id="orgd3f44e8">度</h4>
+<div class="outline-text-4" id="text-orgd3f44e8">
+<ul class="org-ul">
+<li>（无向图）指与 V 相关的边的数量</li>
+<li>（有向图）入度（InDegree），指以 V 为头的弧</li>
+<li>（有向图）出度（OutDegree），指以 V 为尾的弧</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org4d0c93c" class="outline-4">
+<h4 id="org4d0c93c">路径</h4>
+<div class="outline-text-4" id="text-org4d0c93c">
+<p>
+图 G=(V,E)，从 V1 到 V2 的路径指经过的边（弧）的数量，称为 Path
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3a0114b" class="outline-4">
+<h4 id="org3a0114b">环与简单图</h4>
+<div class="outline-text-4" id="text-org3a0114b">
+<ul class="org-ul">
+<li>路径绕回起点为环</li>
+<li>简单路径：顶点不重复出现的路径</li>
+<li>简单回路：除了起点和终点，其它顶点不重复出现的路径</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org3ba5e8f" class="outline-4">
+<h4 id="org3ba5e8f">连通图</h4>
+<div class="outline-text-4" id="text-org3ba5e8f">
+<p>
+-（无向图）任意 Vi 与 Vj 相互连通的图，称为 ConnectedGraph
+-（有向图）任意 Vi 与 Vj 相互连通，称为强连通图
+</p>
+</div>
+</div>
+
+<div id="outline-container-org137cbdc" class="outline-4">
+<h4 id="org137cbdc">连通分量</h4>
+<div class="outline-text-4" id="text-org137cbdc">
+<ul class="org-ul">
+<li>（无向图）极大连通子图</li>
+<li>（有向图）极大强连通子图</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgf2daa40" class="outline-4">
+<h4 id="orgf2daa40">生成树</h4>
+<div class="outline-text-4" id="text-orgf2daa40">
+<p>
+-（无向图）极小连通子图，由全部 N 个顶点，和足以构成树的 N-1 条边构成的连通树
+-（有向图）恰有一个顶点入度为 0，其余顶点入度为 1 生成的有向树
+</p>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2018-03-19 一 10:16</p>
+<p class="date">Created: 2018-03-19 一 10:48</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
