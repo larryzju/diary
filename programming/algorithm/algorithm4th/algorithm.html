@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-03-21 三 10:10 -->
+<!-- 2018-03-21 三 10:29 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Algorithm 4th 笔记</title>
@@ -260,11 +260,27 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
+<li><a href="#org5ac20c0">说明</a></li>
 <li><a href="#org973ddde">Foundamentals</a></li>
 <li><a href="#org1a39981">Sorting</a></li>
+<li><a href="#orge10292a">视频笔记</a></li>
+<li><a href="#org461d7cb">延伸阅读</a></li>
 </ul>
 </div>
 </nav>
+
+<div id="outline-container-org5ac20c0" class="outline-2">
+<h2 id="org5ac20c0">说明</h2>
+<div class="outline-text-2" id="text-org5ac20c0">
+<p>
+本笔记整理
+</p>
+<ol class="org-ol">
+<li>阅读 Algorithm Fourth Edition</li>
+<li>Coursera Algorithm Part1</li>
+</ol>
+</div>
+</div>
 
 <div id="outline-container-org973ddde" class="outline-2">
 <h2 id="org973ddde">Foundamentals</h2>
@@ -654,10 +670,206 @@ Shellsort gains efficiency by making a tradeoff between size and partial order i
 <h3 id="org08e14ab">HeapSort</h3>
 </div>
 </div>
+
+<div id="outline-container-orge10292a" class="outline-2">
+<h2 id="orge10292a">视频笔记</h2>
+<div class="outline-text-2" id="text-orge10292a">
+<p>
+视频与课本相关，后续将下面的章节分类到课本的章节中去
+</p>
+</div>
+
+<div id="outline-container-org5686425" class="outline-3">
+<h3 id="org5686425">Union Find</h3>
+<div class="outline-text-3" id="text-org5686425">
+</div><div id="outline-container-org956fbf5" class="outline-4">
+<h4 id="org956fbf5">概述</h4>
+<div class="outline-text-4" id="text-org956fbf5">
+<p>
+对于给出的点集，检查各个点的联通性问题（dynamic connectivity problem）。
+</p>
+
+<p>
+Union-Find 问题有两个基本操作 union 和 find，用 API 形式表示如下
+</p>
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">method</th>
+<th scope="col" class="org-left">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><code>UF(int N)</code></td>
+<td class="org-left">初始化 N 个 object 构成的点集</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>void union(int p, int q)</code></td>
+<td class="org-left">连接 p 和 q 两个 object</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>boolean connection(int p, int q)</code></td>
+<td class="org-left">检查 p 和 q 两个 object 是否相连</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+为了简化实现，用 index array 来存储点，以下标来进行标识。如果要实现通用的点集，可以考虑使用 symbol table
+</p>
+
+<p>
+解决 union-find 问题有四种数据结构
+</p>
+<ol class="org-ol">
+<li>quick find</li>
+<li>quick union</li>
+<li>weighted quick union</li>
+<li>weighted quick union with path compression</li>
+</ol>
+
+<p>
+常用于 percolation problem from physical chemistry
+</p>
+
+<p>
+本节演示了如何设计一个算法
+</p>
+<ol class="org-ol">
+<li>modeling the problem</li>
+<li>find algorithm</li>
+<li>fast enough? fits memory?</li>
+<li>if not, figure out why</li>
+<li>find a way to address the problem</li>
+<li>iterate until staisfied</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgfb21c64" class="outline-4">
+<h4 id="orgfb21c64">Quick Find</h4>
+<div class="outline-text-4" id="text-orgfb21c64">
+<p>
+其本思路是
+</p>
+<ol class="org-ol">
+<li>初始化时，用不同的 id 来标识不同的组（数组的索引）</li>
+<li><p>
+进行 union 操作时，遍历数组，将符合 p 对应的组 id 修改为 q 的组 id
+</p>
+<div class="org-src-container">
+<pre class="src src-java">void union(int p, int q) {
+    int pid = A[p];
+    int qid = A[q];
+    for(int i = 0; i &lt; N; i++) {
+	if(A[i] == pid) {
+	    A[i] = qid;
+	}
+    }
+}
+</pre>
+</div></li>
+<li>随着连接变多，组渐变少</li>
+</ol>
+
+<p>
+本方法对应的算法复杂度如下所示
+</p>
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">method</th>
+<th scope="col" class="org-left">complexity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">initial</td>
+<td class="org-left">N</td>
+</tr>
+
+<tr>
+<td class="org-left">union</td>
+<td class="org-left">N</td>
+</tr>
+
+<tr>
+<td class="org-left">find</td>
+<td class="org-left">1</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+看出，当 N 较大时，union 开销较大
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5add027" class="outline-4">
+<h4 id="org5add027">Quick Union</h4>
+</div>
+
+<div id="outline-container-org353fe21" class="outline-4">
+<h4 id="org353fe21">Weighted Quick Union</h4>
+</div>
+
+<div id="outline-container-org8a2a7fb" class="outline-4">
+<h4 id="org8a2a7fb">Weighted Quick Union with Path Compression</h4>
+</div>
+
+<div id="outline-container-org624ef57" class="outline-4">
+<h4 id="org624ef57">Analysis of Algorithm</h4>
+<div class="outline-text-4" id="text-org624ef57">
+<p>
+计算机发展中，处理性能和内存同时提升。而处理性能的提升与因为内存增大而造成的处理器的提升成线性比例。也就是说曾经处理性能为 P 时，处理 Q 量的数据；现在处理性能为 1000P 时可能要求处理 1000Q 的数据。对于算法复杂度为 \(O(n^2)\) 的情况，实际上性能不升反降
+</p>
+</div>
+</div>
+
+<div id="outline-container-org031c683" class="outline-4">
+<h4 id="org031c683">Performance Versus</h4>
+</div>
+</div>
+
+
+<div id="outline-container-orgab42eda" class="outline-3">
+<h3 id="orgab42eda">其它</h3>
+<div class="outline-text-3" id="text-orgab42eda">
+</div><div id="outline-container-org6da567f" class="outline-4">
+<h4 id="org6da567f"><span class="todo TODO">TODO</span> Symbol Table</h4>
+</div>
+</div>
+</div>
+<div id="outline-container-org461d7cb" class="outline-2">
+<h2 id="org461d7cb">延伸阅读</h2>
+<div class="outline-text-2" id="text-org461d7cb">
+<ul class="org-ul">
+<li>An Introduction to programming in Java: An interdisciplinary approach</li>
+</ul>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Larry</p>
-<p class="date">Created: 2018-03-21 三 10:10</p>
+<p class="date">Created: 2018-03-21 三 10:29</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
