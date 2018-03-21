@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-03-21 三 10:29 -->
+<!-- 2018-03-21 三 17:10 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Algorithm 4th 笔记</title>
@@ -273,12 +273,16 @@ for the JavaScript code in this tag.
 <h2 id="org5ac20c0">说明</h2>
 <div class="outline-text-2" id="text-org5ac20c0">
 <p>
-本笔记整理
+本笔记整理以下教材和教程
 </p>
 <ol class="org-ol">
 <li>阅读 Algorithm Fourth Edition</li>
 <li>Coursera Algorithm Part1</li>
 </ol>
+
+<p>
+以 Algorithm 4th 课本目录结构为主线，整合了 Coursera 中的视频笔记
+</p>
 </div>
 </div>
 
@@ -288,9 +292,9 @@ for the JavaScript code in this tag.
 </div><div id="outline-container-org10ee810" class="outline-3">
 <h3 id="org10ee810">Bags, Queues, and Stacks</h3>
 <div class="outline-text-3" id="text-org10ee810">
-</div><div id="outline-container-orgb6e21eb" class="outline-4">
-<h4 id="orgb6e21eb">概述</h4>
-<div class="outline-text-4" id="text-orgb6e21eb">
+</div><div id="outline-container-org956fbf5" class="outline-4">
+<h4 id="org956fbf5">概述</h4>
+<div class="outline-text-4" id="text-org956fbf5">
 <p>
 本节主要讲了三种数据结构，其基本操作包括 add, isEmpty 和 size。 
 </p>
@@ -482,6 +486,155 @@ Java 中没有指针，用引用来实现链表
 <li>有利于统一对 sequence 和 collection 的迭代操作方式，隐藏底层实现（ Clojure 尤为强调这一点）</li>
 </ul>
 </div>
+</div>
+</div>
+
+<div id="outline-container-org47b603f" class="outline-3">
+<h3 id="org47b603f">Union-Find</h3>
+</div>
+
+<div id="outline-container-org385dcd1" class="outline-3">
+<h3 id="org385dcd1">概述</h3>
+<div class="outline-text-3" id="text-org385dcd1">
+<p>
+Union-Find 也叫作动态连接问题（Dynamic Connectivity），对点集进行动态连接操作，并能实时查询两个点之间是否有直接或间接的通联关系
+</p>
+
+<p>
+该算法可以应用于多种应用场景，如
+</p>
+<ul class="org-ul">
+<li>network 检查子网间的通联性</li>
+<li>variable-name equivalence，检查编程语言中变量名是否引用同一对象（Fortran）</li>
+<li>Mathematical sets，对集合进行分类</li>
+</ul>
+
+<p>
+算法几个基本术语如下所示
+</p>
+<dl class="org-dl">
+<dt>connection</dt><dd>两点之间有连接</dd>
+<dt>connected components</dt><dd>相互连接的点构成的集合</dd>
+</dl>
+
+<p>
+本章通过介绍 union-find 的四种算法设计，强调了算法设计的基本步骤
+</p>
+<ol class="org-ol">
+<li>好的算法可以解决原本不可能解决的问题</li>
+<li>好算法可以使实现更为简洁</li>
+<li>分析算法性能</li>
+<li>如何选择算法</li>
+<li>逐步优化算法</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgfb21c64" class="outline-3">
+<h3 id="orgfb21c64">Quick Find</h3>
+<div class="outline-text-3" id="text-orgfb21c64">
+<ul class="org-ul">
+<li>使用 <code>id[]</code> 数组保存各个点的分组情况</li>
+<li>当建立新的连接时，遍历修改 <code>id[p]</code> 相同的组 id 为 <code>id[q]</code></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org5add027" class="outline-3">
+<h3 id="org5add027">Quick Union</h3>
+<div class="outline-text-3" id="text-org5add027">
+<ul class="org-ul">
+<li><code>id[i]</code> 指向父结点，子与父同属一个组</li>
+<li>检查是否通联，只需要检查两个结点是否有相同的 root 结点</li>
+<li>通过递归向上找父结点，直到 <code>id[i] == i</code> 时，该节点为 root</li>
+<li>虽然不用扫描全表，但最差情况找 root 仍为 \(O(n)\)</li>
+<li>合并时，将左树的 root 指向右树的 root</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org353fe21" class="outline-3">
+<h3 id="org353fe21">Weighted Quick Union</h3>
+<div class="outline-text-3" id="text-org353fe21">
+<ul class="org-ul">
+<li>用一个单独的数组，记录每棵树的大小</li>
+<li>合并时将小树合并到大树上，避免树增长过快</li>
+<li>查找、检查联接、合并的时间复杂度不超过 \(\lg(N)\)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org8a2a7fb" class="outline-3">
+<h3 id="org8a2a7fb">Weighted Quick Union with Path Compression</h3>
+<div class="outline-text-3" id="text-org8a2a7fb">
+<ul class="org-ul">
+<li>在 find 向上递归找 root 节点的操作时，遍历过程中将节点的 parent 直接指向 root</li>
+<li>实际效果接近 constant time per operation</li>
+<li>与 Weighted Quick Union 效率相当</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgbc652ed" class="outline-3">
+<h3 id="orgbc652ed">Performance</h3>
+<div class="outline-text-3" id="text-orgbc652ed">
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">algorithm</th>
+<th scope="col" class="org-left">constructor</th>
+<th scope="col" class="org-left">union</th>
+<th scope="col" class="org-left">find</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">quick-find</td>
+<td class="org-left">N</td>
+<td class="org-left">N</td>
+<td class="org-left">1</td>
+</tr>
+
+<tr>
+<td class="org-left">quick-union</td>
+<td class="org-left">N</td>
+<td class="org-left">tree-height</td>
+<td class="org-left">tree-height</td>
+</tr>
+
+<tr>
+<td class="org-left">weighted quick union</td>
+<td class="org-left">N</td>
+<td class="org-left">lgN</td>
+<td class="org-left">lgN</td>
+</tr>
+
+<tr>
+<td class="org-left">weighted quick union with path compression</td>
+<td class="org-left">N</td>
+<td class="org-left">nearly 1</td>
+<td class="org-left">nearly 1</td>
+</tr>
+
+<tr>
+<td class="org-left">impossible</td>
+<td class="org-left">N</td>
+<td class="org-left">1</td>
+<td class="org-left">1</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -682,9 +835,9 @@ Shellsort gains efficiency by making a tradeoff between size and partial order i
 <div id="outline-container-org5686425" class="outline-3">
 <h3 id="org5686425">Union Find</h3>
 <div class="outline-text-3" id="text-org5686425">
-</div><div id="outline-container-org956fbf5" class="outline-4">
-<h4 id="org956fbf5">概述</h4>
-<div class="outline-text-4" id="text-org956fbf5">
+</div><div id="outline-container-org1774eef" class="outline-4">
+<h4 id="org1774eef">概述</h4>
+<div class="outline-text-4" id="text-org1774eef">
 <p>
 对于给出的点集，检查各个点的联通性问题（dynamic connectivity problem）。
 </p>
@@ -756,9 +909,9 @@ Union-Find 问题有两个基本操作 union 和 find，用 API 形式表示如�
 </div>
 </div>
 
-<div id="outline-container-orgfb21c64" class="outline-4">
-<h4 id="orgfb21c64">Quick Find</h4>
-<div class="outline-text-4" id="text-orgfb21c64">
+<div id="outline-container-org87af678" class="outline-4">
+<h4 id="org87af678">Quick Find</h4>
+<div class="outline-text-4" id="text-org87af678">
 <p>
 其本思路是
 </p>
@@ -823,16 +976,16 @@ Union-Find 问题有两个基本操作 union 和 find，用 API 形式表示如�
 </div>
 </div>
 
-<div id="outline-container-org5add027" class="outline-4">
-<h4 id="org5add027">Quick Union</h4>
+<div id="outline-container-orgf8338cf" class="outline-4">
+<h4 id="orgf8338cf">Quick Union</h4>
 </div>
 
-<div id="outline-container-org353fe21" class="outline-4">
-<h4 id="org353fe21">Weighted Quick Union</h4>
+<div id="outline-container-orgee8f0f7" class="outline-4">
+<h4 id="orgee8f0f7">Weighted Quick Union</h4>
 </div>
 
-<div id="outline-container-org8a2a7fb" class="outline-4">
-<h4 id="org8a2a7fb">Weighted Quick Union with Path Compression</h4>
+<div id="outline-container-org21a7ec3" class="outline-4">
+<h4 id="org21a7ec3">Weighted Quick Union with Path Compression</h4>
 </div>
 
 <div id="outline-container-org624ef57" class="outline-4">
@@ -869,7 +1022,7 @@ Union-Find 问题有两个基本操作 union 和 find，用 API 形式表示如�
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Larry</p>
-<p class="date">Created: 2018-03-21 三 10:29</p>
+<p class="date">Created: 2018-03-21 三 17:10</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
