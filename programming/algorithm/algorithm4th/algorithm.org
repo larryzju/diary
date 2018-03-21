@@ -3,9 +3,11 @@
 
 * 说明
 
-本笔记整理
+本笔记整理以下教材和教程
 1. 阅读 Algorithm Fourth Edition
 2. Coursera Algorithm Part1
+
+以 Algorithm 4th 课本目录结构为主线，整合了 Coursera 中的视频笔记
 
 * Foundamentals
 
@@ -118,6 +120,63 @@ Java 中没有指针，用引用来实现链表
 - 在该对象中缓存着当前访问到的元素中间状态
 - 通过 hasNext 和 next 方法来迭代操作每个元素
 - 有利于统一对 sequence 和 collection 的迭代操作方式，隐藏底层实现（ Clojure 尤为强调这一点）
+
+** Union-Find
+
+** 概述
+
+Union-Find 也叫作动态连接问题（Dynamic Connectivity），对点集进行动态连接操作，并能实时查询两个点之间是否有直接或间接的通联关系
+
+该算法可以应用于多种应用场景，如
+- network 检查子网间的通联性
+- variable-name equivalence，检查编程语言中变量名是否引用同一对象（Fortran）
+- Mathematical sets，对集合进行分类
+
+算法几个基本术语如下所示
+- connection :: 两点之间有连接
+- connected components :: 相互连接的点构成的集合
+
+本章通过介绍 union-find 的四种算法设计，强调了算法设计的基本步骤
+1. 好的算法可以解决原本不可能解决的问题
+2. 好算法可以使实现更为简洁
+3. 分析算法性能
+4. 如何选择算法
+5. 逐步优化算法
+
+** Quick Find
+
+- 使用 =id[]= 数组保存各个点的分组情况
+- 当建立新的连接时，遍历修改 =id[p]= 相同的组 id 为 =id[q]=
+
+** Quick Union
+
+- =id[i]= 指向父结点，子与父同属一个组
+- 检查是否通联，只需要检查两个结点是否有相同的 root 结点
+- 通过递归向上找父结点，直到 ~id[i] == i~ 时，该节点为 root
+- 虽然不用扫描全表，但最差情况找 root 仍为 $O(n)$
+- 合并时，将左树的 root 指向右树的 root
+
+** Weighted Quick Union
+
+- 用一个单独的数组，记录每棵树的大小
+- 合并时将小树合并到大树上，避免树增长过快
+- 查找、检查联接、合并的时间复杂度不超过 $\lg(N)$
+
+** Weighted Quick Union with Path Compression
+
+- 在 find 向上递归找 root 节点的操作时，遍历过程中将节点的 parent 直接指向 root
+- 实际效果接近 constant time per operation
+- 与 Weighted Quick Union 效率相当
+
+** Performance
+
+| algorithm                                  | constructor | union       | find        |
+|--------------------------------------------+-------------+-------------+-------------|
+| quick-find                                 | N           | N           | 1           |
+| quick-union                                | N           | tree-height | tree-height |
+| weighted quick union                       | N           | lgN         | lgN         |
+| weighted quick union with path compression | N           | nearly 1    | nearly 1    |
+| impossible                                 | N           | 1           | 1           |
 
 
 * Sorting
