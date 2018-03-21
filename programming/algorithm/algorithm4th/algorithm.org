@@ -1,6 +1,12 @@
 #+TITLE: Algorithm 4th 笔记
 #+AUTHRO: Zhao WenBin
 
+* 说明
+
+本笔记整理
+1. 阅读 Algorithm Fourth Edition
+2. Coursera Algorithm Part1
+
 * Foundamentals
 
 ** Bags, Queues, and Stacks
@@ -228,3 +234,84 @@ Java 中没有指针，用引用来实现链表
 ** QuickSort
 
 ** HeapSort
+
+* 视频笔记
+
+视频与课本相关，后续将下面的章节分类到课本的章节中去
+
+** Union Find
+
+*** 概述
+
+对于给出的点集，检查各个点的联通性问题（dynamic connectivity problem）。
+
+Union-Find 问题有两个基本操作 union 和 find，用 API 形式表示如下
+| method                             | description                   |
+|------------------------------------+-------------------------------|
+| =UF(int N)=                        | 初始化 N 个 object 构成的点集 |
+| =void union(int p, int q)=         | 连接 p 和 q 两个 object       |
+| =boolean connection(int p, int q)= | 检查 p 和 q 两个 object 是否相连       |
+
+为了简化实现，用 index array 来存储点，以下标来进行标识。如果要实现通用的点集，可以考虑使用 symbol table
+
+解决 union-find 问题有四种数据结构
+1. quick find
+2. quick union
+3. weighted quick union
+4. weighted quick union with path compression
+
+常用于 percolation problem from physical chemistry
+
+本节演示了如何设计一个算法
+1. modeling the problem
+2. find algorithm
+3. fast enough? fits memory?
+4. if not, figure out why
+5. find a way to address the problem
+6. iterate until staisfied
+
+*** Quick Find
+
+其本思路是
+1. 初始化时，用不同的 id 来标识不同的组（数组的索引）
+2. 进行 union 操作时，遍历数组，将符合 p 对应的组 id 修改为 q 的组 id
+   #+BEGIN_SRC java
+     void union(int p, int q) {
+	 int pid = A[p];
+	 int qid = A[q];
+	 for(int i = 0; i < N; i++) {
+	     if(A[i] == pid) {
+		 A[i] = qid;
+	     }
+	 }
+     }
+   #+END_SRC
+3. 随着连接变多，组渐变少
+
+本方法对应的算法复杂度如下所示
+| method  | complexity |
+|---------+------------|
+| initial | N          |
+| union   | N          |
+| find    | 1          |
+
+看出，当 N 较大时，union 开销较大
+
+*** Quick Union
+
+*** Weighted Quick Union
+
+*** Weighted Quick Union with Path Compression
+
+*** Analysis of Algorithm
+
+计算机发展中，处理性能和内存同时提升。而处理性能的提升与因为内存增大而造成的处理器的提升成线性比例。也就是说曾经处理性能为 P 时，处理 Q 量的数据；现在处理性能为 1000P 时可能要求处理 1000Q 的数据。对于算法复杂度为 $O(n^2)$ 的情况，实际上性能不升反降
+
+*** Performance Versus
+
+
+** 其它
+*** TODO Symbol Table
+* 延伸阅读
+
+- An Introduction to programming in Java: An interdisciplinary approach
