@@ -23,7 +23,7 @@ So what will you actually learn well you're going to learn docker deployments. E
 Thank you for bringing that up so. Again it's called real-world docker. The link is in the description and also you can go to O'Reilly comm and search for real-world docker it's also available on Safari Books if your company provides you with the Safari Books membership and so go check it out you're going to love the course it's going to help you out a ton and I give you information on how to contact me, So I'm available to help you out if you have any issues with that course. Enjoy and have a great day.
 
 
-** [[Learn Docker in 12 Minutes][Learn Docker in 12 Minutes]]
+** [[http://unknow.org][Learn Docker in 12 Minutes]]
 
 Docker is a tool for running applications in an isolated environment.
 
@@ -146,7 +146,7 @@ matches these instructions.
 We want one more thing in our doctor file we want to use the expose
 keyword to expose port 80.  This just means when you run the image and
 you get a container that container will listen on port 80. By default
-it will just ignore all incoming requests
+it will just ignore all incoming requests.
 
 If you're wondering what operating system this PHP image is based on.
 You can usually find the dockerfile that it's defined by. In this case
@@ -164,20 +164,20 @@ location inside of the image.  It's going to tell running containers
 to listen on port 80. And then it's going to output a new image our
 new customized version which will be able to run.
 
-So to build it I'm going to go to a terminal first. I'm going to move
+So to build it I'm going to go to a terminal. First I'm going to move
 to the folder that it's in so we can see we've got docker file right
 there and I'm going to type =docker build -t= to give it a name.
 
 I'm just going to call it hello world and then at the end you want to
 tell it the location of the dockerfile. And since it's in the current
-directory we just want to put a dot to say that.
+directory we just want to put "." to say that.
 
 Oops... helps if I save the docket file first.
 
 The first time you do this it'll have to download all of the layers
-that make up that PHP image. Shouldn't take too long wanted to got the
-image it's going to copy our files inside. At the end its outputs our
-new image and it's going to be called hello world.
+that make up that PHP image. Shouldn't take too long. Wanted to got
+the image it's going to copy our files inside. At the end is outputs
+our new image and it's going to be called hello world.
 
 So we can run this by typing =docker run hello-world= there's one
 other thing we need in the middle of this we need to use the =-p= tag
@@ -264,7 +264,7 @@ that to output our new customized image which we could then run to get
 a container which would run our application. We mounted a volume using
 the =-v= tag and we ended up with a docker container running granters.
 It's a very simple application but it is that easy three line docker
-file gets this up and running
+file gets this up and running.
 
 In a future video we'll look at more complex situations and we'll look
 at orchestration options and deployment options so you can get your
