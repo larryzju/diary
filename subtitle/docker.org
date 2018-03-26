@@ -1,7 +1,7 @@
 #+TITLE: Docker
 #+AUTHOR: Zhao WenBin
 
-* [[https://www.youtube.com/watch?v=zIALD-U3pXM][Complete Docker Course!]]
+** [[https://www.youtube.com/watch?v=zIALD-U3pXM][Complete Docker Course!]]
 
 
 Hey everybody I have huge news for you. See that rocket ship going to Saturn? Yeah that's how big this news really is.
@@ -22,8 +22,7 @@ So what will you actually learn well you're going to learn docker deployments. E
 
 Thank you for bringing that up so. Again it's called real-world docker. The link is in the description and also you can go to O'Reilly comm and search for real-world docker it's also available on Safari Books if your company provides you with the Safari Books membership and so go check it out you're going to love the course it's going to help you out a ton and I give you information on how to contact me, So I'm available to help you out if you have any issues with that course. Enjoy and have a great day.
 
-
-** [[http://unknow.org][Learn Docker in 12 Minutes]]
+** Learn Docker in 12 Minutes
 
 Docker is a tool for running applications in an isolated environment.
 
@@ -275,8 +274,8 @@ questions I'll try to answer as many as possible either in the
 comments or in a future video.
 
 Thanks for watching.
-
-** [[hello][[[unknow][Why Docker is the Perfect Fit for Microservices]]]]
+[[http://unknow.org][
+** Why Docker is the Perfect Fit for Microservices
 
 To help you understand why docker and microservices often get talked
 about together as if they were the same thing. 
