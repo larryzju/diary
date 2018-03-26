@@ -28,212 +28,251 @@ Thank you for bringing that up so. Again it's called real-world docker. The link
 Docker is a tool for running applications in an isolated environment.
 
 It gives you advantages similar to running your application inside a
-virtual machine. Some of those advantages are your app always runs in 
-exactly the same environment, so you don't get inconsistencies in how 
-it behaves.  If it works on your computer it works on every computer it works on the 
-live server. It always acts the same. 
+virtual machine. Some of those advantages are your app always runs in
+exactly the same environment, so you don't get inconsistencies in how
+it behaves.  If it works on your computer it works on every computer
+it works on the live server. It always acts the same.
 
-If you're working on multiple projects it lets you sandbox each one and
-keep them separate good for security and eliminate a potential conflict between different projects.
+If you're working on multiple projects it lets you sandbox each one
+and keep them separate good for security and eliminate a potential
+conflict between different projects.
 
-And lastly it makes it easier to get going with somebody else's projects.
-you don't have to install all of the tools and dependencies that the project 
-needs you just spin up the virtual machine put your call inside and it works.
+And lastly it makes it easier to get going with somebody else's
+projects.  you don't have to install all of the tools and dependencies
+that the project needs you just spin up the virtual machine put your
+call inside and it works.
 
-Docker gives you these advantages but without the overhead and hassle 
-of running and managing a virtual machine. 
+Docker gives you these advantages but without the overhead and hassle
+of running and managing a virtual machine.
 
-Instead we have containers. The code and the environment are all wrapped up inside a container.
-But a container is not a full virtual machine.  
+Instead we have containers. The code and the environment are all
+wrapped up inside a container.  But a container is not a full virtual
+machine.
 
-When you're going to virtual machine each machine gets its own full operating 
-system including the kernel.  The kernel is like the core of the operating system the bit that
-controls the low-level stuff.  And this is quite resource heavy on the host machine the 
-computer running the virtual machines.
+When you're going to virtual machine each machine gets its own full
+operating system including the kernel.  The kernel is like the core of
+the operating system the bit that controls the low-level stuff.  And
+this is quite resource heavy on the host machine the computer running
+the virtual machines.
 
-Containers however they all use the host machines kernel a core bit of the operating system is shared
-but everything on top of that is still separated. Everything that makes a Linux distribution unique.
-Because all Linux distributions are boon to Debian etc are all built on the same 
-kernel and docker uses special features of the UNIX file system to create these isolated environments.
+Containers however they all use the host machines kernel a core bit of
+the operating system is shared but everything on top of that is still
+separated. Everything that makes a Linux distribution unique.  Because
+all Linux distributions are born to Debian etc are all built on the
+same kernel and docker uses special features of the UNIX file system
+to create these isolated environments.
 
-So containers are compromised the separation and sandbox is not quite as extreme,
-but it's enough and as a result a container can start up in seconds as opposed to minutes. 
-They use fewer resources to take in a blessed disk space and using less memory.
+So containers are compromised the separation and sandbox is not quite
+as extreme, but it's enough and as a result a container can start up
+in seconds as opposed to minutes.  They use fewer resources to take in
+a blessed disk space and using less memory.
 
-So a container is a running instance of an image. An image is a template for
-creating the environment you wanted to snapshot of the system at a particular
-time.  So it's got the operating system the software the application code all
-bundled up in a file.
+So a container is a running instance of an image. An image is a
+template for creating the environment you wanted to snapshot of the
+system at a particular time.  So it's got the operating system the
+software the application code all bundled up in a file.
 
-Images are defined using a docker file. a dockerfile is just a
-text file with a list of steps to perform to create that image.
+Images are defined using a docker file. a dockerfile is just a text
+file with a list of steps to perform to create that image.
 
-For example you to configure the operating system install the software you need copy the
-project files into the right places etc. 
+For example you to configure the operating system install the software
+you need copy the project files into the right places etc.
 
-So you write a docker file then you build that and you get an image which you can then run to get containers.
-So let's try out this whole process.
+So you write a dockerfile then you build that and you get an image
+which you can then run to get containers.  So let's try out this whole
+process.
 
-First you're going to want to install docker for Mac or for Windows. 
-Links are in the description this is just some software to allow docker 
-containers to run on your computer. And unless you've got a
-specific reason to use it ignore docker toolbox that's the older way to run docker on a MAC or PC.
+First you're going to want to install docker for Mac or for Windows.
+Links are in the description this is just some software to allow
+docker containers to run on your computer. And unless you've got a
+specific reason to use it ignore docker toolbox that's the older way
+to run docker on a MAC or PC.
 
-I've created a new folder just on my desktop for this demonstration and I'm going to write a
-super simple hello world application in PHP. It's literally just going to echo
-hello world.  And I'm going to save that in a folder called SRC for source as
-index dot PHP right now you can't execute that file you need a web server
-our goal is to use docker to create one.
+I've created a new folder just on my desktop for this demonstration
+and I'm going to write a super simple hello world application in
+PHP. It's literally just going to echo hello world.
 
-So let's make a new file and we're going to call this docker file. We're going to
-save it next to the source folder not inside docker file capital d one word
-and in here we're going to use cold to configure our environment so for this 
-we want an operating system with PHP and Apache installed.  Apache is the web server software. 
+And I'm going to save that in a folder called SRC for source as
+=index.php= right now you can't execute that file you need a web
+server our goal is to use docker to create one.
 
-The cool thing though is we don't have to start from scratch. 
-We start in our docker file with the name of an existing image.
-An image that has already been built and then we build on top of that.
-Conveniently you can find lots of existing images on at the docker hub.
+So let's make a new file and we're going to call this
+dockerfile. We're going to save it next to the source folder not
+inside docker file capital d one word and in here we're going to use
+cold to configure our environment so for this we want an operating
+system with PHP and Apache installed.  Apache is the web server
+software.
 
-So if you go to http://hub.docker.com sign up the search doesn't seem to work if
-you logged out you can search for images so we can search for a PHP image now the
-hub includes images from the whole community. So it's up to you to decide if
-the image is suitable and well-maintained the best ones to look
-out for are the official ones.
+The cool thing though is we don't have to start from scratch.  We
+start in our docker file with the name of an existing image.  An image
+that has already been built and then we build on top of that.
+Conveniently you can find lots of existing images on at the docker
+hub.
 
-Luckily for us an official PHP image already exists, at the top you'll find all
-the variations of the image these are called tags.
+So if you go to http://hub.docker.com. Sign up the search doesn't seem
+to work if you logged out you can search for images. So we can search
+for a PHP image now the hub includes images from the whole
+community. So it's up to you to decide if the image is suitable and
+well-maintained the best ones to look out for are the official ones.
 
-so we just want to like the latest version of PHP and we want to
-apache it as well. So this line right here this has a few versions of PHP with
-Apache. Going left to right they get less specific so this will give you
-specifically 7.0.10.
+Luckily for us an official PHP image already exists, at the top you'll
+find all the variations of the image these are called tags.
 
-All the way to the end where this will always just give
-you the latest version of PHP that one's usually a bad idea though because that
-means PHP could just unexpectedly be upgraded and a might break your old code.
-But one of these are the ones is fine for us now.
+So we just want to like the latest version of PHP and we want to
+apache it as well. So this line right here this has a few versions of
+PHP with Apache. Going left to right they get less specific so this
+will give you specifically 7.0.10.
 
-If you scroll down you even get instructions telling you how to use the image 
-If you find the Apache section it tells you what to put in the dockerfile.
+All the way to the end where this will always just give you the latest
+version of PHP that one's usually a bad idea though. Because that
+means PHP could just unexpectedly be upgraded and a might break your
+old code.  But one of these are the ones is fine for us now.
 
-So we first want to define the base image using the from keyword
-and we want then name of the image PHP then a colon and the name of the tag so
-we'll use as suggested 7.0-Apache. And then we want to copy our files inside
-the image using the copy keyword so we want to copy the contents of source into
-=/var/www/html=.
+If you scroll down you even get instructions telling you how to use
+the image If you find the Apache section it tells you what to put in
+the dockerfile.
 
-There just telling us here that this is where Apache will look on its own file system
-and to find the file so we should put our files there. And you can see now why
-I called that folder source just so it matches these instructions.
+So we first want to define the base image using the from keyword. And
+we want then name of the image PHP then a colon and the name of the
+tag so we'll use as suggested 7.0-Apache. And then we want to copy our
+files inside the image using the =COPY= keyword so we want to copy the
+contents of source into =/var/www/html=.
 
-We want one more thing in our doctor file we want to use the expose keyword to expose port 80.
-This just means when you run the image and you get a container that container
-will listen on port 80. By default it will just ignore all incoming requests
+There just telling us here that this is where Apache will look on its
+own file system and to find the file so we should put our files
+there. And you can see now why I called that folder source just so it
+matches these instructions.
 
-If you're wondering what operating system this PHP image is based on you
-can usually find the dockerfile that it's defined by. In this case it's linked next
-to the tag names. And we see it's based on Debian. Similarly that Debian image
-will have a docker file and they'll stack on top of each other like I said
-earlier. And this *layering of images* is a huge advantage of using docker.
+We want one more thing in our doctor file we want to use the expose
+keyword to expose port 80.  This just means when you run the image and
+you get a container that container will listen on port 80. By default
+it will just ignore all incoming requests
 
-The PHP dockerfile is a little bit more complicated than ours but let's just
-focus on ours for now.
+If you're wondering what operating system this PHP image is based on.
+You can usually find the dockerfile that it's defined by. In this case
+it's linked next to the tag names. And we see it's based on
+Debian. Similarly that Debian image will have a dockerfile and they'll
+stack on top of each other like I said earlier. And this *layering of
+images* is a huge advantage of using docker.
 
-So when we build our dockerfile. Docker is going to download PHP from the docker hub 
-it's going to copy our files from source to this location inside of the image.
-It's going to tell running containers to listen on port 80. And then it's going to output a new image our new customized
-version which will be able to run.
+The PHP dockerfile is a little bit more complicated than ours but
+let's just focus on ours for now.
 
-So to build it I'm going to go to a terminal first I'm going to move to the folder
-that it's in so we can see we've got docker file right there and I'm going 
-to type =docker build -t= to give it a name.
+So when we build our dockerfile. Docker is going to download PHP from
+the docker hub it's going to copy our files from source to this
+location inside of the image.  It's going to tell running containers
+to listen on port 80. And then it's going to output a new image our
+new customized version which will be able to run.
 
-I'm just going to call it hello world and then at the end you want to tell it the location of the dockerfile 
-And since it's in the current directory we just want to put a dot to say that.
+So to build it I'm going to go to a terminal first. I'm going to move
+to the folder that it's in so we can see we've got docker file right
+there and I'm going to type =docker build -t= to give it a name.
+
+I'm just going to call it hello world and then at the end you want to
+tell it the location of the dockerfile. And since it's in the current
+directory we just want to put a dot to say that.
 
 Oops... helps if I save the docket file first.
 
-The first time you do this it'll have to download all of the layers that make up that PHP image
-shouldn't take too long wanted to got the image it's going to copy our files
-inside. At the end its outputs our new image and it's going to be called hello
-world so we can run this by typing =docker run hello-world= there's one other
-thing we need in the middle of this we need to use the =-p= tag to forward a
-port port 80 from the host to port 80 in the container. So that means when a
-request gets the host the host is your computer when a request gets there
-docker is going to forward that to the container and when it gets to the
-container that =expose= line that we've got in the docker file that will let the
-container accept the request and allow Apache to handle it.
+The first time you do this it'll have to download all of the layers
+that make up that PHP image. Shouldn't take too long wanted to got the
+image it's going to copy our files inside. At the end its outputs our
+new image and it's going to be called hello world.
 
-So we can run that we'll get some output from the container
-from PHP. And then we can go to localhost and we'll see hello world.
-So we've done it we've got our application running inside a docker container.
+So we can run this by typing =docker run hello-world= there's one
+other thing we need in the middle of this we need to use the =-p= tag
+to forward a port port 80 from the host to port 80 in the
+container. So that means when a request gets the host the host is your
+computer when a request gets there docker is going to forward that to
+the container. And when it gets to the container that =expose= line
+that we've got in the docker file that will let the container accept
+the request and allow Apache to handle it.
 
-Now if you go back to =index.php= and you change this. When you 
+So we can run that we'll get some output from the container from
+PHP. And then we can go to "localhost" and we'll see hello world.  So
+we've done it we've got our application running inside a docker
+container.
+
+Now if you go back to =index.php= and you change this. When you
 refresh localhost it won't change the the docker container won't
-reflect the new version of the file. And this is because when we
-built the image it made a copy of that file to see the change you'd need to rebuild the
-image and spin up a new container from the updated image.
+reflect the new version of the file. And this is because when we built
+the image it made a copy of that file to see the change you'd need to
+rebuild the image and spin up a new container from the updated image.
 
-During development this is obviously a massive pain and this is where volumes come in.
+During development this is obviously a massive pain and this is where
+volumes come in.
 
-So there are two types of volumes want to persist and share data between containers we
-only have one container. I'm not going to talk about this today.
+So there are two types of volumes want to persist and share data
+between containers we only have one container. I'm not going to talk
+about this today.
 
-But the second type lets you share folders between the host and the container you can mount a
-local directory on your computer as a volume inside the container.  Then the 
-container when it's running we'll be able to see the files that were working on hit control-c to stop this container.
+But the second type lets you share folders between the host and the
+container you can mount a local directory on your computer as a volume
+inside the container.  Then the container when it's running we'll be
+able to see the files that were working on hit control-c to stop this
+container.
 
-To mount a volume we're going to add another option to the docker run
-command we're going to add =-v= and we want to tell it to mount the the folder
-=/users/jade/Desktop=.  Tt needs to be the full path not a relative one
-=/docker/src= so we want that folder (that local folder) to be mounted
-to put a caller inside the container and =/var/www/html=.
+To mount a volume, we're going to add another option to the docker run
+command we're going to add =-v= and we want to tell it to mount the
+the folder =/users/jade/Desktop=.  Tt needs to be the full path not a
+relative one =/docker/src= so we want that folder (that local folder)
+to be mounted to put a caller inside the container and
+=/var/www/html=.
 
-So the image it copies this folder to this location inside the container but during development we don't just
-want to copy we want to see that folder we want a live view of that folder so we
-can mount it at that directory.
+So the image it copies this folder to this location inside the
+container but during development we don't just want to copy we want to
+see that folder we want a live view of that folder so we can mount it
+at that directory.
 
-So this time when you run it you'll see changes that we make are reflected 
-straight away as soon as we refresh the docker container can't see that change 
-in the file because it's looking at the file itself. So this is really 
-useful during development but before you deploy this and try to run the 
-image somewhere else you will need to rebuild the image to get an updated copy of the files put inside. 
+So this time when you run it you'll see changes that we make are
+reflected straight away as soon as we refresh. The docker container
+can't see that change in the file because it's looking at the file
+itself. So this is really useful during development but before you
+deploy this and try to run the image somewhere else you will need to
+rebuild the image to get an updated copy of the files put inside.
 
-Volumes just give a running container the ability to see files on the host machines filesystem they do not
-change the image. So when you're done you can press ctrl-C to stop the container again.
+Volumes just give a running container the ability to see files on the
+host machines filesystem they do not change the image. So when you're
+done you can press ctrl-C to stop the container again.
 
 So one last thing I want to mention. You can see we can easily stop a
-container manually by pressing ctrl-C but containers will stop by themselves
-when the main process exits. In this case that would only be if PHP died for some
-unexpected reason but you can equally make containers with short running tasks.
+container manually by pressing ctrl-C but containers will stop by
+themselves when the main process exits. In this case that would only
+be if PHP died for some unexpected reason but you can equally make
+containers with short running tasks.
 
-You might have a container which runs tests or a container which runs composer
-install. The process running in these containers will end when the task is
-complete. And when that main process ends the container will stop so for this
-reason you should endeavor to have one process per container because the life
-of that container is tied directly to a single process.
+You might have a container which runs tests or a container which runs
+composer install. The process running in these containers will end
+when the task is complete. And when that main process ends the
+container will stop. 
 
-So you don't want 5 other things going on in the background that will all be 
-brought down when without warning when the main process turn it and the
-ten it just stops.
+So for this reason you should endeavor to have one process per
+container because the life of that container is tied directly to a
+single process.
 
-But since containers are really lightweight you can run lots and lots 
-of containers on your computer all at the same time and it's no problem
-at all so we found a suitable image as it uses a base image on the
-docker hub we wrote a dockerfile to orchestration that image and then we 
-built that to output our new customized image which we could then run
-to get a container which would run our application we mounted a volume using
-the =-v= tag and we ended up with a docker container running granters
-it's a very simple application but it is that easy three line docker file gets this up and running 
+So you don't want 5 other things going on in the background that will
+all be brought down when without warning when the main process turn it
+and the ten it just stops.
 
-In a future video we'll look at more complex situations and we'll
-look at orchestration options and deployment options so you can get your
+But since containers are really lightweight you can run lots and lots
+of containers on your computer all at the same time and it's no
+problem at all. 
+
+So we found a suitable image as it uses a base image on the docker hub
+we wrote a dockerfile to orchestration that image and then we built
+that to output our new customized image which we could then run to get
+a container which would run our application. We mounted a volume using
+the =-v= tag and we ended up with a docker container running granters.
+It's a very simple application but it is that easy three line docker
+file gets this up and running
+
+In a future video we'll look at more complex situations and we'll look
+at orchestration options and deployment options so you can get your
 container to run a website on the Internet.
 
-Please let me know how you fond this video. Feel free to ask any questions
-I'll try to answer as many as possible either in the comments or in a future
-video.
+Please let me know how you fond this video. Feel free to ask any
+questions I'll try to answer as many as possible either in the
+comments or in a future video.
 
 Thanks for watching.
 
