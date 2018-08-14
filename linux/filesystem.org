@@ -1,0 +1,50 @@
+* 概述
+
+文件系统在平的存储结构上构建出文件、目录等层次结构，并提供了其它保护、完整性校验的功能
+
+* 参考资料
+
+- =man 5 filesystem=
+- =/proc/filesystem= 列出系统支持的文件系统
+- =lsblk=
+- =findmnt=
+- =tune2fs=
+- =dumpe2fs=
+
+* 特性
+
+** 日志
+
+类似于 hbase WAL 机制，可针对元数据和数据
+
+- data-model 针对数据和元数据
+- ordered-model 针对元数据
+- Reiser4: transcation model 机制
+- ZFS/Btrfs: copy-on-write 机制
+
+** FUSE
+
+Filesystem in Userspace，允许用户层实现的文件系统。透过 fuse 内核模块来伪装成一个文件系统，如 fuseiso, xmlfs
+
+** Stackable Filesystem
+
+unionfs，在 docker 中常用
+
+** Readonly Filesystem
+
+SquashFS（ubuntu livecd?）
+
+
+
+
+
+
+* inode
+
+每个文件、目录、链接都占用一个 inode 位置，有可能大量小文件时，inode 使用殆尽，而空间还有剩余。使用 =df -h= 查看文件系统空间占用，使用 =df -i= 查看 inode 占用
+
+通过 =inode-per-bytes= 来指定比例。不小于 blocksize
+- 存储少量大文件，可以设为 4M 或者更大
+- 存储大量小文件，可以设为 4k 或者最小 1k（因为 blocksize 为 1k）
+
+
