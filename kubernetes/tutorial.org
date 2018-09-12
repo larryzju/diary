@@ -1,0 +1,28 @@
+#+TITLE: Notes On [[https://kubernetes.io/docs/tutorials/kubernetes-basics/][kubernetes basics]]
+#+AUTHOR: Zhao WenBin
+
+* Cluster Structure
+
+** What is kubernets cluster
+
+Kubernetes is a production-grade, open-source platform that orchestrates the
+placement (scheduling) and execution of application containers within and
+across computer clusters.
+
+** Master and nodes
+
+Masters manage the cluster and the nodes are used to host the running applications
+
+** Note
+
+- Kubernetes cluster 中运行的是 containerized (容器化的) application，意味着应用不假设于 host 环境
+- node 中运行有 kubelet 与 master 交互，并可以对本地的 docker 或 rkt 环境进行操作
+** TODO cluster-interactive
+
+google doc can not been seen
+* Deploy an App
+* Useful commands
+
+** version
+
+** cluster-info
