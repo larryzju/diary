@@ -73,12 +73,67 @@ Containers should only be scheduled together in a single Pod if they are tightly
 
 Google doc can not be seen...
 
+* Expose Your App Publicly
+
+** Service
+
+*** Definition
+
+A Kubernetes Service is an abstraction layer which defines a logical set of Pods 
+and enables external traffic exposure, load balancing and service discovery for those Pods.
+
+*** Best Practice
+
+You can create a Service at the same time you create a Deplyment by using *=--expose=* in kubectl
+
+*** TODO =type= in ServiceSpec
+
+- ClusterIP: internal IP
+- NodePort: NAT
+- LoadBalancer: external IP
+- ExternalName: CNAME (with *kube-dns*?)
+
+*** TODO Create Service with =expose=
+
+#+BEGIN_SRC bash
+  kubectl expose deployment/kubernetes-bootcamp --type="NodePort" --port 8080
+#+END_SRC
+
+- what's the mean of =deployment=?
+- NAT forward 8080 port to other port with internal IP
+
+*** Mark Pod with Label
+
+- =kubectl get= has option =-l= to select label
+- ~=kubectl label pod <pod-name> key=value~ to set label
+
+*** Delete Service
+
+- Use ~kubectl delete service -l <label-selector>~ to delete service
+- After service was deleted, the Pod is running 
+
+*** TODO Note
+
+Google Docs can not been seen...
+
+- Pod has lifecycle, can be died (when node failed?).
+- =ReplicationController= will create new Pod for recovery from failure automatically
+- Service proxy/expose request to multiple Pod, and also provide route traffic functional
+- Pods with the same =Label= can be found by =LabelSelector=
+- Use =kubectl get servies= list the current Services
+
+*** Future Read
+
+- [[https://kubernetes.io/docs/tutorials/services/source-ip/][Using Source IP]]
+- [[https://kubernetes.io/docs/concepts/services-networking/connect-applications-service][Connecting Applications with Services]]
+
 * Useful commands
 
 ** version
 
 ** cluster-info
 ** get
+- =-l= option to select label
 *** nodes
 *** pods
 *** deployment
@@ -92,3 +147,5 @@ Execute bash on the pod/container (seems to be useful for debug)
 #+BEGIN_SRC bash
 kubectl exec $POD_NAME bash
 #+END_SRC
+** label
+** delete
