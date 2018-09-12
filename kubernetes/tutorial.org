@@ -1,4 +1,4 @@
-#+TITLE: Notes On [[https://kubernetes.io/docs/tutorials/kubernetes-basics/][kubernetes basics]]
+#+TITLE: Notes On [[https://kubernetes.io/docs/tutorials/kubernetes-basics/][Learn Kubernetes Basics]]
 #+AUTHOR: Zhao WenBin
 
 * Cluster Structure
@@ -126,6 +126,29 @@ Google Docs can not been seen...
 
 - [[https://kubernetes.io/docs/tutorials/services/source-ip/][Using Source IP]]
 - [[https://kubernetes.io/docs/concepts/services-networking/connect-applications-service][Connecting Applications with Services]]
+
+* TODO Scale Your App
+
+** =kubectl scale= command
+
+#+BEGIN_SRC bash
+  kubectl scale deployments/kubernetes-bootcamp --replicas=4
+#+END_SRC
+
+- The scaled Pods has difference IP address (can be check by =kubectl get pods -o wide=)
+- Request to service will be route to different Pods
+- Count of replica can be reduce, some Pods will be terminated.
+
+** TODO Note
+
+Google docs can not been seen...
+
+- Deploy with multiple instance using =-replicas= parameters
+- Duplicated Pods will be created
+- Service will route traffic to different Pods for performance
+- Monitor endpoint(?) to ensure the traffic is sent only to available Pods.
+- Can be used for Rolling Update
+- How to keep the consistent of data?
 
 * Useful commands
 
