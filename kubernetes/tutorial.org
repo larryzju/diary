@@ -69,6 +69,10 @@ Containers should only be scheduled together in a single Pod if they are tightly
 - Multiple Pods can run on one Node.
 - Every node runs at least a kubelet and a container runtime (like Docker, rkt)
 
+*** TODO Interactive
+
+Google doc can not be seen...
+
 * Useful commands
 
 ** version
@@ -81,4 +85,10 @@ Containers should only be scheduled together in a single Pod if they are tightly
 ** run
 ** create
 ** TODO logs
-** TODO exec
+** exec
+
+Execute bash on the pod/container (seems to be useful for debug)
+
+#+BEGIN_SRC bash
+kubectl exec $POD_NAME bash
+#+END_SRC
