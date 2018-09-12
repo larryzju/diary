@@ -21,8 +21,38 @@ Masters manage the cluster and the nodes are used to host the running applicatio
 
 google doc can not been seen
 * Deploy an App
+
+** Deployment Basic
+
+A Deployment is responsible for creating and updating instances of your application
+
+** Container Backend
+
+Applications need to be packaged into one of the supported container formats in order to be deployed on Kubernetes.
+
+** Note
+
+- =kubectl= is a command line tools, which interactive with server use API. Just like beeline with hive
+- After deployment, deployment controller is responsible for self-healing and recover from failure
+- Kubernetes provides extra features such as *scale* and *update*
+
+** TODO Interactive
+
+Google doc can not been seen...
+
+- ~kubectl run --image=... --port=...~ to make a new deployment
+- ~kubectl get deployment~ to see the deployment
+- Can also see running process with ~kubectl get pod~
+- ~kubectl proxy~ to forward http request to inner-cluster network
+
 * Useful commands
 
 ** version
 
 ** cluster-info
+** get
+*** nodes
+*** pods
+*** deployment
+** run
+** create
