@@ -45,6 +45,30 @@ Google doc can not been seen...
 - Can also see running process with ~kubectl get pod~
 - ~kubectl proxy~ to forward http request to inner-cluster network
 
+* Explore Your App
+
+** Pods
+
+A Pod is a group of one or more application containers( such as Docker or rkt) and 
+includes shared storage (volumes), IP Address and information about how to run them.
+
+Containers in pod are relatively tightly coupled, they would be co-located and co-scheduled,
+and have shared context.
+
+The Pod will be act as a atomic unit and *always* run on a single Node.
+
+** Nodes
+
+*** best practice
+
+Containers should only be scheduled together in a single Pod if they are tightly coupled and need to share resource such as disk.
+
+*** note
+
+- A Pod always runs on a Node. (for shared context maybe?)
+- Multiple Pods can run on one Node.
+- Every node runs at least a kubelet and a container runtime (like Docker, rkt)
+
 * Useful commands
 
 ** version
@@ -56,3 +80,5 @@ Google doc can not been seen...
 *** deployment
 ** run
 ** create
+** TODO logs
+** TODO exec
