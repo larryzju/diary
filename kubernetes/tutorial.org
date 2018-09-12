@@ -105,7 +105,7 @@ You can create a Service at the same time you create a Deplyment by using *=--ex
 *** Mark Pod with Label
 
 - =kubectl get= has option =-l= to select label
-- ~=kubectl label pod <pod-name> key=value~ to set label
+- ~kubectl label pod <pod-name> key=value~ to set label
 
 *** Delete Service
 
