@@ -127,7 +127,7 @@ Google Docs can not been seen...
 - [[https://kubernetes.io/docs/tutorials/services/source-ip/][Using Source IP]]
 - [[https://kubernetes.io/docs/concepts/services-networking/connect-applications-service][Connecting Applications with Services]]
 
-* TODO Scale Your App
+* Scale Your App
 
 ** =kubectl scale= command
 
@@ -150,6 +150,46 @@ Google docs can not been seen...
 - Can be used for Rolling Update
 - How to keep the consistent of data?
 
+* Update Your App
+
+** Digest
+
+- Rolling updates allow Deployments' update to take place with zero downtime by incrementally updating Pods instances with new ones
+- If a Deployment is exposed publicly, the Service will load-balance the traffic only to available Pods during the update
+
+** Note
+** TODO Usage
+
+Google docs can not been seen...
+
+*** Update Deployment's image
+
+use =set image= command change image (specific deployment and new image)
+
+#+BEGIN_SRC bash
+  kubectl set image deployments/kubernetes-bootcamp kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2
+#+END_SRC
+
+*** Rollout Status
+
+#+BEGIN_SRC bash
+  kubectl rollout status deployments/kubernetes-bootcamp
+#+END_SRC
+
+*** Revert
+
+#+BEGIN_SRC bash
+  kubectl rollout undo deployments/kubernetes-bootcamp
+#+END_SRC
+
+- zero downtime rolling update with similar policy as scaling
+- update is versioned
+- can be reverted to previous version
+- useful for CI/CD (Integration/Delivery)
+
+
+
+- 
 * Useful commands
 
 ** version
