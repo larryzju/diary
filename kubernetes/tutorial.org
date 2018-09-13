@@ -1,191 +1,192 @@
-#+TITLE: Notes On [[https://kubernetes.io/docs/tutorials/kubernetes-basics/][Learn Kubernetes Basics]]
+#+TITLE: Notes On [[https://kubernetes.io/docs/tutorials/][Kubernetes Tutorial]]
 #+AUTHOR: Zhao WenBin
 
-* Cluster Structure
+* Learn Kubernetes Basic
+** Cluster Structure
 
-** What is kubernets cluster
+*** What is kubernets cluster
 
-Kubernetes is a production-grade, open-source platform that orchestrates the
-placement (scheduling) and execution of application containers within and
-across computer clusters.
+ Kubernetes is a production-grade, open-source platform that orchestrates the
+ placement (scheduling) and execution of application containers within and
+ across computer clusters.
 
-** Master and nodes
+*** Master and nodes
 
-Masters manage the cluster and the nodes are used to host the running applications
+ Masters manage the cluster and the nodes are used to host the running applications
 
-** Note
+*** Note
 
-- Kubernetes cluster 中运行的是 containerized (容器化的) application，意味着应用不假设于 host 环境
-- node 中运行有 kubelet 与 master 交互，并可以对本地的 docker 或 rkt 环境进行操作
-** TODO cluster-interactive
+ - Kubernetes cluster 中运行的是 containerized (容器化的) application，意味着应用不假设于 host 环境
+ - node 中运行有 kubelet 与 master 交互，并可以对本地的 docker 或 rkt 环境进行操作
+*** TODO cluster-interactive
 
-google doc can not been seen
-* Deploy an App
+ google doc can not been seen
+** Deploy an App
 
-** Deployment Basic
+*** Deployment Basic
 
-A Deployment is responsible for creating and updating instances of your application
+ A Deployment is responsible for creating and updating instances of your application
 
-** Container Backend
+*** Container Backend
 
-Applications need to be packaged into one of the supported container formats in order to be deployed on Kubernetes.
+ Applications need to be packaged into one of the supported container formats in order to be deployed on Kubernetes.
 
-** Note
+*** Note
 
-- =kubectl= is a command line tools, which interactive with server use API. Just like beeline with hive
-- After deployment, deployment controller is responsible for self-healing and recover from failure
-- Kubernetes provides extra features such as *scale* and *update*
-
-** TODO Interactive
-
-Google doc can not been seen...
-
-- ~kubectl run --image=... --port=...~ to make a new deployment
-- ~kubectl get deployment~ to see the deployment
-- Can also see running process with ~kubectl get pod~
-- ~kubectl proxy~ to forward http request to inner-cluster network
-
-* Explore Your App
-
-** Pods
-
-A Pod is a group of one or more application containers( such as Docker or rkt) and 
-includes shared storage (volumes), IP Address and information about how to run them.
-
-Containers in pod are relatively tightly coupled, they would be co-located and co-scheduled,
-and have shared context.
-
-The Pod will be act as a atomic unit and *always* run on a single Node.
-
-** Nodes
-
-*** best practice
-
-Containers should only be scheduled together in a single Pod if they are tightly coupled and need to share resource such as disk.
-
-*** note
-
-- A Pod always runs on a Node. (for shared context maybe?)
-- Multiple Pods can run on one Node.
-- Every node runs at least a kubelet and a container runtime (like Docker, rkt)
+ - =kubectl= is a command line tools, which interactive with server use API. Just like beeline with hive
+ - After deployment, deployment controller is responsible for self-healing and recover from failure
+ - Kubernetes provides extra features such as *scale* and *update*
 
 *** TODO Interactive
 
-Google doc can not be seen...
+ Google doc can not been seen...
 
-* Expose Your App Publicly
+ - ~kubectl run --image=... --port=...~ to make a new deployment
+ - ~kubectl get deployment~ to see the deployment
+ - Can also see running process with ~kubectl get pod~
+ - ~kubectl proxy~ to forward http request to inner-cluster network
 
-** Service
+** Explore Your App
 
-*** Definition
+*** Pods
 
-A Kubernetes Service is an abstraction layer which defines a logical set of Pods 
-and enables external traffic exposure, load balancing and service discovery for those Pods.
+ A Pod is a group of one or more application containers( such as Docker or rkt) and 
+ includes shared storage (volumes), IP Address and information about how to run them.
 
-*** Best Practice
+ Containers in pod are relatively tightly coupled, they would be co-located and co-scheduled,
+ and have shared context.
 
-You can create a Service at the same time you create a Deplyment by using *=--expose=* in kubectl
+ The Pod will be act as a atomic unit and *always* run on a single Node.
 
-*** TODO =type= in ServiceSpec
+*** Nodes
 
-- ClusterIP: internal IP
-- NodePort: NAT
-- LoadBalancer: external IP
-- ExternalName: CNAME (with *kube-dns*?)
+**** best practice
 
-*** TODO Create Service with =expose=
+ Containers should only be scheduled together in a single Pod if they are tightly coupled and need to share resource such as disk.
 
-#+BEGIN_SRC bash
-  kubectl expose deployment/kubernetes-bootcamp --type="NodePort" --port 8080
-#+END_SRC
+**** note
 
-- what's the mean of =deployment=?
-- NAT forward 8080 port to other port with internal IP
+ - A Pod always runs on a Node. (for shared context maybe?)
+ - Multiple Pods can run on one Node.
+ - Every node runs at least a kubelet and a container runtime (like Docker, rkt)
 
-*** Mark Pod with Label
+**** TODO Interactive
 
-- =kubectl get= has option =-l= to select label
-- ~kubectl label pod <pod-name> key=value~ to set label
+ Google doc can not be seen...
 
-*** Delete Service
+** Expose Your App Publicly
 
-- Use ~kubectl delete service -l <label-selector>~ to delete service
-- After service was deleted, the Pod is running 
+*** Service
+
+**** Definition
+
+ A Kubernetes Service is an abstraction layer which defines a logical set of Pods 
+ and enables external traffic exposure, load balancing and service discovery for those Pods.
+
+**** Best Practice
+
+ You can create a Service at the same time you create a Deplyment by using *=--expose=* in kubectl
+
+**** TODO =type= in ServiceSpec
+
+ - ClusterIP: internal IP
+ - NodePort: NAT
+ - LoadBalancer: external IP
+ - ExternalName: CNAME (with *kube-dns*?)
+
+**** TODO Create Service with =expose=
+
+ #+BEGIN_SRC bash
+   kubectl expose deployment/kubernetes-bootcamp --type="NodePort" --port 8080
+ #+END_SRC
+
+ - what's the mean of =deployment=?
+ - NAT forward 8080 port to other port with internal IP
+
+**** Mark Pod with Label
+
+ - =kubectl get= has option =-l= to select label
+ - ~kubectl label pod <pod-name> key=value~ to set label
+
+**** Delete Service
+
+ - Use ~kubectl delete service -l <label-selector>~ to delete service
+ - After service was deleted, the Pod is running 
+
+**** TODO Note
+
+ Google Docs can not been seen...
+
+ - Pod has lifecycle, can be died (when node failed?).
+ - =ReplicationController= will create new Pod for recovery from failure automatically
+ - Service proxy/expose request to multiple Pod, and also provide route traffic functional
+ - Pods with the same =Label= can be found by =LabelSelector=
+ - Use =kubectl get servies= list the current Services
+
+**** Future Read
+
+ - [[https://kubernetes.io/docs/tutorials/services/source-ip/][Using Source IP]]
+ - [[https://kubernetes.io/docs/concepts/services-networking/connect-applications-service][Connecting Applications with Services]]
+
+** Scale Your App
+
+*** =kubectl scale= command
+
+ #+BEGIN_SRC bash
+   kubectl scale deployments/kubernetes-bootcamp --replicas=4
+ #+END_SRC
+
+ - The scaled Pods has difference IP address (can be check by =kubectl get pods -o wide=)
+ - Request to service will be route to different Pods
+ - Count of replica can be reduce, some Pods will be terminated.
 
 *** TODO Note
 
-Google Docs can not been seen...
+ Google docs can not been seen...
 
-- Pod has lifecycle, can be died (when node failed?).
-- =ReplicationController= will create new Pod for recovery from failure automatically
-- Service proxy/expose request to multiple Pod, and also provide route traffic functional
-- Pods with the same =Label= can be found by =LabelSelector=
-- Use =kubectl get servies= list the current Services
+ - Deploy with multiple instance using =-replicas= parameters
+ - Duplicated Pods will be created
+ - Service will route traffic to different Pods for performance
+ - Monitor endpoint(?) to ensure the traffic is sent only to available Pods.
+ - Can be used for Rolling Update
+ - How to keep the consistent of data?
 
-*** Future Read
+** Update Your App
 
-- [[https://kubernetes.io/docs/tutorials/services/source-ip/][Using Source IP]]
-- [[https://kubernetes.io/docs/concepts/services-networking/connect-applications-service][Connecting Applications with Services]]
+*** Digest
 
-* Scale Your App
+ - Rolling updates allow Deployments' update to take place with zero downtime by incrementally updating Pods instances with new ones
+ - If a Deployment is exposed publicly, the Service will load-balance the traffic only to available Pods during the update
 
-** =kubectl scale= command
+*** Note
+*** TODO Usage
 
-#+BEGIN_SRC bash
-  kubectl scale deployments/kubernetes-bootcamp --replicas=4
-#+END_SRC
+ Google docs can not been seen...
 
-- The scaled Pods has difference IP address (can be check by =kubectl get pods -o wide=)
-- Request to service will be route to different Pods
-- Count of replica can be reduce, some Pods will be terminated.
+**** Update Deployment's image
 
-** TODO Note
+ use =set image= command change image (specific deployment and new image)
 
-Google docs can not been seen...
+ #+BEGIN_SRC bash
+   kubectl set image deployments/kubernetes-bootcamp kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2
+ #+END_SRC
 
-- Deploy with multiple instance using =-replicas= parameters
-- Duplicated Pods will be created
-- Service will route traffic to different Pods for performance
-- Monitor endpoint(?) to ensure the traffic is sent only to available Pods.
-- Can be used for Rolling Update
-- How to keep the consistent of data?
+**** Rollout Status
 
-* Update Your App
+ #+BEGIN_SRC bash
+   kubectl rollout status deployments/kubernetes-bootcamp
+ #+END_SRC
 
-** Digest
+**** Revert
 
-- Rolling updates allow Deployments' update to take place with zero downtime by incrementally updating Pods instances with new ones
-- If a Deployment is exposed publicly, the Service will load-balance the traffic only to available Pods during the update
+ #+BEGIN_SRC bash
+   kubectl rollout undo deployments/kubernetes-bootcamp
+ #+END_SRC
 
-** Note
-** TODO Usage
-
-Google docs can not been seen...
-
-*** Update Deployment's image
-
-use =set image= command change image (specific deployment and new image)
-
-#+BEGIN_SRC bash
-  kubectl set image deployments/kubernetes-bootcamp kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2
-#+END_SRC
-
-*** Rollout Status
-
-#+BEGIN_SRC bash
-  kubectl rollout status deployments/kubernetes-bootcamp
-#+END_SRC
-
-*** Revert
-
-#+BEGIN_SRC bash
-  kubectl rollout undo deployments/kubernetes-bootcamp
-#+END_SRC
-
-- zero downtime rolling update with similar policy as scaling
-- update is versioned
-- can be reverted to previous version
-- useful for CI/CD (Integration/Delivery)
+ - zero downtime rolling update with similar policy as scaling
+ - update is versioned
+ - can be reverted to previous version
+ - useful for CI/CD (Integration/Delivery)
 
 
 * Useful commands
