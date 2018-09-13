@@ -188,8 +188,6 @@ use =set image= command change image (specific deployment and new image)
 - useful for CI/CD (Integration/Delivery)
 
 
-
-- 
 * Useful commands
 
 ** version
@@ -212,3 +210,6 @@ kubectl exec $POD_NAME bash
 #+END_SRC
 ** label
 ** delete
+** rollout
+*** undo
+*** status
