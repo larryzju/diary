@@ -189,6 +189,7 @@
  - useful for CI/CD (Integration/Delivery)
 
 * Configuration
+
 ** Configuring Redis using a ConfigMap
 
 *** Basic Step
@@ -246,6 +247,171 @@
 
 Is there any backend to mount local file as a Volume to containers??
 
+*** [[https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/][Configure a Pod to Use a ConfigMap]]
+
+**** Overview 
+
+- ConfigMap act as register table.
+- Can be create from file, directory
+- ConfigMap's value can be used by Pods as volume mount or command substitutioin
+
+**** Create a ConfigMap
+
+- use =kubectl create configmap <map-name> <data-source>= to create configmaps
+- can based from directories, files or literal values
+- parameters of ~--from-file~ can be directories or files
+- ~--from-env-file~ can load property file's content
+- ~--from-file~ can be formed as ~key=path~, key will be acted as =<path-to-file>=
+- ~--from-literal~ can be passed multple times to specific key-value pairs
+
+**** Define container environment variables using ConfigMap data
+
+1. First create ConfigMap =special-config= with kv pair ~special.how=<value>~
+2. Create Pod with settings looks like (env =SPECIAL_LEVEL_KEY= will be replaces with ConfigMap's =<value>= of ~special.how~)
+   #+BEGIN_SRC yaml
+     apiVersion: v1
+     kind: Pod
+     metadata:
+       name: dapi-test-pod
+     spec:
+       containers:
+         - name: test-container
+           image: k8s.gcr.io/busybox
+           command: [ "/bin/sh", "-c", "env" ]
+           env:
+             # Define the environment variable
+             - name: SPECIAL_LEVEL_KEY
+               valueFrom:
+                 configMapKeyRef:
+                   # The ConfigMap containing the value you want to assign to SPECIAL_LEVEL_KEY
+                   name: special-config
+                   # Specify the key associated with the value
+                   key: special.how
+       restartPolicy: Never
+   #+END_SRC
+
+**** Configure all key-value pairs in a ConfigMap as container environment variables
+
+Use =envFrom= to define all of the ConfigMap's data as container environment variables
+   
+#+BEGIN_SRC yaml
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: dapi-test-pod
+  spec:
+    containers:
+      - name: test-container
+        image: k8s.gcr.io/busybox
+        command: [ "/bin/sh", "-c", "env" ]
+        envFrom:
+        - configMapRef:
+            name: special-config
+    restartPolicy: Never
+#+END_SRC
+   
+**** Use ConfigMap-defined environment variables in Pod commands
+
+Like shell variable substitutioin syntax, use =$(VAR_NAME)=. For example
+
+#+BEGIN_SRC yaml
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: dapi-test-pod
+  spec:
+    containers:
+      - name: test-container
+        image: k8s.gcr.io/busybox
+        command: [ "/bin/sh", "-c", "echo $(SPECIAL_LEVEL_KEY) $(SPECIAL_TYPE_KEY)" ]
+        env:
+          - name: SPECIAL_LEVEL_KEY
+            valueFrom:
+              configMapKeyRef:
+                name: special-config
+                key: SPECIAL_LEVEL
+          - name: SPECIAL_TYPE_KEY
+            valueFrom:
+              configMapKeyRef:
+                name: special-config
+                key: SPECIAL_TYPE
+    restartPolicy: Never
+#+END_SRC
+
+**** Add ConfigMap data to Volume
+
+- Act as volume backend
+- Mount volume to =volumeMounts.mountPath=
+- Set =key= and =path= to a specific path in the Volume
+
+
+For example
+
+#+BEGIN_SRC yaml
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: dapi-test-pod
+  spec:
+    containers:
+      - name: test-container
+        image: k8s.gcr.io/busybox
+        command: [ "/bin/sh", "-c", "ls /etc/config/" ]
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/config
+    volumes:
+      - name: config-volume
+        configMap:
+          # Provide the name of the ConfigMap containing the files you want
+          # to add to the container
+          name: special-config
+    restartPolicy: Never
+#+END_SRC
+#+BEGIN_SRC yaml
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: dapi-test-pod
+  spec:
+    containers:
+      - name: test-container
+        image: k8s.gcr.io/busybox
+        command: [ "/bin/sh","-c","cat /etc/config/keys" ]
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/config
+    volumes:
+      - name: config-volume
+        configMap:
+          name: special-config
+          items:
+          - key: special.level
+            path: keys            # mount file `/etc/config/keys` with contents of value of `special.level`
+    restartPolicy: Never
+#+END_SRC
+**** Understand ConfigMaps and Pods
+
+- ConfigMaps act as register table (key-value pairs storage)
+- ConfigMaps can be consumed in pods (act as configuration for example)
+- Must be created before using by Pods
+- ConfigMaps reside in a specific namespace, so Pods use ConfigMaps must be in the same namespace
+
+**** Note
+   
+- ConfigMap can be created use specification looks like these
+  #+BEGIN_SRC yaml
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: special-config
+      namespace: default
+    data:
+      special.how: very
+  #+END_SRC
+- When mount ConfigMap Volume to a mountpoint, other files under the mountpoint will be deleted!
+- Mounted ConfigMaps are updated automatically in period
+
 * Useful commands
 
 ** version
@@ -256,8 +422,10 @@ Is there any backend to mount local file as a Volume to containers??
 *** nodes
 *** pods
 *** deployment
+*** events
 ** run
 ** create
+*** configmap
 ** TODO logs
 ** exec
 
