@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-09-13 四 20:17 -->
+<!-- 2018-09-13 四 20:19 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>learning go 笔记</title>
@@ -239,14 +239,14 @@ for the JavaScript code in this tag.
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#org24833b9">Introduction</a></li>
-<li><a href="#orgd78a226">基础</a></li>
+<li><a href="#org698ebae">基础</a></li>
 <li><a href="#org9ec6fe6">内建函数</a></li>
 <li><a href="#org1ed9c76">函数</a></li>
 <li><a href="#orgbd6dfb0">Packages</a></li>
 <li><a href="#orgf22e6d9">Beyond the basics</a></li>
 <li><a href="#org4308ab7">自定义类型</a></li>
-<li><a href="#org4bb1afd">Methods</a></li>
-<li><a href="#org5d89f69">类型转换</a></li>
+<li><a href="#org6d00267">Methods</a></li>
+<li><a href="#org19c9cd0">类型转换</a></li>
 <li><a href="#org7573323">Interface</a></li>
 <li><a href="#org48f7355">Concurrency</a></li>
 <li><a href="#org19cb2fe">Communication</a></li>
@@ -287,9 +287,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgd78a226" class="outline-2">
-<h2 id="orgd78a226">基础</h2>
-<div class="outline-text-2" id="text-orgd78a226">
+<div id="outline-container-org698ebae" class="outline-2">
+<h2 id="org698ebae">基础</h2>
+<div class="outline-text-2" id="text-org698ebae">
 </div><div id="outline-container-org26d3f7d" class="outline-3">
 <h3 id="org26d3f7d">hello world</h3>
 <div class="outline-text-3" id="text-org26d3f7d">
@@ -419,7 +419,7 @@ go 中检查比较严格，发现未使用的变量会报错，使用 <code>_</c
 </dl>
 </div>
 
-<ul class="org-ul"><li><a id="orgac325da"></a><span class="todo TODO">TODO</span> 类型转换<br><div class="outline-text-5" id="text-orgac325da">
+<ul class="org-ul"><li><a id="org5d89f69"></a><span class="todo TODO">TODO</span> 类型转换<br><div class="outline-text-5" id="text-org5d89f69">
 <p>
 不同类型之前直接不可赋值或计算 
 </p>
@@ -627,9 +627,9 @@ switch i {
 <div id="outline-container-org9ec6fe6" class="outline-2">
 <h2 id="org9ec6fe6">内建函数</h2>
 <div class="outline-text-2" id="text-org9ec6fe6">
-</div><div id="outline-container-orgf9bd60b" class="outline-3">
-<h3 id="orgf9bd60b">基础</h3>
-<div class="outline-text-3" id="text-orgf9bd60b">
+</div><div id="outline-container-orgd3b1180" class="outline-3">
+<h3 id="orgd3b1180">基础</h3>
+<div class="outline-text-3" id="text-orgd3b1180">
 <p>
 <b>使用 <code>godoc builtin</code> 来查看内建函数手册</b>
 </p>
@@ -650,9 +650,9 @@ switch i {
 <div id="outline-container-orgc41392b" class="outline-3">
 <h3 id="orgc41392b">Arrays</h3>
 <div class="outline-text-3" id="text-orgc41392b">
-</div><div id="outline-container-org70361e0" class="outline-4">
-<h4 id="org70361e0">示例</h4>
-<div class="outline-text-4" id="text-org70361e0">
+</div><div id="outline-container-org7f7d86b" class="outline-4">
+<h4 id="org7f7d86b">示例</h4>
+<div class="outline-text-4" id="text-org7f7d86b">
 <div class="org-src-container">
 <pre class="src src-go">var arr [10]int
 a := [3]int{1,2,3}
@@ -691,9 +691,9 @@ b := [...]int{1,2,3,4} // composite literal
 </ul>
 </div>
 
-<div id="outline-container-org8fcc6d7" class="outline-4">
-<h4 id="org8fcc6d7">示例</h4>
-<div class="outline-text-4" id="text-org8fcc6d7">
+<div id="outline-container-org78656ef" class="outline-4">
+<h4 id="org78656ef">示例</h4>
+<div class="outline-text-4" id="text-org78656ef">
 <div class="org-src-container">
 <pre class="src src-go">c  := [...]int{1,2,3,4,5}
 sa := make([]int, 10)
@@ -766,9 +766,9 @@ Array 初始化时需要指定长度: `[3]int{1,2,3}` 或 `[&#x2026;]int{1,2,3}`
 </div>
 </div>
 
-<div id="outline-container-orgcbb326f" class="outline-4">
-<h4 id="orgcbb326f">语法</h4>
-<div class="outline-text-4" id="text-orgcbb326f">
+<div id="outline-container-orgcb5321e" class="outline-4">
+<h4 id="orgcb5321e">语法</h4>
+<div class="outline-text-4" id="text-orgcb5321e">
 <div class="org-src-container">
 <pre class="src src-go">monthdays := map[string]int{
   "Jan": 31, "Feb": 28, "Mar": 31,
@@ -810,9 +810,9 @@ func ( p mytype ) funcname ( q int ) ( r, s int ) { return 0, 0 }
 </div>
 </div>
 
-<div id="outline-container-orgcdaa91d" class="outline-4">
-<h4 id="orgcdaa91d"><span class="todo TODO">TODO</span> 说明</h4>
-<div class="outline-text-4" id="text-orgcdaa91d">
+<div id="outline-container-org55247b2" class="outline-4">
+<h4 id="org55247b2"><span class="todo TODO">TODO</span> 说明</h4>
+<div class="outline-text-4" id="text-org55247b2">
 <ul class="org-ul">
 <li>optionally bind to a specific type called receiver ( method )</li>
 <li>parameters are passed pass-by-value</li>
@@ -942,9 +942,9 @@ A package is a collection of functions and data.
 </div>
 </div>
 
-<div id="outline-container-orgc66020c" class="outline-3">
-<h3 id="orgc66020c">说明</h3>
-<div class="outline-text-3" id="text-orgc66020c">
+<div id="outline-container-orgb2e2653" class="outline-3">
+<h3 id="orgb2e2653">说明</h3>
+<div class="outline-text-3" id="text-orgb2e2653">
 <ul class="org-ul">
 <li>文件名与包名无关</li>
 <li>包名通常用小写命名</li>
@@ -1050,9 +1050,9 @@ A package is a collection of functions and data.
 </div><div id="outline-container-org4ee0eb7" class="outline-3">
 <h3 id="org4ee0eb7">Pointer</h3>
 <div class="outline-text-3" id="text-org4ee0eb7">
-</div><div id="outline-container-org21f8f0c" class="outline-4">
-<h4 id="org21f8f0c">概念</h4>
-<div class="outline-text-4" id="text-org21f8f0c">
+</div><div id="outline-container-org844697e" class="outline-4">
+<h4 id="org844697e">概念</h4>
+<div class="outline-text-4" id="text-org844697e">
 <ul class="org-ul">
 <li>Go has pointers.</li>
 <li>There is however no pointer arithmetic</li>
@@ -1061,9 +1061,9 @@ A package is a collection of functions and data.
 </div>
 </div>
 
-<div id="outline-container-orgcb5321e" class="outline-4">
-<h4 id="orgcb5321e">语法</h4>
-<div class="outline-text-4" id="text-orgcb5321e">
+<div id="outline-container-org32a073e" class="outline-4">
+<h4 id="org32a073e">语法</h4>
+<div class="outline-text-4" id="text-org32a073e">
 <ul class="org-ul">
 <li>在类型前前缀 '*'</li>
 <li>默认指向 <code>nil</code></li>
@@ -1073,9 +1073,9 @@ A package is a collection of functions and data.
 </div>
 </div>
 
-<div id="outline-container-org31e8523" class="outline-4">
-<h4 id="org31e8523">例子</h4>
-<div class="outline-text-4" id="text-org31e8523">
+<div id="outline-container-orgf36dfc3" class="outline-4">
+<h4 id="orgf36dfc3">例子</h4>
+<div class="outline-text-4" id="text-orgf36dfc3">
 <div class="org-src-container">
 <pre class="src src-go">var p *int
 fmt.Printf( "%v %T\n", p, p )
@@ -1095,9 +1095,9 @@ fmt.Printf( "%v %v %T\n", p, *p, p )
 <div id="outline-container-orgce24713" class="outline-3">
 <h3 id="orgce24713">Allocation</h3>
 <div class="outline-text-3" id="text-orgce24713">
-</div><div id="outline-container-org844697e" class="outline-4">
-<h4 id="org844697e">概念</h4>
-<div class="outline-text-4" id="text-org844697e">
+</div><div id="outline-container-orgf835250" class="outline-4">
+<h4 id="orgf835250">概念</h4>
+<div class="outline-text-4" id="text-orgf835250">
 <ul class="org-ul">
 <li>go 有自动内存管理，无须手动释放</li>
 <li>申请有两个原语: <code>new</code> 和 <code>make</code></li>
@@ -1136,9 +1136,9 @@ Composite literal is an expression that creates a new instance each time it is e
 </p>
 </div>
 
-<div id="outline-container-org237f91b" class="outline-4">
-<h4 id="org237f91b"><span class="todo TODO">TODO</span> 例子</h4>
-<div class="outline-text-4" id="text-org237f91b">
+<div id="outline-container-org5af337e" class="outline-4">
+<h4 id="org5af337e"><span class="todo TODO">TODO</span> 例子</h4>
+<div class="outline-text-4" id="text-org5af337e">
 <div class="org-src-container">
 <pre class="src src-go">func NewFile( fd int, name string )*File {
   if fd &lt; 0 {
@@ -1158,9 +1158,9 @@ Composite literal is an expression that creates a new instance each time it is e
 </div>
 
 
-<div id="outline-container-org5754133" class="outline-4">
-<h4 id="org5754133">说明</h4>
-<div class="outline-text-4" id="text-org5754133">
+<div id="outline-container-org7794219" class="outline-4">
+<h4 id="org7794219">说明</h4>
+<div class="outline-text-4" id="text-org7794219">
 <ul class="org-ul">
 <li>laid out in order and must all be present： <code>File{fd,name,nil,0}</code></li>
 <li>也可以加 label，乱序和选填： <code>File{fd:fd, name;name]</code></li>
@@ -1190,9 +1190,9 @@ Composite literal is an expression that creates a new instance each time it is e
 </div>
 </div>
 
-<div id="outline-container-orgf36dfc3" class="outline-3">
-<h3 id="orgf36dfc3">例子</h3>
-<div class="outline-text-3" id="text-orgf36dfc3">
+<div id="outline-container-orgf343540" class="outline-3">
+<h3 id="orgf343540">例子</h3>
+<div class="outline-text-3" id="text-orgf343540">
 <div class="org-src-container">
 <pre class="src src-go">type Point struct{
 	x float64
@@ -1226,12 +1226,12 @@ func main() {
 
 
 
-<div id="outline-container-org4bb1afd" class="outline-2">
-<h2 id="org4bb1afd">Methods</h2>
-<div class="outline-text-2" id="text-org4bb1afd">
-</div><div id="outline-container-org698ebae" class="outline-3">
-<h3 id="org698ebae">基础</h3>
-<div class="outline-text-3" id="text-org698ebae">
+<div id="outline-container-org6d00267" class="outline-2">
+<h2 id="org6d00267">Methods</h2>
+<div class="outline-text-2" id="text-org6d00267">
+</div><div id="outline-container-org2fd6886" class="outline-3">
+<h3 id="org2fd6886">基础</h3>
+<div class="outline-text-3" id="text-org2fd6886">
 <ul class="org-ul">
 <li>目标是为类型提供方法调用</li>
 <li>但不是以 Java/C++/Python OOP 形式</li>
@@ -1250,9 +1250,9 @@ func main() {
 
 
 
-<div id="outline-container-org5d89f69" class="outline-2">
-<h2 id="org5d89f69">类型转换</h2>
-<div class="outline-text-2" id="text-org5d89f69">
+<div id="outline-container-org19c9cd0" class="outline-2">
+<h2 id="org19c9cd0">类型转换</h2>
+<div class="outline-text-2" id="text-org19c9cd0">
 <ul class="org-ul">
 <li>通过操作符(operator)来转换（与函数形式一样，本质上有所不同）</li>
 <li>字符串可以转换为 <code>byte[]</code> 或 <code>rune[]</code> ，反之亦然</li>
@@ -1275,9 +1275,9 @@ func main() {
 </div>
 </div>
 
-<div id="outline-container-orgc294668" class="outline-3">
-<h3 id="orgc294668">示例</h3>
-<div class="outline-text-3" id="text-orgc294668">
+<div id="outline-container-org1476603" class="outline-3">
+<h3 id="org1476603">示例</h3>
+<div class="outline-text-3" id="text-org1476603">
 <div class="org-src-container">
 <pre class="src src-go">type I interface {
   Get() int
@@ -1329,9 +1329,9 @@ func f( p I ) {
 </ul>
 </div>
 
-<div id="outline-container-org5b5ecfc" class="outline-4">
-<h4 id="org5b5ecfc">示例</h4>
-<div class="outline-text-4" id="text-org5b5ecfc">
+<div id="outline-container-org23d0b0c" class="outline-4">
+<h4 id="org23d0b0c">示例</h4>
+<div class="outline-text-4" id="text-org23d0b0c">
 <div class="org-src-container">
 <pre class="src src-go">func g( something interface{} ) int {
     return something.(I).Get()
@@ -1342,9 +1342,9 @@ func f( p I ) {
 </div>
 </div>
 
-<div id="outline-container-org6d00267" class="outline-3">
-<h3 id="org6d00267">Methods</h3>
-<div class="outline-text-3" id="text-org6d00267">
+<div id="outline-container-org668b708" class="outline-3">
+<h3 id="org668b708">Methods</h3>
+<div class="outline-text-3" id="text-org668b708">
 <ul class="org-ul">
 <li>Methods are functions that have a receiver</li>
 <li>可以对任何类型定义方法，包括内置类型（除了 int 之外）</li>
@@ -1398,9 +1398,9 @@ func f( p I ) {
 <div id="outline-container-orgfb135f4" class="outline-3">
 <h3 id="orgfb135f4">Introspection and reflection</h3>
 <div class="outline-text-3" id="text-orgfb135f4">
-</div><div id="outline-container-org8af9b60" class="outline-4">
-<h4 id="org8af9b60">示例</h4>
-<div class="outline-text-4" id="text-org8af9b60">
+</div><div id="outline-container-org4e4b388" class="outline-4">
+<h4 id="org4e4b388">示例</h4>
+<div class="outline-text-4" id="text-org4e4b388">
 <div class="org-src-container">
 <pre class="src src-go">type Person struct {
     name string "namestr"
@@ -1419,9 +1419,9 @@ func ShowTag( i interface[] ) {
 </div>
 
 
-<div id="outline-container-orgf00b3fc" class="outline-4">
-<h4 id="orgf00b3fc"><span class="todo TODO">TODO</span> 说明</h4>
-<div class="outline-text-4" id="text-orgf00b3fc">
+<div id="outline-container-orgf7627e3" class="outline-4">
+<h4 id="orgf7627e3"><span class="todo TODO">TODO</span> 说明</h4>
+<div class="outline-text-4" id="text-orgf7627e3">
 <ul class="org-ul">
 <li>要通过内存中的变量，得到关于结构体等定义信息</li>
 <li>用于区分 type 和 value</li>
@@ -1458,9 +1458,9 @@ allocating( and freeing) heap storage as required.
 </blockquote>
 </div>
 
-<div id="outline-container-org0293d5c" class="outline-4">
-<h4 id="org0293d5c">说明</h4>
-<div class="outline-text-4" id="text-org0293d5c">
+<div id="outline-container-org4c4fd20" class="outline-4">
+<h4 id="org4c4fd20">说明</h4>
+<div class="outline-text-4" id="text-org4c4fd20">
 <ul class="org-ul">
 <li>普通函数，以关键字 <code>go</code> 开头</li>
 </ul>
@@ -1471,9 +1471,9 @@ allocating( and freeing) heap storage as required.
 <div id="outline-container-orge3eec35" class="outline-3">
 <h3 id="orge3eec35">channel</h3>
 <div class="outline-text-3" id="text-orge3eec35">
-</div><div id="outline-container-org55247b2" class="outline-4">
-<h4 id="org55247b2">说明</h4>
-<div class="outline-text-4" id="text-org55247b2">
+</div><div id="outline-container-org0a324e1" class="outline-4">
+<h4 id="org0a324e1">说明</h4>
+<div class="outline-text-4" id="text-org0a324e1">
 <ul class="org-ul">
 <li>类似于双向的 pipe</li>
 <li>只能以 channel 定义的数据类型进行交流</li>
@@ -1485,9 +1485,9 @@ allocating( and freeing) heap storage as required.
 </div>
 </div>
 
-<div id="outline-container-org7f7d86b" class="outline-4">
-<h4 id="org7f7d86b">示例</h4>
-<div class="outline-text-4" id="text-org7f7d86b">
+<div id="outline-container-org2c600c5" class="outline-4">
+<h4 id="org2c600c5">示例</h4>
+<div class="outline-text-4" id="text-org2c600c5">
 <div class="org-src-container">
 <pre class="src src-go">func ready( w string, sec int ) {
     time.Sleep( time.Duration(sec) * time.Second )
@@ -1636,7 +1636,7 @@ func main() {
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: 赵文彬</p>
-<p class="date">Created: 2018-09-13 四 20:17</p>
+<p class="date">Created: 2018-09-13 四 20:19</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
