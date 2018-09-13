@@ -188,6 +188,63 @@
  - can be reverted to previous version
  - useful for CI/CD (Integration/Delivery)
 
+* Configuration
+** Configuring Redis using a ConfigMap
+
+*** Basic Step
+
+1. create ConfigMap from local file
+   #+BEGIN_SRC bash
+     kubectl create configmap example-redis-config --from-file=redis-config
+   #+END_SRC
+2. check Configmap
+   #+BEGIN_SRC bash
+     kubectl get configmap example-redis-config -o yaml
+   #+END_SRC
+3. Use ConfigMap (dump configmap to mounted file) for Pod. The pod spec looks like:
+   #+BEGIN_SRC yaml
+     apiVersion: v1                  # version number
+     kind: Pod
+     metatdata:
+       name: redis
+     spec:
+       containers:
+       - name: redis                 # Container redis
+	 image: kubernetes/redis:v1  # Image
+	 env:                        # set environment variables
+	 - name: MASTER
+	   value: "true"
+	 ports:
+	 - containerPort: 6379
+	 resources:
+	   limits:
+	     cpu: "0.1"
+	 volumeMounts:
+	 - mountPath: /redis-master-data
+	   name: data                # mount Volume(data) to /redis-master-data
+	 - mountPath: /redis-master 
+	   name: config              # mount Volume(config) to /redis-master
+       volumes:
+	 - name: data
+	   emptyDir: {}
+	 - name: config              # define new volume named `config`
+	   configMap:                # `configMap` is a type of volume
+	     name: example-redis-config # configMap name as identity
+	     items:
+	     - key: redis-config
+	       path: redis.conf      # configMap's path, will be mounted to `<mountPath>/redis.conf`
+   #+END_SRC
+*** Note
+
+- ConfigMap is a config file
+- Act as backend of Volume
+- Can be mounted to Container as a file, which content is the ConfigMap settings
+
+*** TODO Why use ConfigMap?
+
+/ConfigMaps allow you to decouple configuration artifacts from image content to keep containerized applications portable./
+
+Is there any backend to mount local file as a Volume to containers??
 
 * Useful commands
 
