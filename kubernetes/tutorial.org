@@ -210,29 +210,29 @@
      spec:
        containers:
        - name: redis                 # Container redis
-	 image: kubernetes/redis:v1  # Image
-	 env:                        # set environment variables
-	 - name: MASTER
-	   value: "true"
-	 ports:
-	 - containerPort: 6379
-	 resources:
-	   limits:
-	     cpu: "0.1"
-	 volumeMounts:
-	 - mountPath: /redis-master-data
-	   name: data                # mount Volume(data) to /redis-master-data
-	 - mountPath: /redis-master 
-	   name: config              # mount Volume(config) to /redis-master
+         image: kubernetes/redis:v1  # Image
+         env:                        # set environment variables
+         - name: MASTER
+           value: "true"
+         ports:
+         - containerPort: 6379
+         resources:
+           limits:
+             cpu: "0.1"
+         volumeMounts:
+         - mountPath: /redis-master-data
+           name: data                # mount Volume(data) to /redis-master-data
+         - mountPath: /redis-master 
+           name: config              # mount Volume(config) to /redis-master
        volumes:
-	 - name: data
-	   emptyDir: {}
-	 - name: config              # define new volume named `config`
-	   configMap:                # `configMap` is a type of volume
-	     name: example-redis-config # configMap name as identity
-	     items:
-	     - key: redis-config
-	       path: redis.conf      # configMap's path, will be mounted to `<mountPath>/redis.conf`
+         - name: data
+           emptyDir: {}
+         - name: config              # define new volume named `config`
+           configMap:                # `configMap` is a type of volume
+             name: example-redis-config # configMap name as identity
+             items:
+             - key: redis-config
+               path: redis.conf      # configMap's path, will be mounted to `<mountPath>/redis.conf`
    #+END_SRC
 *** Note
 
