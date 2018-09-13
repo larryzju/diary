@@ -1,0 +1,18 @@
+* Concept
+
+- surface :: An image that is visible on the screen
+
+* Examples Analysis
+
+** moveit (pygame/examples/moveit.py)
+
+- To move a surface, erase old surface with background and draw surface on new position
+- =image.load= load image file into surface
+- =Image.convert()= convert Surface to another, for matching screen format (performance)
+- ~Surface.blit(source, dest, area=None)~ draw one image onto another
+- Call =pygame.display.update()= to flush
+- Call =pygame.time.delay(t)= to sleep
+
+* Terms
+
+- Surface :: An image that is visible on the screen
