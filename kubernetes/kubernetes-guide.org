@@ -119,7 +119,41 @@ kubernetes 由三部分构成
 - 提到了在内网搭建私有云？
 - 提到了 Supervisor 在前台执行命令
 
+* Kubernetes 核心原理
+** Kubernetes API Server 分析
 
+*** 基本功能
+
+1. 提供 API Interface
+2. 各组件的枢纽，etcd 对外接口
+3. 安全机制
+
+*** 对外端口
+
+1. HTTP 8080
+2. SecurePort HTTPs 6443
+
+*** 与 API SERVER 的交互方式
+
+1. API (Restful)，路径如 =/api/v1/proxy/nodes/{name}/pods=
+2. Proxy 反向代理 API SERVER
+3. Lanaguage Client Library 封装
+4. kubectl command line （类比于 beeline 之于 hive server2）
+
+*** 细节补充
+
+- 各模块缓存机制以减少对 apiserver 的压力
+- node 定时向 apiserver 汇总状态
+
+
+** TODO 调度控制原理
+** TODO Kubelet 运行机制分析
+** TODO 安全机制的原理
+** TODO 网络原理
+* TODO Kubernetes 开发指南
+* TODO Kubernetes 运维指南
+* TODO Kubernetes 高级案例进阶
+* TODO Kubernetes 源码导读
 * 问题
 
 ** etcd 与 k8s 的关系
