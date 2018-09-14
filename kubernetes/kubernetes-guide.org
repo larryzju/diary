@@ -95,10 +95,27 @@
 - 没有 labelSelector 功能
 - 可以存储关联任何格式的数据
 
+** Kubernetes 总体架构
+
+kubernetes 由三部分构成
+
+- 工具集 kubectl
+- Master
+  + etcd: Key/value 数据库
+  + Core
+    - API Server: Restful 服务，提供全量查询和变化监听功能，为 kubectl, controller manager, scheduler, proxy 所用
+    - Controller Manager: 集群管理控制中心，故障检测与自动恢复机制
+    - Scheduler: Pod 到 Node 的调度/Binding
+- Node
+  + kubelet: 负责 Pod 的创建、维护等生命管理
+  + proxy: Service 代理，起负载均衡作用
+
 
 * 问题
 
-** TODO etcd 与 k8s 的关系
+** etcd 与 k8s 的关系
+
+etcd 在 Master 节点运行，是一个键值对数据库，保存 k8s 运行对象配置数据
 
 ** TODO =kube-apiserver=, =kube-controller-manager=, =kube-scheduler=, =kubelet=, =kube-proxy= 的关系
 ** TODO Service Nodeport
