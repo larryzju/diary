@@ -110,6 +110,15 @@ kubernetes 由三部分构成
   + kubelet: 负责 Pod 的创建、维护等生命管理
   + proxy: Service 代理，起负载均衡作用
 
+** Kubernetes 安装与配置
+
+- 描述从二进制文件安装 kubernetes 的方法
+- 分 master 和 node 分别安装和配置
+- 用 systemd 来管理服务的依赖关系
+- 各种服务均需要指定 master api server 地址
+- 提到了在内网搭建私有云？
+- 提到了 Supervisor 在前台执行命令
+
 
 * 问题
 
