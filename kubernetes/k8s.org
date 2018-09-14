@@ -111,4 +111,111 @@ k8s volume 有以下特点：
 - Similar to =ReplicationController=, but support set-based selector
 - Specific pod configuration by =spec.template=
 
-* TODO Service
+* Service
+
+** Why service
+
+- For pod has internal and temporary IP address.
+- Use =service= to decouple frontend pod with backend pod connection
+
+** As micro-service
+
+=Service= is an abstraction which defines a logical set of =Pods= and a policy by which to access them.
+
+** =Endpoints=
+
+- For k8s-native applications
+- =Endpoints= is updated whenever then set of =Pods= in a =Service= changed
+- For non-native application, use virtual-IP-based bridge to Service
+- When create =Service=, an =Endpoints= will be created with the same name as Service (must have label selectors)
+
+** Services without label selectors
+
+- Worked just as a route item, map port to target port which is not part of =Pods=
+- Because no selector specific, there will not be =Endpoints= be created automatically
+- Create =Endpoint= manual
+- [[*ExternalName service][ExternalName service]] is a special case, see below
+
+** Define a service
+
+#+BEGIN_SRC yaml
+  kind: Service
+  apiVersion: v1
+  metadata:
+    name: my-service
+  spec:
+    selector:
+      app: MyApp
+    ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9376
+#+END_SRC
+
+- Would be assigned an IP address (cluster-IP), which is used by proxy
+- An =Endpoints= also named 'my-service' will be created automatically
+- Map an incompoint =port= to any =targetPort=
+** Proxy
+
+- Each node has a process named =kube-proxy=
+- Which is responsible for implementing a form of virtual IP for =Services=
+- There are three mode for =Proxy=
+  + Userspace
+    1. iptable rules to forward =ClusterIP:Port= to =localhost:ProxyPort=
+    2. proxied =localhost:ProxyPort='s traffic to one of the =Service='s backend =Pods=
+  + Iptables
+    - Set iptable rule for each =Endpoints= 
+    - Random forward request to =CLusterIP:Port= to backend =Pod=
+    - But can not retry for failed, depends on having working readiness probes
+  + ipvs (new in v1.9, skip)
+
+** Find =Service=
+
+=Service= clusterIP is choosed randomly, Two methods to find =Service= clusterIP
+
+*** Environment
+
+- After create =Services=, new =Pods= will be configured with environment variables
+  #+BEGIN_SRC bash
+  ${SVCNAME}_SERVICE_HOST
+  ${SVCNAME}_SERVICE_PORT
+  #+END_SRC
+- To use env, Services must be created before Pods
+
+*** DNS
+
+- DNS Server monitor the changes of =Services= and maintain items to service IP
+- Map =service-name.namespace= to Service cluster IP
+
+** Publish services to external
+
+Some kind of service by setting =Type= value (ServiceType)
+1. ClusterIP: for cluster-internal usage
+2. NodePort: Can be visited from external by =<NodeIP>:<NodePort>= (every node)
+3. LoadBalancer: Expose the service externally using a cloud provider's load balancer(?)
+4. ExternalName: return a =CNAME= record with =externalName= field's value (?)
+
+** TODO Shortcomings
+
+** Misc
+
+- =Services= can expose more than one port and you must give all of your ports names. For examples:
+  #+BEGIN_SRC yaml
+    kind: Service
+    apiVersion: v1
+    metadata:
+      name: my-service
+    spec:
+      selector:
+        app: MyApp
+      ports:
+      - name: http
+        protocol: TCP
+        port: 80
+        targetPort: 9376
+      - name: https
+        protocol: TCP
+        port: 443
+        targetPort: 9377
+  #+END_SRC
+- Can set clusterIP of =Services= by =.spec.clusterIP=. Most useful for legacy system which configured a specific IP address
