@@ -13,6 +13,47 @@
 
 * 概念
 
+** Deployment
+
+- 应用，自动管理副本
+- 用 =kubectl get deploymentes=
+- 副本可以增大，也可以减小
+
+** Pod
+
+- 窗口的集合
+- 同一 Pod 中的所有窗口共享 IP 地址和 Port 空间
+- 是 Kubernetes 调度的最小单位
+- 用 =kubectl get pods= 查看当前的 Pod
+- 只能在集群内部访问 Pod 的容器
+
+** Expose
+
+- 将 Pod 端口映射到外部
+  #+BEGIN_SRC bash
+    kubectl expose deployment/kubernetes-bootcamp \
+            --type="NodePort" --port 8080
+  #+END_SRC
+
+- 用 =kubectl get service= 查看映射
+
+- 映射到的外部服务端口号是随机的
+
+
+** Rolling
+
+- =kubectl set image= 命令动态更新 Deployment 中的容器镜像
+  #+BEGIN_SRC bash
+    # update deployments kubernetes-bootcamp's container's image to kubernetes-bootcamp:v2
+    kubectl set image deployments/kubernetes-bootcamp \
+            kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2
+  #+END_SRC
+
+- =kubectl rollout undo= 回退版本
+  #+BEGIN_SRC bash
+    kubectl rollout undo deployments/kubernetes-bootcamp
+  #+END_SRC
+
 * 架构
 
 * 优化
@@ -33,10 +74,26 @@
 
 ** 日志管理
 
+* 问题
+
+** TODO 部署应用 deployment, run, create, apply 的异同
+
 * 命令
 
-- =kubectl cluster-info= :: 查看集群信息
-- =kubectl get nodes= :: 查看集群结点
+- 信息查看
+  + ~kubectl cluster-info~ :: 查看集群信息
+  + ~kubectl get nodes~ :: 查看集群结点
+  + ~kubectl get pods~ :: 查看当前的 Pod
+  + ~kubectl get services~ :: 查看服务映射
+  + ~kubectl get deployments~ :: 查看部署情况（包含副本数）
+- 部署
+  + ~kubectl run name --image=xx~ :: 部署应用
+  + ~kubectl expose deployment --type="NodePort" --port 8080~ :: 映射服务
+- 维护
+  + ~kubectl scale deployment --replicas=3~ :: 修改副本数
+  + ~kubectl set image~ :: 更改容器的镜像
+  + ~kubectl rollout undo~ :: 回退版本
+
 
 
 
