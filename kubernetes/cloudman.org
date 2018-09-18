@@ -13,22 +13,70 @@
 
 * 概念
 
+** Cluster
+
+- 计算、存储和网络资源的集合
+- Kubernetes 利用 Cluster 资源运行各种基于容器的应用
+
+** Master
+
+- 调度
+- 可以 HA
+
+** Node
+
+- 运行容器，管理容器的生命周期
+- 接受 Master 管理
+- 监控并汇报容器的状态
+
+** Controller
+
+- Kubernetes 不会直接创建 Pod，而是通过 Controller 来管理 Pod
+- Controller 定义了 Pod 的部署特性（如副本，Node 的选择）
+- 内置有多种 Controller，如 Deployment, ReplicaSet, DaemonSet, StatefuleSet, Job
+
 ** Deployment
 
 - 应用，自动管理副本
 - 用 =kubectl get deploymentes=
 - 副本可以增大，也可以减小
 
+** ReplicaSet
+
+- 多副本管理
+- Deployment 会创建 ReplicaSet
+- 通常不要直接使用 ReplicaSet
+
+** TODO StatefuleSet
+
+- 保证 Pod 的每个副本在整个生命周期中的名称不变
+- 保证副本按固定的顺序启动、更新或删除
+- 有什么用？
+
+** TODO Job
+
+- 运行结束就删除的应用场景
+
+** Namespace
+
+- 将物理 Cluster 逻辑划分为多个虚拟的 Cluster
+- 不同 Cluster 的资源是隔离的
+
 ** Pod
 
-- 窗口的集合
-- 同一 Pod 中的所有窗口共享 IP 地址和 Port 空间
+- 容器的集合
+- 在一个 Node 上运行
+- 同一 Pod 中的所有容器共享 IP 地址和 Port 空间
 - 是 Kubernetes 调度的最小单位
 - 用 =kubectl get pods= 查看当前的 Pod
 - 只能在集群内部访问 Pod 的容器
 
-** Expose
+** Service
 
+- Pod 的地址只能在集群内部分使用，而且可能会被频繁地销毁和重启
+- Service 定义了外界访问一组特定 Pod 的方式
+- 有自己的 IP 和端口
+- 为 Pod 提供了负载均衡能力
 - 将 Pod 端口映射到外部
   #+BEGIN_SRC bash
     kubectl expose deployment/kubernetes-bootcamp \
@@ -36,9 +84,7 @@
   #+END_SRC
 
 - 用 =kubectl get service= 查看映射
-
 - 映射到的外部服务端口号是随机的
-
 
 ** Rolling
 
@@ -54,7 +100,26 @@
     kubectl rollout undo deployments/kubernetes-bootcamp
   #+END_SRC
 
+
 * 架构
+
+** Pod 的作用
+
+1. 可管理性（更高的抽象层次）
+2. 通信和资源共享
+   - Pod 中的容器共享网络
+   - 可以直接用 localhost 通信
+   - 可以共享存储（Volume 实际对 Pod 中每个 Container 可见）
+
+** Pod 与 Container
+
+1. 可以运行单一容器，称为 =one-container-per-pod=
+2. 运行多个容器：要求容器必须联系紧密，有共享资源的需求
+
+** Controller 与 Service
+
+- Controller 负责运行容器
+- Service 负责访问容器（能力）
 
 * 优化
 
