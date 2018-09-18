@@ -1,0 +1,42 @@
+#+TITLE: CloudMan Kubernetes 笔记
+#+AUTHOR: Zhao Wenbin
+
+* 背景
+
+** TODO Kubernetes vs Mesos vs Docker Swarm
+
+** Google Borg
+
+- Kubernetes 是 Google Omega 的开源版本
+- Omega 以前叫做 Borg
+- Borg 是 Google 内部用来管理容量的工具
+
+* 概念
+
+* 架构
+
+* 优化
+
+** 资源 
+
+** 高可用
+
+** 滚动更新
+
+** 网络插件
+
+** 服务发现
+
+** 监控
+
+** 数据管理
+
+** 日志管理
+
+* 命令
+
+- =kubectl cluster-info= :: 查看集群信息
+- =kubectl get nodes= :: 查看集群结点
+
+
+
