@@ -6,7 +6,7 @@
 ** What is Ansible
 
 - automation language (playbook yaml syntax)
-- automation engine (=ansible-playbook)
+- automation engine (=ansible-playbook=)
 - Ansible Tower (UI and RESTFul API server)
 
 ** Ecosystem
@@ -56,6 +56,39 @@
 - 通过 =/etc/ansible/hosts= 配置主机组
 - 通过 Jinja2 语法提供模板替换
 
+* Variable
+
+See [[*Inventory][Inventory]]
+
+* Inventory
+
+** Basic
+
+- Default configure file is located at =/etc/ansible/hosts=
+- Group hosts to *group* ( section name in =ini= file )
+- Group variables can be defined at section =group_name:vars=
+- Two default groups: =all= and =ungrouped=
+
+** Feature
+
+- Jumper :: Alias for host ( =ansible_host= or =ansible_port= )
+- Connection Type :: Set =ansible_connection= to =smart=, or =ssh=, or =paramiko=, or =docker=
+- Range pattern :: Such as =www[01:50].example.com= 
+
+** Splitting Out Host and Group Specific Data
+
+- Split varaible definition to seperated files
+- Files will be placed at =/etc/ansible/{group_vars, host_vars}/name/=
+
+** How Variables Are Merged
+
+The order/precedence is (from lowest to highest):
+1. all group
+2. parent group
+3. child group
+4. host
+
+Merge order can be changed by =ansible_group_priority= setting
 
 * Modules
 
@@ -64,6 +97,11 @@
 ** user
 
 ** copy
+
+** file
+
+- Change permission
+- Create directory
 
 ** TODO fetch
 
@@ -77,9 +115,14 @@
 
 ** service
 
-** script
+** TODO git
+** TODO script
 
-* playbook
+script at local?
+
+** TODO async-status
+
+* Playbook
 
 ** Overview
 
@@ -104,4 +147,23 @@
 
 ** ansible-doc
 
+* Misc
 
+** Log types
+
+1. with SSH Key
+2. Ask for password =--ask-pass=
+3. Switch to other user (=sudo=) with =--ask-become-pass=
+
+** Disable host-key
+
+Disable =host-key-checking= for
+1. host information change in =know_hosts=
+2. first time to login a ssh server
+
+** =ansible all -m setup=
+
+** background execute
+
+- =-B 3600=: run in background for most 3600s
+- =-P= for polling
