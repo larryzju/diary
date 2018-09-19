@@ -1,0 +1,107 @@
+#+TITLE: Ansible
+#+AUTHOR: Zhao Wenbin
+
+* Overview 
+
+** What is Ansible
+
+- automation language (playbook yaml syntax)
+- automation engine (=ansible-playbook)
+- Ansible Tower (UI and RESTFul API server)
+
+** Ecosystem
+
+- Red Hat Support
+- Ansible Tower
+- Ansible Galaxy (CPAN?)
+
+** Feature
+
+- Simple
+- Powerful
+- Agentless
+
+** TODO Usage
+
+- Config Management
+- App deployment
+- Provision?
+- Continuous delivery?
+- Security & Compliance?
+- Orchestration?
+
+** Architecture
+
+- Inventory :: lists of hosts
+- Playbook :: Describe the desired state of something
+- Tasks :: Playbook contains *plays* and *play* contains *Tasks*. Taks ru nsequentially
+- Modules :: Task call *Modules*
+- Variable :: ?
+- Discovered variables (facts) :: ?
+- Handlers :: Triggered by Tasks
+- Roles :: kind of Playbook that is fully self-contained with taks, variables, configurations templates
+
+** How to use
+
+1. ad-hoc command line: =ansible inventory -m=
+2. ansible-playbook
+3. Ansible Tower (UI)
+
+** Notes
+
+- 批量执行命令
+- 类似于 pdsh，更强大
+- 无需在各 node 上部署客户端 (Agentless)
+- 支持 modules 和 plugins 扩展
+- 通过 =/etc/ansible/hosts= 配置主机组
+- 通过 Jinja2 语法提供模板替换
+
+
+* Modules
+
+** group
+
+** user
+
+** copy
+
+** TODO fetch
+
+** command
+
+** TODO shell
+
+** cron
+
+** yum
+
+** service
+
+** script
+
+* playbook
+
+** Overview
+
+- 通过 yaml 语法进行配置
+- =ansible-playbook= 最佳实践
+  1. =--syntax-check= 检查语法
+  2. =-C= 试运行 (dry-run)
+
+
+** notify - handlers
+
+** tags
+
+** TODO varibles
+
+** TODO templates
+
+** TODO condition/loop syntax
+
+** TODO roles
+* Command line
+
+** ansible-doc
+
+
