@@ -33,13 +33,13 @@
 ** Architecture
 
 - Inventory :: lists of hosts
-- Playbook :: Describe the desired state of something
-- Tasks :: Playbook contains *plays* and *play* contains *Tasks*. Taks ru nsequentially
-- Modules :: Task call *Modules*
+- Playbook :: Describe the desired state of something. Contains *Plays* and *play* contains *Tasks*
+- Tasks :: Task run sequentially and calls *Modules*
+- Modules :: ?
 - Variable :: ?
 - Discovered variables (facts) :: ?
 - Handlers :: Triggered by Tasks
-- Roles :: kind of Playbook that is fully self-contained with taks, variables, configurations templates
+- Roles :: kind of Playbook that is fully self-contained with task, variables, configurations templates
 
 ** How to use
 
