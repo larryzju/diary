@@ -38,36 +38,42 @@
 - Modules :: ?
 - Variable :: ?
 - Discovered variables (facts) :: ?
-- Handlers :: Triggered by Tasks
+- Handlers :: Triggered by Tasks's *Notify*
 - Roles :: kind of Playbook that is fully self-contained with task, variables, configurations templates
 
 ** How to use
 
 1. ad-hoc command line: =ansible inventory -m=
-2. ansible-playbook
+2. =ansible-playbook= command line
 3. Ansible Tower (UI)
 
 ** Notes
 
-- 批量执行命令
-- 类似于 pdsh，更强大
+核心功能是： *登录到一组主机，执行一套命令*
+
+- 主机组由 Inventory 定义，主机组配置灵活
+- 执行的这组命令称为 Task List
+- Task List 中的命令以一定的顺序执行
+- 每个 Task 调用系统功能，称为 Module
+- Module 以 Python 实现，最常见的如 shell 和 file 操作
+- 远程机器的方式可以有 ssh 或 docker，在 module 上实现了操作的统一
 - 无需在各 node 上部署客户端 (Agentless)
-- 支持 modules 和 plugins 扩展
-- 通过 =/etc/ansible/hosts= 配置主机组
 - 通过 Jinja2 语法提供模板替换
 
 * Variable
 
-See [[*Inventory][Inventory]]
+See [[Inventory][Inventory]]
 
 * Inventory
 
 ** Basic
 
 - Default configure file is located at =/etc/ansible/hosts=
-- Group hosts to *group* ( section name in =ini= file )
+- Group hosts to *group* ( with the section name in =ini= file )
 - Group variables can be defined at section =group_name:vars=
 - Two default groups: =all= and =ungrouped=
+- Coupled with variable definition
+- Recommend to [[Splitting Out Host and Group Specific Data][split variable definition to seperated files]]
 
 ** Feature
 
@@ -79,6 +85,8 @@ See [[*Inventory][Inventory]]
 
 - Split varaible definition to seperated files
 - Files will be placed at =/etc/ansible/{group_vars, host_vars}/name/=
+- Let group to manage the logical host sets
+- Attach variable defintions to logical host set
 
 ** How Variables Are Merged
 
@@ -89,7 +97,42 @@ The order/precedence is (from lowest to highest):
 4. host
 
 Merge order can be changed by =ansible_group_priority= setting
+* Playbook
 
+** Basic
+
+- Playbook defines lists of *plays*
+- Play maps a group of *hosts* to some well defined *roles*, represented by things ansible calls *tasks*
+- Task calls to an ansible *module*
+
+** TODO Order of players (in Playbook)
+** TODO Order of tasks (in Play)
+
+** Notes
+
+- 通过 yaml 语法进行配置
+- =ansible-playbook= 最佳实践
+  1. =--syntax-check= 检查语法
+  2. =-C= 试运行 (dry-run)
+
+
+
+** notify - handlers
+
+- 'Notify' actions are triggered at the end of each block of tasks in a play, only be triggered only once
+- 'Handlers' are lists of tasks that are referenced by a globally unique name
+- Regardless of how many tasks notify a handler, the handler will run only once
+- 'Handlers' can listen to spefic named notify (match with handler's name in classic way)
+
+** tags
+
+** TODO varibles
+
+** TODO templates
+
+** TODO condition/loop syntax
+
+** TODO Playbook & Roles
 * Modules
 
 ** group
@@ -122,44 +165,6 @@ script at local?
 
 ** TODO async-status
 
-* Playbook
-
-** Basic
-
-- Playbook defines lists of *plays*
-- Play maps a group of *hosts* to some well defined *roles*, represented by things ansible calls *tasks*
-- Task calls to an ansible *module*
-
-** TODO tasks order
-
-** Notes
-
-- 通过 yaml 语法进行配置
-- =ansible-playbook= 最佳实践
-  1. =--syntax-check= 检查语法
-  2. =-C= 试运行 (dry-run)
-
-** notify - handlers
-
-- 'Notify' actions are triggered at the end of each block of tasks in a play
-- only be triggered only once
-- 'Handlers' are lists of tasks that are referenced by a globally unique name
-- Regardless of how many tasks notify a handler, the handler will run only once
-
-** tags
-
-** TODO varibles
-
-** TODO templates
-
-** TODO condition/loop syntax
-
-** TODO Playbook & Roles
-
-* Command line
-
-** ansible-doc
-
 * Misc
 
 ** Log types
@@ -180,3 +185,4 @@ Disable =host-key-checking= for
 
 - =-B 3600=: run in background for most 3600s
 - =-P= for polling
+** TODO ansible-doc
