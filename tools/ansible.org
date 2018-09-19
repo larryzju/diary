@@ -124,15 +124,27 @@ script at local?
 
 * Playbook
 
-** Overview
+** Basic
+
+- Playbook defines lists of *plays*
+- Play maps a group of *hosts* to some well defined *roles*, represented by things ansible calls *tasks*
+- Task calls to an ansible *module*
+
+** TODO tasks order
+
+** Notes
 
 - 通过 yaml 语法进行配置
 - =ansible-playbook= 最佳实践
   1. =--syntax-check= 检查语法
   2. =-C= 试运行 (dry-run)
 
-
 ** notify - handlers
+
+- 'Notify' actions are triggered at the end of each block of tasks in a play
+- only be triggered only once
+- 'Handlers' are lists of tasks that are referenced by a globally unique name
+- Regardless of how many tasks notify a handler, the handler will run only once
 
 ** tags
 
@@ -142,7 +154,8 @@ script at local?
 
 ** TODO condition/loop syntax
 
-** TODO roles
+** TODO Playbook & Roles
+
 * Command line
 
 ** ansible-doc
