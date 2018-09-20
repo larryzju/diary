@@ -64,6 +64,8 @@
 
 See [[Inventory][Inventory]]
 
+- =register= :: ?
+
 * Inventory
 
 ** Basic
@@ -116,6 +118,64 @@ Merge order can be changed by =ansible_group_priority= setting
   2. =-C= 试运行 (dry-run)
 
 
+** Blocks
+
+*** What is block
+
+Blocks allow for logical grouping of tasks and in play error handling
+
+*** Example
+
+#+BEGIN_SRC yaml
+   tasks:
+     - name: Install Apache
+       block:                     # become, when, become_user will be applied to this block
+         - yum:
+             name: "{{ item }}"
+             state: installed
+           with_items:
+             - httpd
+             - memcached
+         - template:
+             src: templates/src.j2
+             dest: /etc/foo.conf
+         - service:
+             name: bar
+             state: started
+             enabled: True
+       when: ansible_distribution == 'CentOS'
+       become: true
+       become_user: root
+#+END_SRC
+
+*** Error Handling
+
+#+BEGIN_SRC yaml
+   tasks:
+   - name: Attempt and graceful roll back demo
+     block:
+       - debug:
+           msg: 'I execute normally'
+       - command: /bin/false
+       - debug:
+           msg: 'I never execute, due to the above task failing'
+     rescue:
+       - debug:
+           msg: 'I caught an error'
+       - command: /bin/false
+       - debug:
+           msg: 'I also never execute :-('
+     always:
+       - debug:
+           msg: "This always executes"
+#+END_SRC
+
+- Similar to python =try...except...finally= logical
+
+*** Variable
+
+- =ansible_failed_task= :: The task object that returned ‘failed’ and triggered the rescue
+- =ansible_failed_result= :: The captured return result of the failed task that triggered the rescue
 
 ** notify - handlers
 
@@ -226,6 +286,8 @@ For sharing roles with others (encapsulation)
 
 ** yum
 
+** apt
+** systemd
 ** service
 
 ** TODO git
@@ -235,6 +297,7 @@ script at local?
 
 ** TODO async-status
 
+* Tags
 * Misc
 
 ** Log types
@@ -257,3 +320,6 @@ Disable =host-key-checking= for
 - =-P= for polling
 ** TODO ansible-doc
 ** TODO ansible-pull
+** TODO =ansible_os_family=
+** TODO =lineinfile=
+** TODO =debug= 
