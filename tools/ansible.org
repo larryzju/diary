@@ -117,7 +117,6 @@ Merge order can be changed by =ansible_group_priority= setting
   1. =--syntax-check= 检查语法
   2. =-C= 试运行 (dry-run)
 
-
 ** Blocks
 
 *** What is block
@@ -298,6 +297,22 @@ tasks:
 *** TODO Selecting Files and Templates based on variables
 
 ** TODO Playbook & Roles
+** Resuable
+
+*** Ways
+
+3 ways to split large playbook into seperate files
+
+1. =include=
+2. =imports=
+3. =roles=
+
+*** comparision
+
+- =roles= can package variable, handler, module, plugins
+- =import=: static including which process during parsing time
+- =include=: dynamic including which happen during runtime
+
 * Role
 
 ** Overview
