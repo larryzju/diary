@@ -190,7 +190,112 @@ Blocks allow for logical grouping of tasks and in play error handling
 
 ** TODO templates
 
-** TODO condition/loop syntax
+** Conditional
+
+*** Why?
+
+Often the result of a play may depend on
+1. the value of variable
+2. fact (something learned about the remote system)
+3. previous task result
+
+*** =when= statement
+
+- without double curly braces
+- can use parathese to group condition (with logical likes =or=)
+- Multiple conditions as a list means logical =and=
+- =register= result can be compared with ={failed,successed,skipped}=
+- Boolean check
+  #+BEGIN_SRC yaml
+    vars:
+      epic: true
+
+  
+    ## true
+    tasks:
+        - shell: echo "This certainly is epic!"
+          when: epic
+      
+    ## or false:
+    tasks:
+        - shell: echo "This certainly isn't epic!"
+          when: not epic
+  #+END_SRC
+- Defined check
+  #+BEGIN_SRC yaml
+    tasks:
+        - shell: echo "I've got '{{ foo }}' and am not afraid to use it!"
+          when: foo is defined
+
+        - fail: msg="Bailing out. this play requires 'bar'"
+          when: bar is undefined
+  #+END_SRC
+
+*** Loops and Conditionals
+
+#+BEGIN_SRC yaml
+tasks:
+    - command: echo {{ item }}
+      loop: [ 0, 2, 4, 6, 8, 10 ]
+      when: item > 5
+#+END_SRC
+
+Withing =lookup= plugin's =dict= command
+
+#+BEGIN_SRC yaml
+vars:
+  persons:
+    Lily:
+      sex: female
+      age: 29
+    Lucy:
+      sex: female
+      age: 29
+    LiLei:
+      sex: male
+      age: 30
+
+tasks:
+
+  - name: show male's list
+    debug:
+      msg: Mr.{{item.key}}'s age is {{item.value.age}}
+    loop: "{{ query('dict', persons) }}"
+    when: item.value.sex == 'male'
+
+  - name: show female's list
+    debug:
+      msg: Miss.{{item.key}}'s age is {{item.value.age}}
+    loop: "{{ query('dict', persons) }}"
+    when: item.value.sex == 'female'
+#+END_SRC
+
+*** TODO Loading in Custom Facts
+*** Applying ‘when’ to roles, imports, and includes
+
+#+BEGIN_SRC yaml
+- hosts: webservers
+  roles:
+     - role: debian_stock_config
+       when: ansible_os_family == 'Debian'
+#+END_SRC
+
+*** Register variables
+#+BEGIN_SRC yaml
+- name: test play
+  hosts: all
+
+  tasks:
+
+      - shell: cat /etc/motd
+        register: motd_contents
+
+      - shell: echo "motd contains the word hi"
+        when: motd_contents.stdout.find('hi') != -1
+#+END_SRC
+
+*** TODO conditional Imports
+*** TODO Selecting Files and Templates based on variables
 
 ** TODO Playbook & Roles
 * Role
@@ -295,6 +400,13 @@ For sharing roles with others (encapsulation)
 
 script at local?
 
+** lineinfile
+
+This module ensures a particular line is in a file, or replace an existing line using a back-referenced
+regular expression. This is primarily useful when you want to change a single line in a file only.
+
+Something like =sed= or vim replacement.
+
 ** TODO async-status
 
 * Tags
@@ -314,6 +426,8 @@ Disable =host-key-checking= for
 
 ** =ansible all -m setup=
 
+Get all hosts' =facts= 
+
 ** background execute
 
 - =-B 3600=: run in background for most 3600s
@@ -321,5 +435,5 @@ Disable =host-key-checking= for
 ** TODO ansible-doc
 ** TODO ansible-pull
 ** TODO =ansible_os_family=
-** TODO =lineinfile=
+
 ** TODO =debug= 
