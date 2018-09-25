@@ -721,3 +721,23 @@ Get all hosts' =facts=
 ** TODO =ansible_os_family=
 
 ** TODO =debug= 
+** Yaml Syntax
+
+1. (optional) start with =---= and end with =...=
+2. Starts with ~- ~ to express list
+3. ~key:value~ for mapping
+4. Boolean literal: =yes=, =no=, =True=, =TRUE=, =false=
+5. Span multiple lines with '|' and '>' 
+   1. '|' to keep newline
+   2. '>' converts newline to space
+6. comment line with '#'
+7. use ={{}}= for variable substitute
+   1. yaml use =: {}= for dictionary defnition
+   2. so quote ="{{}}"= for variable
+8. Be careful for literal convertion for float and boolean value!
+
+
+
+
+
+
