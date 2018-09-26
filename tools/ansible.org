@@ -335,6 +335,19 @@ tasks:
 - =import=: static including which process during parsing time
 - =include=: dynamic including which happen during runtime
 
+** Error Handling
+
+- Playbook will fail fast at return error as default behavior
+- We can changed the default action
+- use ~ignore_errors: yes~ to ignore errors of task
+- reactivate unreachable hosts with ~meta: clear_host_errors~
+- force to trigger handdle even errors happen by set ~force_handler: True~
+- use =failed_when: <clause>= to program which state means failed
+  + output with "FAILED": =failed_when: "'FAILED' in command_result.stderr"=
+  + based on return code: =failed_when: diff_cmd.rc == 0 or diff_cmd.rc >= 2=
+- Modified the =changed= status by custom judge, such as ~changed_when: "bass_result.rc != 2"~
+- Abort the play by set =any_errors_fatal: true=
+
 ** Best Practice
 
 *** Content Organization
