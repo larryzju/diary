@@ -183,7 +183,29 @@ Blocks allow for logical grouping of tasks and in play error handling
 - Regardless of how many tasks notify a handler, the handler will run only once
 - 'Handlers' can listen to spefic named notify (match with handler's name in classic way)
 
-** tags
+** Tags
+
+*** Usage
+
+For =ansible-playbook= command line to filter with tags:
+- =--tags=: match tags
+- =--skip-tags=: skip tags
+
+*** Scope
+
+Can be applied to multiple levels:
+1. task
+2. play
+3. role
+4. import file
+
+Note: Not works at =include_tasks=, for its dynamic include feature
+
+*** Misc
+
+- Use =--list-tags= in =ansible-playbook= command line to check all tags
+- Special tags =always= and =never= can be used in mark 
+- Can filter with special tags named =tagged=, =untagged=, =all=
 
 ** TODO varibles
 
@@ -724,7 +746,7 @@ Get all hosts' =facts=
 ** Yaml Syntax
 
 1. (optional) start with =---= and end with =...=
-2. Starts with ~- ~ to express list
+2. Starts with ="- "= to express list
 3. ~key:value~ for mapping
 4. Boolean literal: =yes=, =no=, =True=, =TRUE=, =false=
 5. Span multiple lines with '|' and '>' 
