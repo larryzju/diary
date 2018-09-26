@@ -100,7 +100,6 @@ The order/precedence is (from lowest to highest):
 
 Merge order can be changed by =ansible_group_priority= setting
 * Playbook
-
 ** Basic
 
 - Playbook defines lists of *plays*
@@ -317,6 +316,344 @@ tasks:
 
 *** TODO conditional Imports
 *** TODO Selecting Files and Templates based on variables
+
+** Loops
+*** scenes
+- Create multiple user
+- Install multiple software package
+- Polling for finished
+
+*** Standard Loops
+
+- Iterator variable named =item=
+  #+BEGIN_SRC yaml
+    - name: add several users
+      user:
+        name: "{{ item }}"
+        state: present
+        groups: "wheel"
+      loop:
+         - testuser1
+         - testuser2
+  #+END_SRC
+- Can loop over list value
+  #+BEGIN_SRC yaml
+    - name: non optimal yum, not only slower but might cause issues with interdependencies
+      yum:
+        name: "{{item}}"
+        state: present
+      loop: "{{list_of_packages}}"
+  #+END_SRC
+- Iterate over list of objects
+  #+BEGIN_SRC yaml
+    - name: add several users
+      user:
+        name: "{{ item.name }}"
+        state: present
+        groups: "{{ item.groups }}"
+      loop:
+        - { name: 'testuser1', groups: 'wheel' }
+        - { name: 'testuser2', groups: 'root' }
+  #+END_SRC
+- Iterator over dict with =dict2items= filter
+  #+BEGIN_SRC yaml
+    - name: create a tag dictionary of non-empty tags
+      set_fact:
+        tags_dict: "{{ (tags_dict|default({}))|combine({item.key: item.value}) }}"
+      loop: "{{ tags|dict2items }}"
+      vars:
+        tags:
+          Environment: dev
+          Application: payment
+          Another: "{{ doesnotexist|default() }}"
+      when: item.value != ""
+  #+END_SRC
+
+*** Complex Loops
+
+Can use Jinja2 expressions to create complex lists, for example
+
+#+BEGIN_SRC yaml
+  - name: give users access to multiple databases
+    mysql_user:
+      name: "{{ item[0] }}"
+      priv: "{{ item[1] }}.*:ALL"
+      append_privs: yes
+      password: "foo"
+    loop: "{{ ['alice', 'bob'] |product(['clientdb', 'employeedb', 'providerdb'])|list }}"
+#+END_SRC
+
+*** query/lookup
+
+See =ansible-doc -t lookup inventory_hostnames=
+
+#+BEGIN_SRC yaml
+  loop: "{{ query('inventory_hostnames', 'all') }}"
+  loop: "{{ lookup('inventory_hostnames', 'all', wantlist=True) }}"
+#+END_SRC
+
+*** Do-Until Loops (polling)
+
+#+BEGIN_SRC yaml
+  - shell: /usr/bin/foo
+    register: result
+    until: result.stdout.find("all systems go") != -1
+    retries: 5
+    delay: 10
+#+END_SRC
+*** Register in loop
+
+- can register variable in loop
+- variable has =results= fields which is a list for each result
+- During iteration, the result of the current item will be placed in the variable
+  #+BEGIN_SRC yaml
+    - shell: echo "{{ item }}"
+      loop:
+        - one
+        - two
+      register: echo
+      changed_when: echo.stdout != "one"
+  #+END_SRC
+
+*** Loop over the inventory
+- Use =ansible_play_batch= or =groups= variables
+  #+BEGIN_SRC yaml
+    # show all the hosts in the inventory
+    - debug:
+        msg: "{{ item }}"
+      loop: "{{ groups['all'] }}"
+
+    # show all the hosts in the current play
+    - debug:
+        msg: "{{ item }}"
+      loop: "{{ ansible_play_batch }}"
+  #+END_SRC
+
+- with lookup plugin =inventory_hostnames=
+  #+BEGIN_SRC yaml
+    # show all the hosts in the inventory
+    - debug:
+        msg: "{{ item }}"
+      loop: "{{ query('inventory_hostnames', 'all') }}"
+
+    # show all the hosts matching the pattern, ie all but the group www
+    - debug:
+        msg: "{{ item }}"
+      loop: "{{ query('inventory_hostnames', 'all!www') }}"
+  #+END_SRC
+*** Loop Control
+
+- Change the iterator name =item= with =loop_control.loop_var=
+  #+BEGIN_SRC yaml
+    # main.yml
+    - include_tasks: inner.yml
+      loop:
+        - 1
+        - 2
+        - 3
+      loop_control:
+        loop_var: outer_item
+
+    # inner.yml
+    - debug:
+        msg: "outer item={{ outer_item }} inner item={{ item }}"
+      loop:
+        - a
+        - b
+        - c
+  #+END_SRC
+- Reduce result structure with =loop_control.label=
+  #+BEGIN_SRC yaml
+    - name: create servers
+      digital_ocean:
+        name: "{{ item.name }}"
+        state: present
+      loop:
+        - name: server1
+          disks: 3gb
+          ram: 15Gb
+          network:
+            nic01: 100Gb
+            nic02: 10Gb
+            ...
+      loop_control:
+        label: "{{ item.name }}"
+  #+END_SRC
+- Pause for specific seconds between execution of items in a task loop
+  #+BEGIN_SRC yaml
+    # main.yml
+    - name: create servers, pause 3s before creating next
+      digital_ocean:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - server1
+        - server2
+      loop_control:
+        pause: 3
+  #+END_SRC
+- Loop with index
+  #+BEGIN_SRC yaml
+    - name: count our fruit
+      debug:
+        msg: "{{ item }} with index {{ my_idx }}"
+      loop:
+        - apple
+        - banana
+        - pear
+      loop_control:
+        index_var: my_idx
+  #+END_SRC
+
+*** Old fashion =with_X= methods
+
+- =with_list= 
+  #+BEGIN_SRC yaml
+    - name: with_list
+      debug:
+        msg: "{{ item }}"
+      with_list:
+        - one
+        - two
+
+    - name: with_list -> loop
+      debug:
+        msg: "{{ item }}"
+      loop:
+        - one
+        - two
+  #+END_SRC
+
+- =with_items=
+  #+BEGIN_SRC yaml
+    - name: with_items
+      debug:
+        msg: "{{ item }}"
+      with_items: "{{ items }}"
+
+    - name: with_items -> loop
+      debug:
+        msg: "{{ item }}"
+      loop: "{{ items|flatten(levels=1) }}"
+  #+END_SRC
+
+- =with_indexed_items=
+  #+BEGIN_SRC yaml
+    - name: with_indexed_items
+      debug:
+        msg: "{{ item.0 }} - {{ item.1 }}"
+      with_indexed_items: "{{ items }}"
+
+    - name: with_indexed_items -> loop
+      debug:
+        msg: "{{ index }} - {{ item }}"
+      loop: "{{ items|flatten(levels=1) }}"
+      loop_control:
+        index_var: index
+  #+END_SRC
+
+- =with_flattened=
+  #+BEGIN_SRC yaml
+    - name: with_flattened
+      debug:
+        msg: "{{ item }}"
+      with_flattened: "{{ items }}"
+
+    - name: with_flattened -> loop
+      debug:
+        msg: "{{ item }}"
+      loop: "{{ items|flatten }}"
+  #+END_SRC
+
+- =with_together=
+  #+BEGIN_SRC yaml
+    - name: with_together
+      debug:
+        msg: "{{ item.0 }} - {{ item.1 }}"
+      with_together:
+        - "{{ list_one }}"
+        - "{{ list_two }}"
+
+    - name: with_together -> loop
+      debug:
+        msg: "{{ item.0 }} - {{ item.1 }}"
+      loop: "{{ list_one|zip(list_two)|list }}"
+  #+END_SRC
+
+- =with_dict=
+  #+BEGIN_SRC yaml
+  - name: with_dict
+  debug:
+    msg: "{{ item.key }} - {{ item.value }}"
+  with_dict: "{{ dictionary }}"
+
+- name: with_dict -> loop (option 1)
+  debug:
+    msg: "{{ item.key }} - {{ item.value }}"
+  loop: "{{ dictionary|dict2items }}"
+
+- name: with_dict -> loop (option 2)
+  debug:
+    msg: "{{ item.0 }} - {{ item.1 }}"
+  loop: "{{ dictionary|dictsort }}"
+  #+END_SRC
+
+- =with_sequence=
+  #+BEGIN_SRC yaml
+    - name: with_sequence
+      debug:
+        msg: "{{ item }}"
+      with_sequence: start=0 end=4 stride=2 format=testuser%02x
+
+    - name: with_sequence -> loop
+      debug:
+        msg: "{{ 'testuser%02x' | format(item) }}"
+      # range is exclusive of the end point
+      loop: "{{ range(0, 4 + 1, 2)|list }}"
+  #+END_SRC
+
+- =with_subelements=
+  #+BEGIN_SRC yaml
+    - name: with_subelements
+      debug:
+        msg: "{{ item.0.name }} - {{ item.1 }}"
+      with_subelements:
+        - "{{ users }}"
+        - mysql.hosts
+
+    - name: with_subelements -> loop
+      debug:
+        msg: "{{ item.0.name }} - {{ item.1 }}"
+      loop: "{{ users|subelements('mysql.hosts') }}"
+  #+END_SRC
+
+- =with_nested/with_cartesian=
+  #+BEGIN_SRC yaml
+    - name: with_nested
+      debug:
+        msg: "{{ item.0 }} - {{ item.1 }}"
+      with_nested:
+        - "{{ list_one }}"
+        - "{{ list_two }}"
+
+    - name: with_nested -> loop
+      debug:
+        msg: "{{ item.0 }} - {{ item.1 }}"
+      loop: "{{ list_one|product(list_two)|list }}"
+  #+END_SRC
+
+- =with_random_choice=
+  #+BEGIN_SRC yaml
+    - name: with_random_choice
+      debug:
+        msg: "{{ item }}"
+      with_random_choice: "{{ my_list }}"
+
+    - name: with_random_choice -> loop (No loop is needed here)
+      debug:
+        msg: "{{ my_list|random }}"
+      tags: random
+  #+END_SRC
 
 ** TODO Playbook & Roles
 ** Resuable
@@ -727,7 +1064,6 @@ Something like =sed= or vim replacement.
 
 ** TODO async-status
 
-* Tags
 * Misc
 
 ** Log types
