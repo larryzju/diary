@@ -1,0 +1,30 @@
+#+TITLE: GCP Notes
+#+AUTHOR: Zhao WenBin
+
+* Resource
+
+** level
+
+1. Global
+2. Regional
+3. Zonal
+
+* Project
+
+- Similar to =namespace=
+- Has name, id and number
+
+* Service
+
+** Overview
+
+- Expose resources as service
+- Have 3 ways to interactive with service
+  1. GCP Console (WEB UI)
+  2. Google Cloud SDK (=gcloud=) or Cloud Shell
+  3. Client Library (language binding)
+
+
+
+
+
