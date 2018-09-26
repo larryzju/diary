@@ -1,0 +1,29 @@
+#+TITLE: Gerrit Notes
+#+AUTHOR: Zhao Wenbin
+
+* Basic procedures
+
+1. clone from gerrit repo
+2. add =change-id= to commits
+   #+BEGIN_SRC bash
+     $ scp -p -P 29418 gerrithost:hooks/commit-msg RecipeBook/.git/hooks/
+     $ chmod u+x .git/hooks/commit-msg
+   #+END_SRC
+3. make changes and commit
+4. push to specific branch =refs/for/<branch-name>= to create review
+5. ask reviewer to make =code-review=
+6. reviewer comment and rank the commit (with =[-2,2]=) for feedback
+7. author rework the commit and amend the commit
+   #+BEGIN_SRC bash
+     $ git commit --amend
+     $ git push origin HEAD:refs/for/master
+   #+END_SRC
+8. reviewer recheck
+9. trigger the verify workflow such as checking that the code compiles, unit tests pass, and other actions
+10. publish and submit the change which would merge the commit to master branch
+
+
+
+
+
+
