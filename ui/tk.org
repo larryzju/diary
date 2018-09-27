@@ -24,6 +24,21 @@
 - Show current configuration with =widget.configure()=
 
 * Geometry Management
+
+- Have different strategory geometry management
+- =grid= is one of the geometry managements
+- recursively applied to the master widget to guide the placement of slaves
+- When master or slave to be resize, recaculate the layout
+- The key of the management work:
+  + widget has natural size, but not fit into the space of container
+  + geometry management try to expand/shrink/resize/align the slaves according to its settings
+- Some settings about =grid=:
+  + =column=
+  + =row=
+  + =sticky=: for align to the grid
+  + =columnconfigure= / =rowconfigure=: ?
+- it's entirely possible for different masters to have different geometry managers
+
 * Event Handling
 * Python Tkinter
 - since python3.1, rename =tkinter= to =ttk=
