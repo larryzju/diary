@@ -1,0 +1,37 @@
+#+TITLE: Tk Library Notes
+#+AUTHOR: Zhao WenBin
+
+* Overview
+
+- =Tk()= create root window
+- create widget by set its parent window
+- widget can be configured at or after create
+- Configuration =command= can be used for callback
+
+* Widget 
+
+** Window Hierarchy
+
+- Widget defined with its parent
+- each widget have a path (simliar as unix file path from '/')
+
+** Options
+
+- Such as =text= or =command= (depend on type of widgets)
+- Modified by
+  + attribute: ~widget['text']="hello"~
+  + configure function: ~widget.configure('text', "hello")~
+- Show current configuration with =widget.configure()=
+
+* Geometry Management
+* Event Handling
+* Python Tkinter
+- since python3.1, rename =tkinter= to =ttk=
+
+* Misc
+** TODO Tk and TCL
+** Themed widgets
+** Redraw
+** Dynamic Variable Binding
+** Layout
+** Callback
