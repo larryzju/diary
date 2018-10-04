@@ -1,0 +1,141 @@
+#+TITLE: RPM Notes
+#+AUTHOR: Zhao Wenbin
+
+* Reference
+
+- [[http://fedoranews.org/alex/tutorial/rpm/index.shtml][RPM Tutorial]]
+
+* Useful command
+
+** Install
+
+- ~rpm -i <package>~ : Install a package
+- =-v= : verbose
+- =-h= : show hash marks for a nicer display (can also use =--percent= to show percentage)
+- =-vv=: verbose more
+- =--test=: [[Simulate installtion][simulate]]
+
+
+** Update/Downgrade
+
+- ~rpm -Uvh <package>~ : Update a package
+- ~rpm -Uvh --oldpackage <package>~ : Downgrade a package
+- With =-U= command: if package has not been installed, it will be installed
+- Use =-Fvh= parameter: 'F' for freshen. This will upgrade packages, but only ones for which an earlier version is installed.
+- _*Never*_ do multiple packages upgrade: ~rpm -Fvh /fedora/updates/*.rpm~ (For sake of multiple version or arch packages)
+
+** Erase
+
+- ~rpm -e <package>~ : erase a package, will fail when other packages dependend on it
+- ~rpm -q --whatrequires <package>~: check packages that require this RPM package
+- _*Forget*_ the danger parameters ="--nodeps"= and ="--force"=
+
+** Query
+
+- ~rpm -q <package>~: to see whether the package had been installed and print its full name
+- ~rpm -qa | grep -i python~: check all package installed
+- ~rpm -qip <package-file>~: show rpm package file's info (metadata)
+- ~rpm -qR <package>~: to check the requirements of current package
+- ~rpm -qf <local file>~: which package provide this file
+- ~rpm -ql <package>~: verify the contents of a package
+- ~rpm -q --qf "Kernel arch type is: %{ARCH}\nKernel name is: %{VERSION}\n" kernel~: "Queryformat" for showing current installed kernel packages info
+
+* Feature
+
+** install package (or update package, or get package info) from Internet
+
+- Use URL as package name
+- set proxy with =--httpproxy= or =--ftpproxy=
+
+** Simulate installtion
+
+- ~rpm -ivh --test new-kernel.rpm~
+- with =--test= option
+- It's useful when doing critical updates or instalations and when you want to see if there will be any problem during the RPM process
+
+** Macro
+
+- ~rpm --showrc~ print rpm configuration and macro
+- Can be used in [[Query][queryformat]]
+
+* Advanced
+
+** Repair RPM database
+
+See [[http://fedoranews.org/alex/tutorial/rpm/16.shtml][How can I get RPM back? The command "rpm -qa" returns nothing!]]
+
+#+BEGIN_SRC bash
+  rm -f /var/lib/rpm/__* ; rpm -vv --rebuilddb
+#+END_SRC
+
+** Figure out the installtion time of my package
+
+See [[How can I figure out the installation time of my packages? ][How can I figure out the installation time of my packages?]]
+
+#+BEGIN_SRC bash
+rpm -qa --queryformat '%{installtime} %{installtime:date} %{name}-%{version}\n' | sort -n | sed 's/^[0-9]*//'
+#+END_SRC
+
+or 
+
+#+BEGIN_SRC 
+rpm -qa -last | tac
+#+END_SRC
+
+** Figure out the size of a installed package
+
+See [[http://fedoranews.org/alex/tutorial/rpm/18.shtml][How can I figure out the size of a installed package?]]
+
+#+BEGIN_SRC bash
+rpm -qa --queryformat '%10{size} %{name}-%{version}\n' | sort -n
+#+END_SRC
+
+* Best Practice
+
+** Update Kernel
+
+- *Always* keep the current Kernel installed when upgrade
+- You can fallback when something trouble happens
+- *Never* use the "Freshen" or "Upgrade" commands unless you really knows what will going to happen
+- try to use the Test option before executing the final command
+- *Always* try to install, not upgrade.
+
+** =rpmbuild=
+
+- Rebuild the source (installed =src.rpm= package) with =rpmbuild=
+- Guided with specification in =/usr/src/redhat/SPECS= 
+- and generate new rpm in =/usr/src/redhat/RPMS/<arch>=
+- Something like Archlinux's abs system and =PKGBUILD= specification?
+
+
+* Note
+
+** repackage
+
+- The =repackage= option (for example, ~rpm -Uvh --repackage <old-package>~) seems been depreciated
+- It was used for re-package the old version package when upgrading or removing and store the rpm in =_repackage_dir= for fallback rescure
+
+** Signature verify
+
+- It seems the command refers by [[http://fedoranews.org/alex/tutorial/rpm/14.shtml][rpm tutorial]] had been removed from current RPM toolkit?
+- Basic steps
+  1. import the public key
+     #+BEGIN_SRC bash
+       rpm --import /usr/share/rhn/GPG-KEY
+     #+END_SRC
+  2. check the keys?
+     #+BEGIN_SRC bash
+       rpm -qi gpg-pubkey | more
+     #+END_SRC
+  3. verify a package
+     #+BEGIN_SRC bash
+       rpm -K package.rpm
+     #+END_SRC
+
+
+* Problem
+
+** =rpmlib=
+
+** =yum= vs =rpm=
+
