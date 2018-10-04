@@ -47,7 +47,7 @@
 - Use URL as package name
 - set proxy with =--httpproxy= or =--ftpproxy=
 
-** Simulate installtion
+** Simulate installation
 
 - ~rpm -ivh --test new-kernel.rpm~
 - with =--test= option
@@ -68,7 +68,7 @@ See [[http://fedoranews.org/alex/tutorial/rpm/16.shtml][How can I get RPM back? 
   rm -f /var/lib/rpm/__* ; rpm -vv --rebuilddb
 #+END_SRC
 
-** Figure out the installtion time of my package
+** Figure out the installation time of my package
 
 See [[How can I figure out the installation time of my packages? ][How can I figure out the installation time of my packages?]]
 
