@@ -7,3 +7,21 @@ See [[http://www.ruanyifeng.com/blog/2013/07/gpg.html][RuanYi Feng's Blog]]
 1. =gpg --gen-key= generates private and public key pairs
 2. =gpg --recipent <user id> --output <output> --encrypt <input>= to encrypt file's content
 3. =gpg <encrypt-file>= to decrypt file (interactive mode, will ask for password and output)
+
+** Sign and verify
+
+See [[http://www.ruanyifeng.com/blog/2013/07/gpg.html][RuanYi Feng's Blog]]
+
+1. =gpg --sign <file>= generate signature for file, other subcommand are
+   + =--clearsign=: signature in plain text
+   + =--detach-sign= or =--armor --detach-sign=: seperate the signature with the content
+2. =gpg --verify <sign-file> <file>= to verify if they are matched
+
+
+* TODO TODO
+
+** revoke
+
+** upload public key
+
+** finger print
