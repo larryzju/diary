@@ -1,0 +1,9 @@
+* Basic
+
+** encrypt and decrypt files
+
+See [[http://www.ruanyifeng.com/blog/2013/07/gpg.html][RuanYi Feng's Blog]]
+
+1. =gpg --gen-key= generates private and public key pairs
+2. =gpg --recipent <user id> --output <output> --encrypt <input>= to encrypt file's content
+3. =gpg <encrypt-file>= to decrypt file (interactive mode, will ask for password and output)
