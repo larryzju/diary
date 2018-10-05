@@ -1,0 +1,186 @@
+#+TITLE: iptables notes
+#+AUTHOR: Zhao Wenbin
+
+* Concept
+
+** Overview
+
+- iptables(kernel) is used to inspect, modify, forward, redirect, and/or drop IP packets
+- The code for filtering IP packets is already built into the kernel and is organized into a collection of tables, each with a specific purpose
+- The tables are made up of a set of predefined chains, and the chains contain rules which are traversed in order.
+- iptables(tools) is the user utility which allows you to work with these chains/rules.
+
+** Tables
+
+iptables contains five tables
+1. =raw= is used only for configuring packets so that they are exempt from connection tracking.
+2. =filter= (default table) is where all the actions typically associated with a firewall take place.
+3. =nat= is used for network address translation (e.g. port forwarding)
+4. =mangle= is used for specialized packet alterations.
+5. =security= us used for Mandatory Access Control networking rule (e.g. SELINUX)
+
+In most case you will only use *filter* and *nat* tables.
+
+** Chains
+
+Tables consist of chains, which are lists of rules which are followed in order.
+
+*** filter chians
+
+1. =INPUT=
+2. =OUTPUT=
+3. =FORWARD=
+
+*** nat chains
+
+1. =PREROUTING=
+2. =POSTROUTING=
+3. =OUTPUT=
+
+*** Default rules
+
+- none of the chains contain any rules by default
+- There's a default policy, which generally set to =ACCEPT=
+- can be reset to =DROP=
+- The default policy always applies at the end of a chain only
+- User-defined chains can be added to make rulesets more efficient or more easily modifiable
+
+
+
+
+
+
+
+
+
+
+
+
+** Rules
+
+*** Overview
+
+- Guide packets filtering
+- Specified by multiple matches and one target
+  + =matches= means conditions the packets must satisfy so that the rule can be applied
+  + =target= do the action
+- Matches such as
+  + what the interface the packet came in
+  + what type of packet it is (ICMP, TCP, or UDP)
+  + destination port of the packet
+- Targets are specified using the =-j= option (jump)
+- Targets can be in
+  + user-defined chains
+  + one of the special built-in targets (the *endpoint*, such as =ACCEPT=, =DROP=, =QUEUE=, =RETURN=)
+  + target extension (=REJECT= and =LOG=)
+
+
+
+
+
+* Command Line
+
+** Dump & Restore
+
+- =iptables-save= :: dump the iptable rules, can be used as configuration
+- =iptables-restore= :: load the rules directly through iptables
+
+** Showing the current rules
+
+- =iptables --list-rules= (=-S=): output =filter= table rules
+- =iptables --list= (=-L=): accepts more modifiers and show more information 
+  + =iptables -nvL=: show current ruleset and the number of hits per rule
+- Specify other tables than =default= with the =-t= option
+
+** Resetting rules
+
+- =iptables [-t <table>] [-P <chain>] -F=: delete all rules one by one
+- =iptables [-t <table>] [-P <chain>] -X=: deletes all empty non-default chains in a table
+
+** Editing rules
+
+*** Basic
+
+- =-A= :: appending a rule to a chain
+- =-I= :: inserting at a specific position on the chain
+- =-R= :: replace a rule
+- =-D= :: delete a rule
+
+*** Example
+
+**** Do not as a router
+
+#+BEGIN_SRC bash
+  iptables -P FORWARD DROP        # set `FORWARD` chains default policy as `DROP`
+#+END_SRC
+
+**** Reject Dropbox periodly broadcast packets
+
+#+BEGIN_SRC bash
+  iptables -A INPUT \             # append to chain `INPUT`
+     -p tcp  \                    # protocol TCP
+     --dport 17500 -j REJECT      # jump to target `REJECT`
+     --reject-with icmp-port-unreachable
+#+END_SRC
+
+**** Only accept particular IP to use Dropbox broadcast
+
+#+BEGIN_SRC bash
+  iptables -R INPUT 1 -p tcp --dport 17500 \
+           ! -s 10.0.0.85 -j REJECT --reject-with icmp-port-unreable
+#+END_SRC
+
+- =-R= for replace our old rule
+- Reject all except the packet with the source IP =10.0.0.85=
+
+**** Trust some Dropbox
+
+#+BEGIN_SRC bash
+## accept immediately
+iptables -I INPUT -p tcp --dport 17500 -s 10.0.0.85 -j ACCEPT \
+         -m comment --comment "Friendly Dropbox"
+
+## replace the second rule to `REJECT` all others dropbox broadcast
+iptables -R INPUT 2 -p tcp --dport 17500 -j REJECT \
+         --reject-with icmp-port-unreachable
+#+END_SRC
+
+**** Logging
+
+- Like middleware, not affect the packet flow.
+- Rather than add a duplicate =LOG= rule before each =DROP= rule
+- Create a =logdrop= chain to make things happy
+  1. Create the chain
+     #+BEGIN_SRC bash
+       iptables -N logdrop
+     #+END_SRC
+  2. Add rules 
+     #+BEGIN_SRC bash
+       iptables -A logdrop -m limit --limit 5/m --limit-burst 10 -j LOG
+       iptables -A logdrop -j DROP
+     #+END_SRC
+  3. Use the chain
+     #+BEGIN_SRC bash
+       iptables -A INPUT -m conntrack --ctstate INVALID -j logdrop
+     #+END_SRC
+- Explain
+  + Use =limit= module
+  + =--limit-burst= set an initial burst rate: The first 10 packets will be logged
+  + set the average rate with =--limit 5/m=: only 5 packets per minute will be logged
+
+
+* TODO TODO 
+
+** Netfilter vs Linux vs Iptables
+
+** Extensions
+
+[[https://jlk.fjfi.cvut.cz/arch/manpages/man/iptables-extensions.8][iptables-extensions]]
+
+
+
+** =nftables=
+
+* Reference
+
+- [[https://wiki.archlinux.org/index.php/Iptables][Archlinux wiki - iptables]]
