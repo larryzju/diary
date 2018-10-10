@@ -1,0 +1,145 @@
+#+TITLE: Docker Notes
+#+AUTHOR: Zhao Wenbin
+#+OPTIONS: toc:nil
+
+* docker compose
+
+** Overview
+
+- Orchestration framework, less useful than kubernetes
+- A tool for defining and running multi-container Docker applications
+- Configure with a YAML file
+
+** Basic Steps
+
+1. Configure Apps use =Dockerfile=
+2. Use =docker-compose.yml= define services
+3. Run =docker-compose up= and Compose starts and runs your entire app.
+
+
+** Lifecycle
+
+1. Start, stop, and rebuild services
+2. View the status of running services
+3. Stream the log output of running services
+4. Run a one-off command on a service
+
+
+
+* docker
+
+** build context directory structure
+
+- Dockerfile
+- .dockerignore
+
+** build command
+
+- =-f= specify Dockerifle
+- =-t shykes/myapp:1.0.2=
+- execute one by one
+- re-use the intermediate image
+- custom cache policy (see [[build cache]] )
+
+** Dockerfile Format
+
+- comment with '#'
+- uppercase instruction
+- starts with *`FROM`* instruction
+
+** Parser Directives
+
+- Place at the very top for configure parser rules
+- Syntax: ~# directive=value~
+  + no duplicate
+  + lowercase
+  + invalid is ignored
+  + ignore after any non-directive instruction
+- Directive:
+  + ~escape=`~ (Change the default escape =\= for windows)
+
+
+
+
+** Environment
+
+Use ~ENV~ define variables, refer by '$'
+
++ Define
+  #+BEGIN_SRC dockerfile
+    FROM busybox
+    ENV foo /bar
+    WORKDIR ${foo}   # WORKDIR /bar
+    ADD . $foo       # ADD . /bar
+    COPY \$foo /quux # COPY $foo /quux
+  #+END_SRC
+
++ Bash like
+  - =${var:-word}=: if var is not set, then return word
+  - =${var:+word}=: if var is set, return word, else return nil
+
+** =.dockerignore=
+
+- Aim
+  + safety
+  + ignore large files
+- Syntax
+  + Based on go =filepath.Match=
+  + Special
+    1. =**= match any level directory
+    2. =?= match single letter
+    3. =!= reverse match rules (weird!)
+       #+BEGIN_SRC text
+         # No markdown files are included in the context except README files other than README-secret.md.
+         ,*.md
+         !README*.md
+         README-secret.md
+       #+END_SRC
+
+
+
+** FROM instruction
+
+- Syntax
+  #+BEGIN_SRC text
+    FROM <image> [As <name>]
+    image: image | image:tag | image@digest
+  #+END_SRC
+- =<name>= is used for =COPY --from=<name>= scenario
+- Can be used multiple times
+- Prefix with =ARGS= parameters
+  #+BEGIN_SRC dockerfile
+    ARG VERSION=latest
+    FROM busybox:$VERSION
+    ARG VERSION
+    RUN echo $VERSION > image_version
+  #+END_SRC
+
+** RUN instruction
+- Syntax
+  1. sh -c mode: =RUN <command>=
+  2. exec mode: =RUN ["execution", "param1", "param2"]=
+- Note
+  + exec mode will be commit in JSON format, string must be quoted
+  + exec mode will not expand container environment variable (which is shell's job)
+  + can split long ocmmand line with '\'
+  + use =SHELL= command to set which shell to be used
+  + generate new commit cache, use =docker build --no-cache= to ignore
+
+** TODO build cache
+
+[[https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#build-cache][build cache reference]]
+
+** TODO push a repository to its registry
+
+[[https://docs.docker.com/engine/tutorials/dockerrepos/#/contributing-to-docker-hub]]
+
+** TODO base image
+
+https://docs.docker.com/engine/reference/glossary/#base-image
+
+* TODO best practice
+
+[[https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/]]
+
+
