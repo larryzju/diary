@@ -1,0 +1,30 @@
+* landscape
+
+* project
+
+- Namespace
+- Identity with name, id, number (and bill account)
+- Contains
+  + settings
+  + permission
+  + metadata
+  + resources
+
+* features
+
+* resources
+
+- Resources is provided as service
+- User combines services and codes as Application
+- Resources is consisted in inheritance
+  1. global: disk image, disk snapshot, networks
+  2. regional: static external IP address
+  3. zone: VM instances, such as type, disks
+- Choose resources nearly for performance
+
+* Interactive Ways
+
+1. GCP Console (web ui)
+2. CLI command `gcloud`
+3. SDK (language library)
+
