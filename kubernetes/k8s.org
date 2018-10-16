@@ -1,6 +1,35 @@
 #+TITLE: Kubernetes 笔记
 #+AUTHOR: Zhao Wenbin
 
+* Overview
+** Components
+*** Node
+**** Overview
+
+Node components run on every node
+1. maintain running Pods
+2. provide the Kubernetes runtime environment
+
+**** Components
+
+1. kubelet: Run ocntainer as the rules of =PodSpecs=
+2. kube-proxy: maintain network configuration for supporting Service
+3. container runtime: docker, rkt, OCI runtime-spec
+
+** Feature
+
+From [[https://courses.edx.org/courses/course-v1:LinuxFoundationX+LFS158x+1T2018/courseware/8835181d87b046b697603bd83f242f16/669a580b34764a0cadee817202b8c74a/?child=first][Kubernetes Features I]] and [[https://courses.edx.org/courses/course-v1:LinuxFoundationX+LFS158x+1T2018/courseware/8835181d87b046b697603bd83f242f16/669a580b34764a0cadee817202b8c74a/?child=first][Kubernetes Feature II]]
+
+- Automatic binpacking :: Kubernetes automatically schedules the containers based on resource usage and constraints, without sacrificing the availability
+- Self-healing :: Kubernetes automatically replaces and reschedules the containers from failed nodes. It also kills and restarts the containers which do not respond to health checks, based on existing rules/policy.
+- Horizontal scaling :: Kubernetes can automatically scale applicatoins based on resource usage like CPU and memory. In some cases, it also supports dynamic scaling based on customer metrics.
+- Service discovery and Load balancing :: Kubernetes groups sets of containers and referes to them via a Domain Name System (DNS). This DNS is also called a Kubernetes *service*. Kubernetes can discover these services automatically, and load-balance requests between containers of a given service.
+- Automated rollouts and rollbacks :: Kubernetes can roll out and roll back ne wversion/configurations of an application, without introducing any downtime.
+- Secrets and configuration management :: Kubernetes can manages secrets and configuration details for an applicatoin without re-building the respective images. With secrets, we can share confidential information to our application without exposing it to the stack configuration, like on Github.
+- Storage orchestration :: With Kubernetes and its plugins, we can automatically mount local, external, and storage solutions to the containers in a seamless manner, based on software-defined storage (SDS).
+- Batch execution :: Besides long running jobs, Kubernetes also supports batch execution.
+
+
 * Pods
 
 ** definition
@@ -100,8 +129,6 @@ k8s volume 有以下特点：
 
 **** Using
 
-
-   
 
 * Deployments
 * ReplicaSets
