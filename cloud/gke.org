@@ -1,0 +1,20 @@
+* Basic Steps
+
+1. Prepare `gcloud`
+   1. ~gcloud config set project <id>~ : set project
+   2. ~gcloud config set compute/zone <compute-zone>~: set zone
+2. Create Cluster
+   1. ~gcloud container clusters create <name>~: create cluster
+   2. ~gcloud container clusters get-credentials <name>~: Configure =kubectl= to use the cluster
+3. Kubectl deploy application
+   1. ~kubectl run hello-server --image <image-repo> --port:8080~: new deployment
+   2. ~kubectl expose deployment hello-server --type LoadBalancer --port 80 --target-port 8080~: expose
+   3. ~kubectl get service hello-server~: check external IP
+4. clear
+   1. ~kubectl delete service hello-server~: delete service
+   2. ~gcloud container clusters delete <name>~: delete cluster
+
+
+
+
+   
