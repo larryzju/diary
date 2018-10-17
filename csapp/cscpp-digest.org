@@ -186,9 +186,9 @@ Unix 中一切皆文件，因此也称作 Unix I/O
 ** Important Themes
 *** Concurrency and Parallelism
 
-There are two concept about multiple execution ways
+There are two simliar concepts about multiple execution implement ways
 - Concurrency :: To do more at the same time
-- Parallelism :: To do more and fast at the same time
+- Parallelism :: To do more and also fast at the same time
 
 There're 3 levels of parallelism abstract
 1. Thread Level
@@ -199,17 +199,17 @@ There're 3 levels of parallelism abstract
 
 Each Process can have multiple control flows. Operation System
 switch between threads (by backup and restore its context) rapidly
-to make time shared effections.
+in time shared manner to simulate parallel executions.
 
-The origin aims of multiple threads is for benefits of :
+The origin aims of multiple threads is for the benefits of :
 - Multiple users
 - Single user with multiple tasks
 
-In the early days, the *uniprocessor system*'s multiple threads
-are just simulation for parallelism.
+In the early days, the *uniprocessor system*'s multiple threads are
+just simulation for parallelism. The later *multiprocessor system* can
+run threads in real parallel manners.  
 
-The later *multiprocessor system* can run threads in real parallel manners.
-There are 2 technologies:
+There are 2 technologies in multiple processors system:
 - multiple cores :: each core has its own L1/L2 cache and resides in the same chip
 - hyperthreading :: each CPU has multiple copies of register and
                     hardwares, can execute multiple tasks at same time
@@ -218,11 +218,20 @@ Parallelism can be benefit for improve performances in aspects:
 1. real multiple tasks
 2. need new methods to program that can dig out the advantages of multiprocessor
 
-
 **** Instruction Parallelism
+
+The most famous method is *pipeline* which execute instruction's setps
+in parrel and improve the performance faster than execute instruction
+for the whole cycles.
+
+The technology to execution rates if faster than one instruction per
+cycle is called *superscalar*
 
 **** SIMD Parallelism
 
+- SIMD is short for Single Instruction Multiple Data.
+- Most used to speed up image, sound, video procses.
+- Need language (data type) and compiler supports.
 
 * Footnotes
 
