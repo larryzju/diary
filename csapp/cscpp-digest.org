@@ -1,4 +1,4 @@
-#+TITLE: CSCPP 摘要
+#+TITLE: CSAPP 摘要
 #+AUTHOR: Zhao WenBin
 #+STATUS: 55/1078
 #+OPTIONS: html5-fancy
@@ -7,7 +7,10 @@
 
 * A Tour of Computer System
 
-软件与硬件共同构成了计算机系统。虽然计算机系统细节诸多，但万变不离其宗。要写出好的程序，一定要掌握底层原理。
+A computer system consists of hardware and system software that work together
+to run application programs. Besides different among specific implements, the
+underlying concepts are the same. To be a "power programmer" we must understand
+the underlying computer system and its impact on your application programs.
 
 常见的问题如数字格式、C 程序优化、链接、内存泄露、并行程序开发等。都将在后续展开。
 
@@ -42,7 +45,6 @@ GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 
 #+END_aside
 
 
-
 ** It Pays to Understand How Compilation System Work
 
 编译器作了太多的事情，为此我们需要了解其细节，以便在以下方面进行优化：
@@ -64,7 +66,6 @@ GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 
    - 库的顺序对正确的影响
    - 运行时发生的错误
 3. Avoiding security holes：应限制从未知数据源获取数据，注意栈上的存储方式
-
 
 
 
@@ -181,6 +182,7 @@ Unix 中一切皆文件，因此也称作 Unix I/O
 计算机系统并不只是以单机运行的。越来越多的价值从互联之中发掘。
 
 计算机通过网络与其它计算机交换数据，网络也是一种 I/O 设备
+
 
 * Footnotes
 
