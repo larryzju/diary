@@ -230,8 +230,23 @@ cycle is called *superscalar*
 **** SIMD Parallelism
 
 - SIMD is short for Single Instruction Multiple Data.
-- Most used to speed up image, sound, video procses.
+- Mostly used to speed up image, sound, video procses.
 - Need language (data type) and compiler supports.
+
+*** The Importance of Abstraction of Computer System
+
+*Abstraction* is one of the most important concept in Computer Science.
+
+The import abstractions are:
+- API :: prototype which user doesn't need to delve into details
+- Program Language :: Abstraction concept like class, function
+- ISA (Instruction Set Architecture) :: Abstraction of sequential
+     execution model for hardware implements (Different hardware can
+     have different implement but share the machine code)
+- File :: Abstraction of I/O
+- Virtual Memory :: Abstraction Linear memory for program
+- Process :: Abstraction of a running program
+- Virtual Machine :: Abstraction of computer hardware
 
 * Footnotes
 
