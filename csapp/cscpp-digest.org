@@ -183,6 +183,46 @@ Unix 中一切皆文件，因此也称作 Unix I/O
 
 计算机通过网络与其它计算机交换数据，网络也是一种 I/O 设备
 
+** Important Themes
+*** Concurrency and Parallelism
+
+There are two concept about multiple execution ways
+- Concurrency :: To do more at the same time
+- Parallelism :: To do more and fast at the same time
+
+There're 3 levels of parallelism abstract
+1. Thread Level
+2. Instruction Level
+3. SIMD Level
+
+**** Thread Parallelism
+
+Each Process can have multiple control flows. Operation System
+switch between threads (by backup and restore its context) rapidly
+to make time shared effections.
+
+The origin aims of multiple threads is for benefits of :
+- Multiple users
+- Single user with multiple tasks
+
+In the early days, the *uniprocessor system*'s multiple threads
+are just simulation for parallelism.
+
+The later *multiprocessor system* can run threads in real parallel manners.
+There are 2 technologies:
+- multiple cores :: each core has its own L1/L2 cache and resides in the same chip
+- hyperthreading :: each CPU has multiple copies of register and
+                    hardwares, can execute multiple tasks at same time
+
+Parallelism can be benefit for improve performances in aspects:
+1. real multiple tasks
+2. need new methods to program that can dig out the advantages of multiprocessor
+
+
+**** Instruction Parallelism
+
+**** SIMD Parallelism
+
 
 * Footnotes
 
