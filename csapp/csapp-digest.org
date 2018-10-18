@@ -300,22 +300,19 @@ For GNU c compiler
 We use *bytes* as the unit of memory which is consisted by 8 bits.
 
 The virtual memory that program visits can be regarded as an array of
-bytes. The bytes is indexed by *address*. In the underlying the
-virtual memroy is made up by RAM, disk storage, special hardware, OS
-that provides the program with what appears to be a monolithic byte
-array.
+bytes. Each bytes is indexed by *address*. Underlying the virtual
+memroy, it's made up of RAM, disk storage, special hardware, OS and
+provides the program with what appears to be a monolithic bytes array.
 
-#+BEGIN_VERSE
-Pointer = Address + DataType
-#+END_VERSE
+~Pointer = Address + DataType~ 
 
-Acutally, C compiler maintains pointer's type information, the
+Actually, C compiler maintains pointer's type information, the
 machine-level program it generates has no information about data
 types.
 
 Pointer are the central feature of C:
-1. reference elements of data structure
-2. combine value and type
+1. can be used to refer elements of data structure
+2. combine value and type (provide flexible in program language)
 
 ** Integer Representations
 
