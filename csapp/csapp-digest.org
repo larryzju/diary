@@ -250,6 +250,8 @@ The import abstractions are:
 
 * Representing and Manipulating Informations
 
+** Overview
+
 Computer information is represented in binary mode. The reason to
 express information with 2-vlaue bits is because its readily be
 represented, stored and transmitted.
@@ -283,6 +285,14 @@ association rule):
   3.14 + (1e20 - 1e20)            /* 3.14 */
 #+END_SRC
 
+
+*** C standard
+
+For GNU c compiler
+1. =--ansi= or =--std=c89=: ANSI C(1989)/ISO C99(1990)
+2. =--std=gnu89=: GNU extends for ANSI C
+3. =--std=c99=: ISO C99(1999)
+4. =--std=gnu99=: GNU extends for ISO C99
 
 ** Information Storage
 
