@@ -286,7 +286,7 @@ association rule):
 #+END_SRC
 
 
-*** C standard
+*** C standard                                                            :c:
 
 For GNU c compiler
 1. =--ansi= or =--std=c89=: ANSI C(1989)/ISO C99(1990)
@@ -294,7 +294,28 @@ For GNU c compiler
 3. =--std=c99=: ISO C99(1999)
 4. =--std=gnu99=: GNU extends for ISO C99
 
+
 ** Information Storage
+
+We use *bytes* as the unit of memory which is consisted by 8 bits.
+
+The virtual memory that program visits can be regarded as an array of
+bytes. The bytes is indexed by *address*. In the underlying the
+virtual memroy is made up by RAM, disk storage, special hardware, OS
+that provides the program with what appears to be a monolithic byte
+array.
+
+#+BEGIN_VERSE
+Pointer = Address + DataType
+#+END_VERSE
+
+Acutally, C compiler maintains pointer's type information, the
+machine-level program it generates has no information about data
+types.
+
+Pointer are the central feature of C:
+1. reference elements of data structure
+2. combine value and type
 
 ** Integer Representations
 
