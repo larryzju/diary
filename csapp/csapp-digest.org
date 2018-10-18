@@ -248,6 +248,50 @@ The import abstractions are:
 - Process :: Abstraction of a running program
 - Virtual Machine :: Abstraction of computer hardware
 
+* Representing and Manipulating Informations
+
+Computer information is represented in binary mode. The reason to
+express information with 2-vlaue bits is because its readily be
+represented, stored and transmitted.
+
+We group bits and apply rules to interprete them for given meaning of
+bit pattern. That is called Data Type.
+
+The reasons why we programmers should dive deep into the
+representation of data are listed below:
+1. write correct and portable program for different platforms
+2. improve performance
+3. security cause
+4. understand machine-level program
+
+Different types of number has three representations
+1. unsigned integer
+2. signed integer
+3. floating-point
+
+For integer representations, it can be encoded for a comparatively
+small range of values, but do so precisely. While floating-point
+representations can encode a wide range of values, but only
+approximately.
+
+Here's an example to show why we should be careful for the
+representation of data (floating-point arithmetic doesn't conform the
+association rule):
+
+#+BEGIN_SRC c
+  (3.14 + 1e20) - 1e20            /* 0.0 */
+  3.14 + (1e20 - 1e20)            /* 3.14 */
+#+END_SRC
+
+
+** Information Storage
+
+** Integer Representations
+
+** Integer Arithmetic
+
+** Floating Point 
+
 * Footnotes
 
 [fn:1] Controller 集成在设备或主板上，Adapater 是主板上的插槽的可插拔设备
