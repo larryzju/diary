@@ -1,0 +1,28 @@
+* Overview 
+
+- Replace the =netstat= command
+- Show netid, recv, send, inaddr, outaddr
+
+* Options
+
+- =-l= :: listen
+- =-t= :: TCP
+- =-u= :: UDP
+- =-x= :: UNIX Socket
+- =-a= :: ALL
+
+* Filter
+
+** TCP States Filter
+
+#+BEGIN_SRC bash
+  ss -4 state listening
+#+END_SRC
+
+** TODO iproute filter
+
+#+BEGIN_SRC bash
+  ss dst 192.168.1.139
+#+END_SRC
+
+
