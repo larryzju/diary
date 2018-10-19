@@ -338,6 +338,39 @@ Some useful conversion or notation list below:
 And $2^n$ in binary notation is a string starts with 1 followed by n
 zero.
 
+*** Words
+
+Bytes group to word. It's the nominal size of integer and pointer
+data.
+
+The word is used to express virtual address. For 32bit platform, the
+memory address is in range from 0 to $2^32-1$ (4G bytes).
+
+The 64bit platform extends the max available memory address to
+$2^64-1$.
+
+*** Data Sizes
+
+The typeical data sizes (in C language) shows in the table below:
+| data type | 32 bit | 64 bit | note                                                                 |
+|-----------+--------+--------+----------------------------------------------------------------------|
+| char      |      1 |      1 |                                                                      |
+| short int |      2 |      2 |                                                                      |
+| int       |      4 |      4 |                                                                      |
+| long int  |      4 |      8 | the main different between 32bit and 64bit platforms                 |
+| long long |      8 |      8 | defined in ISO C99 standard. supported by compiler in 32bit platform |
+| char*     |      4 |      8 | word size of platform                                                |
+| float     |      4 |      4 |                                                                      |
+| double    |      8 |      8 |                                                                      |
+
+The real data sizes depends on both the machine and the compiler.
+
+It's very important to write portable code which is insentitive to the
+exact sizes of different data types.
+
+For example, in history, =int= can be used to store a pointer in 32bit
+platform. But it's a fault error in 64bit platform.
+
 ** Integer Representations
 
 ** Integer Arithmetic
