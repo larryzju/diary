@@ -314,6 +314,30 @@ Pointer are the central feature of C:
 1. can be used to refer elements of data structure
 2. combine value and type (provide flexible in program language)
 
+*** Hexadecimal Notation
+
+Because of the representation in binary notation is too tedious. It's
+convinent to use hexadecimal notation to represent integer (such as
+=0xFA1D37BB=)
+
+It's necessary to know how to convert among binary, decimal and
+hexadecimal:
+- hex to bin :: expand each hexadecimal to 4 bits binary
+- bin to hex :: split into groups of 4 bits (make the leftmost group
+                be the one with fewer than 4bits and padding with
+                leading zeros)
+- hex to dec :: multiplication methods
+- dec to hex :: division methods
+
+Some useful conversion or notation list below:
+| 2^7 | 128 |
+| 2^8 | 256 |
+| 2^10 | 1024 |
+| 2^16 | 65536 |
+
+And $2^n$ in binary notation is a string starts with 1 followed by n
+zero.
+
 ** Integer Representations
 
 ** Integer Arithmetic
