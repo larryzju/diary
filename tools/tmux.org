@@ -1,0 +1,56 @@
+#+TITLE: Tmux Notes
+#+AUTHOR: Zhao Wenbin
+
+* Concept
+
+Tmux server manage session in background which can be attached by tmux
+client.
+
+A *session* is a single collection of pseudo terminals under the
+management of tmux.
+
+Each session has one or more window linked to it. A window occupies
+the entire screen and may be split into rectangle *pane*.
+
+Any number of tmux instances may connect to the same sessions. (Share
+windows by multiple tmux client)
+
+** TODO Clients and Sessions
+
+** TODO Windows and Panes
+
+
+* Shortcut
+
+Prefix key is =Ctrl-b= by default, can be customed.
+
+Most useful keys list below:
+
+| key               | description                                |
+|-------------------+--------------------------------------------|
+| "                 | split into top and bottom panes            |
+| %                 | split into left and right panes            |
+| 0 to 9            | select windows 0 to 9                      |
+| ;                 | move to the previously active pane         |
+| o                 | select the next pane in the current window |
+| l                 | move to the previous selected window       |
+| n                 | next window                                |
+| p                 | previous window                            |
+| q                 | display pane indexes                       |
+| t                 | show the time                              |
+| M-1 to M-5        | change layout of panes                     |
+| C-<dir> / M-<dir> | resize pane                                |
+| :                 | enter the tmux command prompt              |
+| \$                | rename current session                     |
+| ,                 | rename the current window                  |
+| &                 | kill the current window                    |
+
+
+* TODO Configuration
+
+** TODO Commands
+
+** TODO Key Binding
+
+
+* TODO Practice Tips
