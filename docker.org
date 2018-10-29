@@ -28,6 +28,23 @@
 
 * docker
 
+** what is docker?
+
+From [[https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html-single/getting_started_with_containers/#overview][RHEL7 Getting Started with Containers]]
+
+1. command
+2. service
+3. image format to structure container
+
+** advantage
+
+From [[https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html-single/getting_started_with_containers/#overview][RHEL7 Getting Started with Containers]]
+
+1. Samller than Virtual Machine
+2. Improved performance
+3. Secure (isolated from host)
+4. Flexible (portable)
+
 ** build context directory structure
 
 - Dockerfile
@@ -57,7 +74,6 @@
   + ignore after any non-directive instruction
 - Directive:
   + ~escape=`~ (Change the default escape =\= for windows)
-
 
 
 
@@ -97,7 +113,6 @@ Use ~ENV~ define variables, refer by '$'
        #+END_SRC
 
 
-
 ** FROM instruction
 
 - Syntax
@@ -126,6 +141,122 @@ Use ~ENV~ define variables, refer by '$'
   + use =SHELL= command to set which shell to be used
   + generate new commit cache, use =docker build --no-cache= to ignore
 
+** CMD instruction
+
+- Like =RUN=, but does not execute anything at build time rather than speficies the intended command for the image
+- Provide the default command's for run container
+- Companion with =ENTRYPOINT=
+- Only last one will take effect
+- Three formats
+  + exec form: =CMD ["executable", "param1", "param2"]=
+  + as the default parameters to ENTRYPOINT: =CMD ["param1", "param2"]=
+  + shell form: =CMD command param1 param2=
+
+** LABEL instruction
+
+- Add metadata to image 
+  #+BEGIN_SRC dockerfile
+    LABEL "com.example.vendor"="ACME Incorporated"
+    LABEL com.example.label-with-value="foo"
+    LABEL version="1.0"
+    LABEL description="This text illustrates \
+            that label-values can span multiple lines."
+    LABEL multi.label1="value1" multi.label2="value2" other="value3"
+  #+END_SRC
+- Check with =docker inspect=
+- Image will inherit base or parent image's labels
+
+** EXPOSE instruction
+
+- Syntax
+  #+BEGIN_SRC text
+    EXPOSE <port> [<port>/<protocol>]
+  #+END_SRC
+- Just inform the listen port at runtime, do not publish the port
+- Manual publish with =docker run -p/-P=
+  #+BEGIN_SRC bash
+    docker run -p 80:80/tcp -p 80:80/udp
+  #+END_SRC
+
+** ENV instruction
+
+- Syntax
+  #+BEGIN_SRC text
+    ENV <key> <value>
+    ENV <key>=<value> <key>=<value> ...
+  #+END_SRC
+- Will be replaced with its value
+- Both Dockerfile and runtime (os environment) can see
+- Can also set by command line
+  #+BEGIN_SRC bash
+    docker run --env <key>=<value>
+  #+END_SRC
+- Be care for overwriting the SHELL environment, use
+  #+BEGIN_SRC dockerfile
+    RUN <key>=<value> <command>
+  #+END_SRC
+
+** ADD instruction
+
+- Copy files/directories/remote-resources to image's destination
+- syntax
+  #+BEGIN_SRC text
+    ADD [--chown=<user>:<group>] <src>... <dest>
+    ADD [--chown=<user>:<group>] ["<src>",... "<dest>"]
+  #+END_SRC
+- Default owner is =0:0=
+- Rules
+  + src
+    - Must inside the context of the build
+    - if src is directory, copy its content
+    - if src is archive file, unpack to destination
+  + dst
+    - if with trailing slash, copy file to the directory
+    - if without trailing slash, overwrite destination file
+    - if not exists, create the directory automatically
+
+** TODO COPY instruction
+
+- Almost same in syntax and rules with =ADD=
+- =--from=<name|index>= set the source location to a previous build stage (=FROM .. AS <name>=)
+- vs =ADD= (TODO)
+
+** ENTRYPOINT instruction
+
+- Configure the container to run as an executable
+- syntax
+  + exec form: =ENTRYPOINT ["executable", "param1", "param2"]=
+  + shell form: =ENTRYPOINT command param1 param2=
+- note
+  1. add =exec= in shell form for receiving Unix signals, else =docker stop= will not work
+  2. shell form execute with =sh -c=
+- with =CMD=
+  |                            | No ENTRYPOINT              | ENTRYPOINT exec_entry p1_entry | ENTRYPOINT [“exec_entry”, “p1_entry”]          |
+  |----------------------------+----------------------------+--------------------------------+------------------------------------------------|
+  | No CMD                     | error, not allowed         | /bin/sh -c exec_entry p1_entry | exec_entry p1_entry                            |
+  | CMD [“exec_cmd”, “p1_cmd”] | exec_cmd p1_cmd            | /bin/sh -c exec_entry p1_entry | exec_entry p1_entry exec_cmd p1_cmd            |
+  | CMD [“p1_cmd”, “p2_cmd”]   | p1_cmd p2_cmd              | /bin/sh -c exec_entry p1_entry | exec_entry p1_entry p1_cmd p2_cmd              |
+  | CMD exec_cmd p1_cmd        | /bin/sh -c exec_cmd p1_cmd | /bin/sh -c exec_entry p1_entry | exec_entry p1_entry /bin/sh -c exec_cmd p1_cmd |
+
+
+
+
+** VOLUME instruction
+
+- Create shared volume (anonymous directories) with hosts
+- Remember to =docker run --rm= ensure cleaning when quit
+- Just mount point (can't mount a host directory from within the Dockerfile)
+
+** USER instruction
+
+- set the user (and group) to use when running the image 
+- for =RUN=, =CMD= and =ENTRYPOINT= instructions the follow it in the =Dockerfile=
+- syntax
+  #+BEGIN_SRC text
+    USER <user>[:<group>] or
+    USER <UID>[:<GID>]
+  #+END_SRC
+
 ** TODO build cache
 
 [[https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#build-cache][build cache reference]]
@@ -143,3 +274,78 @@ https://docs.docker.com/engine/reference/glossary/#base-image
 [[https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/]]
 
 
+* docker network
+
+** Overview
+
+Split into 6 categories according to the network drivers
+- bridge :: default, link layer, port mapping
+- host :: virtual host IP
+- overlay :: cross multiple hosts
+- macvlan :: physical layer, assign MAC
+- none :: no network
+- custom plugins :: others
+
+** Commands
+
+- Create bridge network :: =docker network create --driver bridge bridge2=
+- List networks :: =docker network ls=
+- Join container to network :: =docker network connect <bridge> <container>=
+- Delete network :: =docker network rm <network>=
+- Inspect network :: =docker network inspect bridge=
+
+** Bridge Network
+
+Software bridge network which can isolate from containers not
+connected to the bridge and can automatically install rules in host
+OS.
+
+By default, Docker create network named =bridge=. Check with
+#+BEGIN_SRC bash
+docker network ls
+#+END_SRC
+
+User can create his own bridge network which is recommended in
+production
+#+BEGIN_SRC bash
+docker network create --driver bridge brg0
+#+END_SRC
+
+The docker can join the bridge network by:
+1. =docker run= with =--network <network>= parameter
+2. with =docker network connect= command
+
+On User-defined networks, containers can communicate by container name
+(*automatic service discovery*) when the container on and only on the
+same bridge network.
+
+- https://docs.docker.com/network/
+
+* manage containers
+
+- https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html-single/managing_containers/
+
+** TODO attach with detach
+
+** parameters in =docker run=
+
+- =-d= :: deteached (in the background)
+- =-i= :: interactive
+- =-t= :: TTY (can see Input and Output)
+
+
+
+* docker volume
+
+- [[https://docs.docker.com/engine/tutorials/dockervolumes/#/mount-a-host-directory-as-a-data-volume][Share Directories via Volumes]]
+
+
+* how to
+
+** stop container
+
+Stop and delete container
+1. =docker container stop <container-id>=
+2. =docker container rm <container-id>=
+
+Or start with =--rm= parameter in =docker run=
