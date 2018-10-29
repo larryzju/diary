@@ -25,7 +25,7 @@
 4. Run a one-off command on a service
 
 
-
+* TODO docker versions
 * docker
 
 ** what is docker?
@@ -291,6 +291,7 @@ Split into 6 categories according to the network drivers
 - Create bridge network :: =docker network create --driver bridge bridge2=
 - List networks :: =docker network ls=
 - Join container to network :: =docker network connect <bridge> <container>=
+- Disconnect container from network :: =docker network disconnect <bridge> <container>=
 - Delete network :: =docker network rm <network>=
 - Inspect network :: =docker network inspect bridge=
 
@@ -306,16 +307,29 @@ docker network ls
 #+END_SRC
 
 User can create his own bridge network which is recommended in
-production
+production environments:
 #+BEGIN_SRC bash
 docker network create --driver bridge brg0
 #+END_SRC
 
-The docker can join the bridge network by:
+Docker container can join the bridge network by:
 1. =docker run= with =--network <network>= parameter
 2. with =docker network connect= command
 
-On User-defined networks, containers can communicate by container name
+User-defined bridge network is recommended in production environment:
+1. better isolation and interoperability between containerized
+   aplications
+   + expose all ports to each other
+   + expose no ports to the outside world
+2. automatic DNS resolution between containers (not worked in
+   =default= bridge)
+3. container can be attached and detached from user-defined network on
+   the fly
+4. configuable
+
+
+
+On user-defined networks, containers can communicate by container name
 (*automatic service discovery*) when the container on and only on the
 same bridge network.
 
