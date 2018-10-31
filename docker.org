@@ -28,73 +28,49 @@
 * TODO docker versions
 * docker
 
-** what is docker?
+** Overview
 
-From [[https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html-single/getting_started_with_containers/#overview][RHEL7 Getting Started with Containers]]
-
-1. command
-2. service
+Docker can be treated as different things:
+1. =docker= command lines
+2. docker service to run container, build image
 3. image format to structure container
 
-** advantage
-
-From [[https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html-single/getting_started_with_containers/#overview][RHEL7 Getting Started with Containers]]
-
-1. Samller than Virtual Machine
+Docker has some advantages:
+1. Smaller than virtual machine
 2. Improved performance
 3. Secure (isolated from host)
 4. Flexible (portable)
 
-** build context directory structure
+Core concepts:
+- build image
+- run container
+- network
+- volume (for persist and data share)
 
-- Dockerfile
-- .dockerignore
+** Build 
 
-** build command
+Docker image can be built with =docker build= command which interprete
+of =Dockerfile= line by line.
 
-- =-f= specify Dockerifle
-- =-t shykes/myapp:1.0.2=
-- execute one by one
-- re-use the intermediate image
+The current directory (named *build context*) will be sent to docker
+daemon. Build context isolated the avaiable files in current build
+session.
+
+User can tell docker to ignore some files in build context by writing
+a =.dockerignore= file.
+
+With =docker build= command:
+- =-f= :: specify Dockerifle
+- =-t shykes/myapp:1.0.2= :: image tag
+
+Docker build tools is smart enough to 
+- reuse the intermediate image
 - custom cache policy (see [[build cache]] )
 
-** Dockerfile Format
+Thie first line in Dockerfile is =FROM ...= normally. That means we
+always build new image from base image.
 
-- comment with '#'
-- uppercase instruction
-- starts with *`FROM`* instruction
-
-** Parser Directives
-
-- Place at the very top for configure parser rules
-- Syntax: ~# directive=value~
-  + no duplicate
-  + lowercase
-  + invalid is ignored
-  + ignore after any non-directive instruction
-- Directive:
-  + ~escape=`~ (Change the default escape =\= for windows)
-
-
-
-** Environment
-
-Use ~ENV~ define variables, refer by '$'
-
-+ Define
-  #+BEGIN_SRC dockerfile
-    FROM busybox
-    ENV foo /bar
-    WORKDIR ${foo}   # WORKDIR /bar
-    ADD . $foo       # ADD . /bar
-    COPY \$foo /quux # COPY $foo /quux
-  #+END_SRC
-
-+ Bash like
-  - =${var:-word}=: if var is not set, then return word
-  - =${var:+word}=: if var is set, return word, else return nil
-
-** =.dockerignore=
+*** =.dockerignore=
 
 - Aim
   + safety
@@ -112,8 +88,36 @@ Use ~ENV~ define variables, refer by '$'
          README-secret.md
        #+END_SRC
 
+*** Parser Directives
 
-** FROM instruction
+- Place at the very top for configure parser rules
+- Syntax: ~# directive=value~
+  + no duplicate
+  + lowercase
+  + invalid is ignored
+  + ignore after any non-directive instruction
+- Directive:
+  + ~escape=`~ (Change the default escape =\= for windows)
+
+
+*** Environment
+
+Use ~ENV~ define variables, refer by '$'
+
++ Define
+  #+BEGIN_SRC dockerfile
+    FROM busybox
+    ENV foo /bar
+    WORKDIR ${foo}   # WORKDIR /bar
+    ADD . $foo       # ADD . /bar
+    COPY \$foo /quux # COPY $foo /quux
+  #+END_SRC
+
++ Bash like
+  - =${var:-word}=: if var is not set, then return word
+  - =${var:+word}=: if var is set, return word, else return nil
+
+*** FROM instruction
 
 - Syntax
   #+BEGIN_SRC text
@@ -130,7 +134,7 @@ Use ~ENV~ define variables, refer by '$'
     RUN echo $VERSION > image_version
   #+END_SRC
 
-** RUN instruction
+*** RUN instruction
 - Syntax
   1. sh -c mode: =RUN <command>=
   2. exec mode: =RUN ["execution", "param1", "param2"]=
@@ -141,7 +145,7 @@ Use ~ENV~ define variables, refer by '$'
   + use =SHELL= command to set which shell to be used
   + generate new commit cache, use =docker build --no-cache= to ignore
 
-** CMD instruction
+*** CMD instruction
 
 - Like =RUN=, but does not execute anything at build time rather than speficies the intended command for the image
 - Provide the default command's for run container
@@ -152,7 +156,7 @@ Use ~ENV~ define variables, refer by '$'
   + as the default parameters to ENTRYPOINT: =CMD ["param1", "param2"]=
   + shell form: =CMD command param1 param2=
 
-** LABEL instruction
+*** LABEL instruction
 
 - Add metadata to image 
   #+BEGIN_SRC dockerfile
@@ -166,7 +170,7 @@ Use ~ENV~ define variables, refer by '$'
 - Check with =docker inspect=
 - Image will inherit base or parent image's labels
 
-** EXPOSE instruction
+*** EXPOSE instruction
 
 - Syntax
   #+BEGIN_SRC text
@@ -178,7 +182,7 @@ Use ~ENV~ define variables, refer by '$'
     docker run -p 80:80/tcp -p 80:80/udp
   #+END_SRC
 
-** ENV instruction
+*** ENV instruction
 
 - Syntax
   #+BEGIN_SRC text
@@ -196,7 +200,7 @@ Use ~ENV~ define variables, refer by '$'
     RUN <key>=<value> <command>
   #+END_SRC
 
-** ADD instruction
+*** ADD instruction
 
 - Copy files/directories/remote-resources to image's destination
 - syntax
@@ -215,13 +219,13 @@ Use ~ENV~ define variables, refer by '$'
     - if without trailing slash, overwrite destination file
     - if not exists, create the directory automatically
 
-** TODO COPY instruction
+*** TODO COPY instruction
 
 - Almost same in syntax and rules with =ADD=
 - =--from=<name|index>= set the source location to a previous build stage (=FROM .. AS <name>=)
 - vs =ADD= (TODO)
 
-** ENTRYPOINT instruction
+*** ENTRYPOINT instruction
 
 - Configure the container to run as an executable
 - syntax
@@ -240,14 +244,13 @@ Use ~ENV~ define variables, refer by '$'
 
 
 
-
-** VOLUME instruction
+*** VOLUME instruction
 
 - Create shared volume (anonymous directories) with hosts
 - Remember to =docker run --rm= ensure cleaning when quit
 - Just mount point (can't mount a host directory from within the Dockerfile)
 
-** USER instruction
+*** USER instruction
 
 - set the user (and group) to use when running the image 
 - for =RUN=, =CMD= and =ENTRYPOINT= instructions the follow it in the =Dockerfile=
@@ -257,22 +260,60 @@ Use ~ENV~ define variables, refer by '$'
     USER <UID>[:<GID>]
   #+END_SRC
 
-** TODO build cache
+*** TODO build cache
 
 [[https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#build-cache][build cache reference]]
 
-** TODO push a repository to its registry
+*** TODO push a repository to its registry
 
 [[https://docs.docker.com/engine/tutorials/dockerrepos/#/contributing-to-docker-hub]]
 
-** TODO base image
+*** TODO base image
 
 https://docs.docker.com/engine/reference/glossary/#base-image
 
 * TODO best practice
 
+** Docker Overview
+
+Dockerfile instruct docker daemon build image in multiple layers.
+Then generate a container, you add a new writable layer (container
+layer) on top of the underlying layers.
+
+** General guidelines and recommendations
+
+*** Create ephemeral containers 
+
+To be rebuilt and replaced easily
+
+*** Understand build context 
+
+avoid large build context
+
+*** Pipe Dockerfile through =stdin= (Docker 17.05 and higher)
+
+with local or remote build-context 
+
+*** Exclude with =.dockerignore= 
+
+similar to =.gitignore=
+
+*** Multi-stage builds (Docker 17.05 or higher)
+
+#+BEGIN_SRC dockerfile
+  FROM golang:1.9.2-alpine3.6 AS build
+  ## skip ...
+
+  FROM scratch
+  COPY --from=build /bin/project /bin/project
+  ## skip ...
+#+END_SRC
+
+
+
 [[https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/]]
 
+*** Don't install unnecessary packages
 
 * docker network
 
@@ -348,11 +389,10 @@ same bridge network.
 - =-t= :: TTY (can see Input and Output)
 
 
-
 * docker volume
 
 - [[https://docs.docker.com/engine/tutorials/dockervolumes/#/mount-a-host-directory-as-a-data-volume][Share Directories via Volumes]]
-
+- [[https://docs.docker.com/storage/storagedriver/][About Storage Driver]]
 
 * how to
 
