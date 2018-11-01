@@ -2,17 +2,15 @@
 #+AUTHOR: Zhao Wenbin
 
 * Overview
-** Components
-*** Node
-**** Overview
+
+** Node
 
 Node components run on every node
 1. maintain running Pods
 2. provide the Kubernetes runtime environment
 
-**** Components
-
-1. kubelet: Run ocntainer as the rules of =PodSpecs=
+On each node, there're several components running:
+1. kubelet: Run container as the rules of =PodSpecs=
 2. kube-proxy: maintain network configuration for supporting Service
 3. container runtime: docker, rkt, OCI runtime-spec
 
@@ -22,34 +20,31 @@ From [[https://courses.edx.org/courses/course-v1:LinuxFoundationX+LFS158x+1T2018
 
 - Automatic binpacking :: Kubernetes automatically schedules the containers based on resource usage and constraints, without sacrificing the availability
 - Self-healing :: Kubernetes automatically replaces and reschedules the containers from failed nodes. It also kills and restarts the containers which do not respond to health checks, based on existing rules/policy.
-- Horizontal scaling :: Kubernetes can automatically scale applicatoins based on resource usage like CPU and memory. In some cases, it also supports dynamic scaling based on customer metrics.
+- Horizontal scaling :: Kubernetes can automatically scale applications based on resource usage like CPU and memory. In some cases, it also supports dynamic scaling based on customer metrics.
 - Service discovery and Load balancing :: Kubernetes groups sets of containers and referes to them via a Domain Name System (DNS). This DNS is also called a Kubernetes *service*. Kubernetes can discover these services automatically, and load-balance requests between containers of a given service.
-- Automated rollouts and rollbacks :: Kubernetes can roll out and roll back ne wversion/configurations of an application, without introducing any downtime.
-- Secrets and configuration management :: Kubernetes can manages secrets and configuration details for an applicatoin without re-building the respective images. With secrets, we can share confidential information to our application without exposing it to the stack configuration, like on Github.
+- Automated rollouts and rollbacks :: Kubernetes can roll out and roll back new version/configurations of an application, without introducing any downtime.
+- Secrets and configuration management :: Kubernetes can manages secrets and configuration details for an application without re-building the respective images. With secrets, we can share confidential information to our application without exposing it to the stack configuration, like on Github.
 - Storage orchestration :: With Kubernetes and its plugins, we can automatically mount local, external, and storage solutions to the containers in a seamless manner, based on software-defined storage (SDS).
 - Batch execution :: Besides long running jobs, Kubernetes also supports batch execution.
 
+** Pods
+
+See below chapter.
 
 * Pods
 
-** definition
+** What is?
 
-- Smallest deployable units of computing that can be created and managed in K8S
-- A group of Docker containers with shared namespaces and shared volumes
-
-
-** explain
-
-- a group of containers, relatively tightly coupled
-- shared storage/network
-- with specification for how to run the containers
-- TODO containers share an *IP address and port space*, can communicate with each-other via *localhost*
-- volume provides shared filesystem
-
-** notes
-
-- supports more container runtimes (beyond Docker)
-- undergroupd is a set of Linux namespaces, cgroups, and potentially other facets of isolation
++ Smallest deployable units of computing that can be created and managed in k8s cluster
++ A group of Docker containers with shared namespaces and shared volumes
+  - a group of containers, relatively tightly coupled
+  - shared storage/network
+  - with specification for how to run the containers
+  - containers share an *IP address and port space*, can communicate with each-other via *localhost*
+  - volume provides shared filesystem and data persistent
++ Some notes about underlying
+  + supports more container runtimes (beyond Docker)
+  + undergroupd is a set of Linux namespaces, cgroups, and potentially other facets of isolation
 
 ** TODO life of a pod
 
@@ -63,26 +58,17 @@ pod 的一个 node 异常后，将重新发起一个新的 pod 替换之
 
 https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/
 
+
+
 ** Motivation
 
-*** Management
-
-Serve as unit of deployment, horizontal scaling, and replicatoin.
-
-Automatically handles:
-
-- Colocation (co-scheduling)
-- shared fate (termination)
-- coordinated replication
-- resource sharing
-- dependency management
-
-** Resource sharing and communication
-
-- can find each other and communicate using *localhost*
-- volume for
-  + persist data for container restart
-  + share among applications
+- Serve as unit of deployment, horizontal scaling, and replication.
+- Automatically handles:
+  - Colocation (co-scheduling)
+  - shared fate (termination together)
+  - coordinated replication
+  - resource sharing
+  - dependency management
 
 ** TODO Usage
 
@@ -91,11 +77,11 @@ Automatically handles:
 
 *** TODO How to find each other by *localhost*
 
-* Networking
+* TODO Networking
 
 * Volume
 
-** 不同于 docker volume
+** vs Docker Volume
 
 docker volume 是将本地的一个目录挂载到 container 中，存在以下问题
 1. 实现方式单一（docker driver 提供了一定的扩展功能）
@@ -128,7 +114,6 @@ k8s volume 有以下特点：
 - Master find a matching PV for PVC and binding them together
 
 **** Using
-
 
 * Deployments
 * ReplicaSets
