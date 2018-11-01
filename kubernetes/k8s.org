@@ -231,3 +231,8 @@ Some kind of service by setting =Type= value (ServiceType)
         targetPort: 9377
   #+END_SRC
 - Can set clusterIP of =Services= by =.spec.clusterIP=. Most useful for legacy system which configured a specific IP address
+* TODO ConfigMap
+
+Something like register or key/value database(?)
+
+Can be mounted to container's file.
