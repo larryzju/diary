@@ -1,0 +1,8 @@
+* zypper
+
+- install :: =zypper install -y net-tools=
+- search :: =zypper search netcat=
+- grep package content :: =zypper search --provides hostname=
+- who provides :: =zypper wp alisp.h=
+
+* TODO suse vs openSuse
