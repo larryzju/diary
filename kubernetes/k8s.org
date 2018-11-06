@@ -77,8 +77,6 @@ https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/
 
 *** TODO How to find each other by *localhost*
 
-* TODO Networking
-
 * Volume
 
 ** vs Docker Volume
@@ -123,46 +121,81 @@ k8s volume 有以下特点：
 - Similar to =ReplicationController=, but support set-based selector
 - Specific pod configuration by =spec.template=
 
+* Network
+
+Pods had private cluster-IP which means:
+1. containers in Pod can reach each other's port on =localhost=
+2. All pods can see each other without NAT
+
+** vs Docker Bridge Network
+
+Docker's conatiners can visit others on the same machine. 
+
+But for communicating across machine, user must setup proxy to forward
+traffic to specific ports.
+
 * Service
 
-** Why service
+** Overview
 
-- For pod has internal and temporary IP address.
-- Use =service= to decouple frontend pod with backend pod connection
+Pod has internal and temporary cluster-IP address which is
+easy-to-dead.
 
-** As micro-service
+Kubernetes provides Deployment or ReplicaSet controller for monitoring
+pods status which would spawn new pods with different cluster-IP
+address when necessary.
 
-=Service= is an abstraction which defines a logical set of =Pods= and a policy by which to access them.
+=Service= is an abstraction which defines a logical set of =Pods= and
+a policy by which to access them. Use =service= to decouple frontend
+pod with backend pod connection.
+
+Service is assigned a unique IP address which is independent with
+pods. Traffic will be routed to some pod in the groups of service.
+
+** How to create services
+
+1. =kubectl expose <deployment>=
+2. create by =Service= API
+   #+BEGIN_SRC yaml
+      kind: Service
+     apiVersion: v1
+     metadata:
+       name: my-service
+     spec:
+       selector:
+         app: MyApp
+       ports:
+       - protocol: TCP
+         port: 80
+         targetPort: 9376
+   #+END_SRC
 
 ** =Endpoints=
 
-- For k8s-native applications
-- =Endpoints= is updated whenever then set of =Pods= in a =Service= changed
-- For non-native application, use virtual-IP-based bridge to Service
-- When create =Service=, an =Endpoints= will be created with the same name as Service (must have label selectors)
+=Endpoints= is an object for Pods and will update whenever set of
+=Pods= in a =Service= changed.
 
-** Services without label selectors
+For non-native application, use virtual-IP-based bridge to Service.
+
+When create =Service=, an =Endpoints= will be created with the same
+name as Service (must have label selectors)
+
+
+** Label Selectors
 
 - Worked just as a route item, map port to target port which is not part of =Pods=
 - Because no selector specific, there will not be =Endpoints= be created automatically
 - Create =Endpoint= manual
 - [[*ExternalName service][ExternalName service]] is a special case, see below
 
-** Define a service
+** Network
 
-#+BEGIN_SRC yaml
-  kind: Service
-  apiVersion: v1
-  metadata:
-    name: my-service
-  spec:
-    selector:
-      app: MyApp
-    ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 9376
-#+END_SRC
+Pod has cluster-IP and can be visited in other cluster's nodes or pods.
+
+
+
+
+** Define a service
 
 - Would be assigned an IP address (cluster-IP), which is used by proxy
 - An =Endpoints= also named 'my-service' will be created automatically
@@ -196,6 +229,7 @@ k8s volume 有以下特点：
 
 *** DNS
 
+- =kube-system/kube-dns= pod provide DNS service
 - DNS Server monitor the changes of =Services= and maintain items to service IP
 - Map =service-name.namespace= to Service cluster IP
 
@@ -236,3 +270,9 @@ Some kind of service by setting =Type= value (ServiceType)
 Something like register or key/value database(?)
 
 Can be mounted to container's file.
+* TODO TODO
+** Prove containers' ports may conflict under docker bridge networks
+** link: how we archieve this
+** Pod spec containerPort
+** Pod's container port and targetPort
+** =printenv= vs =env=
