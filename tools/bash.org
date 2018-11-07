@@ -1,0 +1,18 @@
+* Condition
+
+- =-r= :: readable
+- =-f= :: regular file test
+
+
+* Sed
+
+- =basename= :: =echo $0 | sed -e 's:^.*/::'=
+
+* OS
+
+- =uname -s= :: return "Linux", "SunOS" ..
+- =uname -r= :: linux kernel version, such as =3.10.0-862.11.6.el7.x86_64=
+
+* Special Variable
+
+- =$#= :: parameters' count
