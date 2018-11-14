@@ -12,7 +12,9 @@ And the major works of kubernetes are:
 2. making the cluster's actual state match the desired state (maintain)
 
 We interact with Kubernetes cluster and check the status of Kubernetes
-with API (JSON objects)
+with API. =kubectl= is a command line tools for interaction. We can write
+yaml files in API specification, and the kubectl will convert it to json 
+format and submit to kubernetes' components.
 
 Kubernetes would maintain the status of cluster and jobs, such like
 1. start or restart containers
@@ -63,6 +65,10 @@ In high level, there're some abstracts named *controller*, such as
 - StatefulSet
 - DaemonSet
 - Job
+
+Objects informations can be split into two groups
+- spec :: desired state
+- status :: actual state, and is supplied and updated by the kubernete system
 
 * Pods
 
@@ -309,3 +315,9 @@ Can be mounted to container's file.
 ** Pod spec containerPort
 ** Pod's container port and targetPort
 ** =printenv= vs =env=
+** How does kubernetes monitor the status change?
+
+1. polling
+2. callback?
+
+I guess polling is much easier to implement.
