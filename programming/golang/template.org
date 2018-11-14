@@ -1,0 +1,84 @@
+* Overview
+
+Template can evaluate with runtime variables to generate output.
+
+Go provides =text/template= and =html/template=. The later contains
+protections for code injections.
+
+Can be used in scenarios like
+1. web page render (similar to jekyll's liquid, or hugo)
+2. email
+3. kubectl (wow, actually said k8s used [[https://github.com/spf13/cobra][cobra]])
+
+* Usage
+
+1. create a new template object
+2. parse from template files or strings
+3. execute the template upon runtime context to generate output
+
+* Example
+
+#+BEGIN_SRC go
+  package main
+
+  import(
+          "html/template"
+          "os"
+  )
+
+  type entry struct {
+          N int
+          V uint64
+  }
+
+  const tmpl = `
+  <html>
+    <table>
+      <tr>
+        <th>n</th>
+        <th>fib(n)</th>
+      <tr>
+      {{range .}}
+      <tr>
+        <td>{{.N}}</td>
+        <td>{{.V}}</td>
+      </tr>
+      {{end}}
+    </table>
+  </html>
+  `
+
+  func main() {
+          v := []entry{}
+          var s, b uint64 = 0, 1
+          for i := 0; i < 30; i++ {
+                  s, b = b, s+b
+                  v = append(v, entry{i+1,s})
+          }
+
+          t := template.Must(template.New("fib").Parse(tmpl))
+          t.Execute( os.Stdout, v )
+  }
+#+END_SRC
+
+* Syntax
+
+Only ={{ action }}= will be evaluated and substituted.
+
+The basic syntax are
+1. data evaluation ={{.FieldName}}= for struct field visits or ={{.}}= for non-struct
+2. conditions: ={{if .FieldName}} //action {{else}} //action2 {{end}}=
+3. loops: ={{ range .Member }} ... {{ end }}=
+4. functions, pipelines and variables: =|= or =with=
+
+* Misc
+
+- =Must= :: verify and panic when error happens
+- =ParseFiles= :: parse multiple files
+- =ParseGlob= :: parse globbed files
+
+
+* TODO TODO
+
+** how to use multiple files template
+** Cobra
