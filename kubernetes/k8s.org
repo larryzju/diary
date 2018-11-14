@@ -3,6 +3,28 @@
 
 * Overview
 
+Kubernetes Control Plane (aka Kubernetes) consists of
+1. Master
+2. Node
+
+And the major works of kubernetes are:
+1. execute instructions (interact)
+2. making the cluster's actual state match the desired state (maintain)
+
+We interact with Kubernetes cluster and check the status of Kubernetes
+with API (JSON objects)
+
+Kubernetes would maintain the status of cluster and jobs, such like
+1. start or restart containers
+2. scaling the number of replicas of an Application
+
+** Master
+
+Consists of three process:
+1. =kube-apiserver=
+2. =kube-controller-manager=
+3. =kube-scheduler=
+
 ** Node
 
 Node components run on every node
@@ -27,9 +49,20 @@ From [[https://courses.edx.org/courses/course-v1:LinuxFoundationX+LFS158x+1T2018
 - Storage orchestration :: With Kubernetes and its plugins, we can automatically mount local, external, and storage solutions to the containers in a seamless manner, based on software-defined storage (SDS).
 - Batch execution :: Besides long running jobs, Kubernetes also supports batch execution.
 
-** Pods
+** Objects
 
-See below chapter.
+Basic objects in Kubernetes are
+- pod :: a group of running instances
+- service :: policy to expose network
+- volume :: persist storage
+- namespace :: isolate resources
+
+In high level, there're some abstracts named *controller*, such as
+- ReplicaSet
+- Deployment
+- StatefulSet
+- DaemonSet
+- Job
 
 * Pods
 
