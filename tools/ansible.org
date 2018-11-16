@@ -3,23 +3,16 @@
 
 * Overview 
 
-** What is Ansible
+Run =playbook= (in YAML format) on multiple remote hosts (defined by
+=Inventory=) without deploy clients on hosts.
 
-- automation language (playbook yaml syntax)
-- automation engine (=ansible-playbook=)
-- Ansible Tower (UI and RESTFul API server)
+Ansible provides rich sets of =Modules= which can hide the detail of
+underlying platform or system (kubernete, linux, windows, docker...)
 
-** Ecosystem
-
-- Red Hat Support
-- Ansible Tower
-- Ansible Galaxy (CPAN?)
-
-** Feature
-
-- Simple
-- Powerful
-- Agentless
+The word =Ansible= has different means:
+1. language specification for playbook
+2. execute engine: =ansible-playbook=
+3. Ansible Tower: Enterprise API server with UI
 
 ** TODO Usage
 
@@ -32,12 +25,13 @@
 
 ** Architecture
 
-- Inventory :: lists of hosts
-- Playbook :: Describe the desired state of something. Contains *Plays* and *play* contains *Tasks*
-- Tasks :: Task run sequentially and calls *Modules*
-- Modules :: ?
-- Variable :: ?
-- Discovered variables (facts) :: ?
+** Terms
+- Inventory :: hosts group
+- Playbook :: collections of =plays= which contains =tasks=
+- Tasks :: task run sequentially and calls *Modules*
+- Modules :: underlying implement in python
+- Variable :: substitute in runtime
+- Discovered variables (facts) :: runtime parameters of hosts
 - Handlers :: Triggered by Tasks's *Notify*
 - Roles :: kind of Playbook that is fully self-contained with task, variables, configurations templates
 
@@ -59,6 +53,21 @@
 - 远程机器的方式可以有 ssh 或 docker，在 module 上实现了操作的统一
 - 无需在各 node 上部署客户端 (Agentless)
 - 通过 Jinja2 语法提供模板替换
+
+
+* Ad-Hoc
+
+=ansible= command provide ansible ad-hoc cli interface which can do
+quick things that you might not necessarily want to write a full
+playbook for.
+
+For example, to get ip list for all hosts defined in inventory-file
+#+BEGIN_SRC bash
+ansible -i inventory-file all -m shell -a 'ip addr list'
+#+END_SRC
+
+By default, ansible use =command= module. Option =-a= will pass the
+arguments (in key-value pairs) to module.
 
 * Variable
 
@@ -1110,4 +1119,25 @@ Get all hosts' =facts=
 
 
 
+* Cookbook
 
+** First Ansible Command
+
+Echo hello on localhost
+
+#+BEGIN_SRC bash
+  ansible [-c local] localhost -a "echo hello"
+#+END_SRC
+
+
+By default, run with =command= module which does not support shell
+syntax like piping and redirects. Use =shell= module if we need
+
+#+BEGIN_SRC bash
+  ansible localhost -m shell -a 'echo $TERM'
+#+END_SRC
+
+
+** Copy file to lots of hosts
+
+With =copy= module
