@@ -16,3 +16,24 @@
 * Special Variable
 
 - =$#= :: parameters' count
+* Process
+
+Processes makes up a tree. Each process has its own environment.
+
+It takes two steps to execute a program:
+1. make a copy of bash itself (fork), this will inherit environment of bash
+2. replace with program itself
+
+Bash defines its variable by ~NAME=VALUE~ which cannot be seen from
+subprocess. But we need to =export= the variable to environment.
+
+Bash would spawn new subshell in following scenarios:
+1. execute command (use =source script= to import code rather than execute script)
+2. pipe
+3. subshell. For example, ~(subcommand) >output.txt~
+4. command substitution: ~A=$(cat /etc/passwd | wc -l)~
+
+Two ways to check variables:
+1. =set=: list shell variables
+2. =env=: list environment variables (only variables been exported)
+
