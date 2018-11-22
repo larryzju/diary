@@ -1,0 +1,82 @@
+* Overview
+
+SSL/TLS protocol usually builds upon TCP protocol and serves encryption to
+higher layers (say HTTPs).
+
+Before the message can be transport in encryption way, client and
+server need to exchange informations to each other. These steps are
+called *handshake*.
+
+Both side encrypt messages with *master secret* which consist of
+client and server's 32bytes random number, plus 48bytes
+=PreMasterSecret= generated in ClientKeyExchange phase.
+
+Note: SSL use the asymmetric encryption to deliver the shared session
+key (pre master secret), and finally archieved a communication way
+with *symmetric* encryption (with master secret). That is because the
+symmetric encryption is much faster.
+
+* Basic Handshake Steps
+
+** ClientHello
+
+Client sends *ClientHello* message specifying
+- TLS protocol version it supports
+- random number (32bytes)
+- set of cipher suites it supports
+- set of compression methods it supports
+
+** ServerHello
+
+Server reposonses *ServerHello* and tells client 
+- which protocol version to use
+- server random number (32bytes)
+- set of cipher suites it supports
+- set of compression methods it supports
+
+** Server Certificate
+
+Server send its *certificate* to client which is used for encrypt
+=PreMasterSecret=
+
+** ServerHelloDone
+
+** ClientKeyExchange
+
+Client generates =PreMasterSecret= and encrypts with server's public key
+
+** Client ChangeCipherSpec
+
+From now, messages that client tells with server will be authenticated.
+
+** Client Finished
+
+** Server ChangeCipherSpec
+
+From now, messages that server tells with client will be authenticated.
+
+** Server Finished
+
+
+* What is certificate content in PEM file
+
+See [[https://serverfault.com/questions/9708/what-is-a-pem-file-and-how-does-it-differ-from-other-openssl-generated-key-file][What is a Pem file and how does it differ from other OpenSSL
+Generated Key File Formats?]]
+
+* How does CA verify signed certificate?
+
+It's impossible to exchange public key of all servers we need to
+visit. So in the handshake, the server will deliver its public key
+(certificate) to client (browser). Client needs to make sure the
+public key is really from the server.
+
+So, besides the certificate, the server will send its digital
+certificate signed by some CA. Browser will ask CA to verify the
+certificate is real. CA itself may be verified by its signed
+certificate authorization (so the CA is called intermediate CA).
+
+See external links:
+- [[https://security.stackexchange.com/questions/56389/ssl-certificate-framework-101-how-does-the-browser-actually-verify-the-validity][how does the browser actually verify the validity]]
+- [[http://security.stackexchange.com/questions/20803/how-does-ssl-tls-work][How does SSL/TLS work?]]
+
+
