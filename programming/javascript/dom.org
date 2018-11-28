@@ -1,0 +1,38 @@
+* Element.scrollTop
+
+The distance from the element's top to its topmost visible content.
+
+Can be used to scroll element, or calculate relative position
+
+#+BEGIN_SRC html
+  <html>
+    <head>
+      <title>Auto scroll</title>
+      <script type="text/javascript">
+        window.onload = function() {
+            var text = document.getElementById('long-text');
+            for ( var i = 0; i < 1000; i++ ) {
+                var p = document.createElement("p");
+                p.innerHTML = "<b>hello darkness my old friend: " + i + "</b>";
+                text.appendChild(p);
+            }
+
+            setInterval( ()=>{text.scrollTop+=1;}, 300 );
+        }
+      </script>
+      <style type="text/css">
+        body {
+            padding: 20px;
+        }
+
+        #long-text {
+            height: 100%;
+            overflow: auto;
+        }
+      </style>
+    </head>
+    <body>
+      <div id='long-text'></div>
+    </body>
+  </html>
+#+END_SRC
