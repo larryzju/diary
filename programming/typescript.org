@@ -1,0 +1,55 @@
+* install
+
+#+BEGIN_SRC bash
+  npm install -g typescript
+#+END_SRC
+
+* Overview
+
+Typescript is a language extends javascript with static type, OOP,
+interface, etc.  Typescript provides a compiler =tsc= can convert the
+=.ts= to plain javascript.
+
+Some features upon javascript is similar to other languages like Go,
+Python:
+1. type annotation: py3k type annotation for static type checking
+2. interface: similar to go interface (duck typing, or structural subtyping)
+3. class: classical OOP class abstract
+
+* Basic Type
+
+** beyond Javascript
+
+- embedded string expression :: =`hello ${name}: ${age+1}`=
+- array type :: =T[]= or =Array<T>=
+- tuple :: =let x: [string, number]=
+- enum :: ~enum Color {Red=1, Green, Blue}~
+- any :: any type vs Object type (similar to py3k)
+- void :: like void in C
+- nerver :: never return (throws exception always or block forever)
+
+** type assertion
+
+Programmer can specific precise type constrain and tell the compiler:
+"trust me, I know what I'm doing".
+
+Simliar to type assertion in Go. No runtime impact, just static check
+and cast.
+
+#+BEGIN_SRC typescript
+(<string>someValue).length
+(someValue as string).length
+#+END_SRC
+
+** advanced topics
+
+*** TODO union type
+*** TODO any vs object
+
+* TODO Variable Declarations
+
+* TODO Interface
+
+* OOP
+
+** vs Javascript Prototype-based OO
