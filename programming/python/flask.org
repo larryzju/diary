@@ -1,0 +1,101 @@
+* Topics
+
+** debug mode
+
+By setting environment =FLASK_ENV= to =development= or setting =FLASK_DEBUG= to =1=
+
+** URL Variable 
+
+Embedded variable in URL, such as =/api/v1/namespace/<string:namespace>/services=.
+The basic syntax is =<converter:variable_name>= or =<variable_name>=
+
+** URL Binding
+
+Use =url.for()= function to calculate the url for endpoint (string or Endpoint object)
+
+** Rendering Template
+
+Use jinja2 to render html from templates by interpolate python context variables
+
+** Accessing Request Data
+
+There's a global variable =request= which acts as proxy to visit the current request object.
+
+The most used fields are
+- =request.method: str=: GET or POST
+- =request.form['username']=: get the item from post form
+- =request.args.get(key,default)=: get the query parameters
+
+** File Uploads
+
+By default, flask stores upload file's content in memory or at a temporary location.
+We can visit the =File= object by =request.files[name]= and save it to another position.
+
+** Cookies
+
+Get the cookie by =request.cookies= and set the cookie to response by =resp.set_cookie=.
+(Must generate response explicitly by =make_response()=)
+
+** Redirect to another URL
+
+=app.redirect(url)=
+
+** Abort
+
+=app.abort(401)=
+
+
+** Response
+
+Post-process to convert response of different format to Response object
+1. Response: pass through
+2. string: convert to =(text/html, 200)=, and then convert to Response
+3. (response,headers) or (response,status,header): convert to Response
+
+** Session
+
+Wrap parameters in cookie in secure way (crypt by =app.secret_key=)
+
+** Logging 
+
+=app.logger=
+
+** 404
+
+Use =app.errorhandler= decorator to custom 404 page
+
+
+* TODO TODO
+
+** WSGI 
+
+** POST json how to
+
+** Relations between Flask and Werkzeug
+
+** Output JSON how to
+
+** Flask vs Web.py
+
+** static resource must be stored in =/static= directory?
+
+** Template Inheritance
+
+** =g= object
+
+** =request= proxy implmenet vs clojure dynamic binding
+
+** Defered Reqeuest Callbacks
+
+** Error Handler
+
+** Server Side Session
+
+** Message Flashing
+
+** WSGI Middleware
+
+** Extensions
+
+** Depoyment Options
+
