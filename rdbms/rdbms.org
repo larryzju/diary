@@ -1,0 +1,39 @@
+* Design
+
+** Basic
+
+1. Eliminate Data Redundancy
+2. Ensure Data Integrity and Accuracy
+
+** Primary Key
+
+Can be a simple key or a composite key which should be
+1. Integer if possible
+2. AutoNumber
+3. not change
+4. unique
+5. not null
+
+** Relationship
+
+1. one-to-many: foreign key
+2. many-to-many: junction table
+3. one-to-one
+
+** TODO Normalization
+
+- 1NF :: no list or multiple column in table, use one-to-many relationship instead
+- 2NF :: non-key column is fully dependent to primary key
+- 3NF :: non-key columns are independent of each other
+- Higher Normal Formal :: Doyce, Codee and etc. 
+
+** Integrity Rules
+
+- Primary key (or ites field) :: should not be null
+- Referential Integrity Rule :: Foreign key refers to  primary key, be careful to the change of primary key
+- Business Logic Integrity :: such as zip code format
+
+
+* References
+
+- [[http://www.ntu.edu.sg/home/ehchua/programming/sql/relational_database_design.html][A Quick-Start Tutorial on Relational Database Design]]
