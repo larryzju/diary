@@ -20,7 +20,7 @@ and some contents are from [[Origin%20Specification][https://daringfireball.net/
 
 - basic link :: =[text](link)=
 - direct link :: =https://www.google.com=
-- reference link :: =[an example][id]= refer to ~[id]: http://example.com "optional title"~
+- reference link :: =[an example][id]= refer to  src_text{[id]: http://example.com "optional title"}
 - image link :: =![alt](link)=
 
 ** list
@@ -57,6 +57,6 @@ val1  | val2
 
 - emoji :: =:laugh:=
 - todo list :: =- [x]= for done, =- []= for to be done
-- comment somebody :: =@someguy@
+- comment somebody :: =@someguy=
 - refer to issue :: =#Issue=
 
