@@ -1,0 +1,62 @@
+Here's a short cheatsheet for Markdown language. Mainly from [[Mastering%20Markdown][https://guides.github.com/features/mastering-markdown/]] 
+and some contents are from [[Origin%20Specification][https://daringfireball.net/projects/markdown/syntax#header]].
+
+* Advanced of pure text markup language
+
+1. collaborative and version control
+2. any editor
+3. unique format
+4. focues on content
+
+* Syntax
+
+** format
+
+- bold :: =**bold**= or =__bold__=
+- italic :: =*italic*= or =_italic_=
+- strikethrough(GFM) :: =~~strikethrough~~=
+
+** link
+
+- basic link :: =[text](link)=
+- direct link :: =https://www.google.com=
+- reference link :: =[an example][id]= refer to ~[id]: http://example.com "optional title"~
+- image link :: =![alt](link)=
+
+** list
+
+- numeric list :: =1.=, =2.=, =3.=
+- unorder list :: prefix by =+=, =*=, =-=
+
+** header
+
+- setext-style :: under line with ~====~ (first level) or ~-------~ (second level)
+- atx-style :: prefix with =###= (up to 6 level)
+
+** code
+
+- inline code :: quote with =``=
+- quote code :: with =```= block
+- language specific :: start block with =```javascript=
+
+** table
+
+#+BEGIN_SRC markdown
+head1 | head2
+------|--------
+val1  | val2
+#+END_SRC
+
+** blockquotes
+
+#+BEGIN_SRC markdown
+> To be or not to be
+#+END_SRC
+
+** GFM Extension
+
+- emoji :: =:laugh:=
+- todo list :: =- [x]= for done, =- []= for to be done
+- comment somebody :: =@someguy@
+- refer to issue :: =#Issue=
+
