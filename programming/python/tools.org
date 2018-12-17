@@ -1,0 +1,28 @@
+** PIP
+
+PIP (Python Package Index) is tool to fetch package (and its dependencies) from PyPI repository.
+Which is simliar to gem fetch packages from RubyGem.
+
+By default, PIP install packages into global site-packages directory. 
+
+Python has another tool named =easy_install= and we should use PIP because it is vastly superior to =easy_install=
+
+*** requirements
+
+List the required packages information in =requirements.txt= and install by =pip install -r requirements.txt=
+
+** virtualenv
+
+Virtualenv tool is used to create a completely isolated virtual environment for each of your program.
+
+It's useful in the scenario that multiple python projects that have different (and conflicting) requirements, to
+coexist on the same computer.
+
+The steps to use =virtualenv= are
+1. create new peoject: =virtualenv venv=
+2. enable virtual environment: =source venv/bin/active=
+3. install packages and run python: =pip install -r requirements=
+4. quit the virutal environment: =deactive=
+
+
+
