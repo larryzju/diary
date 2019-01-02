@@ -1,0 +1,63 @@
+#+TITLE: emacs org-mode notes
+#+AUTHOR: Zhao Wenbin
+
+* Overview
+
+** What is org mode?
+
+1. Personal information management
+2. Outlining Tools
+
+* TODOlist 
+
+** best practice
+
+#+BEGIN_SRC org
+* Task
+** TODO start new org file for start
+#+END_SRC
+
+** shortcut
+
+- =M-shift-RET= :: org-insert-todo-heading
+
+* syntax
+** link
+
+Write link in format 
+#+BEGIN_SRC 
+[[link][description]]
+#+END_SRC
+
+Press =C-c C-o= on the link to expand the literals.
+
+* tags                                                                :hello:
+
+- subsection will inherit tags from parents
+- set global tags for all heading use =#+FILETAGS: <tags>=
+- =C-c C-q= or =C-c C-c= to set tags for current headline
+
+* agenda
+
+Org mode will scan ~`org-agenda-files~ paths find org files and generate views in
+1. global TODO list
+2. scheduling
+3. agenda
+
+** configuration
+
+#+BEGIN_SRC 
+(require 'org)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(setq org-agenda-files (list "~/agenda"))
+#+END_SRC
+
+** shortcut
+
+- =`C-c a a= :: agenda mode, press =l= to toggle Log mode (see the finished items timestamp)
+- =`C-c a t= :: global todo list
+
+** schedule
+
+Use =C-c C-s= (=org-schedule=) to schedule TODO item.
+~
