@@ -1,0 +1,131 @@
+* 概述
+
+Helm is a package management for kubernetes.
+
+** package/chart
+
+Package ，称做 Chart，是按一定目录结构定义的 kubernetes 软件部署逻辑
+
+** architecture
+
+- helm client
+- tiller server
+
+* Helm Template Language
+
+** Directory Structure
+
+- Chart.yaml :: 软件名和版本号
+- Values.yaml :: 全局变量
+- templates/ :: kubernetes yaml 文件模板（go template 语法，由 helm tiller 解析）
+
+** Install a Package
+
+- =helm install <package>= install package
+- =helm get manifest <name>= check the details of installed package
+- add =--debug --dry-run= options for debug
+
+** Builtin Object
+
+The template files will be send to helm tiller server to interprete
+and render to kubernetes yaml files.
+
+There are lots of builtin objects in helm
+- Release :: package name or version
+- Values :: variables defined in =Values.yaml=
+- Chart :: ..
+
+** Value File
+
+The values for render will be coalesce from multiple value files/settings.
+
+- =Values.yaml=
+- Command line arguments
+  - =-f=
+  - =--set=
+
+** Function & Pipeline
+
+*** Basic
+
+#+BEGIN_SRC 
+{{ .Value.name | quote }}
+#+END_SRC
+
+Quote is a function which works like clojure thread function
+#+BEGIN_SRC clojure
+(> "hello" quote)
+#+END_SRC
+
+*** Functions
+
+- =default("default", value)=
+- =quote=
+
+** Flow Control
+
+- =if/else if/else/end= :: ..
+- =with= :: like python statement, define a new local object '.'
+- =range= :: go range
+
+** Variable
+
+- =$= :: refer to global scope
+- ~$v := expression~ :: define new variable, block scoped
+
+** Subtemplate
+
+Template block that can be embedded into other template files.
+- define with =define=
+- insert by =template= or =include + nindent= statement
+- global scoped
+
+The subtemplate can not be interpreted by Kubernetes. So it must named with =_= prefix
+
+
+** Files
+
+- =Get= :: load file content
+- =Glob= :: glob with pattern and return File Objects
+- =.AsConfig= , =.AsSecrets= :: load file as configmap or secret
+- =Lines= :: loop over file line by line
+
+** Subchart
+
+We can define sub-charts inside "charts/" directory.
+
+- The values definition in parent chart can override the child chart
+- Define global variables in =Values.global= section
+- Avoid using =block=
+
+** Misc
+
+*** hack whitespaces
+
+={{-= and =-}}= to trim space before or after this part.
+
+*** indent
+
+use =indent= function to indent block
+
+*** NOTES.txt
+
+Add =NOTES.txt= file to describe the package. And in this file we can
+use the template variables.
+* Helm Command Line
+
+** lint
+
+** get manifest
+
+* TODO TODO
+
+** =_helpers.tpl=
+
+** The execution order of the template files
+
+* Yaml
+
+** multiple lines block
+
+=|-=
