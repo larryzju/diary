@@ -1,0 +1,170 @@
+* Components
+
+Split into *master* and *node* host depend on their functionality
+
+** master components
+
+- api server (restful service)
+- etcd (zookeeper like k/v storage)
+- controller manager (update resource object in etcd)
+- scheduler (which node to create pod)
+
+** node components
+
+- kubelet (client for master)
+- kube-proxy (to implement pod network)
+- docker daemon (run container, =dockerd=)
+
+* Resource Object
+
+Resource objects are stored in =etcd= database. And kubernetes is
+responsible for maintain the status to match the specification of the
+object.
+
+** Node
+
+A worker machine in Kubernetes and is managed by the master components.
+
+*** Status
+
+- Address :: host name, internal IP, external IP, internal DNS, etc
+- Condition :: latest resource health status (Ready, memory, pid, disk, network unavailable)
+- Capacity :: 
+- Info ::
+
+
+If the Status of the *Ready* condition remains *Unknown* or *False*
+for longer than the *pod-eviction-timeout* (5min by default), an
+argument is passed to the kube-controller-manager and all the Pods on
+the node are scheduled for deletion by the Node Controller.
+
+
+** Pod
+
+- Logical host (contains multiple containers)
+- allow containers visit each other (share PID, net, IPC, UTS, Volume)
+- Has its own IP address
+- Pod's name is used as addresss
+
+** Label
+
+Use to select
+
+** Annotation
+
+Similar to Label, but contains opaque data
+
+** Namespace
+
+isolate resources
+
+** PVC
+
+Virtual PVs
+
+** Volume
+
+- Has the same lifespan with Pod
+- Shared by multiple containers
+- Has multiple implmenet, for example =hostPath=
+
+** Service
+
+- binding to selected endpoints (pods)
+- used to be accessed by external application, with =NodePort= or =LoadBalancer= configuraitons
+
+** Replication Controller
+
+- manage Pod replications
+- can be used to scale or rolling update pods' containers
+
+
+* custom resource
+
+Extend kubernetes object type by definiting new resource object.
+
+There're two methods to define custom resource:
+1. CRD (Custom Resource Definition)
+2. Aggregated API
+
+CR should be combined with Custom Controller to maintain the desire object states.
+
+** TODO CR is a type of things? or a single object
+
+** TODO k8s API convention: =.spec=, =.status=, =.metadata=
+
+** TODO Operator Pattern?
+
+** TODO declarative API vs imperative API
+
+* Custom Controller
+
+* CustomResourceDefinition
+
+API to define new custom resources.
+
+** Note
+
+- define the group, version, name
+- can store any arbitary shaped objects
+- with =OpenAPIV3Schema= extension to constrain schema
+
+** TODO How to combine with Custom Controller?
+
+** TODO scoped but not namespaced?
+
+* Operator
+
+An application-specific controller that extend Kubernetes API to
+create configure, and manage instances of complex stateful
+applications on behalf of a kubernetes user.
+
+** TODO What is Operator?
+
+Implement of custom resource and its custom controller and will be
+built into docker image and deployed as a Deployment.
+* Kubernetes Object
+
+** TODO stored in etcd?
+
+** basic fields
+
+- apiVersion
+- kind
+- metadata
+  + name
+  + UID
+  + namespaces
+- spec: desired status
+- status: actual status
+
+** TODO Control Plane activate manage?
+
+manage is equal to controller?
+
+* Namespace
+
+** TODO resource quota
+
+** Non-namespaced Objects
+
+- use =api-resources= to check non-namespaced objects
+- for example, node, PV not in namespaces
+
+
+
+
+* Question
+
+** TODO Node controller
+
+#+BEGIN_VERSE
+In versions of Kubernetes prior to 1.5, the node controller would
+force delete these unreachable pods from the apiserver. However, in
+1.5 and higher, the node controller does not force delete pods until
+it is confirmed that they have stopped running in the cluster. You can
+see the pods that might be running on an unreachable node as being in
+the Terminating or Unknown state.
+#+END_VERSE
+
+Is node controller running on master node?

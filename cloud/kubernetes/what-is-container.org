@@ -1,0 +1,11 @@
+* 什么是容器
+
+容器是一个独立的运行环境，可以在上面执行文件。从普通用户角度来看，容器相当于一个 Linux (或者 Windows）主机，其中已经部署安装了一些守护进程(daemon)、应用(application)、服务(service)。
+
+* 容器 vs 虚拟机
+
+从技术角度，容器 (Container) 与虚拟机 （Virtual Machine）不同
+
+#+CAPTION: 容器 vs 虚拟机 (https://docs.docker.com/get-started/)
+[[./Container@2x.png]]
+

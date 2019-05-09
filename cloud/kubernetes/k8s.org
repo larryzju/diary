@@ -321,3 +321,19 @@ Can be mounted to container's file.
 2. callback?
 
 I guess polling is much easier to implement.
+* kubectl
+** run
+
+create a deployment
+
+#+BEGIN_SRC bash
+kubectl run nginx --image=nginx --replicas=2
+#+END_SRC
+
+** expose
+
+create a service for deployment
+
+#+BEGIN_SRC bash
+kubectl expose deployment nginx --port=80
+#+END_SRC

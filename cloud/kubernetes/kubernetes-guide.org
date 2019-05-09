@@ -1,0 +1,167 @@
+#+TITLE: 《Kubernetes 权威指南》笔记
+#+AUTHOR: Zhao Wenbin
+
+* Kubernetes 入门
+
+** TODO Kubernetes 是什么
+
+** 为什么要用 Kubernetes
+
+1. 集成形成复杂系统，节约运维成本
+2. 微服务，内置负载均衡
+3. 屏弊底层平台和硬件，可迁移往公有云
+4. 水平扩展
+
+** 从一个不简单的 Hello World 例子说起
+
+*** 基本架构 
+
+1. fronted (replica x 3)，由 PHP 读 redis-slave 和 写 redis-master 功能
+2. redis-master，写入页面提交
+3. redis-slave (replica x 2)，同步 redis-master，提供读写分离功能
+
+*** kubernetes 组件
+
+1. 3 种 RC (ReplicationController)
+2. 3 种 Service
+3. 3 + 1 + 2 个 Pod 实例
+
+*** 补充
+
+- ReplicationController 指定副本数
+- Service 通过 LabelSelector 选中相应的 pods
+- Redis-master 的 Service 为后续  Redis-slave Pods 设置了相应的环境变量（redis 主节点地址信息）
+
+** Kubernetes 基本概念和术语
+
+*** Node
+
+- 也称作 Minion
+- 由　Master 的 Node Controller 进行管理
+- 运行有 kubelet, kube-proxy, docker-daemon
+- 主动注册到 kubernetes 集群
+- 也可有 Master 手动注册
+
+*** Pod（豆荚）
+
+- 一组容器的集合，作为 Logical Host
+- 封装了 Docker 等容器功能，因为 Docker 的通信方式复杂（Link）
+- Pod 中的容器共享了 PID, Net, IPC, UTS(主机名), Volume
+- Pod 中的容器可以直接用 localhost 相互访问（像同一台机器）
+- Pod 只能运行在单一 Node 上
+- Pod 有生命周期，由 ReplicationController 管理
+
+*** Label
+
+- Attach key/value pairs to Objects
+- 可以由 LabelSelector 语法来选取（equality 或 set 比较）
+- RC 和 Service 使用 LabelSelector 来选中副本的 Pods
+
+*** RC (ReplicationController)
+
+- 类似于 Yarn ApplicationManager
+- 可以动态修改 Pod 副本数量 ~kubectl scale rc redis-slave --replicas=3~
+- 删除 RC 不会自动删除相应的 Pods！
+
+*** Service
+
+- 选中一组 Pod，并 Expose 服务
+- 与 Pod 建立 Endpoints 连接？
+- 有多种方式，如 NodePort, LoadBalancer
+- 生成一个稳定的虚拟 IP (相对 Pods 临时地址)
+- 可以映射多端口
+
+
+*** Volume
+
+- 与 Pod 有相同的生命周期
+- 为 Pod 中的全部 Container 提供服务
+- 有多种实现，常用的有
+  + emptyDir (临时)
+  + hostPath (不一致)
+  + gccPersistDisk, aws...
+  + nfs
+  + iSCSI
+  + gitRepo
+
+*** Namespace
+
+- 将对象逻辑分组
+- 用于多租户管理
+
+*** Annotation
+
+- 类似于 label
+- 没有 labelSelector 功能
+- 可以存储关联任何格式的数据
+
+** Kubernetes 总体架构
+
+kubernetes 由三部分构成
+
+- 工具集 kubectl
+- Master
+  + etcd: Key/value 数据库
+  + Core
+    - API Server: Restful 服务，提供全量查询和变化监听功能，为 kubectl, controller manager, scheduler, proxy 所用
+    - Controller Manager: 集群管理控制中心，故障检测与自动恢复机制
+    - Scheduler: Pod 到 Node 的调度/Binding
+- Node
+  + kubelet: 负责 Pod 的创建、维护等生命管理
+  + proxy: Service 代理，起负载均衡作用
+
+** Kubernetes 安装与配置
+
+- 描述从二进制文件安装 kubernetes 的方法
+- 分 master 和 node 分别安装和配置
+- 用 systemd 来管理服务的依赖关系
+- 各种服务均需要指定 master api server 地址
+- 提到了在内网搭建私有云？
+- 提到了 Supervisor 在前台执行命令
+
+* Kubernetes 核心原理
+** Kubernetes API Server 分析
+
+*** 基本功能
+
+1. 提供 API Interface
+2. 各组件的枢纽，etcd 对外接口
+3. 安全机制
+
+*** 对外端口
+
+1. HTTP 8080
+2. SecurePort HTTPs 6443
+
+*** 与 API SERVER 的交互方式
+
+1. API (Restful)，路径如 =/api/v1/proxy/nodes/{name}/pods=
+2. Proxy 反向代理 API SERVER
+3. Lanaguage Client Library 封装
+4. kubectl command line （类比于 beeline 之于 hive server2）
+
+*** 细节补充
+
+- 各模块缓存机制以减少对 apiserver 的压力
+- node 定时向 apiserver 汇总状态
+
+** TODO 调度控制原理
+** TODO Kubelet 运行机制分析
+** TODO 安全机制的原理
+** TODO 网络原理
+* TODO Kubernetes 开发指南
+* TODO Kubernetes 运维指南
+* TODO Kubernetes 高级案例进阶
+* TODO Kubernetes 源码导读
+* 问题
+
+** etcd 与 k8s 的关系
+
+etcd 在 Master 节点运行，是一个键值对数据库，保存 k8s 运行对象配置数据
+
+** TODO =kube-apiserver=, =kube-controller-manager=, =kube-scheduler=, =kubelet=, =kube-proxy= 的关系
+** TODO Service Nodeport
+** TODO Service LoadBalancer
+* 杂项
+
+- etcd 是 kubernetes 运行时需要的数据库

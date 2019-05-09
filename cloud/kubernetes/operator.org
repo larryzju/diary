@@ -1,0 +1,32 @@
+* Basic
+
+** Definition
+
+Operator extents kubernetes API to manage complex stateful components.
+
+** Custom Resouse + Controller
+
+** Reconcile status and specification
+
+1. Observe (get status)
+2. Analyze (compare status with specification)
+3. Act (update status)
+
+** TODO Opetaor vs k8s controller
+
+*** TODO code generate
+
+
+
+
+* Sample
+
+** etcd Operator
+
+- https://coreos.com/operators/etcd/latest/deployment.yaml
+- https://github.com/coreos/etcd-operator
+
+** prometheus-operator
+
+- https://github.com/coreos/prometheus-operator
+

@@ -1,0 +1,61 @@
+* Overview
+
+Conclude how to 
+1. create Custom Resource with Custom Resource Defnition
+2. add/update/delete Custom Resource
+3. create custom controller and associate it with the new created custom resource
+
+See https://github.com/kubernetes/sample-controller for details
+
+* Create Custom Resource
+
+** Create Namespace
+
+#+BEGIN_SRC yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: larry
+#+END_SRC
+
+** Create CustomResourceDefinition
+
+CRD is not namespaced (but scoped)
+
+#+BEGIN_SRC yaml
+  apiVersion: apiextensions.k8s.io/v1beta1
+  kind: CustomResourceDefinition
+  metadata:
+    name: foos.samplecontroller.k8s.io
+  spec:
+    group: samplecontroller.k8s.io
+    version: v1alpha
+    names:
+      kind: Foo
+      plural: foos
+    scope: Namespaced
+
+#+END_SRC
+
+** Create CustomResource Foo
+
+#+BEGIN_SRC yaml
+  apiVersion: samplecontroller.k8s.io/v1alpha
+  kind: Foo
+  metadata:
+    name: example-foo
+    namespace: larry
+  spec:
+    deploymentName: example-foo
+    replicas: 1
+#+END_SRC
+
+** Check the Foo objects
+
+#+BEGIN_SRC bash
+kubectl get foos example-foo -n larry -o yaml
+#+END_SRC
+* Define Custom Resource Spec for Controller
+* TODO Validation
+
+CustomResourceValidation

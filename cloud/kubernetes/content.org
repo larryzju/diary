@@ -1,0 +1,47 @@
+* 基础
+
+** Docker 基础
+
+*** 什么是容器
+
+#+INCLUDE: "what-is-contianer.org"
+
+*** 什么是镜像
+
+*** docker 例子
+
+** 什么是 Kubernetes? [0%]
+
+** Kubernetes 命令行
+
+*** TODO Kubectl
+
+*** TODO Kubernetes API
+
+** Pod
+
+*** Container
+
+*** ReplicaSet & Deployment
+
+*** Service
+
+**** Load Balance
+
+**** Ingress
+
+*** Job
+
+**** CronJob
+
+** Service Account & Role
+
+* Extend Kubernetes
+
+** Controller
+
+** Custom Resource
+
+** Operators
+
+

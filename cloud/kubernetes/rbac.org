@@ -1,0 +1,6 @@
+* Role Scope
+
+=用 ~Kind~ 来标识
+
+- Role :: Namespace Scope
+- ClusterRole :: Cluster Scope
