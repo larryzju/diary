@@ -1,3 +1,31 @@
-* github.com/pkg/errors
+* error
+
+** github.com/pkg/errors
 
 Add context to the failure path in their code in a way that does not destroy the original value of the error.
+
+
+* io/file
+
+** io/ioutil
+
+- list directory
+- 
+
+** os
+
+- =FileInfo= type
+- =File= type
+- =Open= func
+
+
+** path/filepath
+
+** io
+
+* unittest
+
+** TODO github.com/stretchr/testify/require
+
+- assert no error
+- assert not false
