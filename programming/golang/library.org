@@ -1,0 +1,3 @@
+* github.com/pkg/errors
+
+Add context to the failure path in their code in a way that does not destroy the original value of the error.
