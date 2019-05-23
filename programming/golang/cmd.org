@@ -1,0 +1,14 @@
+* generate
+
+=go generate= command will scan project for comments begin with
+=//go:generate= and execute the command to generate go source code.
+
+It can be used with =goyacc=, =gomock= or =stringer= module.
+
+Basically it is very important for a computer program to write a
+computer program (Turing Completeness)
+
+
+** reference
+
+- [[https://blog.golang.org/generate][GoBlog Generating Code]]
