@@ -8,6 +8,8 @@ It can be used with =goyacc=, =gomock= or =stringer= module.
 Basically it is very important for a computer program to write a
 computer program (Turing Completeness)
 
+=go build= will *not* call =go generate=. We *must* call =go generate=
+command explicitly before build the package.
 
 ** reference
 
