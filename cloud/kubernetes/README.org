@@ -29,14 +29,17 @@ A worker machine in Kubernetes and is managed by the master components.
 
 - Address :: host name, internal IP, external IP, internal DNS, etc
 - Condition :: latest resource health status (Ready, memory, pid, disk, network unavailable)
-- Capacity :: 
-- Info ::
+- Capacity :: maximum number of pods can be scheduled, memory, ephemeral-storage
+- Info :: nodeInfo
 
 
 If the Status of the *Ready* condition remains *Unknown* or *False*
 for longer than the *pod-eviction-timeout* (5min by default), an
 argument is passed to the kube-controller-manager and all the Pods on
 the node are scheduled for deletion by the Node Controller.
+
+The node is not managued by Kubernetes but the cloud providers. It's
+just a representation.
 
 
 ** Pod
@@ -58,9 +61,33 @@ Similar to Label, but contains opaque data
 
 isolate resources
 
-** PVC
+** PV & PVC
 
-Virtual PVs
+PV 之与 PVC 类似于 Golang 中的 Array 之与 Slice，Pod 之于 node resource
+- PV 对应于云运营商提供底层存储；PVC 相当于 Volume，可以被挂载到期 Pod 中
+- PVC 与 PV 一一对应，不存在一个 PV 对应多个 PVC 的情况，也不存在一个 PVC 跨越多个 PV 的情况
+- PV 中的 ClaimRef 反向引用 PVC, PVC 中 VolumeName 引用 PV
+
+*** Access Mode
+
+Both PV and PVC can be configured as subset access mode supported by
+the resource provider.
+
+The access mode are:
+- ReadWriteOnce
+- ReadWriteMany
+- ReadOnlyMany
+
+
+
+
+** Job
+
+*** Reference
+
+- [[https://kubernetes.io/docs/tasks/job/parallel-processing-expansion/][Parallel Processing using Expansions]]
+- [[https://kubernetes.io/docs/tasks/job/coarse-parallel-processing-work-queue/][Coarse Parallel Processing Using a Work Queue]]
+- [[https://kubernetes.io/docs/tasks/job/fine-parallel-processing-work-queue/][Fine Parallel Processing Using a Work Queue]]
 
 ** Volume
 
