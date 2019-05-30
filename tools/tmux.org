@@ -24,29 +24,40 @@ windows by multiple tmux client)
 
 Prefix key is =Ctrl-b= by default, can be customed.
 
-Most useful keys list below:
+** Session
 
-| key               | description                                |
-|-------------------+--------------------------------------------|
-| "                 | split into top and bottom panes            |
-| %                 | split into left and right panes            |
-| &                 | kill the current window                    |
-| ,                 | rename the current window                  |
-| 0 to 9            | select windows 0 to 9                      |
-| :                 | enter the tmux command prompt              |
-| ;                 | move to the previously active pane         |
-| \$                | rename current session                     |
-| <arrow-key>       | get to pane in specific direction          |
-| C-<dir> / M-<dir> | resize pane                                |
-| d                 | detach session                             |
-| l                 | move to the previous selected window       |
-| M-1 to M-5        | change layout of panes                     |
-| n                 | next window                                |
-| o                 | select the next pane in the current window |
-| p                 | previous window                            |
-| q                 | display pane indexes                       |
-| t                 | show the time                              |
-| x                 | kill pane                                  |
+- =$= :: name session
+- =s= :: list session
+- =d= :: detach session
+
+** Window
+
+- =c= :: create window
+- =&= :: kill window
+- =f= :: find window
+- =p= :: previous window
+- =l= :: previous selected window
+- =n= :: next window
+- =w= :: list window
+- [0-9] :: select window
+- =,= :: name window
+
+** Pane
+
+- =%= :: vertial split
+- ="= :: horizational split
+- =o= :: swap pane
+- =q= :: show pane identity
+- =x= :: kill pane
+- =;= :: previous pane
+- arrow-key :: switch pane
+- <c-dir> / <m-dir> :: resize pane
+- <m-[1-5]> :: switch layout
+
+** Misc
+
+- =:= :: command prompt
+- =t= :: show time
 
 * Command
 
