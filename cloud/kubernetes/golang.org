@@ -1,0 +1,13 @@
+* Client
+
+** create
+
+- Create =kuberentes.ClientSet= by call =k8s.io/kuberenets.NewForConfig()=.
+- The =ClientSet= is an object that implement interface =kubernetes.Interface=
+- Generate config object via ~"client.go/tools/clientcmd".BuildConfigFromFlag~
+
+** mock
+
+- =kubernetes/fake= package provides =fake/ClientSet= type
+- Build an empty =fake/ClientSet= object and call =.Fake.AddReactor= to mock the actions
+
