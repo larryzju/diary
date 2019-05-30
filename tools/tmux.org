@@ -30,21 +30,36 @@ Most useful keys list below:
 |-------------------+--------------------------------------------|
 | "                 | split into top and bottom panes            |
 | %                 | split into left and right panes            |
+| &                 | kill the current window                    |
+| ,                 | rename the current window                  |
 | 0 to 9            | select windows 0 to 9                      |
+| :                 | enter the tmux command prompt              |
 | ;                 | move to the previously active pane         |
-| o                 | select the next pane in the current window |
+| \$                | rename current session                     |
+| <arrow-key>       | get to pane in specific direction          |
+| C-<dir> / M-<dir> | resize pane                                |
+| d                 | detach session                             |
 | l                 | move to the previous selected window       |
+| M-1 to M-5        | change layout of panes                     |
 | n                 | next window                                |
+| o                 | select the next pane in the current window |
 | p                 | previous window                            |
 | q                 | display pane indexes                       |
 | t                 | show the time                              |
-| M-1 to M-5        | change layout of panes                     |
-| C-<dir> / M-<dir> | resize pane                                |
-| :                 | enter the tmux command prompt              |
-| \$                | rename current session                     |
-| ,                 | rename the current window                  |
-| &                 | kill the current window                    |
+| x                 | kill pane                                  |
 
+* Command
+
+| command                   | description      |
+|---------------------------+------------------|
+| ~resize-pane -U/-D/-L/-R~ | adjust pane size |
+| source-file theme-file    | load theme file  |
+
+* Shell subcommand
+
+- =tmux kill-session -t <session>=
+- =tmux at -t <session>=
+- =tmux at #=: attach the latest session
 
 * TODO Configuration
 
