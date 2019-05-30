@@ -4,7 +4,6 @@
 
 Add context to the failure path in their code in a way that does not destroy the original value of the error.
 
-
 * io/file
 
 ** io/ioutil
@@ -25,7 +24,30 @@ Add context to the failure path in their code in a way that does not destroy the
 
 * unittest
 
-** TODO github.com/stretchr/testify/require
+** github.com/stretchr/testify
 
-- assert no error
-- assert not false
+With 4 subpackage
+1. assert
+2. require: similar to assert but end test if error
+3. mock
+4. suit: similar to python unittest and provides setup/teardown procedure
+
+** github.com/golang/mock
+
+*** mockgen
+
+mockgen is a binary tool to generate mock object by
+1. reflect of packages
+2. from source
+
+*** usage
+
+#+BEGIN_SRC go
+ctrl := gomock.NewController()
+defer ctrl.Finish()
+
+obj := mocks.NewMockedObject(ctrl)
+obj.EXPECT().Method(gomock.Eq(arg), gomock.Any()).Do(func(a int, b interface{}) {
+}).Return(nil)
+#+END_SRC
+
