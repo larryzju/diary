@@ -1,447 +1,99 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<!-- 2018-09-13 四 20:19 -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>小甲鱼-数据结构与算法-视频教程笔记</title>
-<meta name="generator" content="Org mode">
-<meta name="author" content="Zhao WenBin">
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
-  .title  { text-align: center;
-             margin-bottom: .2em; }
-  .subtitle { text-align: center;
-              font-size: medium;
-              font-weight: bold;
-              margin-top:0; }
-  .todo   { font-family: monospace; color: red; }
-  .done   { font-family: monospace; color: green; }
-  .priority { font-family: monospace; color: orange; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
-  pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
-  }
-  pre.src {
-    position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
-    padding: 3px;
-    border: 1px solid black;
-  }
-  pre.src:hover:before { display: inline;}
-  /* Languages per Org manual */
-  pre.src-asymptote:before { content: 'Asymptote'; }
-  pre.src-awk:before { content: 'Awk'; }
-  pre.src-C:before { content: 'C'; }
-  /* pre.src-C++ doesn't work in CSS */
-  pre.src-clojure:before { content: 'Clojure'; }
-  pre.src-css:before { content: 'CSS'; }
-  pre.src-D:before { content: 'D'; }
-  pre.src-ditaa:before { content: 'ditaa'; }
-  pre.src-dot:before { content: 'Graphviz'; }
-  pre.src-calc:before { content: 'Emacs Calc'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-fortran:before { content: 'Fortran'; }
-  pre.src-gnuplot:before { content: 'gnuplot'; }
-  pre.src-haskell:before { content: 'Haskell'; }
-  pre.src-java:before { content: 'Java'; }
-  pre.src-js:before { content: 'Javascript'; }
-  pre.src-latex:before { content: 'LaTeX'; }
-  pre.src-ledger:before { content: 'Ledger'; }
-  pre.src-lisp:before { content: 'Lisp'; }
-  pre.src-lilypond:before { content: 'Lilypond'; }
-  pre.src-lua:before { content: 'Lua'; }
-  pre.src-matlab:before { content: 'MATLAB'; }
-  pre.src-mscgen:before { content: 'Mscgen'; }
-  pre.src-ocaml:before { content: 'Objective Caml'; }
-  pre.src-octave:before { content: 'Octave'; }
-  pre.src-org:before { content: 'Org mode'; }
-  pre.src-oz:before { content: 'OZ'; }
-  pre.src-plantuml:before { content: 'Plantuml'; }
-  pre.src-processing:before { content: 'Processing.js'; }
-  pre.src-python:before { content: 'Python'; }
-  pre.src-R:before { content: 'R'; }
-  pre.src-ruby:before { content: 'Ruby'; }
-  pre.src-sass:before { content: 'Sass'; }
-  pre.src-scheme:before { content: 'Scheme'; }
-  pre.src-screen:before { content: 'Gnu Screen'; }
-  pre.src-sed:before { content: 'Sed'; }
-  pre.src-sh:before { content: 'shell'; }
-  pre.src-sql:before { content: 'SQL'; }
-  pre.src-sqlite:before { content: 'SQLite'; }
-  /* additional languages in org.el's org-babel-load-languages alist */
-  pre.src-forth:before { content: 'Forth'; }
-  pre.src-io:before { content: 'IO'; }
-  pre.src-J:before { content: 'J'; }
-  pre.src-makefile:before { content: 'Makefile'; }
-  pre.src-maxima:before { content: 'Maxima'; }
-  pre.src-perl:before { content: 'Perl'; }
-  pre.src-picolisp:before { content: 'Pico Lisp'; }
-  pre.src-scala:before { content: 'Scala'; }
-  pre.src-shell:before { content: 'Shell Script'; }
-  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
-  /* additional language identifiers per "defun org-babel-execute"
-       in ob-*.el */
-  pre.src-cpp:before  { content: 'C++'; }
-  pre.src-abc:before  { content: 'ABC'; }
-  pre.src-coq:before  { content: 'Coq'; }
-  pre.src-groovy:before  { content: 'Groovy'; }
-  /* additional language identifiers from org-babel-shell-names in
-     ob-shell.el: ob-shell is the only babel language using a lambda to put
-     the execution function name together. */
-  pre.src-bash:before  { content: 'bash'; }
-  pre.src-csh:before  { content: 'csh'; }
-  pre.src-ash:before  { content: 'ash'; }
-  pre.src-dash:before  { content: 'dash'; }
-  pre.src-ksh:before  { content: 'ksh'; }
-  pre.src-mksh:before  { content: 'mksh'; }
-  pre.src-posh:before  { content: 'posh'; }
-  /* Additional Emacs modes also supported by the LaTeX listings package */
-  pre.src-ada:before { content: 'Ada'; }
-  pre.src-asm:before { content: 'Assembler'; }
-  pre.src-caml:before { content: 'Caml'; }
-  pre.src-delphi:before { content: 'Delphi'; }
-  pre.src-html:before { content: 'HTML'; }
-  pre.src-idl:before { content: 'IDL'; }
-  pre.src-mercury:before { content: 'Mercury'; }
-  pre.src-metapost:before { content: 'MetaPost'; }
-  pre.src-modula-2:before { content: 'Modula-2'; }
-  pre.src-pascal:before { content: 'Pascal'; }
-  pre.src-ps:before { content: 'PostScript'; }
-  pre.src-prolog:before { content: 'Prolog'; }
-  pre.src-simula:before { content: 'Simula'; }
-  pre.src-tcl:before { content: 'tcl'; }
-  pre.src-tex:before { content: 'TeX'; }
-  pre.src-plain-tex:before { content: 'Plain TeX'; }
-  pre.src-verilog:before { content: 'Verilog'; }
-  pre.src-vhdl:before { content: 'VHDL'; }
-  pre.src-xml:before { content: 'XML'; }
-  pre.src-nxml:before { content: 'XML'; }
-  /* add a generic configuration mode; LaTeX export needs an additional
-     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
-  pre.src-conf:before { content: 'Configuration File'; }
 
-  table { border-collapse:collapse; }
-  caption.t-above { caption-side: top; }
-  caption.t-bottom { caption-side: bottom; }
-  td, th { vertical-align:top;  }
-  th.org-right  { text-align: center;  }
-  th.org-left   { text-align: center;   }
-  th.org-center { text-align: center; }
-  td.org-right  { text-align: right;  }
-  td.org-left   { text-align: left;   }
-  td.org-center { text-align: center; }
-  dt { font-weight: bold; }
-  .footpara { display: inline; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
-    background: #ffffcc;
-  }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
-  textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
-</style>
-<link rel="stylesheet" type="text/css" href="https://www.pirilampo.org/styles/readtheorg/css/htmlize.css"/>
-<link rel="stylesheet" type="text/css" href="https://www.pirilampo.org/styles/readtheorg/css/readtheorg.css"/>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.min.js"></script>
-<script type="text/javascript" src="https://www.pirilampo.org/styles/readtheorg/js/readtheorg.js"></script>
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2017 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        displayAlign: "center",
-        displayIndent: "0em",
-
-        "HTML-CSS": { scale: 100,
-                        linebreaks: { automatic: "false" },
-                        webFont: "TeX"
-                       },
-        SVG: {scale: 100,
-              linebreaks: { automatic: "false" },
-              font: "TeX"},
-        NativeMML: {scale: 100},
-        TeX: { equationNumbers: {autoNumber: "AMS"},
-               MultLineWidth: "85%",
-               TagSide: "right",
-               TagIndent: ".8em"
-             }
-});
-</script>
-<script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
-</head>
-<body>
-<div id="content">
-<header>
-<h1 class="title">小甲鱼-数据结构与算法-视频教程笔记</h1>
-</header><nav id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#org59f8488">Roadmap</a></li>
-<li><a href="#orga060792">绪论</a></li>
-<li><a href="#orge314b4e">谈谈算法</a></li>
-<li><a href="#org6807083"><code>[0/3]</code> 时间和空间复杂度</a></li>
-<li><a href="#orga8c9fbc"><code>[11/17]</code> 线性表</a></li>
-<li><a href="#org5f35d9e"><code>[0/8]</code> 栈与队列</a></li>
-<li><a href="#orga5c506a"><code>[0/4]</code> 递归与分治思想</a></li>
-<li><a href="#org9f9d85c"><code>[0/5]</code> 字符串</a></li>
-<li><a href="#org430bfdb"><code>[0/3]</code> 树</a></li>
-<li><a href="#org0ad6e48">图</a></li>
-</ul>
-</div>
-</nav>
-
-<div id="outline-container-org59f8488" class="outline-2">
-<h2 id="org59f8488">Roadmap</h2>
-<div class="outline-text-2" id="text-org59f8488">
-<ul class="org-ul">
-<li><code>[1/1]</code> 绪论</li>
-<li><code>[1/1]</code> 谈谈算法</li>
-<li><code>[0/3]</code> 时间和空间复杂度</li>
-<li><code>[11/17]</code> 线性表</li>
-<li><code>[0/8]</code> 栈与队列</li>
-<li><code>[0/4]</code> 递归与分治思想</li>
-<li><code>[0/5]</code> 字符串</li>
-<li><code>[0/3]</code> 树</li>
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<title>小甲鱼-数据结构与算法-视频笔记.org</title>
+			<link rel="stylesheet" href="/resources/css/main.css" />
+			<script src="/resources/js/jquery-3.4.1.min.js"></script>
+			<script src="/resources/js/swgen.js"></script>
+		</head>
+		<body>
+			<nav id='content'>
+				<ul><li><details><summary>algorithm</summary><ul><li><details><summary>introduction-to-algorithm</summary><ul><li><a href='//algorithm/introduction-to-algorithm/sort.html'>sort.org</a></li></ul></details></li><li><a href='//algorithm/string-match.html'>string-match.org</a></li></ul></details></li><li><details><summary>blog</summary><ul><li><a href='//blog/rescure-libc-deleted.html'>rescure-libc-deleted.org</a></li><li><a href='//blog/timezone.html'>timezone.org</a></li></ul></details></li><li><details><summary>book</summary><ul><li><a href='//book/git%e6%95%99%e7%a8%8b.html'>git教程.org</a></li><li><a href='//book/go%e8%af%ad%e8%a8%80%e7%bc%96%e7%a8%8b.html'>go语言编程.org</a></li><li><a href='//book/javascript%e5%85%a8%e6%a0%88%e6%95%99%e7%a8%8b.html'>javascript全栈教程.org</a></li><li><a href='//book/rich-dad-and-poor-dad.html'>rich-dad-and-poor-dad.org</a></li><li><a href='//book/%e4%ba%ba%e7%b1%bb%e7%ae%80%e5%8f%b2%e2%80%94%e2%80%94%e4%bb%8e%e5%8a%a8%e7%89%a9%e5%88%b0%e4%b8%8a%e5%b8%9d.html'>人类简史——从动物到上帝.org</a></li><li><details><summary>春秋史话</summary><ul><li><a href='//book/%e6%98%a5%e7%a7%8b%e5%8f%b2%e8%af%9d/%e6%98%a5%e7%a7%8b%e5%8f%b2%e8%af%9d.html'>春秋史话.org</a></li></ul></details></li><li><a href='//book/%e8%9a%8a%e5%ad%90%e5%b9%b2%e5%98%9b%e8%80%81%e5%8f%ae%e6%88%91.html'>蚊子干嘛老叮我.org</a></li></ul></details></li><li><details><summary>cloud</summary><ul><li><a href='//cloud/docker.html'>docker.org</a></li><li><a href='//cloud/gcp.html'>gcp.org</a></li><li><a href='//cloud/gke.html'>gke.org</a></li><li><a href='//cloud/helm.html'>helm.org</a></li><li><details><summary>kubernetes</summary><ul><li><a href='//cloud/kubernetes/README.html'>README.org</a></li><li><a href='//cloud/kubernetes/cloudman.html'>cloudman.org</a></li><li><a href='//cloud/kubernetes/content.html'>content.org</a></li><li><a href='//cloud/kubernetes/controller.html'>controller.org</a></li><li><a href='//cloud/kubernetes/golang.html'>golang.org</a></li><li><a href='//cloud/kubernetes/k8s.html'>k8s.org</a></li><li><a href='//cloud/kubernetes/kubeadm.html'>kubeadm.org</a></li><li><a href='//cloud/kubernetes/kuberbuilder.html'>kuberbuilder.org</a></li><li><a href='//cloud/kubernetes/kubernetes-guide.html'>kubernetes-guide.org</a></li><li><a href='//cloud/kubernetes/operator.html'>operator.org</a></li><li><a href='//cloud/kubernetes/rbac.html'>rbac.org</a></li><li><a href='//cloud/kubernetes/registry.html'>registry.org</a></li><li><a href='//cloud/kubernetes/todo.html'>todo.org</a></li><li><a href='//cloud/kubernetes/tutorial.html'>tutorial.org</a></li><li><a href='//cloud/kubernetes/what-is-container.html'>what-is-container.org</a></li></ul></details></li></ul></details></li><li><details><summary>csapp</summary><ul><li><a href='//csapp/csapp-digest.html'>csapp-digest.org</a></li><li><a href='//csapp/cscpp.html'>cscpp.org</a></li></ul></details></li><li><a href='//docker.html'>docker.org</a></li><li><details><summary>emacs</summary><ul><li><a href='//emacs/orgmode.html'>orgmode.org</a></li></ul></details></li><li><details><summary>history</summary><ul><li><a href='//history/%e5%85%a8%e7%90%83%e9%80%9a%e5%8f%b2.html'>全球通史.org</a></li><li><a href='//history/%e5%8d%97%e5%8c%97%e6%9c%9d.html'>南北朝.org</a></li><li><a href='//history/%e6%99%8b%e5%8f%b2.html'>晋史.org</a></li></ul></details></li><li><details><summary>linux</summary><ul><li><a href='//linux/centos.html'>centos.org</a></li><li><a href='//linux/filesystem.html'>filesystem.org</a></li><li><a href='//linux/init.d.html'>init.d.org</a></li><li><a href='//linux/iptables.html'>iptables.org</a></li><li><a href='//linux/linuxcast.html'>linuxcast.org</a></li><li><a href='//linux/ss.html'>ss.org</a></li><li><a href='//linux/suse.html'>suse.org</a></li><li><a href='//linux/vps.html'>vps.org</a></li></ul></details></li><li><details><summary>literal</summary><ul><li><a href='//literal/book.html'>book.org</a></li><li><a href='//literal/han.html'>han.org</a></li><li><a href='//literal/movie.html'>movie.org</a></li><li><a href='//literal/nounce.html'>nounce.org</a></li><li><a href='//literal/person.html'>person.org</a></li><li><a href='//literal/%e5%9f%ba%e7%9d%a3%e5%b1%b1%e4%bc%af%e7%88%b5.html'>基督山伯爵.org</a></li></ul></details></li><li><details><summary>math</summary><ul><li><a href='//math/%e6%a6%82%e7%8e%87%e8%ae%ba%e4%b8%8e%e6%95%b0%e7%90%86%e7%bb%9f%e8%ae%a1.html'>概率论与数理统计.org</a></li></ul></details></li><li><a href='//mindmap.html'>mindmap.org</a></li><li><details><summary>misc</summary><ul><li><a href='//misc/org-usage.html'>org-usage.org</a></li><li><a href='//misc/screen.html'>screen.org</a></li></ul></details></li><li><details><summary>network</summary><ul><li><a href='//network/ssl.html'>ssl.org</a></li></ul></details></li><li><a href='//opengl.html'>opengl.org</a></li><li><a href='//orgmode.html'>orgmode.org</a></li><li><details><summary>os</summary><ul><li><a href='//os/80386.html'>80386.org</a></li><li><a href='//os/8259a.html'>8259a.org</a></li><li><a href='//os/boot.html'>boot.org</a></li><li><a href='//os/gcc-inline-asm.html'>gcc-inline-asm.md</a></li><li><a href='//os/linux.html'>linux.org</a></li></ul></details></li><li><details><summary>policy</summary><ul><li><a href='//policy/%e5%85%a8%e7%90%83%e5%8c%96%e6%b3%a2%e6%8a%98%e4%b8%8e%e6%b0%91%e8%90%a5%e7%bb%8f%e6%b5%8e%e7%9a%84%e6%9c%aa%e6%9d%a5_%e5%91%a8%e5%85%b6%e4%bb%81.html'>全球化波折与民营经济的未来_周其仁.org</a></li></ul></details></li><li><details><summary>programming</summary><ul><li><details><summary>algorithm</summary><ul><li><details><summary>algorithm4th</summary><ul><li><a href='//programming/algorithm/algorithm4th/algorithm.html'>algorithm.org</a></li></ul></details></li><li><a href='//programming/algorithm/%e5%b0%8f%e7%94%b2%e9%b1%bc-%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84%e4%b8%8e%e7%ae%97%e6%b3%95-%e8%a7%86%e9%a2%91%e7%ac%94%e8%ae%b0.html'>小甲鱼-数据结构与算法-视频笔记.org</a></li></ul></details></li><li><details><summary>clojure</summary><ul><li><a href='//programming/clojure/clojure.tools.logging.html'>clojure.tools.logging.md</a></li></ul></details></li><li><details><summary>cpp</summary><ul><li><a href='//programming/cpp/tutorials.html'>tutorials.org</a></li></ul></details></li><li><details><summary>elasticsearch</summary><ul><li><a href='//programming/elasticsearch/elasticsearch-definitive-guide-note.html'>elasticsearch-definitive-guide-note.org</a></li></ul></details></li><li><details><summary>git</summary><ul><li><a href='//programming/git/git.html'>git.org</a></li></ul></details></li><li><details><summary>golang</summary><ul><li><a href='//programming/golang/cmd.html'>cmd.org</a></li><li><a href='//programming/golang/effective-go.html'>effective-go.org</a></li><li><a href='//programming/golang/go-concurrency.html'>go-concurrency.org</a></li><li><a href='//programming/golang/how-to-write-go-code.html'>how-to-write-go-code.org</a></li><li><a href='//programming/golang/json.html'>json.org</a></li><li><details><summary>learn-go-note</summary><ul><li><a href='//programming/golang/learn-go-note/learning-go.html'>learning-go.org</a></li></ul></details></li><li><a href='//programming/golang/library.html'>library.org</a></li><li><a href='//programming/golang/misc.html'>misc.org</a></li><li><a href='//programming/golang/reflect.html'>reflect.org</a></li><li><a href='//programming/golang/template.html'>template.org</a></li><li><a href='//programming/golang/the-little-go-book.html'>the-little-go-book.org</a></li><li><a href='//programming/golang/%e6%97%a0%e9%97%bb%e8%a7%86%e9%a2%91%e7%ac%94%e8%ae%b0.html'>无闻视频笔记.org</a></li></ul></details></li><li><details><summary>hadoop</summary><ul><li><a href='//programming/hadoop/hdfs-permission-guide-note.html'>hdfs-permission-guide-note.org</a></li></ul></details></li><li><details><summary>java</summary><ul><li><a href='//programming/java/derby.html'>derby.org</a></li><li><a href='//programming/java/ivy-vs-maven.html'>ivy-vs-maven.org</a></li><li><a href='//programming/java/java-note.html'>java-note.org</a></li><li><a href='//programming/java/maven.html'>maven.org</a></li><li><a href='//programming/java/servlet.html'>servlet.org</a></li><li><a href='//programming/java/thing-java.html'>thing-java.org</a></li><li><a href='//programming/java/%e6%b7%b1%e5%85%a5%e7%90%86%e8%a7%a3java%e8%99%9a%e6%8b%9f%e6%9c%ba.html'>深入理解java虚拟机.org</a></li></ul></details></li><li><details><summary>javascript</summary><ul><li><a href='//programming/javascript/angularjs.html'>angularjs.org</a></li><li><a href='//programming/javascript/dom.html'>dom.org</a></li></ul></details></li><li><a href='//programming/javascript.html'>javascript.org</a></li><li><details><summary>lisp</summary><ul><li><a href='//programming/lisp/the-little-schemer.html'>the-little-schemer.org</a></li></ul></details></li><li><details><summary>python</summary><ul><li><a href='//programming/python/asyncio.html'>asyncio.org</a></li><li><a href='//programming/python/flask.html'>flask.org</a></li><li><a href='//programming/python/idiomatic-python-note.html'>idiomatic-python-note.org</a></li><li><a href='//programming/python/jinja2.html'>jinja2.org</a></li><li><a href='//programming/python/package-manage.html'>package-manage.org</a></li><li><a href='//programming/python/pygame.html'>pygame.org</a></li><li><a href='//programming/python/tools.html'>tools.org</a></li></ul></details></li><li><details><summary>scala</summary><ul><li><a href='//programming/scala/programming-in-scala.html'>programming-in-scala.org</a></li><li><a href='//programming/scala/scala.html'>scala.org</a></li><li><a href='//programming/scala/scalikeJDBC.html'>scalikeJDBC.org</a></li></ul></details></li><li><a href='//programming/storm.html'>storm.org</a></li><li><a href='//programming/thrift.html'>thrift.org</a></li><li><a href='//programming/typescript.html'>typescript.org</a></li><li><details><summary>web</summary><ul><li><a href='//programming/web/liquid.html'>liquid.org</a></li></ul></details></li></ul></details></li><li><details><summary>rdbms</summary><ul><li><a href='//rdbms/rdbms.html'>rdbms.org</a></li></ul></details></li><li><details><summary>resource</summary><ul><li><a href='//resource/emacs.html'>emacs.md</a></li><li><a href='//resource/ml-resource.html'>ml-resource.md</a></li><li><a href='//resource/nlp-resource.html'>nlp-resource.md</a></li></ul></details></li><li><details><summary>services</summary><ul><li><details><summary>mail</summary><ul><li><a href='//services/mail/mail.html'>mail.org</a></li></ul></details></li></ul></details></li><li><details><summary>subtitle</summary><ul><li><a href='//subtitle/docker.html'>docker.org</a></li></ul></details></li><li><details><summary>toarous</summary><ul><li><a href='//toarous/README.html'>README.md</a></li><li><a href='//toarous/idt.html'>idt.md</a></li><li><a href='//toarous/intel.html'>intel.org</a></li><li><a href='//toarous/notes.html'>notes.org</a></li><li><a href='//toarous/osx-environment.html'>osx-environment.org</a></li><li><a href='//toarous/vga.html'>vga.md</a></li></ul></details></li><li><details><summary>tools</summary><ul><li><a href='//tools/GCP.html'>GCP.org</a></li><li><a href='//tools/ansible.html'>ansible.org</a></li><li><a href='//tools/bash.html'>bash.org</a></li><li><a href='//tools/gerrit.html'>gerrit.org</a></li><li><a href='//tools/git.html'>git.org</a></li><li><a href='//tools/gpg.html'>gpg.org</a></li><li><a href='//tools/markdown.html'>markdown.org</a></li><li><a href='//tools/nginx.html'>nginx.org</a></li><li><a href='//tools/rpm.html'>rpm.org</a></li><li><a href='//tools/spark.html'>spark.org</a></li><li><a href='//tools/tmux.html'>tmux.org</a></li></ul></details></li><li><details><summary>ui</summary><ul><li><a href='//ui/react.html'>react.org</a></li><li><a href='//ui/tk.html'>tk.org</a></li></ul></details></li><li><details><summary>web</summary><ul><li><a href='//web/chrome-extension.html'>chrome-extension.org</a></li></ul></details></li><li><a href='//words.html'>words.org</a></li><li><a href='//%e7%bd%91%e6%b0%91%e7%9a%84%e7%8b%82%e6%ac%a2.html'>网民的狂欢.org</a></li></ul>
+			</nav>
+			<section class="main-article-area">
+				<div id='main'>
+					<h1 id="roadmap">Roadmap</h1>
+<ul class="incremental">
+<li>[1/1] 绪论</li>
+<li>[1/1] 谈谈算法</li>
+<li>[0/3] 时间和空间复杂度</li>
+<li>[11/17] 线性表</li>
+<li>[0/8] 栈与队列</li>
+<li>[0/4] 递归与分治思想</li>
+<li>[0/5] 字符串</li>
+<li>[0/3] 树</li>
 <li>[2/10+] 图</li>
 </ul>
-</div>
-</div>
-
-
-<div id="outline-container-orga060792" class="outline-2">
-<h2 id="orga060792">绪论</h2>
-<div class="outline-text-2" id="text-orga060792">
-</div><div id="outline-container-org0d7eacc" class="outline-3">
-<h3 id="org0d7eacc">为什么数据结构与算法课程不好学？</h3>
-<div class="outline-text-3" id="text-org0d7eacc">
-<ol class="org-ol">
+<h1 id="绪论">绪论</h1>
+<h2 id="为什么数据结构与算法课程不好学">为什么数据结构与算法课程不好学？</h2>
+<ol class="incremental">
 <li>拼脑力</li>
 <li>教授方式枯燥（老师因为重复讲解而缺少吸引力）</li>
 </ol>
-</div>
-</div>
-
-<div id="outline-container-org4636a2f" class="outline-3">
-<h3 id="org4636a2f">什么是数据结构</h3>
-<div class="outline-text-3" id="text-org4636a2f">
-<ul class="org-ul">
+<h2 id="什么是数据结构">什么是数据结构</h2>
+<ul class="incremental">
 <li>研究非数值计算和程序设计问题的操作对象及它们之间的关系和操作</li>
 <li>程序等于数据结构 + 算法</li>
 </ul>
-</div>
-
-<div id="outline-container-org01416e4" class="outline-4">
-<h4 id="org01416e4">逻辑结构和物理结构</h4>
-<div class="outline-text-4" id="text-org01416e4">
-<ul class="org-ul">
+<h3 id="逻辑结构和物理结构">逻辑结构和物理结构</h3>
+<ul class="incremental">
 <li>逻辑结构：指对象间的相互关系</li>
 <li>物理结构：指数据的逻辑结构在计算机中的存储形式</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org99bdca8" class="outline-4">
-<h4 id="org99bdca8">四大逻辑结构</h4>
-<div class="outline-text-4" id="text-org99bdca8">
-<ol class="org-ol">
+<h3 id="四大逻辑结构">四大逻辑结构</h3>
+<ol class="incremental">
 <li>集合结构</li>
 <li>线性结构（一对一）</li>
 <li>树形结构（一对多）</li>
 <li>图形结构（多对多）</li>
 </ol>
-</div>
-</div>
-
-<div id="outline-container-org969162d" class="outline-4">
-<h4 id="org969162d">物理存储结构</h4>
-<div class="outline-text-4" id="text-org969162d">
-<ul class="org-ul">
+<h3 id="物理存储结构">物理存储结构</h3>
+<ul class="incremental">
 <li>与存储器有关，如内存、硬盘</li>
 <li>按访问方式分为两种
-<ol class="org-ol">
+<ol class="incremental">
 <li>顺序存储结构（地址连续）</li>
 <li>链式存储结构（相对前缀和后继）</li>
 </ol></li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orge314b4e" class="outline-2">
-<h2 id="orge314b4e">谈谈算法</h2>
-<div class="outline-text-2" id="text-orge314b4e">
-<p>
-数据结构与算法有密切的关系
-</p>
-</div>
-
-<div id="outline-container-org77cd1b7" class="outline-3">
-<h3 id="org77cd1b7">什么是算法</h3>
-</div>
-
-<div id="outline-container-org406f328" class="outline-3">
-<h3 id="org406f328">算法的特性</h3>
-<div class="outline-text-3" id="text-org406f328">
-<ul class="org-ul">
+<h1 id="谈谈算法">谈谈算法</h1>
+<p>数据结构与算法有密切的关系</p>
+<h2 id="什么是算法">什么是算法</h2>
+<h2 id="算法的特性">算法的特性</h2>
+<ul class="incremental">
 <li>输入</li>
 <li>输出</li>
 <li>有穷性</li>
 <li>确定性</li>
 <li>可行性</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org7226c7a" class="outline-3">
-<h3 id="org7226c7a">算法的设计要求</h3>
-<div class="outline-text-3" id="text-org7226c7a">
-<ul class="org-ul">
+<h2 id="算法的设计要求">算法的设计要求</h2>
+<ul class="incremental">
 <li>正确性（没有语法错误，对合法输入，对非法输入，对于边界条件输入）</li>
 <li>可读性</li>
 <li>健壮性</li>
 <li>时间效率高和存储量低</li>
 </ul>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org6807083" class="outline-2">
-<h2 id="org6807083"><code>[0/3]</code> 时间和空间复杂度</h2>
-</div>
-<div id="outline-container-orga8c9fbc" class="outline-2">
-<h2 id="orga8c9fbc"><code>[11/17]</code> 线性表</h2>
-<div class="outline-text-2" id="text-orga8c9fbc">
-<p>
-线性表是一个有限的有序数列，每一个元素都有唯一有前驱和唯一的后继（除开头和结尾）
-</p>
-
-<p>
-元素具有相同的数据类型。
-</p>
-</div>
-
-<div id="outline-container-org257302d" class="outline-3">
-<h3 id="org257302d">抽象数据类型 ADT</h3>
-<div class="outline-text-3" id="text-org257302d">
-<p>
-相当于 class，指数学模型及定义在其上的一系列方法。抽象相对于具体，只指定其接口，而没有实现。
-</p>
-
-<p>
-通过 ADT 提供的基本方法可以组合出更加复杂的操作
-</p>
-</div>
-
-<div id="outline-container-orgce6639c" class="outline-4">
-<h4 id="orgce6639c">为什么有类型</h4>
-<div class="outline-text-4" id="text-orgce6639c">
-<ol class="org-ol">
+<h1 id="时间和空间复杂度">[0/3] 时间和空间复杂度</h1>
+<h1 id="线性表">[11/17] 线性表</h1>
+<p>线性表是一个有限的有序数列，每一个元素都有唯一有前驱和唯一的后继（除开头和结尾）</p>
+<p>元素具有相同的数据类型。</p>
+<h2 id="抽象数据类型-adt">抽象数据类型 ADT</h2>
+<p>相当于 class，指数学模型及定义在其上的一系列方法。抽象相对于具体，只指定其接口，而没有实现。</p>
+<p>通过 ADT 提供的基本方法可以组合出更加复杂的操作</p>
+<h3 id="为什么有类型">为什么有类型</h3>
+<ol class="incremental">
 <li>适应不同的应用场景</li>
 <li>节省空间（有限精度，如 <code>int</code> 和 <code>long</code> ）</li>
 </ol>
-</div>
-</div>
-
-<div id="outline-container-orgf0dcc4b" class="outline-4">
-<h4 id="orgf0dcc4b">类型分类</h4>
-<div class="outline-text-4" id="text-orgf0dcc4b">
-<ol class="org-ol">
+<h3 id="类型分类">类型分类</h3>
+<ol class="incremental">
 <li>原子类型</li>
 <li>组合类型</li>
 </ol>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org3e750f7" class="outline-3">
-<h3 id="org3e750f7">常用操作</h3>
-<div class="outline-text-3" id="text-org3e750f7">
-<ul class="org-ul">
+<h2 id="常用操作">常用操作</h2>
+<ul class="incremental">
 <li>init</li>
 <li>clean</li>
 <li>isEmpty</li>
@@ -451,240 +103,79 @@ for the JavaScript code in this tag.
 <li>delete(v)</li>
 <li>length</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org06a3491" class="outline-3">
-<h3 id="org06a3491">例子</h3>
-<div class="outline-text-3" id="text-org06a3491">
-<ul class="org-ul">
+<h2 id="例子">例子</h2>
+<ul class="incremental">
 <li><code>union(L1,L2)</code></li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org9979dfd" class="outline-3">
-<h3 id="org9979dfd">实现方式</h3>
-<div class="outline-text-3" id="text-org9979dfd">
-<p>
-有两种存储结构来实现线性表
-</p>
-<ol class="org-ol">
+<h2 id="实现方式">实现方式</h2>
+<p>有两种存储结构来实现线性表</p>
+<ol class="incremental">
 <li>顺序表，使用连贯的内存地址来存放数据，需要记录数据的长度和空间的容量</li>
 <li>链式表，不需要连续地址存放数据，用一个指针域指向下一个后继元素</li>
 </ol>
-</div>
-
-<div id="outline-container-orgd97c200" class="outline-4">
-<h4 id="orgd97c200"><span class="todo TODO">TODO</span> 顺序表</h4>
-<div class="outline-text-4" id="text-orgd97c200">
-<p>
-实现参见代码 [?]()
-</p>
-
-<p>
-优点:
-</p>
-<ol class="org-ol">
+<h3 id="顺序表"><span class="todo TODO">TODO</span> 顺序表</h3>
+<p>实现参见代码 [?]()</p>
+<p>优点:</p>
+<ol class="incremental">
 <li>空间紧凑（因为隐式地使用了地址作为下标）</li>
 <li>快速存取</li>
 </ol>
-
-<p>
-缺点：
-</p>
-<ol class="org-ol">
+<p>缺点：</p>
+<ol class="incremental">
 <li>容量固定，扩容可能造成“碎片”化</li>
 <li>插入、删除开销大</li>
 </ol>
-</div>
-</div>
-
-<div id="outline-container-org700d83c" class="outline-4">
-<h4 id="org700d83c">链式表</h4>
-<div class="outline-text-4" id="text-org700d83c">
-<p>
-包括两个基本域：数据域和指针域
-</p>
-
-<p>
-习惯上留置一个头结点作为列表开头，可以在其数据域中存储列表的长度，这样有助于统一列表的访问接口。通过头结点可以访问整个链表，尾指针指向空（null）
-</p>
-
-<p>
-单链表的建立方式
-</p>
-<ol class="org-ol">
+<h3 id="链式表">链式表</h3>
+<p>包括两个基本域：数据域和指针域</p>
+<p>习惯上留置一个头结点作为列表开头，可以在其数据域中存储列表的长度，这样有助于统一列表的访问接口。通过头结点可以访问整个链表，尾指针指向空（null）</p>
+<p>单链表的建立方式</p>
+<ol class="incremental">
 <li>头插法，新建节点指向头节点，将链表指向新建节点，生成链表元素顺序与插入顺序相反</li>
 <li>尾插法，维护一个临时的指向链表最后一个元素的 node，每次向 node.next 加入新元素，并将 node 后移</li>
 </ol>
-
-<p>
-对单链表循环删除整表操作时，用一个临时变量来删除
-</p>
-
-<div class="org-src-container">
-<pre class="src src-go">for p != nil {
+<p>对单链表循环删除整表操作时，用一个临时变量来删除</p>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">for</span> p != <span class="ot">nil</span> {
     q := p.next
-    free(p) // go 不需要显式的释放空间， p.next = nil
+    free(p) <span class="co">// go 不需要显式的释放空间， p.next = nil</span>
     p = q
-}
-</pre>
-</div>
-
-<p>
-单链实现代码如下所示（go 语言）
-</p>
-
-<div class="org-src-container">
-<pre class="src src-go">package fishc
-
-import "errors"
-
-type Element struct {
-	value interface{}
-	next  *Element
-}
-
-type LinkedList struct {
-	root Element
-	len  int
-}
-
-func NewLinkedList() *LinkedList {
-	return &amp;LinkedList{}
-}
-
-func (s *LinkedList) IsEmpty() bool {
-	return s.root.next == nil
-}
-
-func (s *LinkedList) Len() int {
-	p := s.root.next
-	len := 0
-	for p != nil {
-		p = p.next
-		len++
-	}
-	return len
-}
-
-func (s *LinkedList) Insert(i int, v interface{}) (err error) {
-	p := &amp;s.root
-
-	for p != nil &amp;&amp; i &gt; 0 {
-		p = p.next
-		i--
-	}
-
-	if p == nil {
-		return errors.New("out of index")
-	}
-
-	p.next = &amp;Element{v, p.next}
-	return
-}
-
-func (s *LinkedList) Delete(v interface{}) (err error) {
-	p := s.root.next
-	for p.next != nil &amp;&amp; p.next.value == v {
-		p = p.next
-	}
-
-	p.next = p.next.next
-	return
-}
-
-func (s *LinkedList) Get(i int) interface{} {
-	p := s.root.next
-	for j := 1; j &lt; i; j++ {
-		if p == nil {
-			return nil
-		}
-		p = p.next
-	}
-
-	return p.value
-}
-
-func (s *LinkedList) ToArray() []interface{} {
-	p := s.root.next
-	len := s.Len()
-	r := make([]interface{}, len)
-
-	for i := 0; i &lt; len; i++ {
-		r[i] = p.value
-		p = p.next
-	}
-
-	return r
-}
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgcc898cb" class="outline-4">
-<h4 id="orgcc898cb">单链表与顺序存储比较</h4>
-<div class="outline-text-4" id="text-orgcc898cb">
+}</code></pre></div>
+<p>单链实现代码如下所示（go 语言）</p>
+<h3 id="单链表与顺序存储比较">单链表与顺序存储比较</h3>
 <table>
-
-
-<colgroup>
-<col  class="org-left">
-
-<col  class="org-left">
-
-<col  class="org-left">
-</colgroup>
 <thead>
-<tr>
-<th scope="col" class="org-left">比较项</th>
-<th scope="col" class="org-left">单链表</th>
-<th scope="col" class="org-left">顺序表</th>
+<tr class="header">
+<th>比较项</th>
+<th>单链表</th>
+<th>顺序表</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td class="org-left">查找</td>
-<td class="org-left">O(n)</td>
-<td class="org-left">O(1)</td>
+<tr class="odd">
+<td>查找</td>
+<td>O(n)</td>
+<td>O(1)</td>
 </tr>
-
-<tr>
-<td class="org-left">插入</td>
-<td class="org-left">O(1)</td>
-<td class="org-left">O(n)</td>
+<tr class="even">
+<td>插入</td>
+<td>O(1)</td>
+<td>O(n)</td>
 </tr>
-
-<tr>
-<td class="org-left">空间性能</td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">预分配空间，造成空间浪费或溢出</td>
+<tr class="odd">
+<td>空间性能</td>
+<td></td>
+<td>预分配空间，造成空间浪费或溢出</td>
 </tr>
 </tbody>
 </table>
-
-<ul class="org-ul">
+<ul class="incremental">
 <li>频繁查找，考虑用顺序存储</li>
 <li>频繁修改，考虑用链表存储</li>
 <li>元素个数不确定，或变化大，考虑用链表存储</li>
 </ul>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org5f0a09d" class="outline-3">
-<h3 id="org5f0a09d">静态链表</h3>
-<div class="outline-text-3" id="text-org5f0a09d">
-<p>
-C 语言的指针提供了极大的灵活性（面向对象使用对象引用机制间接的实现了指针的某些功能），指针是实现链表的语言基础。
-</p>
-
-<p>
-在早期（如 basic, fortran）语言中，以数组下标代替指针来描述单链表。这种方式称为游标实现法，有以下特征
-</p>
-<ul class="org-ul">
+<h2 id="静态链表">静态链表</h2>
+<p>C 语言的指针提供了极大的灵活性（面向对象使用对象引用机制间接的实现了指针的某些功能），指针是实现链表的语言基础。</p>
+<p>在早期（如 basic, fortran）语言中，以数组下标代替指针来描述单链表。这种方式称为游标实现法，有以下特征</p>
+<ul class="incremental">
 <li>每个元素由游标和数据组成</li>
 <li>整体上 N 个元素构成，</li>
 <li>第 N-1 个元素的游标指向第一个元素</li>
@@ -692,398 +183,117 @@ C 语言的指针提供了极大的灵活性（面向对象使用对象引用机
 <li>第一个和最后一个元素 data 不存放数据</li>
 <li>其它元素的游标指向下一个元素的下标</li>
 </ul>
-
-<p>
-代码实现如下所示
-</p>
-
-<div class="org-src-container">
-<pre class="src src-go">package fishc
-
-import "errors"
-
-type StaticListElement struct {
-	next  int
-	value interface{}
-}
-
-type StaticList struct {
-	elements []StaticListElement
-	heap     int
-	len      int
-}
-
-func NewStaticList(size int) *StaticList {
-	s := &amp;StaticList{}
-	s.elements = make([]StaticListElement, size)
-
-	// 初始化 elements
-	for i := 1; i &lt; size; i++ {
-		s.elements[i].next = i + 1
-	}
-
-	// 初始时，头指针指向空
-	s.elements[0].next = -1
-
-	// heapHead 指向可用空间链表的头
-	// 预留一个空的头，以统一操作方法
-	// elements[0] 为空的列表头
-	s.heap = 1
-
-	// 最后一个元素指向 -1，表示 tail?
-	s.elements[size-1].next = -1
-
-	return s
-}
-
-func (s *StaticList) Get(i int) interface{} {
-	h := 0
-
-	for j := 0; j &lt; i &amp;&amp; h != -1; j++ {
-		h = s.elements[h].next
-	}
-
-	if h == -1 {
-		return nil
-	} else {
-		return s.elements[h].value
-	}
-}
-
-func (s *StaticList) Len() int {
-	return s.len
-}
-
-func (s *StaticList) ToArray() []interface{} {
-	res := make([]interface{}, 0)
-	h := s.elements[0].next
-
-	for h != -1 {
-		e := s.elements[h]
-		res = append(res, e.value)
-		h = e.next
-	}
-	return res
-}
-
-func (s *StaticList) alloc() (idx int, err error) {
-	if s.heap == -1 {
-		err = errors.New("no avaiable slot")
-		return
-	}
-
-	idx = s.heap
-	s.heap = s.elements[idx].next
-	return
-}
-
-func (s *StaticList) free(idx int) {
-	s.elements[idx].next = s.heap
-	s.heap = idx
-}
-
-func (s *StaticList) Insert(i int, v interface{}) (err error) {
-	h := 0
-
-	for j := 0; j &lt; i &amp;&amp; h != -1; j++ {
-		h = s.elements[h].next
-	}
-
-	if h == -1 {
-		err = errors.New("index out of range")
-		return
-	}
-
-	// 从可用的空 slots 中取出
-	idx, err := s.alloc()
-	if err != nil {
-		return err
-	}
-
-	e := &amp;s.elements[idx]
-	e.value = v
-	e.next = s.elements[h].next
-
-	s.elements[h].next = idx
-	s.len++
-	return
-}
-
-func (s *StaticList) Delete(v interface{}) error {
-	h := 0
-
-	for h != -1 {
-		next := s.elements[h].next
-		if s.elements[next].value == v {
-			break
-		}
-		h = next
-	}
-
-	if h == -1 {
-		return errors.New("can't find value")
-	}
-
-	next := s.elements[h].next
-	nextNext := s.elements[next].next
-	s.elements[h].next = nextNext
-	s.free(next)
-	s.len--
-	return nil
-}
-</pre>
-</div>
-
-<p>
-需要维护两个链表：
-</p>
-<ol class="org-ol">
+<p>代码实现如下所示</p>
+<p>需要维护两个链表：</p>
+<ol class="incremental">
 <li>实际链表</li>
 <li>备用链表</li>
 </ol>
-
-<p>
-列表的操作：
-</p>
-<ul class="org-ul">
+<p>列表的操作：</p>
+<ul class="incremental">
 <li>进行插入时，从备用链表中取出一个可用空间，插入到实际链表中</li>
 <li>进行删除时，删除元素放回到备用链表中</li>
 </ul>
-
-<p>
-静态链表的优缺点
-</p>
-<ul class="org-ul">
+<p>静态链表的优缺点</p>
+<ul class="incremental">
 <li>优点
-<ul class="org-ul">
+<ul class="incremental">
 <li>插入和删除，只需要修改游标，不需要移动元素</li>
 </ul></li>
 <li>缺点
-<ul class="org-ul">
+<ul class="incremental">
 <li>没有解决连续存储分配带来的表长确定的问题</li>
 <li>失去了顺序存储结构随机存取的优势</li>
 </ul></li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org9879485" class="outline-3">
-<h3 id="org9879485">循环链表</h3>
-<div class="outline-text-3" id="text-org9879485">
-<ul class="org-ul">
+<h2 id="循环链表">循环链表</h2>
+<ul class="incremental">
 <li>链表的尾部指向表头</li>
 <li>因为单链表必须从头出发，否则无法访问到全部结点</li>
 <li>与单链表的区别在于如何判断链表为空</li>
 <li>空表 <code>head-&gt;next = head</code></li>
 </ul>
-</div>
-
-<div id="outline-container-org6824e1d" class="outline-4">
-<h4 id="org6824e1d">示例代码</h4>
-<div class="outline-text-4" id="text-org6824e1d">
-<p>
-初始化
-插入（位置，值）
-删除位置（2）
-查找元素的位置
-查看列表
-退出
-</p>
-</div>
-</div>
-</div>
-
-
-
-<div id="outline-container-org79f6442" class="outline-3">
-<h3 id="org79f6442">例题</h3>
-<div class="outline-text-3" id="text-org79f6442">
-<ul class="org-ul">
+<h3 id="示例代码">示例代码</h3>
+<p>初始化 插入（位置，值） 删除位置（2） 查找元素的位置 查看列表 退出</p>
+<h2 id="例题">例题</h2>
+<ul class="incremental">
 <li>快速找到求知长度单链表的中间节点：快慢指针方法</li>
 </ul>
-</div>
-</div>
-</div>
-<div id="outline-container-org5f35d9e" class="outline-2">
-<h2 id="org5f35d9e"><code>[0/8]</code> 栈与队列</h2>
-</div>
-<div id="outline-container-orga5c506a" class="outline-2">
-<h2 id="orga5c506a"><code>[0/4]</code> 递归与分治思想</h2>
-</div>
-<div id="outline-container-org9f9d85c" class="outline-2">
-<h2 id="org9f9d85c"><code>[0/5]</code> 字符串</h2>
-</div>
-<div id="outline-container-org430bfdb" class="outline-2">
-<h2 id="org430bfdb"><code>[0/3]</code> 树</h2>
-</div>
-<div id="outline-container-org0ad6e48" class="outline-2">
-<h2 id="org0ad6e48">图</h2>
-<div class="outline-text-2" id="text-org0ad6e48">
-</div><div id="outline-container-org93a8cf0" class="outline-3">
-<h3 id="org93a8cf0">概念</h3>
-<div class="outline-text-3" id="text-org93a8cf0">
-</div><div id="outline-container-orgc7c1ed4" class="outline-4">
-<h4 id="orgc7c1ed4">基本概念</h4>
-<div class="outline-text-4" id="text-orgc7c1ed4">
-<p>
-图（Graph）由有穷非空的点（Vertex）和边（Edge）构成。
-</p>
-
-<p>
-与线性表和树相比：
-</p>
-<ul class="org-ul">
+<h1 id="栈与队列">[0/8] 栈与队列</h1>
+<h1 id="递归与分治思想">[0/4] 递归与分治思想</h1>
+<h1 id="字符串">[0/5] 字符串</h1>
+<h1 id="树">[0/3] 树</h1>
+<h1 id="图">图</h1>
+<h2 id="概念">概念</h2>
+<h3 id="基本概念">基本概念</h3>
+<p>图（Graph）由有穷非空的点（Vertex）和边（Edge）构成。</p>
+<p>与线性表和树相比：</p>
+<ul class="incremental">
 <li>线性表表示链式关系，一对一</li>
 <li>树表示层次关系，一对多</li>
 <li>图表示网关系，多对多</li>
 <li>图的顶点集合不能为空，而线性表和树可以为空</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org72ce899" class="outline-4">
-<h4 id="org72ce899">边</h4>
-<div class="outline-text-4" id="text-org72ce899">
-<p>
-按是否有方向，分为有向边和无向边
-</p>
-<ul class="org-ul">
+<h3 id="边">边</h3>
+<p>按是否有方向，分为有向边和无向边</p>
+<ul class="incremental">
 <li><code>(Vi,Vj)</code> 无向边</li>
 <li><code>&lt;Vi,Vj&gt;</code> 有向边</li>
 <li>有向边也称为弧（Arc），起点称为弧头，终点称为弧尾</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org5da2498" class="outline-4">
-<h4 id="org5da2498">图的表示</h4>
-<div class="outline-text-4" id="text-org5da2498">
-<p>
-用点和边来表示图，如
-</p>
-<p class="verse">
-G1 = {V1, E1}<br>
-E1 = {(A,B), (B,C), (C,D), (A,C)<br>
-V1 = {A,B,C,D}<br>
-</p>
-
-<p>
-同理，可以表示有向图
-</p>
-</div>
-</div>
-
-<div id="outline-container-org2a1ef86" class="outline-4">
-<h4 id="org2a1ef86">图的分类</h4>
-<div class="outline-text-4" id="text-org2a1ef86">
-<ul class="org-ul">
+<h3 id="图的表示">图的表示</h3>
+<p>用点和边来表示图，如</p>
+<div style="white-space: pre-line;">G1 = {V1, E1}
+E1 = {(A,B), (B,C), (C,D), (A,C)
+V1 = {A,B,C,D}</div>
+<p>同理，可以表示有向图</p>
+<h3 id="图的分类">图的分类</h3>
+<ul class="incremental">
 <li>简单图，不含重复的边，且没有指向点本身的边</li>
 <li>无向完全图，点两两之间相连，共有 n(n-1)/2 条边</li>
 <li>有向完全图，共有 n(n-1) 条边</li>
-<li>稀疏图和稠密图，约定边（弧）小于 \(n\log(n)\) 为稀疏图</li>
+<li>稀疏图和稠密图，约定边（弧）小于 <span class="math inline"><em>n</em>log(<em>n</em>)</span> 为稀疏图</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org3ca14e7" class="outline-4">
-<h4 id="org3ca14e7">网（Network）</h4>
-<div class="outline-text-4" id="text-org3ca14e7">
-<ul class="org-ul">
+<h3 id="网network">网（Network）</h3>
+<ul class="incremental">
 <li>边（弧）上附有关联数值，该数值称为权。常用于表示距离或价值</li>
 <li>带权的图称为网（Network）</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org4926a80" class="outline-4">
-<h4 id="org4926a80">子图</h4>
-<div class="outline-text-4" id="text-org4926a80">
-<p>
-G2 为 G1 的子图，当 V2 包含于 V1, 且 E2 包含于 E1
-</p>
-</div>
-</div>
-
-
-<div id="outline-container-org01c200b" class="outline-4">
-<h4 id="org01c200b">顶点与边</h4>
-<div class="outline-text-4" id="text-org01c200b">
-<ul class="org-ul">
+<h3 id="子图">子图</h3>
+<p>G2 为 G1 的子图，当 V2 包含于 V1, 且 E2 包含于 E1</p>
+<h3 id="顶点与边">顶点与边</h3>
+<ul class="incremental">
 <li>（无向图）当 (V1,V2) 构成 E，则 V1 和 V2 称为邻接点（Adjacent）</li>
 <li>（无向图）E 依附（Incident）于顶点 V1 和 V2</li>
 <li>（无向图）也说 E 与 V1 和 V2 相关联</li>
 <li>（有向图）当 &lt;V1,V2&gt; 构成 E，则 V1 邻接到 V2，或者说 V2 邻接至 V1</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgd3f44e8" class="outline-4">
-<h4 id="orgd3f44e8">度</h4>
-<div class="outline-text-4" id="text-orgd3f44e8">
-<ul class="org-ul">
+<h3 id="度">度</h3>
+<ul class="incremental">
 <li>（无向图）指与 V 相关的边的数量</li>
 <li>（有向图）入度（InDegree），指以 V 为头的弧</li>
 <li>（有向图）出度（OutDegree），指以 V 为尾的弧</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org4d0c93c" class="outline-4">
-<h4 id="org4d0c93c">路径</h4>
-<div class="outline-text-4" id="text-org4d0c93c">
-<p>
-图 G=(V,E)，从 V1 到 V2 的路径指经过的边（弧）的数量，称为 Path
-</p>
-</div>
-</div>
-
-<div id="outline-container-org3a0114b" class="outline-4">
-<h4 id="org3a0114b">环与简单图</h4>
-<div class="outline-text-4" id="text-org3a0114b">
-<ul class="org-ul">
+<h3 id="路径">路径</h3>
+<p>图 G=(V,E)，从 V1 到 V2 的路径指经过的边（弧）的数量，称为 Path</p>
+<h3 id="环与简单图">环与简单图</h3>
+<ul class="incremental">
 <li>路径绕回起点为环</li>
 <li>简单路径：顶点不重复出现的路径</li>
 <li>简单回路：除了起点和终点，其它顶点不重复出现的路径</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org3ba5e8f" class="outline-4">
-<h4 id="org3ba5e8f">连通图</h4>
-<div class="outline-text-4" id="text-org3ba5e8f">
-<p>
--（无向图）任意 Vi 与 Vj 相互连通的图，称为 ConnectedGraph
--（有向图）任意 Vi 与 Vj 相互连通，称为强连通图
-</p>
-</div>
-</div>
-
-<div id="outline-container-org137cbdc" class="outline-4">
-<h4 id="org137cbdc">连通分量</h4>
-<div class="outline-text-4" id="text-org137cbdc">
-<ul class="org-ul">
+<h3 id="连通图">连通图</h3>
+<p>-（无向图）任意 Vi 与 Vj 相互连通的图，称为 ConnectedGraph -（有向图）任意 Vi 与 Vj 相互连通，称为强连通图</p>
+<h3 id="连通分量">连通分量</h3>
+<ul class="incremental">
 <li>（无向图）极大连通子图</li>
 <li>（有向图）极大强连通子图</li>
 </ul>
-</div>
-</div>
+<h3 id="生成树">生成树</h3>
+<p>-（无向图）极小连通子图，由全部 N 个顶点，和足以构成树的 N-1 条边构成的连通树 -（有向图）恰有一个顶点入度为 0，其余顶点入度为 1 生成的有向树</p>
 
-<div id="outline-container-orgf2daa40" class="outline-4">
-<h4 id="orgf2daa40">生成树</h4>
-<div class="outline-text-4" id="text-orgf2daa40">
-<p>
--（无向图）极小连通子图，由全部 N 个顶点，和足以构成树的 N-1 条边构成的连通树
--（有向图）恰有一个顶点入度为 0，其余顶点入度为 1 生成的有向树
-</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div id="postamble" class="status">
-<p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2018-09-13 四 20:19</p>
-<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
-</div>
-</body>
-</html>
+				</div>
+			</section>
+		</body>
+	</html>
+	

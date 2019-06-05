@@ -1,296 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<!-- 2017-08-26 六 09:14 -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Note on 80386 reference</title>
-<meta name="generator" content="Org mode">
-<meta name="author" content="Zhao WenBin">
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
-  .title  { text-align: center;
-             margin-bottom: .2em; }
-  .subtitle { text-align: center;
-              font-size: medium;
-              font-weight: bold;
-              margin-top:0; }
-  .todo   { font-family: monospace; color: red; }
-  .done   { font-family: monospace; color: green; }
-  .priority { font-family: monospace; color: orange; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
-  pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
-  }
-  pre.src {
-    position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
-    padding: 3px;
-    border: 1px solid black;
-  }
-  pre.src:hover:before { display: inline;}
-  /* Languages per Org manual */
-  pre.src-asymptote:before { content: 'Asymptote'; }
-  pre.src-awk:before { content: 'Awk'; }
-  pre.src-C:before { content: 'C'; }
-  /* pre.src-C++ doesn't work in CSS */
-  pre.src-clojure:before { content: 'Clojure'; }
-  pre.src-css:before { content: 'CSS'; }
-  pre.src-D:before { content: 'D'; }
-  pre.src-ditaa:before { content: 'ditaa'; }
-  pre.src-dot:before { content: 'Graphviz'; }
-  pre.src-calc:before { content: 'Emacs Calc'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-fortran:before { content: 'Fortran'; }
-  pre.src-gnuplot:before { content: 'gnuplot'; }
-  pre.src-haskell:before { content: 'Haskell'; }
-  pre.src-java:before { content: 'Java'; }
-  pre.src-js:before { content: 'Javascript'; }
-  pre.src-latex:before { content: 'LaTeX'; }
-  pre.src-ledger:before { content: 'Ledger'; }
-  pre.src-lisp:before { content: 'Lisp'; }
-  pre.src-lilypond:before { content: 'Lilypond'; }
-  pre.src-lua:before { content: 'Lua'; }
-  pre.src-matlab:before { content: 'MATLAB'; }
-  pre.src-mscgen:before { content: 'Mscgen'; }
-  pre.src-ocaml:before { content: 'Objective Caml'; }
-  pre.src-octave:before { content: 'Octave'; }
-  pre.src-org:before { content: 'Org mode'; }
-  pre.src-oz:before { content: 'OZ'; }
-  pre.src-plantuml:before { content: 'Plantuml'; }
-  pre.src-processing:before { content: 'Processing.js'; }
-  pre.src-python:before { content: 'Python'; }
-  pre.src-R:before { content: 'R'; }
-  pre.src-ruby:before { content: 'Ruby'; }
-  pre.src-sass:before { content: 'Sass'; }
-  pre.src-scheme:before { content: 'Scheme'; }
-  pre.src-screen:before { content: 'Gnu Screen'; }
-  pre.src-sed:before { content: 'Sed'; }
-  pre.src-sh:before { content: 'shell'; }
-  pre.src-sql:before { content: 'SQL'; }
-  pre.src-sqlite:before { content: 'SQLite'; }
-  /* additional languages in org.el's org-babel-load-languages alist */
-  pre.src-forth:before { content: 'Forth'; }
-  pre.src-io:before { content: 'IO'; }
-  pre.src-J:before { content: 'J'; }
-  pre.src-makefile:before { content: 'Makefile'; }
-  pre.src-maxima:before { content: 'Maxima'; }
-  pre.src-perl:before { content: 'Perl'; }
-  pre.src-picolisp:before { content: 'Pico Lisp'; }
-  pre.src-scala:before { content: 'Scala'; }
-  pre.src-shell:before { content: 'Shell Script'; }
-  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
-  /* additional language identifiers per "defun org-babel-execute"
-       in ob-*.el */
-  pre.src-cpp:before  { content: 'C++'; }
-  pre.src-abc:before  { content: 'ABC'; }
-  pre.src-coq:before  { content: 'Coq'; }
-  pre.src-groovy:before  { content: 'Groovy'; }
-  /* additional language identifiers from org-babel-shell-names in
-     ob-shell.el: ob-shell is the only babel language using a lambda to put
-     the execution function name together. */
-  pre.src-bash:before  { content: 'bash'; }
-  pre.src-csh:before  { content: 'csh'; }
-  pre.src-ash:before  { content: 'ash'; }
-  pre.src-dash:before  { content: 'dash'; }
-  pre.src-ksh:before  { content: 'ksh'; }
-  pre.src-mksh:before  { content: 'mksh'; }
-  pre.src-posh:before  { content: 'posh'; }
-  /* Additional Emacs modes also supported by the LaTeX listings package */
-  pre.src-ada:before { content: 'Ada'; }
-  pre.src-asm:before { content: 'Assembler'; }
-  pre.src-caml:before { content: 'Caml'; }
-  pre.src-delphi:before { content: 'Delphi'; }
-  pre.src-html:before { content: 'HTML'; }
-  pre.src-idl:before { content: 'IDL'; }
-  pre.src-mercury:before { content: 'Mercury'; }
-  pre.src-metapost:before { content: 'MetaPost'; }
-  pre.src-modula-2:before { content: 'Modula-2'; }
-  pre.src-pascal:before { content: 'Pascal'; }
-  pre.src-ps:before { content: 'PostScript'; }
-  pre.src-prolog:before { content: 'Prolog'; }
-  pre.src-simula:before { content: 'Simula'; }
-  pre.src-tcl:before { content: 'tcl'; }
-  pre.src-tex:before { content: 'TeX'; }
-  pre.src-plain-tex:before { content: 'Plain TeX'; }
-  pre.src-verilog:before { content: 'Verilog'; }
-  pre.src-vhdl:before { content: 'VHDL'; }
-  pre.src-xml:before { content: 'XML'; }
-  pre.src-nxml:before { content: 'XML'; }
-  /* add a generic configuration mode; LaTeX export needs an additional
-     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
-  pre.src-conf:before { content: 'Configuration File'; }
 
-  table { border-collapse:collapse; }
-  caption.t-above { caption-side: top; }
-  caption.t-bottom { caption-side: bottom; }
-  td, th { vertical-align:top;  }
-  th.org-right  { text-align: center;  }
-  th.org-left   { text-align: center;   }
-  th.org-center { text-align: center; }
-  td.org-right  { text-align: right;  }
-  td.org-left   { text-align: left;   }
-  td.org-center { text-align: center; }
-  dt { font-weight: bold; }
-  .footpara { display: inline; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
-    background: #ffffcc;
-  }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
-  textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
-</style>
-<link rel="stylesheet" type="text/css" href="https://www.pirilampo.org/styles/readtheorg/css/htmlize.css"/>
-<link rel="stylesheet" type="text/css" href="https://www.pirilampo.org/styles/readtheorg/css/readtheorg.css"/>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.min.js"></script>
-<script type="text/javascript" src="https://www.pirilampo.org/styles/readtheorg/js/readtheorg.js"></script>
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2017 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        displayAlign: "center",
-        displayIndent: "0em",
-
-        "HTML-CSS": { scale: 100,
-                        linebreaks: { automatic: "false" },
-                        webFont: "TeX"
-                       },
-        SVG: {scale: 100,
-              linebreaks: { automatic: "false" },
-              font: "TeX"},
-        NativeMML: {scale: 100},
-        TeX: { equationNumbers: {autoNumber: "AMS"},
-               MultLineWidth: "85%",
-               TagSide: "right",
-               TagIndent: ".8em"
-             }
-});
-</script>
-<script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
-</head>
-<body>
-<div id="content">
-<header>
-<h1 class="title">Note on 80386 reference</h1>
-</header><nav id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#org99ce47a">寄存器</a></li>
-<li><a href="#org09ba853">数据类型</a></li>
-<li><a href="#org7c2e59d">指令格式</a></li>
-<li><a href="#orgb70cce8">控制指令</a></li>
-<li><a href="#orga61dae8">内存管理</a></li>
-</ul>
-</div>
-</nav>
-
-<div id="outline-container-org99ce47a" class="outline-2">
-<h2 id="org99ce47a">寄存器</h2>
-<div class="outline-text-2" id="text-org99ce47a">
-</div><div id="outline-container-orgbf5d4d3" class="outline-3">
-<h3 id="orgbf5d4d3">分类</h3>
-<div class="outline-text-3" id="text-orgbf5d4d3">
-<p>
-有三类寄存器（对应用程序开发）
-</p>
-
-<ol class="org-ol">
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<title>80386.org</title>
+			<link rel="stylesheet" href="/resources/css/main.css" />
+			<script src="/resources/js/jquery-3.4.1.min.js"></script>
+			<script src="/resources/js/swgen.js"></script>
+		</head>
+		<body>
+			<nav id='content'>
+				<ul><li><details><summary>algorithm</summary><ul><li><details><summary>introduction-to-algorithm</summary><ul><li><a href='//algorithm/introduction-to-algorithm/sort.html'>sort.org</a></li></ul></details></li><li><a href='//algorithm/string-match.html'>string-match.org</a></li></ul></details></li><li><details><summary>blog</summary><ul><li><a href='//blog/rescure-libc-deleted.html'>rescure-libc-deleted.org</a></li><li><a href='//blog/timezone.html'>timezone.org</a></li></ul></details></li><li><details><summary>book</summary><ul><li><a href='//book/git%e6%95%99%e7%a8%8b.html'>git教程.org</a></li><li><a href='//book/go%e8%af%ad%e8%a8%80%e7%bc%96%e7%a8%8b.html'>go语言编程.org</a></li><li><a href='//book/javascript%e5%85%a8%e6%a0%88%e6%95%99%e7%a8%8b.html'>javascript全栈教程.org</a></li><li><a href='//book/rich-dad-and-poor-dad.html'>rich-dad-and-poor-dad.org</a></li><li><a href='//book/%e4%ba%ba%e7%b1%bb%e7%ae%80%e5%8f%b2%e2%80%94%e2%80%94%e4%bb%8e%e5%8a%a8%e7%89%a9%e5%88%b0%e4%b8%8a%e5%b8%9d.html'>人类简史——从动物到上帝.org</a></li><li><details><summary>春秋史话</summary><ul><li><a href='//book/%e6%98%a5%e7%a7%8b%e5%8f%b2%e8%af%9d/%e6%98%a5%e7%a7%8b%e5%8f%b2%e8%af%9d.html'>春秋史话.org</a></li></ul></details></li><li><a href='//book/%e8%9a%8a%e5%ad%90%e5%b9%b2%e5%98%9b%e8%80%81%e5%8f%ae%e6%88%91.html'>蚊子干嘛老叮我.org</a></li></ul></details></li><li><details><summary>cloud</summary><ul><li><a href='//cloud/docker.html'>docker.org</a></li><li><a href='//cloud/gcp.html'>gcp.org</a></li><li><a href='//cloud/gke.html'>gke.org</a></li><li><a href='//cloud/helm.html'>helm.org</a></li><li><details><summary>kubernetes</summary><ul><li><a href='//cloud/kubernetes/README.html'>README.org</a></li><li><a href='//cloud/kubernetes/cloudman.html'>cloudman.org</a></li><li><a href='//cloud/kubernetes/content.html'>content.org</a></li><li><a href='//cloud/kubernetes/controller.html'>controller.org</a></li><li><a href='//cloud/kubernetes/golang.html'>golang.org</a></li><li><a href='//cloud/kubernetes/k8s.html'>k8s.org</a></li><li><a href='//cloud/kubernetes/kubeadm.html'>kubeadm.org</a></li><li><a href='//cloud/kubernetes/kuberbuilder.html'>kuberbuilder.org</a></li><li><a href='//cloud/kubernetes/kubernetes-guide.html'>kubernetes-guide.org</a></li><li><a href='//cloud/kubernetes/operator.html'>operator.org</a></li><li><a href='//cloud/kubernetes/rbac.html'>rbac.org</a></li><li><a href='//cloud/kubernetes/registry.html'>registry.org</a></li><li><a href='//cloud/kubernetes/todo.html'>todo.org</a></li><li><a href='//cloud/kubernetes/tutorial.html'>tutorial.org</a></li><li><a href='//cloud/kubernetes/what-is-container.html'>what-is-container.org</a></li></ul></details></li></ul></details></li><li><details><summary>csapp</summary><ul><li><a href='//csapp/csapp-digest.html'>csapp-digest.org</a></li><li><a href='//csapp/cscpp.html'>cscpp.org</a></li></ul></details></li><li><a href='//docker.html'>docker.org</a></li><li><details><summary>emacs</summary><ul><li><a href='//emacs/orgmode.html'>orgmode.org</a></li></ul></details></li><li><details><summary>history</summary><ul><li><a href='//history/%e5%85%a8%e7%90%83%e9%80%9a%e5%8f%b2.html'>全球通史.org</a></li><li><a href='//history/%e5%8d%97%e5%8c%97%e6%9c%9d.html'>南北朝.org</a></li><li><a href='//history/%e6%99%8b%e5%8f%b2.html'>晋史.org</a></li></ul></details></li><li><details><summary>linux</summary><ul><li><a href='//linux/centos.html'>centos.org</a></li><li><a href='//linux/filesystem.html'>filesystem.org</a></li><li><a href='//linux/init.d.html'>init.d.org</a></li><li><a href='//linux/iptables.html'>iptables.org</a></li><li><a href='//linux/linuxcast.html'>linuxcast.org</a></li><li><a href='//linux/ss.html'>ss.org</a></li><li><a href='//linux/suse.html'>suse.org</a></li><li><a href='//linux/vps.html'>vps.org</a></li></ul></details></li><li><details><summary>literal</summary><ul><li><a href='//literal/book.html'>book.org</a></li><li><a href='//literal/han.html'>han.org</a></li><li><a href='//literal/movie.html'>movie.org</a></li><li><a href='//literal/nounce.html'>nounce.org</a></li><li><a href='//literal/person.html'>person.org</a></li><li><a href='//literal/%e5%9f%ba%e7%9d%a3%e5%b1%b1%e4%bc%af%e7%88%b5.html'>基督山伯爵.org</a></li></ul></details></li><li><details><summary>math</summary><ul><li><a href='//math/%e6%a6%82%e7%8e%87%e8%ae%ba%e4%b8%8e%e6%95%b0%e7%90%86%e7%bb%9f%e8%ae%a1.html'>概率论与数理统计.org</a></li></ul></details></li><li><a href='//mindmap.html'>mindmap.org</a></li><li><details><summary>misc</summary><ul><li><a href='//misc/org-usage.html'>org-usage.org</a></li><li><a href='//misc/screen.html'>screen.org</a></li></ul></details></li><li><details><summary>network</summary><ul><li><a href='//network/ssl.html'>ssl.org</a></li></ul></details></li><li><a href='//opengl.html'>opengl.org</a></li><li><a href='//orgmode.html'>orgmode.org</a></li><li><details><summary>os</summary><ul><li><a href='//os/80386.html'>80386.org</a></li><li><a href='//os/8259a.html'>8259a.org</a></li><li><a href='//os/boot.html'>boot.org</a></li><li><a href='//os/gcc-inline-asm.html'>gcc-inline-asm.md</a></li><li><a href='//os/linux.html'>linux.org</a></li></ul></details></li><li><details><summary>policy</summary><ul><li><a href='//policy/%e5%85%a8%e7%90%83%e5%8c%96%e6%b3%a2%e6%8a%98%e4%b8%8e%e6%b0%91%e8%90%a5%e7%bb%8f%e6%b5%8e%e7%9a%84%e6%9c%aa%e6%9d%a5_%e5%91%a8%e5%85%b6%e4%bb%81.html'>全球化波折与民营经济的未来_周其仁.org</a></li></ul></details></li><li><details><summary>programming</summary><ul><li><details><summary>algorithm</summary><ul><li><details><summary>algorithm4th</summary><ul><li><a href='//programming/algorithm/algorithm4th/algorithm.html'>algorithm.org</a></li></ul></details></li><li><a href='//programming/algorithm/%e5%b0%8f%e7%94%b2%e9%b1%bc-%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84%e4%b8%8e%e7%ae%97%e6%b3%95-%e8%a7%86%e9%a2%91%e7%ac%94%e8%ae%b0.html'>小甲鱼-数据结构与算法-视频笔记.org</a></li></ul></details></li><li><details><summary>clojure</summary><ul><li><a href='//programming/clojure/clojure.tools.logging.html'>clojure.tools.logging.md</a></li></ul></details></li><li><details><summary>cpp</summary><ul><li><a href='//programming/cpp/tutorials.html'>tutorials.org</a></li></ul></details></li><li><details><summary>elasticsearch</summary><ul><li><a href='//programming/elasticsearch/elasticsearch-definitive-guide-note.html'>elasticsearch-definitive-guide-note.org</a></li></ul></details></li><li><details><summary>git</summary><ul><li><a href='//programming/git/git.html'>git.org</a></li></ul></details></li><li><details><summary>golang</summary><ul><li><a href='//programming/golang/cmd.html'>cmd.org</a></li><li><a href='//programming/golang/effective-go.html'>effective-go.org</a></li><li><a href='//programming/golang/go-concurrency.html'>go-concurrency.org</a></li><li><a href='//programming/golang/how-to-write-go-code.html'>how-to-write-go-code.org</a></li><li><a href='//programming/golang/json.html'>json.org</a></li><li><details><summary>learn-go-note</summary><ul><li><a href='//programming/golang/learn-go-note/learning-go.html'>learning-go.org</a></li></ul></details></li><li><a href='//programming/golang/library.html'>library.org</a></li><li><a href='//programming/golang/misc.html'>misc.org</a></li><li><a href='//programming/golang/reflect.html'>reflect.org</a></li><li><a href='//programming/golang/template.html'>template.org</a></li><li><a href='//programming/golang/the-little-go-book.html'>the-little-go-book.org</a></li><li><a href='//programming/golang/%e6%97%a0%e9%97%bb%e8%a7%86%e9%a2%91%e7%ac%94%e8%ae%b0.html'>无闻视频笔记.org</a></li></ul></details></li><li><details><summary>hadoop</summary><ul><li><a href='//programming/hadoop/hdfs-permission-guide-note.html'>hdfs-permission-guide-note.org</a></li></ul></details></li><li><details><summary>java</summary><ul><li><a href='//programming/java/derby.html'>derby.org</a></li><li><a href='//programming/java/ivy-vs-maven.html'>ivy-vs-maven.org</a></li><li><a href='//programming/java/java-note.html'>java-note.org</a></li><li><a href='//programming/java/maven.html'>maven.org</a></li><li><a href='//programming/java/servlet.html'>servlet.org</a></li><li><a href='//programming/java/thing-java.html'>thing-java.org</a></li><li><a href='//programming/java/%e6%b7%b1%e5%85%a5%e7%90%86%e8%a7%a3java%e8%99%9a%e6%8b%9f%e6%9c%ba.html'>深入理解java虚拟机.org</a></li></ul></details></li><li><details><summary>javascript</summary><ul><li><a href='//programming/javascript/angularjs.html'>angularjs.org</a></li><li><a href='//programming/javascript/dom.html'>dom.org</a></li></ul></details></li><li><a href='//programming/javascript.html'>javascript.org</a></li><li><details><summary>lisp</summary><ul><li><a href='//programming/lisp/the-little-schemer.html'>the-little-schemer.org</a></li></ul></details></li><li><details><summary>python</summary><ul><li><a href='//programming/python/asyncio.html'>asyncio.org</a></li><li><a href='//programming/python/flask.html'>flask.org</a></li><li><a href='//programming/python/idiomatic-python-note.html'>idiomatic-python-note.org</a></li><li><a href='//programming/python/jinja2.html'>jinja2.org</a></li><li><a href='//programming/python/package-manage.html'>package-manage.org</a></li><li><a href='//programming/python/pygame.html'>pygame.org</a></li><li><a href='//programming/python/tools.html'>tools.org</a></li></ul></details></li><li><details><summary>scala</summary><ul><li><a href='//programming/scala/programming-in-scala.html'>programming-in-scala.org</a></li><li><a href='//programming/scala/scala.html'>scala.org</a></li><li><a href='//programming/scala/scalikeJDBC.html'>scalikeJDBC.org</a></li></ul></details></li><li><a href='//programming/storm.html'>storm.org</a></li><li><a href='//programming/thrift.html'>thrift.org</a></li><li><a href='//programming/typescript.html'>typescript.org</a></li><li><details><summary>web</summary><ul><li><a href='//programming/web/liquid.html'>liquid.org</a></li></ul></details></li></ul></details></li><li><details><summary>rdbms</summary><ul><li><a href='//rdbms/rdbms.html'>rdbms.org</a></li></ul></details></li><li><details><summary>resource</summary><ul><li><a href='//resource/emacs.html'>emacs.md</a></li><li><a href='//resource/ml-resource.html'>ml-resource.md</a></li><li><a href='//resource/nlp-resource.html'>nlp-resource.md</a></li></ul></details></li><li><details><summary>services</summary><ul><li><details><summary>mail</summary><ul><li><a href='//services/mail/mail.html'>mail.org</a></li></ul></details></li></ul></details></li><li><details><summary>subtitle</summary><ul><li><a href='//subtitle/docker.html'>docker.org</a></li></ul></details></li><li><details><summary>toarous</summary><ul><li><a href='//toarous/README.html'>README.md</a></li><li><a href='//toarous/idt.html'>idt.md</a></li><li><a href='//toarous/intel.html'>intel.org</a></li><li><a href='//toarous/notes.html'>notes.org</a></li><li><a href='//toarous/osx-environment.html'>osx-environment.org</a></li><li><a href='//toarous/vga.html'>vga.md</a></li></ul></details></li><li><details><summary>tools</summary><ul><li><a href='//tools/GCP.html'>GCP.org</a></li><li><a href='//tools/ansible.html'>ansible.org</a></li><li><a href='//tools/bash.html'>bash.org</a></li><li><a href='//tools/gerrit.html'>gerrit.org</a></li><li><a href='//tools/git.html'>git.org</a></li><li><a href='//tools/gpg.html'>gpg.org</a></li><li><a href='//tools/markdown.html'>markdown.org</a></li><li><a href='//tools/nginx.html'>nginx.org</a></li><li><a href='//tools/rpm.html'>rpm.org</a></li><li><a href='//tools/spark.html'>spark.org</a></li><li><a href='//tools/tmux.html'>tmux.org</a></li></ul></details></li><li><details><summary>ui</summary><ul><li><a href='//ui/react.html'>react.org</a></li><li><a href='//ui/tk.html'>tk.org</a></li></ul></details></li><li><details><summary>web</summary><ul><li><a href='//web/chrome-extension.html'>chrome-extension.org</a></li></ul></details></li><li><a href='//words.html'>words.org</a></li><li><a href='//%e7%bd%91%e6%b0%91%e7%9a%84%e7%8b%82%e6%ac%a2.html'>网民的狂欢.org</a></li></ul>
+			</nav>
+			<section class="main-article-area">
+				<div id='main'>
+					<h1 id="寄存器">寄存器</h1>
+<h2 id="分类">分类</h2>
+<p>有三类寄存器（对应用程序开发）</p>
+<ol class="incremental">
 <li>通用目的寄存器，8个，32位</li>
 <li>segment register，6个，16位</li>
 <li>status and instruction register，两个，分别是 EFLAG 和 EIP</li>
 </ol>
-</div>
-</div>
-
-<div id="outline-container-org74eb2ba" class="outline-3">
-<h3 id="org74eb2ba">通用目的寄存器</h3>
-<div class="outline-text-3" id="text-org74eb2ba">
-<ul class="org-ul">
+<h2 id="通用目的寄存器">通用目的寄存器</h2>
+<ul class="incremental">
 <li>8 个通用寄存器（32位）用于保存基地址和进行运算</li>
 <li>分别是 EAX,ECX,EDX,EBX,ESP,EBP,ESI,EDI</li>
 <li>ESP 不能用于地址索引</li>
@@ -299,72 +31,40 @@ for the JavaScript code in this tag.
 <li>部分指令要求使用到特定的寄存器（或使用特定寄存器能使指令更加紧凑）</li>
 <li>某些字符串处理指令使用 ES 寄存器</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgd29148c" class="outline-3">
-<h3 id="orgd29148c">Segment Register</h3>
-<div class="outline-text-3" id="text-orgd29148c">
-<ul class="org-ul">
+<h2 id="segment-register">Segment Register</h2>
+<ul class="incremental">
 <li>程序可能由不同部件组成</li>
 <li>同一时刻只能有一部分段在使用</li>
 <li>分段内存下，可以直接访问当下的段，并在有需求时访问其它的 segment</li>
 <li>CS 会在 CALL、JMP，interrupt 和 exception 中被隐式的切换</li>
 <li>DS,ES,FS,GS 寄存器可指定四个 data segments，有助于在不同的类型结构中进行切换</li>
 </ul>
-</div>
-
-<div id="outline-container-orgbeeea99" class="outline-4">
-<h4 id="orgbeeea99">Stack Implements</h4>
-<div class="outline-text-4" id="text-orgbeeea99">
-<ol class="org-ol">
+<h3 id="stack-implements">Stack Implements</h3>
+<ol class="incremental">
 <li>SS 寄存器。可以有多个栈，栈操作会自动引用 SS 中的段</li>
 <li>ESP（ Stack Pointer ），指向栈底，栈向低地址增长</li>
 <li>EBP（ Stack Base Pointer），栈的相对地址</li>
 </ol>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgb0d15e9" class="outline-3">
-<h3 id="orgb0d15e9">Status and Instruction Register</h3>
-<div class="outline-text-3" id="text-orgb0d15e9">
-</div><div id="outline-container-orgcb31ff1" class="outline-4">
-<h4 id="orgcb31ff1">EFLAGS</h4>
-<div class="outline-text-4" id="text-orgcb31ff1">
-<ul class="org-ul">
+<h2 id="status-and-instruction-register">Status and Instruction Register</h2>
+<h3 id="eflags">EFLAGS</h3>
+<ul class="incremental">
 <li>32 位，标志处理器状态</li>
 <li>低 16 位称为 FLAGS，用于兼容 8086 和 80286</li>
 <li>分为三组标识
-<ol class="org-ol">
+<ol class="incremental">
 <li>status flag: OF,SF,ZF,AF,PF,CF</li>
 <li>control flag: DF（方向）</li>
 <li>system flags</li>
 </ol></li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org13e7ed5" class="outline-4">
-<h4 id="org13e7ed5">EIP</h4>
-<div class="outline-text-4" id="text-org13e7ed5">
-<ul class="org-ul">
+<h3 id="eip">EIP</h3>
+<ul class="incremental">
 <li>Extended Instruction Pointer</li>
 <li>对程序员不可见，通过 control-transfer， interrupt 和 exception 进行修改</li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-org09ba853" class="outline-2">
-<h2 id="org09ba853">数据类型</h2>
-<div class="outline-text-2" id="text-org09ba853">
-</div><div id="outline-container-org6c5d48f" class="outline-3">
-<h3 id="org6c5d48f">基本类型</h3>
-<div class="outline-text-3" id="text-org6c5d48f">
-<ul class="org-ul">
+<h1 id="数据类型">数据类型</h1>
+<h2 id="基本类型">基本类型</h2>
+<ul class="incremental">
 <li>三种基本类型，分别是 byte, word, doubleword</li>
 <li>bit zero is the least significant bit</li>
 <li>低字节（地址）中含有低有效位</li>
@@ -374,247 +74,159 @@ for the JavaScript code in this tag.
 <li>数据结构尽可能保证内存对齐</li>
 <li>指令因为 CPU 预取指机制而无需对齐</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgfca0166" class="outline-3">
-<h3 id="orgfca0166">Additional Data Type</h3>
-<div class="outline-text-3" id="text-orgfca0166">
-<ul class="org-ul">
+<h2 id="additional-data-type">Additional Data Type</h2>
+<ul class="incremental">
 <li>Integer，对应于 C 中的 char, short 和 int</li>
 <li>Ordinal, 无符号整型</li>
 <li>Near Pointer，指针类型，32 位，用于在 flat 或 segment model 中表示 offset</li>
 <li>Far Pointer，48 位地址，包括 segment selector(16位） 和 offset（32位） 两部分，只能在 segment 下使用</li>
-<li>String，最大 \((2^32)-1\) 字节</li>
+<li>String，最大 <span class="math inline">(2<sup>32</sup>)−1</span> 字节</li>
 <li>Bit field，最大 32 位</li>
-<li>Bit String，最大 \((2^32)-1\) 位</li>
+<li>Bit String，最大 <span class="math inline">(2<sup>32</sup>)−1</span> 位</li>
 <li>BCD，用后半字节表示 0到9 的数字</li>
 <li>Packed BCD，两个半字节来表示 0 到 99 的数字</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org1c05a49" class="outline-3">
-<h3 id="org1c05a49">图示</h3>
-<div class="outline-text-3" id="text-org1c05a49">
-
-<figure>
-<img src="80386/FIG2-4.GIF" alt="FIG2-4.GIF">
-
-</figure>
-</div>
-</div>
-</div>
-
-
-
-
-
-
-
-
-
-
-<div id="outline-container-org7c2e59d" class="outline-2">
-<h2 id="org7c2e59d">指令格式</h2>
-<div class="outline-text-2" id="text-org7c2e59d">
-</div><div id="outline-container-org6520ee6" class="outline-3">
-<h3 id="org6520ee6">概述</h3>
-<div class="outline-text-3" id="text-org6520ee6">
-<ul class="org-ul">
+<h2 id="图示">图示</h2>
+<p><a href="80386/FIG2-4.GIF">file:80386/FIG2-4.GIF</a></p>
+<h1 id="指令格式">指令格式</h1>
+<h2 id="概述">概述</h2>
+<ul class="incremental">
 <li>指令中反映出操作类型、操作数类型、操作数位置；其中隐含有寻址的方式</li>
 <li>指令有可变长个元素组成，由 opcode 个可选个其它参数组成（用于表示操作数类型和位置）</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org2f7eba6" class="outline-3">
-<h3 id="org2f7eba6">元素</h3>
-<div class="outline-text-3" id="text-org2f7eba6">
-<dl class="org-dl">
-<dt>Prefix</dt><dd>用于修饰指令操作数
-<dl class="org-dl">
-<dt>Segment override</dt><dd>用于显式地指定段寄存器（替换默认的段寄存器）</dd>
-<dt>Address size</dt><dd>在 32 和 16 位地址类型之间切换</dd>
-<dt>Operand size</dt><dd>在 32 和 16 位操作数类型之间切换</dd>
-<dt>Repeat</dt><dd>循环对字符串的每个字进行操作</dd>
-</dl></dd>
-<dt>Opcode</dt><dd>指令操作类型，可多态</dd>
-<dt>Register specifier</dt><dd>寄存器指定操作数</dd>
-<dt>Address-Model Specifier</dt><dd>指定地址信息
-<dl class="org-dl">
-<dt>SIB(Scale, index, base)</dt><dd>通过基地址加偏移量指定位置</dd>
-<dt>Displacement</dt><dd>通过偏移量指定位置</dd>
-<dt>Immediate Operand</dt><dd>指定立即数，可用作地址或数值</dd>
-</dl></dd>
+<h2 id="元素">元素</h2>
+<dl class="incremental">
+<dt>Prefix</dt>
+<dd><p>用于修饰指令操作数</p>
+<dl class="incremental">
+<dt>Segment override</dt>
+<dd>用于显式地指定段寄存器（替换默认的段寄存器）
+</dd>
+<dt>Address size</dt>
+<dd>在 32 和 16 位地址类型之间切换
+</dd>
+<dt>Operand size</dt>
+<dd>在 32 和 16 位操作数类型之间切换
+</dd>
+<dt>Repeat</dt>
+<dd>循环对字符串的每个字进行操作
+</dd>
 </dl>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgb70cce8" class="outline-2">
-<h2 id="orgb70cce8">控制指令</h2>
-<div class="outline-text-2" id="text-orgb70cce8">
-</div><div id="outline-container-org54bea06" class="outline-3">
-<h3 id="org54bea06">概述</h3>
-<div class="outline-text-3" id="text-org54bea06">
-<ul class="org-ul">
+</dd>
+<dt>Opcode</dt>
+<dd>指令操作类型，可多态
+</dd>
+<dt>Register specifier</dt>
+<dd>寄存器指定操作数
+</dd>
+<dt>Address-Model Specifier</dt>
+<dd><p>指定地址信息</p>
+<dl class="incremental">
+<dt>SIB(Scale, index, base)</dt>
+<dd>通过基地址加偏移量指定位置
+</dd>
+<dt>Displacement</dt>
+<dd>通过偏移量指定位置
+</dd>
+<dt>Immediate Operand</dt>
+<dd>指定立即数，可用作地址或数值
+</dd>
+</dl>
+</dd>
+</dl>
+<h1 id="控制指令">控制指令</h1>
+<h2 id="概述-1">概述</h2>
+<ul class="incremental">
 <li>包含两类跳转指令：有条件的和无条件的跳转指令</li>
 <li>跳转与处理器状态标记有关</li>
 <li>中断和异常也会触发跳转</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org970f7ea" class="outline-3">
-<h3 id="org970f7ea">无条件跳转</h3>
-<div class="outline-text-3" id="text-org970f7ea">
-<ul class="org-ul">
+<h2 id="无条件跳转">无条件跳转</h2>
+<ul class="incremental">
 <li>可将 CS 切换到另一个，称为 far control transfer</li>
 <li>在同一个 segment 内跳转，称为 near control transfer</li>
 </ul>
-</div>
-
-<div id="outline-container-org3c0d61d" class="outline-4">
-<h4 id="org3c0d61d">Jump Instruction</h4>
-<div class="outline-text-4" id="text-org3c0d61d">
-<ul class="org-ul">
+<h3 id="jump-instruction">Jump Instruction</h3>
+<ul class="incremental">
 <li>直接跳转，不会压栈</li>
 <li>地址可以是直接指定的，也可以是寄存器间接寻址的
-<ul class="org-ul">
+<ul class="incremental">
 <li>Direct Near Jump： 使用相对偏移地址</li>
 <li>Indirect Near Jump: 指定绝对地址
-<ul class="org-ul">
+<ul class="incremental">
 <li>通用寄存器（除 ESP 之外）内容回填 EIP</li>
 <li>memory operand specified</li>
 <li>修改 memory pointer 地址</li>
 </ul></li>
 </ul></li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgde25bdc" class="outline-4">
-<h4 id="orgde25bdc">Call Instruction</h4>
-<div class="outline-text-4" id="text-orgde25bdc">
-<ul class="org-ul">
+<h3 id="call-instruction">Call Instruction</h3>
+<ul class="incremental">
 <li>Call Procedure，将 EIP 压栈，并在 RET 时弹出</li>
 <li>地址有 relative, direct, indirect 三种</li>
 <li>间接寻址有两种方式
-<ul class="org-ul">
+<ul class="incremental">
 <li>通用寄存器内容回填 EIP</li>
 <li>从 memory operand 中获取</li>
 </ul></li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgfd02314" class="outline-4">
-<h4 id="orgfd02314">Return and Return-From-Interrupt Instruction</h4>
-<div class="outline-text-4" id="text-orgfd02314">
-<dl class="org-dl">
-<dt>RET</dt><dd>从栈中恢复 EIP 到前一个 CALL 的位置，可以指定一个返回值（立即数）</dd>
-<dt>IRET</dt><dd>从中断处理中返回。不同于 RET，还会将栈上的 flags 恢复（中断时保存的现场）</dd>
+<h3 id="return-and-return-from-interrupt-instruction">Return and Return-From-Interrupt Instruction</h3>
+<dl class="incremental">
+<dt>RET</dt>
+<dd>从栈中恢复 EIP 到前一个 CALL 的位置，可以指定一个返回值（立即数）
+</dd>
+<dt>IRET</dt>
+<dd>从中断处理中返回。不同于 RET，还会将栈上的 flags 恢复（中断时保存的现场）
+</dd>
 </dl>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-org128fbfa" class="outline-3">
-<h3 id="org128fbfa">有条件跳转</h3>
-<div class="outline-text-3" id="text-org128fbfa">
-<p>
-由 CPU 状态来决定是否跳转
-</p>
-</div>
-
-<div id="outline-container-org12ca56b" class="outline-4">
-<h4 id="org12ca56b">Conditional Jump Instruction</h4>
-<div class="outline-text-4" id="text-org12ca56b">
-
-<figure>
-<img src="80386/TABLE3-2.PNG" alt="TABLE3-2.PNG">
-
-</figure>
-
-<ul class="org-ul">
+<h2 id="有条件跳转">有条件跳转</h2>
+<p>由 CPU 状态来决定是否跳转</p>
+<h3 id="conditional-jump-instruction">Conditional Jump Instruction</h3>
+<p><a href="80386/TABLE3-2.PNG">file:80386/TABLE3-2.PNG</a></p>
+<ul class="incremental">
 <li>条件跳转指令对 EIP 进行偏移</li>
 <li>偏移可以为负，即可以向前跳转</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orge3a01fe" class="outline-4">
-<h4 id="orge3a01fe">Loop Instructions</h4>
-<div class="outline-text-4" id="text-orge3a01fe">
-<ul class="org-ul">
+<h3 id="loop-instructions">Loop Instructions</h3>
+<ul class="incremental">
 <li>loop 也是条件跳转，使用 ECX 的值作为循环次数</li>
 <li>有五个循环指令： <code>LOOP</code>, <code>LOOPE</code>, <code>LOOPZ</code>, <code>LOOPNE</code>, <code>LOOPNZ</code></li>
 <li>其中有四个通过 ZF 状态来判断是否结束循环</li>
 </ul>
-</div>
-
-<ul class="org-ul"><li><a id="org515ffb9"></a>LOOPE/LOOPZ<br><div class="outline-text-5" id="text-org515ffb9">
-<ul class="org-ul">
+<ol class="incremental">
+<li><p>LOOPE/LOOPZ</p>
+<ul class="incremental">
 <li>LOOPE: Loop While Equal</li>
 <li>LOOPZ: Loop While Zero</li>
 <li>两个指令有相同的作用</li>
-<li>当  <code>(ECX-- &amp;&amp; ZF==1)</code> 时，跳转到 LABEL 处</li>
-</ul>
-</div></li>
-
-<li><a id="org535c148"></a>LOOPNE/LOOPNZ<br><div class="outline-text-5" id="text-org535c148">
-<ul class="org-ul">
+<li>当 <code>(ECX-- &amp;&amp; ZF==1)</code> 时，跳转到 LABEL 处</li>
+</ul></li>
+<li><p>LOOPNE/LOOPNZ</p>
+<ul class="incremental">
 <li>当 <code>(ECX-- &amp;&amp; ZF==0)</code> 时，跳转到 LABEL 处</li>
-</ul>
-</div></li></ul>
-</div>
-
-
-<div id="outline-container-orgf1c33d4" class="outline-4">
-<h4 id="orgf1c33d4"><span class="todo TODO">TODO</span> Executing a Loop or Repeat Zero Times</h4>
-<div class="outline-text-4" id="text-orgf1c33d4">
-<ul class="org-ul">
+</ul></li>
+</ol>
+<h3 id="executing-a-loop-or-repeat-zero-times"><span class="todo TODO">TODO</span> Executing a Loop or Repeat Zero Times</h3>
+<ul class="incremental">
 <li>JCXZ ( Jump If ECX Zero )</li>
 <li>若 ECX 为 0，则跳转到 label 处</li>
 <li>配合 LOOP 指令，用于 string scan 和比较操作</li>
 </ul>
-</div>
-</div>
-</div>
-
-
-
-<div id="outline-container-org84a6c28" class="outline-3">
-<h3 id="org84a6c28">软件中断</h3>
-<div class="outline-text-3" id="text-org84a6c28">
-</div><div id="outline-container-orgba784d2" class="outline-4">
-<h4 id="orgba784d2">INT n</h4>
-<div class="outline-text-4" id="text-orgba784d2">
-<ul class="org-ul">
+<h2 id="软件中断">软件中断</h2>
+<h3 id="int-n">INT n</h3>
+<ul class="incremental">
 <li><code>INT n</code> 和 <code>BOUND</code> 允许跳转到配置的 interrupt service routine</li>
 <li><code>INT n</code> 调用第 n 号软件中断，可以指定 interrupt type</li>
 <li>中断号 0 到 31 被 intel 保留，用于内部异常</li>
 <li>中断通过 <code>IRET</code> 来返回</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgb6caff3" class="outline-4">
-<h4 id="orgb6caff3">INT0</h4>
-<div class="outline-text-4" id="text-orgb6caff3">
-<ul class="org-ul">
+<h3 id="int0">INT0</h3>
+<ul class="incremental">
 <li>Interrupt on Overflow</li>
 <li>若 OF 被置位，则调用中断 4</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgcc82abe" class="outline-4">
-<h4 id="orgcc82abe">BOUND</h4>
-<div class="outline-text-4" id="text-orgcc82abe">
-<ul class="org-ul">
+<h3 id="bound">BOUND</h3>
+<ul class="incremental">
 <li>Detect Value Out of Range</li>
 <li>检查特定寄存器中的有符号值是否在范围内</li>
 <li>若不在范围内，则铖中断 5</li>
@@ -622,103 +234,46 @@ for the JavaScript code in this tag.
 <li>第二个是相对地址，指向高与低两个上下限</li>
 <li>BOUND 可用于检查数组边界</li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orga61dae8" class="outline-2">
-<h2 id="orga61dae8">内存管理</h2>
-<div class="outline-text-2" id="text-orga61dae8">
-</div><div id="outline-container-org662a71c" class="outline-3">
-<h3 id="org662a71c">概述</h3>
-<div class="outline-text-3" id="text-org662a71c">
-<p>
-地址空间有三种视图：
-</p>
-
-<ol class="org-ol">
+<h1 id="内存管理">内存管理</h1>
+<h2 id="概述-2">概述</h2>
+<p>地址空间有三种视图：</p>
+<ol class="incremental">
 <li>physical address，32位最大寻址 4GB 空间</li>
 <li>logical address，应用程序看到的地址空间，可以超过 4GB</li>
 <li>linear address，经过段转换形成的空间，是 physical 和 logical 的中间态</li>
 </ol>
-
-<p>
-地址有两次转换，对应两种内存管理机制：分页和分段：
-</p>
-
-<ol class="org-ol">
+<p>地址有两次转换，对应两种内存管理机制：分页和分段：</p>
+<ol class="incremental">
 <li>分段，内存访问对应于某个段空间，有长度限制</li>
 <li>分页，分为 4k 的小段空间，映射到物理内存或虚拟内存中</li>
 </ol>
-
-<p>
-内存管理主要的任务有两个：
-</p>
-
-<ol class="org-ol">
+<p>内存管理主要的任务有两个：</p>
+<ol class="incremental">
 <li>虚拟化内存（不同的进程看到独立的内存空间）</li>
 <li>提供保护机制</li>
 </ol>
-
-<p>
-地址空间使用有多种范式，page model 是可选的。
-</p>
-
-<ol class="org-ol">
+<p>地址空间使用有多种范式，page model 是可选的。</p>
+<ol class="incremental">
 <li>flat model，所有的段都指向 0，直接访问 4GB 线性地址</li>
 <li>segment model</li>
 <li>segment + page model</li>
 </ol>
-
-<p>
-相比之下，paging 更为有用，segment 机制则深入 x86 设计的各方面，不可避免。
-</p>
-
-<p>
-另外，segment 机制较 paging 优势在于，提供了 ring level 机制（即四个不同的运行级别，操作系统为 0，应用程序为 3），能更好的保护隐私信息。
-</p>
-</div>
-</div>
-
-<div id="outline-container-org00b999f" class="outline-3">
-<h3 id="org00b999f"><span class="todo TODO">TODO</span> 流程图</h3>
-<div class="outline-text-3" id="text-org00b999f">
-
-<figure>
-<img src="./80386/FIG5-1.GIF" alt="FIG5-1.GIF">
-
-</figure>
-
-<p>
-Paging enabled 的连线是否标注有误??
-</p>
-</div>
-</div>
-
-<div id="outline-container-org01fa9b1" class="outline-3">
-<h3 id="org01fa9b1">segment 机制</h3>
-<div class="outline-text-3" id="text-org01fa9b1">
-<p>
-提供二维地址访问方式，将 logical 地址转换为 linear 地址，并提供内存保护机制。
-</p>
-
-<p>
-核心的结构有四个：
-</p>
-
-<ol class="org-ol">
+<p>相比之下，paging 更为有用，segment 机制则深入 x86 设计的各方面，不可避免。</p>
+<p>另外，segment 机制较 paging 优势在于，提供了 ring level 机制（即四个不同的运行级别，操作系统为 0，应用程序为 3），能更好的保护隐私信息。</p>
+<h2 id="流程图"><span class="todo TODO">TODO</span> 流程图</h2>
+<p><a href="./80386/FIG5-1.GIF" class="uri">./80386/FIG5-1.GIF</a></p>
+<p>Paging enabled 的连线是否标注有误??</p>
+<h2 id="segment-机制">segment 机制</h2>
+<p>提供二维地址访问方式，将 logical 地址转换为 linear 地址，并提供内存保护机制。</p>
+<p>核心的结构有四个：</p>
+<ol class="incremental">
 <li>Descriptor 定义每个段的基本属性</li>
 <li>Descriptor Tables，保存系统定义的所有的段描述</li>
 <li>Selector，段选择器，从段表中取出需要的段描述</li>
 <li>Segment Register，缓存 selector 与 descritor 的对应关系</li>
 </ol>
-
-<p>
-段描述符的主要字段有
-</p>
-
-<ol class="org-ol">
+<p>段描述符的主要字段有</p>
+<ol class="incremental">
 <li>base 32bit，段的起始位置</li>
 <li>limit 20bit，段的长度</li>
 <li>granlarity, 长度度量：1字节或1page(4kB)</li>
@@ -727,101 +282,59 @@ Paging enabled 的连线是否标注有误??
 <li>segment-present，启用禁用</li>
 <li>accessed，是否正加载到 segment register</li>
 </ol>
-
-<p>
-segment descriptor 分为两种 Global 和 Local。
-</p>
-
-<ul class="org-ul">
+<p>segment descriptor 分为两种 Global 和 Local。</p>
+<ul class="incremental">
 <li>系统有多个（8192个）descriptor，通过 GDT 和 LDT 来管理。</li>
 <li>Interrupt Descriptor Table 与之类似</li>
 <li>GDT 和 LDT 的位置（32bit）和长度（16bit）由 GDTR 和 LDTR 伪寄存器来保存</li>
 <li><code>GDT[0]</code> 未被处理器使用</li>
 </ul>
-
-<p>
-程序使用时，需要指定要使用的段（通过段表的索引，称为选择器）。同时有 6 个寄存器用于缓存常用的段选择器与段描述符的对应关系，提高性能。
-</p>
-
-<p>
-6 个段寄存器分别是 CS,DS,SS,ES,FS,GS。包括 16 位的可见选择器和 64 位不可见的缓存
-</p>
-
-<ul class="org-ul">
+<p>程序使用时，需要指定要使用的段（通过段表的索引，称为选择器）。同时有 6 个寄存器用于缓存常用的段选择器与段描述符的对应关系，提高性能。</p>
+<p>6 个段寄存器分别是 CS,DS,SS,ES,FS,GS。包括 16 位的可见选择器和 64 位不可见的缓存</p>
+<ul class="incremental">
 <li>CS 指定代码段, <code>CS:[EIP]</code> 指向下一个要执行的指令地址，同一时刻只有一个代码段可以寻址</li>
 <li>DS 寻址指令比其它 5 个短一个字节，开销相对低，用于安排寻址经常被使用的数据段</li>
 <li>SS 段为堆栈段，使用 <code>SS:[ESP]</code> 来指示栈顶地址</li>
 </ul>
-</div>
-
-
-<div id="outline-container-orgc81e2e3" class="outline-4">
-<h4 id="orgc81e2e3">段偏移量</h4>
-<div class="outline-text-4" id="text-orgc81e2e3">
-<ul class="org-ul">
+<h3 id="段偏移量">段偏移量</h3>
+<ul class="incremental">
 <li>包括三部分
-<ol class="org-ol">
+<ol class="incremental">
 <li>基地址寄存器</li>
 <li>比例因子</li>
 <li>变址寄存器（位移）</li>
 </ol></li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org4b33286" class="outline-4">
-<h4 id="org4b33286"><span class="todo TODO">TODO</span> 分段的意义</h4>
-<div class="outline-text-4" id="text-org4b33286">
-<ol class="org-ol">
+<h3 id="分段的意义"><span class="todo TODO">TODO</span> 分段的意义</h3>
+<ol class="incremental">
 <li>内存保护</li>
 <li>复用内存，将段交换到硬盘存储</li>
 </ol>
-</div>
-</div>
-
-<div id="outline-container-org0b94732" class="outline-4">
-<h4 id="org0b94732">Segment Translation</h4>
-<div class="outline-text-4" id="text-org0b94732">
-</div><ul class="org-ul"><li><a id="org6bdb80f"></a>概述<br><div class="outline-text-5" id="text-org6bdb80f">
-<ul class="org-ul">
+<h3 id="segment-translation">Segment Translation</h3>
+<ol class="incremental">
+<li><p>概述</p>
+<ul class="incremental">
 <li>logical address 是多个分段下的连续地址, 分段以 base + limit 来指定</li>
 <li>要使用 logical address, 需要找到基地址，并指定偏移。即 base + offset</li>
 <li>基地址保存在　descriptor 结构中，系统维护有两张　descriptor 表，称为　GDT 和　LDT</li>
 <li>selector　相当于一个索引，来从　descriptor table 中找到具体的 descriptor，进而找到相应的段</li>
 <li>descriptor 由　compiler, linker, loader, os 等创建</li>
 <li>实际使用中，会大量的提取　descriptor。为了提高效率，segment register 缓存了 selector 到　descriptor 的关系</li>
-</ul>
-</div></li>
-
-<li><a id="org3e980cc"></a>转换流程图<br><div class="outline-text-5" id="text-org3e980cc">
-
-<figure>
-<img src="80386/FIG5-2.GIF" alt="FIG5-2.GIF">
-
-</figure>
-</div></li>
-
-<li><a id="orgb1bef04"></a>Descriptor<br><ul class="org-ul"><li><a id="orgf1094d2"></a>分类<br><div class="outline-text-6" id="text-orgf1094d2">
-<p>
-分为两类
-</p>
-
-<ol class="org-ol">
+</ul></li>
+<li><p>转换流程图</p>
+<p><a href="80386/FIG5-2.GIF">file:80386/FIG5-2.GIF</a></p></li>
+<li><p>Descriptor</p>
+<ol class="incremental">
+<li><p>分类</p>
+<p>分为两类</p>
+<ol class="incremental">
 <li>for applications code and data segments</li>
 <li>for special system segments</li>
-</ol>
-</div></li>
-
-<li><a id="org58a535e"></a>示意图<br><div class="outline-text-6" id="text-org58a535e">
-
-<figure>
-<img src="80386/FIG5-3.GIF" alt="FIG5-3.GIF">
-
-</figure>
-</div></li>
-
-<li><a id="orge327d26"></a>说明<br><div class="outline-text-6" id="text-orge327d26">
-<ul class="org-ul">
+</ol></li>
+<li><p>示意图</p>
+<p><a href="80386/FIG5-3.GIF">file:80386/FIG5-3.GIF</a></p></li>
+<li><p>说明</p>
+<ul class="incremental">
 <li>base 保存基地址，由三部分构成，共 32 位</li>
 <li>limit 由两部分构成，共 20 位</li>
 <li>granularity 位是 Limit 长度标记，0 时 limit 单位为 1 字节，1 时 limit 单位为 4k 字节</li>
@@ -830,100 +343,66 @@ segment descriptor 分为两种 Global 和 Local。
 <li>accessed 标记是否正在被使用</li>
 <li>limit 最大长度为 4G（当 granularity 为 1 时）</li>
 <li>进程最大可以访问的 logical address 长度为 4G，达到虚拟进程访问空间的效果</li>
-</ul>
-</div></li></ul></li>
-
-
-
-<li><a id="orgf3d2489"></a>Descriptor Tables<br><ul class="org-ul"><li><a id="orge156815"></a>说明<br><div class="outline-text-6" id="text-orge156815">
-<ul class="org-ul">
+</ul></li>
+</ol></li>
+<li><p>Descriptor Tables</p>
+<ol class="incremental">
+<li><p>说明</p>
+<ul class="incremental">
 <li>分为 GDT 和 LDT 两类</li>
 <li>其中保存的是 descriptor 结构（8 个字节），长度可变，最长 8192 个 descriptor</li>
 <li>第一个 GDT 的 descriptor 不使用</li>
 <li>GDTR 和 LDTR 寄存器，存储表的位置和长度</li>
 <li>GDTR 的指令有： LGDT 和 SGDT</li>
 <li>LDTR 的指令有： LLDT 和 SLDT</li>
-</ul>
-</div></li>
-
-
-<li><a id="orgf5b5e68"></a>示意<br><div class="outline-text-6" id="text-orgf5b5e68">
-
-<figure>
-<img src="80386/FIG5-5.GIF" alt="FIG5-5.GIF">
-
-</figure>
-</div></li></ul></li>
-
-<li><a id="org22c180d"></a>Selector<br><ul class="org-ul"><li><a id="orgddc99b5"></a>说明<br><div class="outline-text-6" id="text-orgddc99b5">
-<ul class="org-ul">
+</ul></li>
+<li><p>示意</p>
+<p><a href="80386/FIG5-5.GIF">file:80386/FIG5-5.GIF</a></p></li>
+</ol></li>
+<li><p>Selector</p>
+<ol class="incremental">
+<li><p>说明</p>
+<ul class="incremental">
 <li>selector 是到 descriptor table 的具体 descriptor 的索引</li>
 <li>selector 的值一般由 linker 或 linking loader 来定义</li>
-</ul>
-</div></li>
-
-<li><a id="orgf3050e7"></a>格式<br><div class="outline-text-6" id="text-orgf3050e7">
-
-<figure>
-<img src="80386/FIG5-6.GIF" alt="FIG5-6.GIF">
-
-</figure>
-
-
-<ul class="org-ul">
+</ul></li>
+<li><p>格式</p>
+<p><a href="80386/FIG5-6.GIF">file:80386/FIG5-6.GIF</a></p>
+<ul class="incremental">
 <li>index 表示 8192 个 descriptor 的索引</li>
 <li>Table Indicator 表示 GDT 或 LDT</li>
 <li>RPL: Requested Privilege Level</li>
-</ul>
-</div></li></ul></li>
-
-
-<li><a id="orgb3f4a55"></a>Segment Registers<br><ul class="org-ul"><li><a id="org841b4ce"></a>图示<br><div class="outline-text-6" id="text-org841b4ce">
-
-<figure>
-<img src="80386/FIG5-7.GIF" alt="FIG5-7.GIF">
-
-</figure>
-</div></li>
-
-<li><a id="org1a56bc3"></a>说明<br><div class="outline-text-6" id="text-org1a56bc3">
-<ul class="org-ul">
+</ul></li>
+</ol></li>
+<li><p>Segment Registers</p>
+<ol class="incremental">
+<li><p>图示</p>
+<p><a href="80386/FIG5-7.GIF">file:80386/FIG5-7.GIF</a></p></li>
+<li><p>说明</p>
+<ul class="incremental">
 <li>segment register 包括了 CS, SS, DS，ES，FS，GS</li>
 <li>包括两部分，第一部分是可见的 16 位，保存 selector</li>
 <li>program loads the visible part of the segment register with a 16-bit register</li>
 <li>处理器自动加载相应的 descriptor 到 segment register 的不可见部分</li>
 <li>本质是缓存 selector 与 descritpro 的关系</li>
-</ul>
-</div></li></ul></li></ul>
-</div>
-
-<div id="outline-container-orgd7b616a" class="outline-4">
-<h4 id="orgd7b616a">补充</h4>
-</div>
-<div id="outline-container-org22c1fdc" class="outline-4">
-<h4 id="org22c1fdc">问题</h4>
-<div class="outline-text-4" id="text-org22c1fdc">
-</div><ul class="org-ul"><li><a id="org675dd75"></a>为什么有 64T 寻址空间<br><div class="outline-text-5" id="text-org675dd75">
-<p>
-因为 selector 有 16 位，其中 descriptor table 的索引有 13 位，descriptor table 分为 GDT 和 LDT 两种，共 14 位，即 16K 空间。每个段内最大空间是 4G。因此最大可以寻址 64T 空间
-</p>
-</div></li>
-
-<li><a id="org9ab9147"></a><span class="todo TODO">TODO</span> 操作系统如 Windows, Linux 看到的完整的 4G 空间，是否意味着使用 flat 模式？<br></li>
-<li><a id="orge0f988a"></a>不同进程中是否通过代码段切换？是否受 64k 的限制<br><div class="outline-text-5" id="text-orge0f988a">
-<ul class="org-ul">
+</ul></li>
+</ol></li>
+</ol>
+<h3 id="补充">补充</h3>
+<h3 id="问题">问题</h3>
+<ol class="incremental">
+<li><p>为什么有 64T 寻址空间</p>
+<p>因为 selector 有 16 位，其中 descriptor table 的索引有 13 位，descriptor table 分为 GDT 和 LDT 两种，共 14 位，即 16K 空间。每个段内最大空间是 4G。因此最大可以寻址 64T 空间</p></li>
+<li><p><span class="todo TODO">TODO</span> 操作系统如 Windows, Linux 看到的完整的 4G 空间，是否意味着使用 flat 模式？</p></li>
+<li><p>不同进程中是否通过代码段切换？是否受 64k 的限制</p>
+<ul class="incremental">
 <li>segmented Model 将 16,383 个段映射到物理内存中，每个段最大有 4G 空间，最大寻址 64T</li>
 <li>16 位的段选择子，32 位的地址偏移，总共提供了 64T 的寻址空间</li>
-</ul>
-</div></li></ul>
-</div>
-</div>
-</div>
-</div>
-<div id="postamble" class="status">
-<p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2017-08-26 六 09:14</p>
-<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
-</div>
-</body>
-</html>
+</ul></li>
+</ol>
+
+				</div>
+			</section>
+		</body>
+	</html>
+	

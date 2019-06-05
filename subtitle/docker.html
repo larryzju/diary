@@ -1,712 +1,98 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<!-- 2018-09-13 四 20:19 -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Docker</title>
-<meta name="generator" content="Org mode">
-<meta name="author" content="Zhao WenBin">
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
-  .title  { text-align: center;
-             margin-bottom: .2em; }
-  .subtitle { text-align: center;
-              font-size: medium;
-              font-weight: bold;
-              margin-top:0; }
-  .todo   { font-family: monospace; color: red; }
-  .done   { font-family: monospace; color: green; }
-  .priority { font-family: monospace; color: orange; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
-  pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
-  }
-  pre.src {
-    position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
-    padding: 3px;
-    border: 1px solid black;
-  }
-  pre.src:hover:before { display: inline;}
-  /* Languages per Org manual */
-  pre.src-asymptote:before { content: 'Asymptote'; }
-  pre.src-awk:before { content: 'Awk'; }
-  pre.src-C:before { content: 'C'; }
-  /* pre.src-C++ doesn't work in CSS */
-  pre.src-clojure:before { content: 'Clojure'; }
-  pre.src-css:before { content: 'CSS'; }
-  pre.src-D:before { content: 'D'; }
-  pre.src-ditaa:before { content: 'ditaa'; }
-  pre.src-dot:before { content: 'Graphviz'; }
-  pre.src-calc:before { content: 'Emacs Calc'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-fortran:before { content: 'Fortran'; }
-  pre.src-gnuplot:before { content: 'gnuplot'; }
-  pre.src-haskell:before { content: 'Haskell'; }
-  pre.src-java:before { content: 'Java'; }
-  pre.src-js:before { content: 'Javascript'; }
-  pre.src-latex:before { content: 'LaTeX'; }
-  pre.src-ledger:before { content: 'Ledger'; }
-  pre.src-lisp:before { content: 'Lisp'; }
-  pre.src-lilypond:before { content: 'Lilypond'; }
-  pre.src-lua:before { content: 'Lua'; }
-  pre.src-matlab:before { content: 'MATLAB'; }
-  pre.src-mscgen:before { content: 'Mscgen'; }
-  pre.src-ocaml:before { content: 'Objective Caml'; }
-  pre.src-octave:before { content: 'Octave'; }
-  pre.src-org:before { content: 'Org mode'; }
-  pre.src-oz:before { content: 'OZ'; }
-  pre.src-plantuml:before { content: 'Plantuml'; }
-  pre.src-processing:before { content: 'Processing.js'; }
-  pre.src-python:before { content: 'Python'; }
-  pre.src-R:before { content: 'R'; }
-  pre.src-ruby:before { content: 'Ruby'; }
-  pre.src-sass:before { content: 'Sass'; }
-  pre.src-scheme:before { content: 'Scheme'; }
-  pre.src-screen:before { content: 'Gnu Screen'; }
-  pre.src-sed:before { content: 'Sed'; }
-  pre.src-sh:before { content: 'shell'; }
-  pre.src-sql:before { content: 'SQL'; }
-  pre.src-sqlite:before { content: 'SQLite'; }
-  /* additional languages in org.el's org-babel-load-languages alist */
-  pre.src-forth:before { content: 'Forth'; }
-  pre.src-io:before { content: 'IO'; }
-  pre.src-J:before { content: 'J'; }
-  pre.src-makefile:before { content: 'Makefile'; }
-  pre.src-maxima:before { content: 'Maxima'; }
-  pre.src-perl:before { content: 'Perl'; }
-  pre.src-picolisp:before { content: 'Pico Lisp'; }
-  pre.src-scala:before { content: 'Scala'; }
-  pre.src-shell:before { content: 'Shell Script'; }
-  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
-  /* additional language identifiers per "defun org-babel-execute"
-       in ob-*.el */
-  pre.src-cpp:before  { content: 'C++'; }
-  pre.src-abc:before  { content: 'ABC'; }
-  pre.src-coq:before  { content: 'Coq'; }
-  pre.src-groovy:before  { content: 'Groovy'; }
-  /* additional language identifiers from org-babel-shell-names in
-     ob-shell.el: ob-shell is the only babel language using a lambda to put
-     the execution function name together. */
-  pre.src-bash:before  { content: 'bash'; }
-  pre.src-csh:before  { content: 'csh'; }
-  pre.src-ash:before  { content: 'ash'; }
-  pre.src-dash:before  { content: 'dash'; }
-  pre.src-ksh:before  { content: 'ksh'; }
-  pre.src-mksh:before  { content: 'mksh'; }
-  pre.src-posh:before  { content: 'posh'; }
-  /* Additional Emacs modes also supported by the LaTeX listings package */
-  pre.src-ada:before { content: 'Ada'; }
-  pre.src-asm:before { content: 'Assembler'; }
-  pre.src-caml:before { content: 'Caml'; }
-  pre.src-delphi:before { content: 'Delphi'; }
-  pre.src-html:before { content: 'HTML'; }
-  pre.src-idl:before { content: 'IDL'; }
-  pre.src-mercury:before { content: 'Mercury'; }
-  pre.src-metapost:before { content: 'MetaPost'; }
-  pre.src-modula-2:before { content: 'Modula-2'; }
-  pre.src-pascal:before { content: 'Pascal'; }
-  pre.src-ps:before { content: 'PostScript'; }
-  pre.src-prolog:before { content: 'Prolog'; }
-  pre.src-simula:before { content: 'Simula'; }
-  pre.src-tcl:before { content: 'tcl'; }
-  pre.src-tex:before { content: 'TeX'; }
-  pre.src-plain-tex:before { content: 'Plain TeX'; }
-  pre.src-verilog:before { content: 'Verilog'; }
-  pre.src-vhdl:before { content: 'VHDL'; }
-  pre.src-xml:before { content: 'XML'; }
-  pre.src-nxml:before { content: 'XML'; }
-  /* add a generic configuration mode; LaTeX export needs an additional
-     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
-  pre.src-conf:before { content: 'Configuration File'; }
 
-  table { border-collapse:collapse; }
-  caption.t-above { caption-side: top; }
-  caption.t-bottom { caption-side: bottom; }
-  td, th { vertical-align:top;  }
-  th.org-right  { text-align: center;  }
-  th.org-left   { text-align: center;   }
-  th.org-center { text-align: center; }
-  td.org-right  { text-align: right;  }
-  td.org-left   { text-align: left;   }
-  td.org-center { text-align: center; }
-  dt { font-weight: bold; }
-  .footpara { display: inline; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
-    background: #ffffcc;
-  }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
-  textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
-</style>
-<link rel="stylesheet" type="text/css" href="https://www.pirilampo.org/styles/readtheorg/css/htmlize.css"/>
-<link rel="stylesheet" type="text/css" href="https://www.pirilampo.org/styles/readtheorg/css/readtheorg.css"/>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.min.js"></script>
-<script type="text/javascript" src="https://www.pirilampo.org/styles/readtheorg/js/readtheorg.js"></script>
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2017 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
-</head>
-<body>
-<div id="content">
-<header>
-<h1 class="title">Docker</h1>
-</header><nav id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#org849d0be">Complete Docker Course!</a></li>
-<li><a href="#orge9103d7">Learn Docker in 12 Minutes</a></li>
-<li><a href="#org9783c39">Why Docker is the Perfect Fit for Microservices</a></li>
-</ul>
-</div>
-</nav>
-
-<div id="outline-container-org849d0be" class="outline-2">
-<h2 id="org849d0be"><a href="https://www.youtube.com/watch?v=zIALD-U3pXM">Complete Docker Course!</a></h2>
-<div class="outline-text-2" id="text-org849d0be">
-<p>
-Hey everybody I have huge news for you. See that rocket ship going to Saturn? Yeah that's how big this news really is.
-</p>
-
-<p>
-Docker is seriously awesome. It's my favorite most preferred way to package and deploy applications of any kind. If you've been following me on Twitter, you know that I really really like docker.
-</p>
-
-<p>
-And you're like: dude I haven't been hearing that yeah you haven't because it's true. So I've been working on a way to help you get past the docker basics.
-</p>
-
-<p>
-There are so many hello world application tutorials out there with docker. But it's hard to find good information to get you past those basics. So I've been making a course called real world docker.
-</p>
-
-<p>
-See how that flew in? that was really cool. So I'm going to do it twice. Awesmoe!
-</p>
-
-<p>
-And that guy there with the pen in the paper that illustrates that I've been working really hard on this course. Because I have it's a lot more work to put together a full course than to throw together a couple Hello World tutorials. So I've been doing it with O'Reilly Media. There're awesome they put out great stuff. They're those animal book people! Yeah! They really like animals. I think that's a goat or maybe it's a yak. I'm not really sure it might be a male sheep. But anyway they love their animals and they put out great web content if you're familiar with them again the course is called real world docker.
-</p>
-
-<p>
-We've recently released it and it's going to be super cool. It's going to take you from feeling scared confused and alone from only knowing those docker basics that you see on those Hello World tutorials to not felling so scared so confused and so alone to get that confidence to actually deploy a docker application into production and then it's going to get you to the point of wow bring on the millions of users because I just scaled this application to handle massive traffic load and you get lots of code that's right lots of code. Any code that we use in any of the examples you get to take home and copy and paste and mess with and hack it's all yours.
-</p>
-
-<p>
-So what will you actually learn well you're going to learn docker deployments. Everything from really simple single monolithic applications with continuous deployment that means you merge it to the master branch and it goes out to production merge it to the staging branch and it's on staging you're also going to learn how to brewk that app up into micro services which can scale much better in a large scenario and you're going to learn some of the deployment jeez that huge companies like Netflix use when they're deploying services across a large infrastructure. You're also going to learn networking and service discovery so you can swarm mupltiple servers together to act like on deployment platform when you can run apps on any one of those servers and everything just talks together just find and you'll also learn immutable and disponsable infrastructure which basically means you don't fix servers and apps when things go wrong you just destroy them and replace them and with continuous deployment you actually do it all the time it's a great way of deploying your application infrastructure. You're thinking wow, that's coll you're right! That's actually my next slide. It's so cool.
-</p>
-
-<p>
-Thank you for bringing that up so. Again it's called real-world docker. The link is in the description and also you can go to O'Reilly comm and search for real-world docker it's also available on Safari Books if your company provides you with the Safari Books membership and so go check it out you're going to love the course it's going to help you out a ton and I give you information on how to contact me, So I'm available to help you out if you have any issues with that course. Enjoy and have a great day.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orge9103d7" class="outline-2">
-<h2 id="orge9103d7">Learn Docker in 12 Minutes</h2>
-<div class="outline-text-2" id="text-orge9103d7">
-<p>
-Docker is a tool for running applications in an isolated environment.
-</p>
-
-<p>
-It gives you advantages similar to running your application inside a
-virtual machine. Some of those advantages are your app always runs in
-exactly the same environment, so you don't get inconsistencies in how
-it behaves.  If it works on your computer it works on every computer
-it works on the live server. It always acts the same.
-</p>
-
-<p>
-If you're working on multiple projects it lets you sandbox each one
-and keep them separate good for security and eliminate a potential
-conflict between different projects.
-</p>
-
-<p>
-And lastly it makes it easier to get going with somebody else's
-projects.  you don't have to install all of the tools and dependencies
-that the project needs you just spin up the virtual machine put your
-call inside and it works.
-</p>
-
-<p>
-Docker gives you these advantages but without the overhead and hassle
-of running and managing a virtual machine.
-</p>
-
-<p>
-Instead we have containers. The code and the environment are all
-wrapped up inside a container.  But a container is not a full virtual
-machine.
-</p>
-
-<p>
-When you're going to virtual machine each machine gets its own full
-operating system including the kernel.  The kernel is like the core of
-the operating system the bit that controls the low-level stuff.  And
-this is quite resource heavy on the host machine the computer running
-the virtual machines.
-</p>
-
-<p>
-Containers however they all use the host machines kernel a core bit of
-the operating system is shared but everything on top of that is still
-separated. Everything that makes a Linux distribution unique.  Because
-all Linux distributions are born to Debian etc are all built on the
-same kernel and docker uses special features of the UNIX file system
-to create these isolated environments.
-</p>
-
-<p>
-So containers are compromised the separation and sandbox is not quite
-as extreme, but it's enough and as a result a container can start up
-in seconds as opposed to minutes.  They use fewer resources to take in
-a blessed disk space and using less memory.
-</p>
-
-<p>
-So a container is a running instance of an image. An image is a
-template for creating the environment you wanted to snapshot of the
-system at a particular time.  So it's got the operating system the
-software the application code all bundled up in a file.
-</p>
-
-<p>
-Images are defined using a docker file. a dockerfile is just a text
-file with a list of steps to perform to create that image.
-</p>
-
-<p>
-For example you to configure the operating system install the software
-you need copy the project files into the right places etc.
-</p>
-
-<p>
-So you write a dockerfile then you build that and you get an image
-which you can then run to get containers.  So let's try out this whole
-process.
-</p>
-
-<p>
-First you're going to want to install docker for Mac or for Windows.
-Links are in the description this is just some software to allow
-docker containers to run on your computer. And unless you've got a
-specific reason to use it ignore docker toolbox that's the older way
-to run docker on a MAC or PC.
-</p>
-
-<p>
-I've created a new folder just on my desktop for this demonstration
-and I'm going to write a super simple hello world application in
-PHP. It's literally just going to echo hello world.
-</p>
-
-<p>
-And I'm going to save that in a folder called SRC for source as
-<code>index.php</code> right now you can't execute that file you need a web
-server our goal is to use docker to create one.
-</p>
-
-<p>
-So let's make a new file and we're going to call this
-dockerfile. We're going to save it next to the source folder not
-inside docker file capital d one word and in here we're going to use
-cold to configure our environment so for this we want an operating
-system with PHP and Apache installed.  Apache is the web server
-software.
-</p>
-
-<p>
-The cool thing though is we don't have to start from scratch.  We
-start in our docker file with the name of an existing image.  An image
-that has already been built and then we build on top of that.
-Conveniently you can find lots of existing images on at the docker
-hub.
-</p>
-
-<p>
-So if you go to <a href="http://hub.docker.com">http://hub.docker.com</a>. Sign up the search doesn't seem
-to work if you logged out you can search for images. So we can search
-for a PHP image now the hub includes images from the whole
-community. So it's up to you to decide if the image is suitable and
-well-maintained the best ones to look out for are the official ones.
-</p>
-
-<p>
-Luckily for us an official PHP image already exists, at the top you'll
-find all the variations of the image these are called tags.
-</p>
-
-<p>
-So we just want to like the latest version of PHP and we want to
-apache it as well. So this line right here this has a few versions of
-PHP with Apache. Going left to right they get less specific so this
-will give you specifically 7.0.10.
-</p>
-
-<p>
-All the way to the end where this will always just give you the latest
-version of PHP that one's usually a bad idea though. Because that
-means PHP could just unexpectedly be upgraded and a might break your
-old code.  But one of these are the ones is fine for us now.
-</p>
-
-<p>
-If you scroll down you even get instructions telling you how to use
-the image If you find the Apache section it tells you what to put in
-the dockerfile.
-</p>
-
-<p>
-So we first want to define the base image using the from keyword. And
-we want then name of the image PHP then a colon and the name of the
-tag so we'll use as suggested 7.0-Apache. And then we want to copy our
-files inside the image using the <code>COPY</code> keyword so we want to copy the
-contents of source into <code>/var/www/html</code>.
-</p>
-
-<p>
-There just telling us here that this is where Apache will look on its
-own file system and to find the file so we should put our files
-there. And you can see now why I called that folder source just so it
-matches these instructions.
-</p>
-
-<p>
-We want one more thing in our doctor file we want to use the expose
-keyword to expose port 80.  This just means when you run the image and
-you get a container that container will listen on port 80. By default
-it will just ignore all incoming requests.
-</p>
-
-<p>
-If you're wondering what operating system this PHP image is based on.
-You can usually find the dockerfile that it's defined by. In this case
-it's linked next to the tag names. And we see it's based on
-Debian. Similarly that Debian image will have a dockerfile and they'll
-stack on top of each other like I said earlier. And this <b>layering of
-images</b> is a huge advantage of using docker.
-</p>
-
-<p>
-The PHP dockerfile is a little bit more complicated than ours but
-let's just focus on ours for now.
-</p>
-
-<p>
-So when we build our dockerfile. Docker is going to download PHP from
-the docker hub it's going to copy our files from source to this
-location inside of the image.  It's going to tell running containers
-to listen on port 80. And then it's going to output a new image our
-new customized version which will be able to run.
-</p>
-
-<p>
-So to build it I'm going to go to a terminal. First I'm going to move
-to the folder that it's in so we can see we've got docker file right
-there and I'm going to type <code>docker build -t</code> to give it a name.
-</p>
-
-<p>
-I'm just going to call it hello world and then at the end you want to
-tell it the location of the dockerfile. And since it's in the current
-directory we just want to put "." to say that.
-</p>
-
-<p>
-Oops&#x2026; helps if I save the docket file first.
-</p>
-
-<p>
-The first time you do this it'll have to download all of the layers
-that make up that PHP image. Shouldn't take too long. Wanted to got
-the image it's going to copy our files inside. At the end is outputs
-our new image and it's going to be called hello world.
-</p>
-
-<p>
-So we can run this by typing <code>docker run hello-world</code> there's one
-other thing we need in the middle of this we need to use the <code>-p</code> tag
-to forward a port port 80 from the host to port 80 in the
-container. So that means when a request gets the host the host is your
-computer when a request gets there docker is going to forward that to
-the container. And when it gets to the container that <code>expose</code> line
-that we've got in the docker file that will let the container accept
-the request and allow Apache to handle it.
-</p>
-
-<p>
-So we can run that we'll get some output from the container from
-PHP. And then we can go to "localhost" and we'll see hello world.  So
-we've done it we've got our application running inside a docker
-container.
-</p>
-
-<p>
-Now if you go back to <code>index.php</code> and you change this. When you
-refresh localhost it won't change the the docker container won't
-reflect the new version of the file. And this is because when we built
-the image it made a copy of that file to see the change you'd need to
-rebuild the image and spin up a new container from the updated image.
-</p>
-
-<p>
-During development this is obviously a massive pain and this is where
-volumes come in.
-</p>
-
-<p>
-So there are two types of volumes want to persist and share data
-between containers we only have one container. I'm not going to talk
-about this today.
-</p>
-
-<p>
-But the second type lets you share folders between the host and the
-container you can mount a local directory on your computer as a volume
-inside the container.  Then the container when it's running we'll be
-able to see the files that were working on hit control-c to stop this
-container.
-</p>
-
-<p>
-To mount a volume, we're going to add another option to the docker run
-command we're going to add <code>-v</code> and we want to tell it to mount the
-the folder <code>/users/jade/Desktop</code>.  Tt needs to be the full path not a
-relative one <code>/docker/src</code> so we want that folder (that local folder)
-to be mounted to put a caller inside the container and
-<code>/var/www/html</code>.
-</p>
-
-<p>
-So the image it copies this folder to this location inside the
-container but during development we don't just want to copy we want to
-see that folder we want a live view of that folder so we can mount it
-at that directory.
-</p>
-
-<p>
-So this time when you run it you'll see changes that we make are
-reflected straight away as soon as we refresh. The docker container
-can't see that change in the file because it's looking at the file
-itself. So this is really useful during development but before you
-deploy this and try to run the image somewhere else you will need to
-rebuild the image to get an updated copy of the files put inside.
-</p>
-
-<p>
-Volumes just give a running container the ability to see files on the
-host machines filesystem they do not change the image. So when you're
-done you can press ctrl-C to stop the container again.
-</p>
-
-<p>
-So one last thing I want to mention. You can see we can easily stop a
-container manually by pressing ctrl-C but containers will stop by
-themselves when the main process exits. In this case that would only
-be if PHP died for some unexpected reason but you can equally make
-containers with short running tasks.
-</p>
-
-<p>
-You might have a container which runs tests or a container which runs
-composer install. The process running in these containers will end
-when the task is complete. And when that main process ends the
-container will stop. 
-</p>
-
-<p>
-So for this reason you should endeavor to have one process per
-container because the life of that container is tied directly to a
-single process.
-</p>
-
-<p>
-So you don't want 5 other things going on in the background that will
-all be brought down when without warning when the main process turn it
-and the ten it just stops.
-</p>
-
-<p>
-But since containers are really lightweight you can run lots and lots
-of containers on your computer all at the same time and it's no
-problem at all. 
-</p>
-
-<p>
-So we found a suitable image as it uses a base image on the docker hub
-we wrote a dockerfile to orchestration that image and then we built
-that to output our new customized image which we could then run to get
-a container which would run our application. We mounted a volume using
-the <code>-v</code> tag and we ended up with a docker container running granters.
-It's a very simple application but it is that easy three line docker
-file gets this up and running.
-</p>
-
-<p>
-In a future video we'll look at more complex situations and we'll look
-at orchestration options and deployment options so you can get your
-container to run a website on the Internet.
-</p>
-
-<p>
-Please let me know how you fond this video. Feel free to ask any
-questions I'll try to answer as many as possible either in the
-comments or in a future video.
-</p>
-
-<p>
-Thanks for watching.
-[[<a href="http://unknow.org">http://unknow.org</a>][
-</p>
-</div>
-</div>
-<div id="outline-container-org9783c39" class="outline-2">
-<h2 id="org9783c39">Why Docker is the Perfect Fit for Microservices</h2>
-<div class="outline-text-2" id="text-org9783c39">
-<p>
-To help you understand why docker and microservices often get talked
-about together as if they were the same thing. 
-</p>
-
-<p>
-I want to take a little bit to talk about why docker is the perfect
-fit for microservices. So let's start by looking at production and
-then local advantages.
-</p>
-
-<p>
-First off, there's some production advantages that are huge.
-</p>
-
-<p>
-One, containers can build very quickly and start nearly instantly.
-</p>
-
-<p>
-Also you can create and scale services without adding more servers.
-Once your infrastructure is in place, all it takes to add a new
-service, simply run more containers across that infrastructure.
-</p>
-
-<p>
-And containerized apps also make creating new or one-off environments
-very easy simply. Spin up some really dumb servers that have docker on
-that and run as many containers any versions of containers as you
-want. If you want to make an environment just for a specific test
-case, you can easily spin that environment up run things across it in
-that environment down.
-</p>
-
-<p>
-You can also run a complete pseudo environment on your production
-infrastructure simply run different versions of different containers
-and link them all together.
-</p>
-
-<p>
-Also provisioning new services is extremely simple.
-</p>
-
-<p>
-As you've seen here's what a nodejs docker file tends to look like.
-That's about as complicated as it tends to get you may have five or
-ten more lines.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-text">FROM node:5.6.0
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<title>docker.org</title>
+			<link rel="stylesheet" href="/resources/css/main.css" />
+			<script src="/resources/js/jquery-3.4.1.min.js"></script>
+			<script src="/resources/js/swgen.js"></script>
+		</head>
+		<body>
+			<nav id='content'>
+				<ul><li><details><summary>algorithm</summary><ul><li><details><summary>introduction-to-algorithm</summary><ul><li><a href='//algorithm/introduction-to-algorithm/sort.html'>sort.org</a></li></ul></details></li><li><a href='//algorithm/string-match.html'>string-match.org</a></li></ul></details></li><li><details><summary>blog</summary><ul><li><a href='//blog/rescure-libc-deleted.html'>rescure-libc-deleted.org</a></li><li><a href='//blog/timezone.html'>timezone.org</a></li></ul></details></li><li><details><summary>book</summary><ul><li><a href='//book/git%e6%95%99%e7%a8%8b.html'>git教程.org</a></li><li><a href='//book/go%e8%af%ad%e8%a8%80%e7%bc%96%e7%a8%8b.html'>go语言编程.org</a></li><li><a href='//book/javascript%e5%85%a8%e6%a0%88%e6%95%99%e7%a8%8b.html'>javascript全栈教程.org</a></li><li><a href='//book/rich-dad-and-poor-dad.html'>rich-dad-and-poor-dad.org</a></li><li><a href='//book/%e4%ba%ba%e7%b1%bb%e7%ae%80%e5%8f%b2%e2%80%94%e2%80%94%e4%bb%8e%e5%8a%a8%e7%89%a9%e5%88%b0%e4%b8%8a%e5%b8%9d.html'>人类简史——从动物到上帝.org</a></li><li><details><summary>春秋史话</summary><ul><li><a href='//book/%e6%98%a5%e7%a7%8b%e5%8f%b2%e8%af%9d/%e6%98%a5%e7%a7%8b%e5%8f%b2%e8%af%9d.html'>春秋史话.org</a></li></ul></details></li><li><a href='//book/%e8%9a%8a%e5%ad%90%e5%b9%b2%e5%98%9b%e8%80%81%e5%8f%ae%e6%88%91.html'>蚊子干嘛老叮我.org</a></li></ul></details></li><li><details><summary>cloud</summary><ul><li><a href='//cloud/docker.html'>docker.org</a></li><li><a href='//cloud/gcp.html'>gcp.org</a></li><li><a href='//cloud/gke.html'>gke.org</a></li><li><a href='//cloud/helm.html'>helm.org</a></li><li><details><summary>kubernetes</summary><ul><li><a href='//cloud/kubernetes/README.html'>README.org</a></li><li><a href='//cloud/kubernetes/cloudman.html'>cloudman.org</a></li><li><a href='//cloud/kubernetes/content.html'>content.org</a></li><li><a href='//cloud/kubernetes/controller.html'>controller.org</a></li><li><a href='//cloud/kubernetes/golang.html'>golang.org</a></li><li><a href='//cloud/kubernetes/k8s.html'>k8s.org</a></li><li><a href='//cloud/kubernetes/kubeadm.html'>kubeadm.org</a></li><li><a href='//cloud/kubernetes/kuberbuilder.html'>kuberbuilder.org</a></li><li><a href='//cloud/kubernetes/kubernetes-guide.html'>kubernetes-guide.org</a></li><li><a href='//cloud/kubernetes/operator.html'>operator.org</a></li><li><a href='//cloud/kubernetes/rbac.html'>rbac.org</a></li><li><a href='//cloud/kubernetes/registry.html'>registry.org</a></li><li><a href='//cloud/kubernetes/todo.html'>todo.org</a></li><li><a href='//cloud/kubernetes/tutorial.html'>tutorial.org</a></li><li><a href='//cloud/kubernetes/what-is-container.html'>what-is-container.org</a></li></ul></details></li></ul></details></li><li><details><summary>csapp</summary><ul><li><a href='//csapp/csapp-digest.html'>csapp-digest.org</a></li><li><a href='//csapp/cscpp.html'>cscpp.org</a></li></ul></details></li><li><a href='//docker.html'>docker.org</a></li><li><details><summary>emacs</summary><ul><li><a href='//emacs/orgmode.html'>orgmode.org</a></li></ul></details></li><li><details><summary>history</summary><ul><li><a href='//history/%e5%85%a8%e7%90%83%e9%80%9a%e5%8f%b2.html'>全球通史.org</a></li><li><a href='//history/%e5%8d%97%e5%8c%97%e6%9c%9d.html'>南北朝.org</a></li><li><a href='//history/%e6%99%8b%e5%8f%b2.html'>晋史.org</a></li></ul></details></li><li><details><summary>linux</summary><ul><li><a href='//linux/centos.html'>centos.org</a></li><li><a href='//linux/filesystem.html'>filesystem.org</a></li><li><a href='//linux/init.d.html'>init.d.org</a></li><li><a href='//linux/iptables.html'>iptables.org</a></li><li><a href='//linux/linuxcast.html'>linuxcast.org</a></li><li><a href='//linux/ss.html'>ss.org</a></li><li><a href='//linux/suse.html'>suse.org</a></li><li><a href='//linux/vps.html'>vps.org</a></li></ul></details></li><li><details><summary>literal</summary><ul><li><a href='//literal/book.html'>book.org</a></li><li><a href='//literal/han.html'>han.org</a></li><li><a href='//literal/movie.html'>movie.org</a></li><li><a href='//literal/nounce.html'>nounce.org</a></li><li><a href='//literal/person.html'>person.org</a></li><li><a href='//literal/%e5%9f%ba%e7%9d%a3%e5%b1%b1%e4%bc%af%e7%88%b5.html'>基督山伯爵.org</a></li></ul></details></li><li><details><summary>math</summary><ul><li><a href='//math/%e6%a6%82%e7%8e%87%e8%ae%ba%e4%b8%8e%e6%95%b0%e7%90%86%e7%bb%9f%e8%ae%a1.html'>概率论与数理统计.org</a></li></ul></details></li><li><a href='//mindmap.html'>mindmap.org</a></li><li><details><summary>misc</summary><ul><li><a href='//misc/org-usage.html'>org-usage.org</a></li><li><a href='//misc/screen.html'>screen.org</a></li></ul></details></li><li><details><summary>network</summary><ul><li><a href='//network/ssl.html'>ssl.org</a></li></ul></details></li><li><a href='//opengl.html'>opengl.org</a></li><li><a href='//orgmode.html'>orgmode.org</a></li><li><details><summary>os</summary><ul><li><a href='//os/80386.html'>80386.org</a></li><li><a href='//os/8259a.html'>8259a.org</a></li><li><a href='//os/boot.html'>boot.org</a></li><li><a href='//os/gcc-inline-asm.html'>gcc-inline-asm.md</a></li><li><a href='//os/linux.html'>linux.org</a></li></ul></details></li><li><details><summary>policy</summary><ul><li><a href='//policy/%e5%85%a8%e7%90%83%e5%8c%96%e6%b3%a2%e6%8a%98%e4%b8%8e%e6%b0%91%e8%90%a5%e7%bb%8f%e6%b5%8e%e7%9a%84%e6%9c%aa%e6%9d%a5_%e5%91%a8%e5%85%b6%e4%bb%81.html'>全球化波折与民营经济的未来_周其仁.org</a></li></ul></details></li><li><details><summary>programming</summary><ul><li><details><summary>algorithm</summary><ul><li><details><summary>algorithm4th</summary><ul><li><a href='//programming/algorithm/algorithm4th/algorithm.html'>algorithm.org</a></li></ul></details></li><li><a href='//programming/algorithm/%e5%b0%8f%e7%94%b2%e9%b1%bc-%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84%e4%b8%8e%e7%ae%97%e6%b3%95-%e8%a7%86%e9%a2%91%e7%ac%94%e8%ae%b0.html'>小甲鱼-数据结构与算法-视频笔记.org</a></li></ul></details></li><li><details><summary>clojure</summary><ul><li><a href='//programming/clojure/clojure.tools.logging.html'>clojure.tools.logging.md</a></li></ul></details></li><li><details><summary>cpp</summary><ul><li><a href='//programming/cpp/tutorials.html'>tutorials.org</a></li></ul></details></li><li><details><summary>elasticsearch</summary><ul><li><a href='//programming/elasticsearch/elasticsearch-definitive-guide-note.html'>elasticsearch-definitive-guide-note.org</a></li></ul></details></li><li><details><summary>git</summary><ul><li><a href='//programming/git/git.html'>git.org</a></li></ul></details></li><li><details><summary>golang</summary><ul><li><a href='//programming/golang/cmd.html'>cmd.org</a></li><li><a href='//programming/golang/effective-go.html'>effective-go.org</a></li><li><a href='//programming/golang/go-concurrency.html'>go-concurrency.org</a></li><li><a href='//programming/golang/how-to-write-go-code.html'>how-to-write-go-code.org</a></li><li><a href='//programming/golang/json.html'>json.org</a></li><li><details><summary>learn-go-note</summary><ul><li><a href='//programming/golang/learn-go-note/learning-go.html'>learning-go.org</a></li></ul></details></li><li><a href='//programming/golang/library.html'>library.org</a></li><li><a href='//programming/golang/misc.html'>misc.org</a></li><li><a href='//programming/golang/reflect.html'>reflect.org</a></li><li><a href='//programming/golang/template.html'>template.org</a></li><li><a href='//programming/golang/the-little-go-book.html'>the-little-go-book.org</a></li><li><a href='//programming/golang/%e6%97%a0%e9%97%bb%e8%a7%86%e9%a2%91%e7%ac%94%e8%ae%b0.html'>无闻视频笔记.org</a></li></ul></details></li><li><details><summary>hadoop</summary><ul><li><a href='//programming/hadoop/hdfs-permission-guide-note.html'>hdfs-permission-guide-note.org</a></li></ul></details></li><li><details><summary>java</summary><ul><li><a href='//programming/java/derby.html'>derby.org</a></li><li><a href='//programming/java/ivy-vs-maven.html'>ivy-vs-maven.org</a></li><li><a href='//programming/java/java-note.html'>java-note.org</a></li><li><a href='//programming/java/maven.html'>maven.org</a></li><li><a href='//programming/java/servlet.html'>servlet.org</a></li><li><a href='//programming/java/thing-java.html'>thing-java.org</a></li><li><a href='//programming/java/%e6%b7%b1%e5%85%a5%e7%90%86%e8%a7%a3java%e8%99%9a%e6%8b%9f%e6%9c%ba.html'>深入理解java虚拟机.org</a></li></ul></details></li><li><details><summary>javascript</summary><ul><li><a href='//programming/javascript/angularjs.html'>angularjs.org</a></li><li><a href='//programming/javascript/dom.html'>dom.org</a></li></ul></details></li><li><a href='//programming/javascript.html'>javascript.org</a></li><li><details><summary>lisp</summary><ul><li><a href='//programming/lisp/the-little-schemer.html'>the-little-schemer.org</a></li></ul></details></li><li><details><summary>python</summary><ul><li><a href='//programming/python/asyncio.html'>asyncio.org</a></li><li><a href='//programming/python/flask.html'>flask.org</a></li><li><a href='//programming/python/idiomatic-python-note.html'>idiomatic-python-note.org</a></li><li><a href='//programming/python/jinja2.html'>jinja2.org</a></li><li><a href='//programming/python/package-manage.html'>package-manage.org</a></li><li><a href='//programming/python/pygame.html'>pygame.org</a></li><li><a href='//programming/python/tools.html'>tools.org</a></li></ul></details></li><li><details><summary>scala</summary><ul><li><a href='//programming/scala/programming-in-scala.html'>programming-in-scala.org</a></li><li><a href='//programming/scala/scala.html'>scala.org</a></li><li><a href='//programming/scala/scalikeJDBC.html'>scalikeJDBC.org</a></li></ul></details></li><li><a href='//programming/storm.html'>storm.org</a></li><li><a href='//programming/thrift.html'>thrift.org</a></li><li><a href='//programming/typescript.html'>typescript.org</a></li><li><details><summary>web</summary><ul><li><a href='//programming/web/liquid.html'>liquid.org</a></li></ul></details></li></ul></details></li><li><details><summary>rdbms</summary><ul><li><a href='//rdbms/rdbms.html'>rdbms.org</a></li></ul></details></li><li><details><summary>resource</summary><ul><li><a href='//resource/emacs.html'>emacs.md</a></li><li><a href='//resource/ml-resource.html'>ml-resource.md</a></li><li><a href='//resource/nlp-resource.html'>nlp-resource.md</a></li></ul></details></li><li><details><summary>services</summary><ul><li><details><summary>mail</summary><ul><li><a href='//services/mail/mail.html'>mail.org</a></li></ul></details></li></ul></details></li><li><details><summary>subtitle</summary><ul><li><a href='//subtitle/docker.html'>docker.org</a></li></ul></details></li><li><details><summary>toarous</summary><ul><li><a href='//toarous/README.html'>README.md</a></li><li><a href='//toarous/idt.html'>idt.md</a></li><li><a href='//toarous/intel.html'>intel.org</a></li><li><a href='//toarous/notes.html'>notes.org</a></li><li><a href='//toarous/osx-environment.html'>osx-environment.org</a></li><li><a href='//toarous/vga.html'>vga.md</a></li></ul></details></li><li><details><summary>tools</summary><ul><li><a href='//tools/GCP.html'>GCP.org</a></li><li><a href='//tools/ansible.html'>ansible.org</a></li><li><a href='//tools/bash.html'>bash.org</a></li><li><a href='//tools/gerrit.html'>gerrit.org</a></li><li><a href='//tools/git.html'>git.org</a></li><li><a href='//tools/gpg.html'>gpg.org</a></li><li><a href='//tools/markdown.html'>markdown.org</a></li><li><a href='//tools/nginx.html'>nginx.org</a></li><li><a href='//tools/rpm.html'>rpm.org</a></li><li><a href='//tools/spark.html'>spark.org</a></li><li><a href='//tools/tmux.html'>tmux.org</a></li></ul></details></li><li><details><summary>ui</summary><ul><li><a href='//ui/react.html'>react.org</a></li><li><a href='//ui/tk.html'>tk.org</a></li></ul></details></li><li><details><summary>web</summary><ul><li><a href='//web/chrome-extension.html'>chrome-extension.org</a></li></ul></details></li><li><a href='//words.html'>words.org</a></li><li><a href='//%e7%bd%91%e6%b0%91%e7%9a%84%e7%8b%82%e6%ac%a2.html'>网民的狂欢.org</a></li></ul>
+			</nav>
+			<section class="main-article-area">
+				<div id='main'>
+					<h2 id="complete-docker-course"><a href="https://www.youtube.com/watch?v=zIALD-U3pXM">Complete Docker Course!</a></h2>
+<p>Hey everybody I have huge news for you. See that rocket ship going to Saturn? Yeah that's how big this news really is.</p>
+<p>Docker is seriously awesome. It's my favorite most preferred way to package and deploy applications of any kind. If you've been following me on Twitter, you know that I really really like docker.</p>
+<p>And you're like: dude I haven't been hearing that yeah you haven't because it's true. So I've been working on a way to help you get past the docker basics.</p>
+<p>There are so many hello world application tutorials out there with docker. But it's hard to find good information to get you past those basics. So I've been making a course called real world docker.</p>
+<p>See how that flew in? that was really cool. So I'm going to do it twice. Awesmoe!</p>
+<p>And that guy there with the pen in the paper that illustrates that I've been working really hard on this course. Because I have it's a lot more work to put together a full course than to throw together a couple Hello World tutorials. So I've been doing it with O'Reilly Media. There're awesome they put out great stuff. They're those animal book people! Yeah! They really like animals. I think that's a goat or maybe it's a yak. I'm not really sure it might be a male sheep. But anyway they love their animals and they put out great web content if you're familiar with them again the course is called real world docker.</p>
+<p>We've recently released it and it's going to be super cool. It's going to take you from feeling scared confused and alone from only knowing those docker basics that you see on those Hello World tutorials to not felling so scared so confused and so alone to get that confidence to actually deploy a docker application into production and then it's going to get you to the point of wow bring on the millions of users because I just scaled this application to handle massive traffic load and you get lots of code that's right lots of code. Any code that we use in any of the examples you get to take home and copy and paste and mess with and hack it's all yours.</p>
+<p>So what will you actually learn well you're going to learn docker deployments. Everything from really simple single monolithic applications with continuous deployment that means you merge it to the master branch and it goes out to production merge it to the staging branch and it's on staging you're also going to learn how to brewk that app up into micro services which can scale much better in a large scenario and you're going to learn some of the deployment jeez that huge companies like Netflix use when they're deploying services across a large infrastructure. You're also going to learn networking and service discovery so you can swarm mupltiple servers together to act like on deployment platform when you can run apps on any one of those servers and everything just talks together just find and you'll also learn immutable and disponsable infrastructure which basically means you don't fix servers and apps when things go wrong you just destroy them and replace them and with continuous deployment you actually do it all the time it's a great way of deploying your application infrastructure. You're thinking wow, that's coll you're right! That's actually my next slide. It's so cool.</p>
+<p>Thank you for bringing that up so. Again it's called real-world docker. The link is in the description and also you can go to O'Reilly comm and search for real-world docker it's also available on Safari Books if your company provides you with the Safari Books membership and so go check it out you're going to love the course it's going to help you out a ton and I give you information on how to contact me, So I'm available to help you out if you have any issues with that course. Enjoy and have a great day.</p>
+<h2 id="learn-docker-in-12-minutes">Learn Docker in 12 Minutes</h2>
+<p>Docker is a tool for running applications in an isolated environment.</p>
+<p>It gives you advantages similar to running your application inside a virtual machine. Some of those advantages are your app always runs in exactly the same environment, so you don't get inconsistencies in how it behaves. If it works on your computer it works on every computer it works on the live server. It always acts the same.</p>
+<p>If you're working on multiple projects it lets you sandbox each one and keep them separate good for security and eliminate a potential conflict between different projects.</p>
+<p>And lastly it makes it easier to get going with somebody else's projects. you don't have to install all of the tools and dependencies that the project needs you just spin up the virtual machine put your call inside and it works.</p>
+<p>Docker gives you these advantages but without the overhead and hassle of running and managing a virtual machine.</p>
+<p>Instead we have containers. The code and the environment are all wrapped up inside a container. But a container is not a full virtual machine.</p>
+<p>When you're going to virtual machine each machine gets its own full operating system including the kernel. The kernel is like the core of the operating system the bit that controls the low-level stuff. And this is quite resource heavy on the host machine the computer running the virtual machines.</p>
+<p>Containers however they all use the host machines kernel a core bit of the operating system is shared but everything on top of that is still separated. Everything that makes a Linux distribution unique. Because all Linux distributions are born to Debian etc are all built on the same kernel and docker uses special features of the UNIX file system to create these isolated environments.</p>
+<p>So containers are compromised the separation and sandbox is not quite as extreme, but it's enough and as a result a container can start up in seconds as opposed to minutes. They use fewer resources to take in a blessed disk space and using less memory.</p>
+<p>So a container is a running instance of an image. An image is a template for creating the environment you wanted to snapshot of the system at a particular time. So it's got the operating system the software the application code all bundled up in a file.</p>
+<p>Images are defined using a docker file. a dockerfile is just a text file with a list of steps to perform to create that image.</p>
+<p>For example you to configure the operating system install the software you need copy the project files into the right places etc.</p>
+<p>So you write a dockerfile then you build that and you get an image which you can then run to get containers. So let's try out this whole process.</p>
+<p>First you're going to want to install docker for Mac or for Windows. Links are in the description this is just some software to allow docker containers to run on your computer. And unless you've got a specific reason to use it ignore docker toolbox that's the older way to run docker on a MAC or PC.</p>
+<p>I've created a new folder just on my desktop for this demonstration and I'm going to write a super simple hello world application in PHP. It's literally just going to echo hello world.</p>
+<p>And I'm going to save that in a folder called SRC for source as <code>index.php</code> right now you can't execute that file you need a web server our goal is to use docker to create one.</p>
+<p>So let's make a new file and we're going to call this dockerfile. We're going to save it next to the source folder not inside docker file capital d one word and in here we're going to use cold to configure our environment so for this we want an operating system with PHP and Apache installed. Apache is the web server software.</p>
+<p>The cool thing though is we don't have to start from scratch. We start in our docker file with the name of an existing image. An image that has already been built and then we build on top of that. Conveniently you can find lots of existing images on at the docker hub.</p>
+<p>So if you go to <a href="http://hub.docker.com" class="uri">http://hub.docker.com</a>. Sign up the search doesn't seem to work if you logged out you can search for images. So we can search for a PHP image now the hub includes images from the whole community. So it's up to you to decide if the image is suitable and well-maintained the best ones to look out for are the official ones.</p>
+<p>Luckily for us an official PHP image already exists, at the top you'll find all the variations of the image these are called tags.</p>
+<p>So we just want to like the latest version of PHP and we want to apache it as well. So this line right here this has a few versions of PHP with Apache. Going left to right they get less specific so this will give you specifically 7.0.10.</p>
+<p>All the way to the end where this will always just give you the latest version of PHP that one's usually a bad idea though. Because that means PHP could just unexpectedly be upgraded and a might break your old code. But one of these are the ones is fine for us now.</p>
+<p>If you scroll down you even get instructions telling you how to use the image If you find the Apache section it tells you what to put in the dockerfile.</p>
+<p>So we first want to define the base image using the from keyword. And we want then name of the image PHP then a colon and the name of the tag so we'll use as suggested 7.0-Apache. And then we want to copy our files inside the image using the <code>COPY</code> keyword so we want to copy the contents of source into <code>/var/www/html</code>.</p>
+<p>There just telling us here that this is where Apache will look on its own file system and to find the file so we should put our files there. And you can see now why I called that folder source just so it matches these instructions.</p>
+<p>We want one more thing in our doctor file we want to use the expose keyword to expose port 80. This just means when you run the image and you get a container that container will listen on port 80. By default it will just ignore all incoming requests.</p>
+<p>If you're wondering what operating system this PHP image is based on. You can usually find the dockerfile that it's defined by. In this case it's linked next to the tag names. And we see it's based on Debian. Similarly that Debian image will have a dockerfile and they'll stack on top of each other like I said earlier. And this <strong>layering of images</strong> is a huge advantage of using docker.</p>
+<p>The PHP dockerfile is a little bit more complicated than ours but let's just focus on ours for now.</p>
+<p>So when we build our dockerfile. Docker is going to download PHP from the docker hub it's going to copy our files from source to this location inside of the image. It's going to tell running containers to listen on port 80. And then it's going to output a new image our new customized version which will be able to run.</p>
+<p>So to build it I'm going to go to a terminal. First I'm going to move to the folder that it's in so we can see we've got docker file right there and I'm going to type <code>docker build -t</code> to give it a name.</p>
+<p>I'm just going to call it hello world and then at the end you want to tell it the location of the dockerfile. And since it's in the current directory we just want to put &quot;.&quot; to say that.</p>
+<p>Oops... helps if I save the docket file first.</p>
+<p>The first time you do this it'll have to download all of the layers that make up that PHP image. Shouldn't take too long. Wanted to got the image it's going to copy our files inside. At the end is outputs our new image and it's going to be called hello world.</p>
+<p>So we can run this by typing <code>docker run hello-world</code> there's one other thing we need in the middle of this we need to use the <code>-p</code> tag to forward a port port 80 from the host to port 80 in the container. So that means when a request gets the host the host is your computer when a request gets there docker is going to forward that to the container. And when it gets to the container that <code>expose</code> line that we've got in the docker file that will let the container accept the request and allow Apache to handle it.</p>
+<p>So we can run that we'll get some output from the container from PHP. And then we can go to &quot;localhost&quot; and we'll see hello world. So we've done it we've got our application running inside a docker container.</p>
+<p>Now if you go back to <code>index.php</code> and you change this. When you refresh localhost it won't change the the docker container won't reflect the new version of the file. And this is because when we built the image it made a copy of that file to see the change you'd need to rebuild the image and spin up a new container from the updated image.</p>
+<p>During development this is obviously a massive pain and this is where volumes come in.</p>
+<p>So there are two types of volumes want to persist and share data between containers we only have one container. I'm not going to talk about this today.</p>
+<p>But the second type lets you share folders between the host and the container you can mount a local directory on your computer as a volume inside the container. Then the container when it's running we'll be able to see the files that were working on hit control-c to stop this container.</p>
+<p>To mount a volume, we're going to add another option to the docker run command we're going to add <code>-v</code> and we want to tell it to mount the the folder <code>/users/jade/Desktop</code>. Tt needs to be the full path not a relative one <code>/docker/src</code> so we want that folder (that local folder) to be mounted to put a caller inside the container and <code>/var/www/html</code>.</p>
+<p>So the image it copies this folder to this location inside the container but during development we don't just want to copy we want to see that folder we want a live view of that folder so we can mount it at that directory.</p>
+<p>So this time when you run it you'll see changes that we make are reflected straight away as soon as we refresh. The docker container can't see that change in the file because it's looking at the file itself. So this is really useful during development but before you deploy this and try to run the image somewhere else you will need to rebuild the image to get an updated copy of the files put inside.</p>
+<p>Volumes just give a running container the ability to see files on the host machines filesystem they do not change the image. So when you're done you can press ctrl-C to stop the container again.</p>
+<p>So one last thing I want to mention. You can see we can easily stop a container manually by pressing ctrl-C but containers will stop by themselves when the main process exits. In this case that would only be if PHP died for some unexpected reason but you can equally make containers with short running tasks.</p>
+<p>You might have a container which runs tests or a container which runs composer install. The process running in these containers will end when the task is complete. And when that main process ends the container will stop.</p>
+<p>So for this reason you should endeavor to have one process per container because the life of that container is tied directly to a single process.</p>
+<p>So you don't want 5 other things going on in the background that will all be brought down when without warning when the main process turn it and the ten it just stops.</p>
+<p>But since containers are really lightweight you can run lots and lots of containers on your computer all at the same time and it's no problem at all.</p>
+<p>So we found a suitable image as it uses a base image on the docker hub we wrote a dockerfile to orchestration that image and then we built that to output our new customized image which we could then run to get a container which would run our application. We mounted a volume using the <code>-v</code> tag and we ended up with a docker container running granters. It's a very simple application but it is that easy three line docker file gets this up and running.</p>
+<p>In a future video we'll look at more complex situations and we'll look at orchestration options and deployment options so you can get your container to run a website on the Internet.</p>
+<p>Please let me know how you fond this video. Feel free to ask any questions I'll try to answer as many as possible either in the comments or in a future video.</p>
+<p>Thanks for watching. [[<a href="http://unknow.org" class="uri">http://unknow.org</a>][</p>
+<h2 id="why-docker-is-the-perfect-fit-for-microservices">Why Docker is the Perfect Fit for Microservices</h2>
+<p>To help you understand why docker and microservices often get talked about together as if they were the same thing.</p>
+<p>I want to take a little bit to talk about why docker is the perfect fit for microservices. So let's start by looking at production and then local advantages.</p>
+<p>First off, there's some production advantages that are huge.</p>
+<p>One, containers can build very quickly and start nearly instantly.</p>
+<p>Also you can create and scale services without adding more servers. Once your infrastructure is in place, all it takes to add a new service, simply run more containers across that infrastructure.</p>
+<p>And containerized apps also make creating new or one-off environments very easy simply. Spin up some really dumb servers that have docker on that and run as many containers any versions of containers as you want. If you want to make an environment just for a specific test case, you can easily spin that environment up run things across it in that environment down.</p>
+<p>You can also run a complete pseudo environment on your production infrastructure simply run different versions of different containers and link them all together.</p>
+<p>Also provisioning new services is extremely simple.</p>
+<p>As you've seen here's what a nodejs docker file tends to look like. That's about as complicated as it tends to get you may have five or ten more lines.</p>
+<pre class="text"><code>FROM node:5.6.0
 
 ENV DEBUG app:prod
 ENV NODE_ENV production
 
 # configure timezone
-RUN echo "America/Chicago" &gt; /etc/timezone
+RUN echo &quot;America/Chicago&quot; &gt; /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 WORKDIR /app
@@ -717,151 +103,46 @@ RUN npm run webpack
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
-</pre>
-</div>
-
-<p>
-But it's rarely any bigger than that if you're using a compiled
-language such as golang. It can actually get drastically
-simpler. Here's a golang dockerfile you start from scratch add your
-binary and run your binary. That's extremely simple and as you can
-imagine it builds very quickly.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-text">FROM scratch
+CMD [&quot;npm&quot;, &quot;start&quot;]
+</code></pre>
+<p>But it's rarely any bigger than that if you're using a compiled language such as golang. It can actually get drastically simpler. Here's a golang dockerfile you start from scratch add your binary and run your binary. That's extremely simple and as you can imagine it builds very quickly.</p>
+<pre class="text"><code>FROM scratch
 ADD main /
-CMD ["/main"]
-</pre>
-</div>
-
-<p>
-And then here's one of the most complex ones. This would be a PHP
-nginx docker file and it's still really not that bad. 44 lines of code
-extremely simple to read and understand what's going on if you know
-server administration at all. And it's just easy to provision a
-complete image for running a PHP environment. So that's about as
-complicated as that gets.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-text">... (skip)
-</pre>
-</div>
-
-<p>
-Let's look at some local development advantages.
-</p>
-
-<p>
-First off it's very easy to run many services locally on your own
-local docker virtual machine. It's easy to run five 10, 50 or 100
-services all at the same time.
-</p>
-
-<p>
-Now if you wanted to do this with virtual machines such as vagrant or
-something like that. It doesn't really work very well for
-microservices. Because it's really hard and painful for your local
-development machine to run a hundred different things at once. You
-basically have to go one of two directions, you either under power
-your virtual machines so you can actually afford to run them all which
-gives you a really bad idea of how we'll all work when you're on
-production, or you have to adequately power those machines, leaving
-your local development machine highly taxed and possibly running very
-poorly
-</p>
-
-<p>
-Where again with docker, simply it's easy to run many many services
-also running service. Dependencies is very seamless. Docker compose
-makes it easy for each service to require as fewer as many support
-services as it wants with no overhead.
-</p>
-
-<p>
-As you can see, here's a dockerfile that has our web instance easily
-depending on Postgres and Redis. If the next service I work on doesn't
-require these I can easily stop all of these services and start the
-ones required to work on another service.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-text">version: "2"
+CMD [&quot;/main&quot;]
+</code></pre>
+<p>And then here's one of the most complex ones. This would be a PHP nginx docker file and it's still really not that bad. 44 lines of code extremely simple to read and understand what's going on if you know server administration at all. And it's just easy to provision a complete image for running a PHP environment. So that's about as complicated as that gets.</p>
+<pre class="text"><code>... (skip)
+</code></pre>
+<p>Let's look at some local development advantages.</p>
+<p>First off it's very easy to run many services locally on your own local docker virtual machine. It's easy to run five 10, 50 or 100 services all at the same time.</p>
+<p>Now if you wanted to do this with virtual machines such as vagrant or something like that. It doesn't really work very well for microservices. Because it's really hard and painful for your local development machine to run a hundred different things at once. You basically have to go one of two directions, you either under power your virtual machines so you can actually afford to run them all which gives you a really bad idea of how we'll all work when you're on production, or you have to adequately power those machines, leaving your local development machine highly taxed and possibly running very poorly</p>
+<p>Where again with docker, simply it's easy to run many many services also running service. Dependencies is very seamless. Docker compose makes it easy for each service to require as fewer as many support services as it wants with no overhead.</p>
+<p>As you can see, here's a dockerfile that has our web instance easily depending on Postgres and Redis. If the next service I work on doesn't require these I can easily stop all of these services and start the ones required to work on another service.</p>
+<pre class="text"><code>version: &quot;2&quot;
 services:
   web:
     depends_on:
-      - postgres
-      - redis
+  - postgres
+  - redis
     image: mycompany/awesome-app
     ports:
-      - 80:80
+  - 80:80
   postgres:
     image: postgres
     environment:
-      - "POSTGRES_PASSWORD=mypassword"
+  - &quot;POSTGRES_PASSWORD=mypassword&quot;
   redis:
     image: redis
-</pre>
-</div>
+</code></pre>
+<p>Also if I add any other services that were dependencies. That are maybe services my company owns. I could easily add five 10 or 50 supporting services to this docker compose file.</p>
+<p>While good microservices design means you don't often have to run any supporting microservices, you're still capable and able to do it very simply.</p>
+<p>You also have fewer boundaries when you're using docker with microservices. You can use multiple languages frameworks and databases for one. So you have a truly polyglot setup should you desire if you have an expensive computational service. You can use a more low-level language. Whereas if you have other services that don't require that low level power, you can use something more scripted. You can choose the correct language, the correct database, the correct framework for each piece of your application.</p>
+<p>You can also connect multiple cloud providers to the same overlay Network. You could have AWS servers side-by-side with digital ocean servers. And it's not difficult to do, because overlay networking allows them all to communicate. You're really just not locked down as much having to have everything run in exactly the same place.</p>
+<p>It's also really easy to run one-off support services. So you're building a microservice and it would really benefit from having Kafka running alongside of it. If you weren't running docker you'd have to provision a Kafka server, get Kafka up and running and then connect that to the service. You're building that wants to use whereas with the docker compose file as you saw earlier. It's simple just run cough cut and connect the two and then when you're ready for production just run a kafka container and connect the two. It's about the same way so there you have it.</p>
+<p>There's some quick wins on why docker is really the perfect fit for microservices. There's a lot of production as well as local development advantages for it. And if you're doing microservices, it really should be your default tool of choice.</p>
 
-<p>
-Also if I add any other services that were dependencies. That are
-maybe services my company owns. I could easily add five 10 or 50
-supporting services to this docker compose file.
-</p>
-
-<p>
-While good microservices design means you don't often have to run any
-supporting microservices, you're still capable and able to do it very
-simply.
-</p>
-
-<p>
-You also have fewer boundaries when you're using docker with
-microservices.  You can use multiple languages frameworks and
-databases for one. So you have a truly polyglot setup should you
-desire if you have an expensive computational service. You can use a
-more low-level language. Whereas if you have other services that don't
-require that low level power, you can use something more scripted. You
-can choose the correct language, the correct database, the correct
-framework for each piece of your application.
-</p>
-
-<p>
-You can also connect multiple cloud providers to the same overlay
-Network. You could have AWS servers side-by-side with digital ocean
-servers. And it's not difficult to do, because overlay networking
-allows them all to communicate. You're really just not locked down as
-much having to have everything run in exactly the same place.
-</p>
-
-<p>
-It's also really easy to run one-off support services. So you're
-building a microservice and it would really benefit from having Kafka
-running alongside of it. If you weren't running docker you'd have to
-provision a Kafka server, get Kafka up and running and then connect
-that to the service. You're building that wants to use whereas with
-the docker compose file as you saw earlier. It's simple just run cough
-cut and connect the two and then when you're ready for production just
-run a kafka container and connect the two. It's about the same way so
-there you have it.
-</p>
-
-<p>
-There's some quick wins on why docker is really the perfect fit for
-microservices. There's a lot of production as well as local
-development advantages for it.  And if you're doing microservices, it
-really should be your default tool of choice.
-</p>
-</div>
-</div>
-</div>
-<div id="postamble" class="status">
-<p class="author">Author: Zhao WenBin</p>
-<p class="date">Created: 2018-09-13 四 20:19</p>
-<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
-</div>
-</body>
-</html>
+				</div>
+			</section>
+		</body>
+	</html>
+	

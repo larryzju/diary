@@ -1,407 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<!-- 2018-09-13 四 20:19 -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>note on "programming in scala 2ed"</title>
-<meta name="generator" content="Org mode">
-<meta name="author" content="zhaowenbin">
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
-  .title  { text-align: center;
-             margin-bottom: .2em; }
-  .subtitle { text-align: center;
-              font-size: medium;
-              font-weight: bold;
-              margin-top:0; }
-  .todo   { font-family: monospace; color: red; }
-  .done   { font-family: monospace; color: green; }
-  .priority { font-family: monospace; color: orange; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
-  pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
-  }
-  pre.src {
-    position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
-    padding: 3px;
-    border: 1px solid black;
-  }
-  pre.src:hover:before { display: inline;}
-  /* Languages per Org manual */
-  pre.src-asymptote:before { content: 'Asymptote'; }
-  pre.src-awk:before { content: 'Awk'; }
-  pre.src-C:before { content: 'C'; }
-  /* pre.src-C++ doesn't work in CSS */
-  pre.src-clojure:before { content: 'Clojure'; }
-  pre.src-css:before { content: 'CSS'; }
-  pre.src-D:before { content: 'D'; }
-  pre.src-ditaa:before { content: 'ditaa'; }
-  pre.src-dot:before { content: 'Graphviz'; }
-  pre.src-calc:before { content: 'Emacs Calc'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-fortran:before { content: 'Fortran'; }
-  pre.src-gnuplot:before { content: 'gnuplot'; }
-  pre.src-haskell:before { content: 'Haskell'; }
-  pre.src-java:before { content: 'Java'; }
-  pre.src-js:before { content: 'Javascript'; }
-  pre.src-latex:before { content: 'LaTeX'; }
-  pre.src-ledger:before { content: 'Ledger'; }
-  pre.src-lisp:before { content: 'Lisp'; }
-  pre.src-lilypond:before { content: 'Lilypond'; }
-  pre.src-lua:before { content: 'Lua'; }
-  pre.src-matlab:before { content: 'MATLAB'; }
-  pre.src-mscgen:before { content: 'Mscgen'; }
-  pre.src-ocaml:before { content: 'Objective Caml'; }
-  pre.src-octave:before { content: 'Octave'; }
-  pre.src-org:before { content: 'Org mode'; }
-  pre.src-oz:before { content: 'OZ'; }
-  pre.src-plantuml:before { content: 'Plantuml'; }
-  pre.src-processing:before { content: 'Processing.js'; }
-  pre.src-python:before { content: 'Python'; }
-  pre.src-R:before { content: 'R'; }
-  pre.src-ruby:before { content: 'Ruby'; }
-  pre.src-sass:before { content: 'Sass'; }
-  pre.src-scheme:before { content: 'Scheme'; }
-  pre.src-screen:before { content: 'Gnu Screen'; }
-  pre.src-sed:before { content: 'Sed'; }
-  pre.src-sh:before { content: 'shell'; }
-  pre.src-sql:before { content: 'SQL'; }
-  pre.src-sqlite:before { content: 'SQLite'; }
-  /* additional languages in org.el's org-babel-load-languages alist */
-  pre.src-forth:before { content: 'Forth'; }
-  pre.src-io:before { content: 'IO'; }
-  pre.src-J:before { content: 'J'; }
-  pre.src-makefile:before { content: 'Makefile'; }
-  pre.src-maxima:before { content: 'Maxima'; }
-  pre.src-perl:before { content: 'Perl'; }
-  pre.src-picolisp:before { content: 'Pico Lisp'; }
-  pre.src-scala:before { content: 'Scala'; }
-  pre.src-shell:before { content: 'Shell Script'; }
-  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
-  /* additional language identifiers per "defun org-babel-execute"
-       in ob-*.el */
-  pre.src-cpp:before  { content: 'C++'; }
-  pre.src-abc:before  { content: 'ABC'; }
-  pre.src-coq:before  { content: 'Coq'; }
-  pre.src-groovy:before  { content: 'Groovy'; }
-  /* additional language identifiers from org-babel-shell-names in
-     ob-shell.el: ob-shell is the only babel language using a lambda to put
-     the execution function name together. */
-  pre.src-bash:before  { content: 'bash'; }
-  pre.src-csh:before  { content: 'csh'; }
-  pre.src-ash:before  { content: 'ash'; }
-  pre.src-dash:before  { content: 'dash'; }
-  pre.src-ksh:before  { content: 'ksh'; }
-  pre.src-mksh:before  { content: 'mksh'; }
-  pre.src-posh:before  { content: 'posh'; }
-  /* Additional Emacs modes also supported by the LaTeX listings package */
-  pre.src-ada:before { content: 'Ada'; }
-  pre.src-asm:before { content: 'Assembler'; }
-  pre.src-caml:before { content: 'Caml'; }
-  pre.src-delphi:before { content: 'Delphi'; }
-  pre.src-html:before { content: 'HTML'; }
-  pre.src-idl:before { content: 'IDL'; }
-  pre.src-mercury:before { content: 'Mercury'; }
-  pre.src-metapost:before { content: 'MetaPost'; }
-  pre.src-modula-2:before { content: 'Modula-2'; }
-  pre.src-pascal:before { content: 'Pascal'; }
-  pre.src-ps:before { content: 'PostScript'; }
-  pre.src-prolog:before { content: 'Prolog'; }
-  pre.src-simula:before { content: 'Simula'; }
-  pre.src-tcl:before { content: 'tcl'; }
-  pre.src-tex:before { content: 'TeX'; }
-  pre.src-plain-tex:before { content: 'Plain TeX'; }
-  pre.src-verilog:before { content: 'Verilog'; }
-  pre.src-vhdl:before { content: 'VHDL'; }
-  pre.src-xml:before { content: 'XML'; }
-  pre.src-nxml:before { content: 'XML'; }
-  /* add a generic configuration mode; LaTeX export needs an additional
-     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
-  pre.src-conf:before { content: 'Configuration File'; }
 
-  table { border-collapse:collapse; }
-  caption.t-above { caption-side: top; }
-  caption.t-bottom { caption-side: bottom; }
-  td, th { vertical-align:top;  }
-  th.org-right  { text-align: center;  }
-  th.org-left   { text-align: center;   }
-  th.org-center { text-align: center; }
-  td.org-right  { text-align: right;  }
-  td.org-left   { text-align: left;   }
-  td.org-center { text-align: center; }
-  dt { font-weight: bold; }
-  .footpara { display: inline; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
-    background: #ffffcc;
-  }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
-  textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
-</style>
-<link rel="stylesheet" type="text/css" href="https://www.pirilampo.org/styles/readtheorg/css/htmlize.css"/>
-<link rel="stylesheet" type="text/css" href="https://www.pirilampo.org/styles/readtheorg/css/readtheorg.css"/>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.min.js"></script>
-<script type="text/javascript" src="https://www.pirilampo.org/styles/readtheorg/js/readtheorg.js"></script>
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2017 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
-</head>
-<body>
-<div id="content">
-<header>
-<h1 class="title">note on "programming in scala 2ed"</h1>
-</header><nav id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#orgf9de343">Chapter 1</a></li>
-<li><a href="#org4487700">Chapter 6. Functional Object</a></li>
-<li><a href="#org6964a1d">Chapter 8. Functions and closures</a></li>
-<li><a href="#orge47075d"><span class="todo TODO">TODO</span> Chapter 21. Implicit Conversions and Parameters</a></li>
-<li><a href="#org209a7b7"><span class="todo TODO">TODO</span> Chapter 30. Object Equality</a></li>
-</ul>
-</div>
-</nav>
-
-
-<div id="outline-container-orgf9de343" class="outline-2">
-<h2 id="orgf9de343">Chapter 1</h2>
-<div class="outline-text-2" id="text-orgf9de343">
-</div><div id="outline-container-org22dc3bf" class="outline-3">
-<h3 id="org22dc3bf">Why scala?</h3>
-<div class="outline-text-3" id="text-org22dc3bf">
-</div><div id="outline-container-org3dc6aaa" class="outline-4">
-<h4 id="org3dc6aaa">简洁性与可扩展性</h4>
-<div class="outline-text-4" id="text-org3dc6aaa">
-<p>
-在不同规模上的编程需求是不一样的。
-</p>
-
-<ul class="org-ul">
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<title>programming-in-scala.org</title>
+			<link rel="stylesheet" href="/resources/css/main.css" />
+			<script src="/resources/js/jquery-3.4.1.min.js"></script>
+			<script src="/resources/js/swgen.js"></script>
+		</head>
+		<body>
+			<nav id='content'>
+				<ul><li><details><summary>algorithm</summary><ul><li><details><summary>introduction-to-algorithm</summary><ul><li><a href='//algorithm/introduction-to-algorithm/sort.html'>sort.org</a></li></ul></details></li><li><a href='//algorithm/string-match.html'>string-match.org</a></li></ul></details></li><li><details><summary>blog</summary><ul><li><a href='//blog/rescure-libc-deleted.html'>rescure-libc-deleted.org</a></li><li><a href='//blog/timezone.html'>timezone.org</a></li></ul></details></li><li><details><summary>book</summary><ul><li><a href='//book/git%e6%95%99%e7%a8%8b.html'>git教程.org</a></li><li><a href='//book/go%e8%af%ad%e8%a8%80%e7%bc%96%e7%a8%8b.html'>go语言编程.org</a></li><li><a href='//book/javascript%e5%85%a8%e6%a0%88%e6%95%99%e7%a8%8b.html'>javascript全栈教程.org</a></li><li><a href='//book/rich-dad-and-poor-dad.html'>rich-dad-and-poor-dad.org</a></li><li><a href='//book/%e4%ba%ba%e7%b1%bb%e7%ae%80%e5%8f%b2%e2%80%94%e2%80%94%e4%bb%8e%e5%8a%a8%e7%89%a9%e5%88%b0%e4%b8%8a%e5%b8%9d.html'>人类简史——从动物到上帝.org</a></li><li><details><summary>春秋史话</summary><ul><li><a href='//book/%e6%98%a5%e7%a7%8b%e5%8f%b2%e8%af%9d/%e6%98%a5%e7%a7%8b%e5%8f%b2%e8%af%9d.html'>春秋史话.org</a></li></ul></details></li><li><a href='//book/%e8%9a%8a%e5%ad%90%e5%b9%b2%e5%98%9b%e8%80%81%e5%8f%ae%e6%88%91.html'>蚊子干嘛老叮我.org</a></li></ul></details></li><li><details><summary>cloud</summary><ul><li><a href='//cloud/docker.html'>docker.org</a></li><li><a href='//cloud/gcp.html'>gcp.org</a></li><li><a href='//cloud/gke.html'>gke.org</a></li><li><a href='//cloud/helm.html'>helm.org</a></li><li><details><summary>kubernetes</summary><ul><li><a href='//cloud/kubernetes/README.html'>README.org</a></li><li><a href='//cloud/kubernetes/cloudman.html'>cloudman.org</a></li><li><a href='//cloud/kubernetes/content.html'>content.org</a></li><li><a href='//cloud/kubernetes/controller.html'>controller.org</a></li><li><a href='//cloud/kubernetes/golang.html'>golang.org</a></li><li><a href='//cloud/kubernetes/k8s.html'>k8s.org</a></li><li><a href='//cloud/kubernetes/kubeadm.html'>kubeadm.org</a></li><li><a href='//cloud/kubernetes/kuberbuilder.html'>kuberbuilder.org</a></li><li><a href='//cloud/kubernetes/kubernetes-guide.html'>kubernetes-guide.org</a></li><li><a href='//cloud/kubernetes/operator.html'>operator.org</a></li><li><a href='//cloud/kubernetes/rbac.html'>rbac.org</a></li><li><a href='//cloud/kubernetes/registry.html'>registry.org</a></li><li><a href='//cloud/kubernetes/todo.html'>todo.org</a></li><li><a href='//cloud/kubernetes/tutorial.html'>tutorial.org</a></li><li><a href='//cloud/kubernetes/what-is-container.html'>what-is-container.org</a></li></ul></details></li></ul></details></li><li><details><summary>csapp</summary><ul><li><a href='//csapp/csapp-digest.html'>csapp-digest.org</a></li><li><a href='//csapp/cscpp.html'>cscpp.org</a></li></ul></details></li><li><a href='//docker.html'>docker.org</a></li><li><details><summary>emacs</summary><ul><li><a href='//emacs/orgmode.html'>orgmode.org</a></li></ul></details></li><li><details><summary>history</summary><ul><li><a href='//history/%e5%85%a8%e7%90%83%e9%80%9a%e5%8f%b2.html'>全球通史.org</a></li><li><a href='//history/%e5%8d%97%e5%8c%97%e6%9c%9d.html'>南北朝.org</a></li><li><a href='//history/%e6%99%8b%e5%8f%b2.html'>晋史.org</a></li></ul></details></li><li><details><summary>linux</summary><ul><li><a href='//linux/centos.html'>centos.org</a></li><li><a href='//linux/filesystem.html'>filesystem.org</a></li><li><a href='//linux/init.d.html'>init.d.org</a></li><li><a href='//linux/iptables.html'>iptables.org</a></li><li><a href='//linux/linuxcast.html'>linuxcast.org</a></li><li><a href='//linux/ss.html'>ss.org</a></li><li><a href='//linux/suse.html'>suse.org</a></li><li><a href='//linux/vps.html'>vps.org</a></li></ul></details></li><li><details><summary>literal</summary><ul><li><a href='//literal/book.html'>book.org</a></li><li><a href='//literal/han.html'>han.org</a></li><li><a href='//literal/movie.html'>movie.org</a></li><li><a href='//literal/nounce.html'>nounce.org</a></li><li><a href='//literal/person.html'>person.org</a></li><li><a href='//literal/%e5%9f%ba%e7%9d%a3%e5%b1%b1%e4%bc%af%e7%88%b5.html'>基督山伯爵.org</a></li></ul></details></li><li><details><summary>math</summary><ul><li><a href='//math/%e6%a6%82%e7%8e%87%e8%ae%ba%e4%b8%8e%e6%95%b0%e7%90%86%e7%bb%9f%e8%ae%a1.html'>概率论与数理统计.org</a></li></ul></details></li><li><a href='//mindmap.html'>mindmap.org</a></li><li><details><summary>misc</summary><ul><li><a href='//misc/org-usage.html'>org-usage.org</a></li><li><a href='//misc/screen.html'>screen.org</a></li></ul></details></li><li><details><summary>network</summary><ul><li><a href='//network/ssl.html'>ssl.org</a></li></ul></details></li><li><a href='//opengl.html'>opengl.org</a></li><li><a href='//orgmode.html'>orgmode.org</a></li><li><details><summary>os</summary><ul><li><a href='//os/80386.html'>80386.org</a></li><li><a href='//os/8259a.html'>8259a.org</a></li><li><a href='//os/boot.html'>boot.org</a></li><li><a href='//os/gcc-inline-asm.html'>gcc-inline-asm.md</a></li><li><a href='//os/linux.html'>linux.org</a></li></ul></details></li><li><details><summary>policy</summary><ul><li><a href='//policy/%e5%85%a8%e7%90%83%e5%8c%96%e6%b3%a2%e6%8a%98%e4%b8%8e%e6%b0%91%e8%90%a5%e7%bb%8f%e6%b5%8e%e7%9a%84%e6%9c%aa%e6%9d%a5_%e5%91%a8%e5%85%b6%e4%bb%81.html'>全球化波折与民营经济的未来_周其仁.org</a></li></ul></details></li><li><details><summary>programming</summary><ul><li><details><summary>algorithm</summary><ul><li><details><summary>algorithm4th</summary><ul><li><a href='//programming/algorithm/algorithm4th/algorithm.html'>algorithm.org</a></li></ul></details></li><li><a href='//programming/algorithm/%e5%b0%8f%e7%94%b2%e9%b1%bc-%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84%e4%b8%8e%e7%ae%97%e6%b3%95-%e8%a7%86%e9%a2%91%e7%ac%94%e8%ae%b0.html'>小甲鱼-数据结构与算法-视频笔记.org</a></li></ul></details></li><li><details><summary>clojure</summary><ul><li><a href='//programming/clojure/clojure.tools.logging.html'>clojure.tools.logging.md</a></li></ul></details></li><li><details><summary>cpp</summary><ul><li><a href='//programming/cpp/tutorials.html'>tutorials.org</a></li></ul></details></li><li><details><summary>elasticsearch</summary><ul><li><a href='//programming/elasticsearch/elasticsearch-definitive-guide-note.html'>elasticsearch-definitive-guide-note.org</a></li></ul></details></li><li><details><summary>git</summary><ul><li><a href='//programming/git/git.html'>git.org</a></li></ul></details></li><li><details><summary>golang</summary><ul><li><a href='//programming/golang/cmd.html'>cmd.org</a></li><li><a href='//programming/golang/effective-go.html'>effective-go.org</a></li><li><a href='//programming/golang/go-concurrency.html'>go-concurrency.org</a></li><li><a href='//programming/golang/how-to-write-go-code.html'>how-to-write-go-code.org</a></li><li><a href='//programming/golang/json.html'>json.org</a></li><li><details><summary>learn-go-note</summary><ul><li><a href='//programming/golang/learn-go-note/learning-go.html'>learning-go.org</a></li></ul></details></li><li><a href='//programming/golang/library.html'>library.org</a></li><li><a href='//programming/golang/misc.html'>misc.org</a></li><li><a href='//programming/golang/reflect.html'>reflect.org</a></li><li><a href='//programming/golang/template.html'>template.org</a></li><li><a href='//programming/golang/the-little-go-book.html'>the-little-go-book.org</a></li><li><a href='//programming/golang/%e6%97%a0%e9%97%bb%e8%a7%86%e9%a2%91%e7%ac%94%e8%ae%b0.html'>无闻视频笔记.org</a></li></ul></details></li><li><details><summary>hadoop</summary><ul><li><a href='//programming/hadoop/hdfs-permission-guide-note.html'>hdfs-permission-guide-note.org</a></li></ul></details></li><li><details><summary>java</summary><ul><li><a href='//programming/java/derby.html'>derby.org</a></li><li><a href='//programming/java/ivy-vs-maven.html'>ivy-vs-maven.org</a></li><li><a href='//programming/java/java-note.html'>java-note.org</a></li><li><a href='//programming/java/maven.html'>maven.org</a></li><li><a href='//programming/java/servlet.html'>servlet.org</a></li><li><a href='//programming/java/thing-java.html'>thing-java.org</a></li><li><a href='//programming/java/%e6%b7%b1%e5%85%a5%e7%90%86%e8%a7%a3java%e8%99%9a%e6%8b%9f%e6%9c%ba.html'>深入理解java虚拟机.org</a></li></ul></details></li><li><details><summary>javascript</summary><ul><li><a href='//programming/javascript/angularjs.html'>angularjs.org</a></li><li><a href='//programming/javascript/dom.html'>dom.org</a></li></ul></details></li><li><a href='//programming/javascript.html'>javascript.org</a></li><li><details><summary>lisp</summary><ul><li><a href='//programming/lisp/the-little-schemer.html'>the-little-schemer.org</a></li></ul></details></li><li><details><summary>python</summary><ul><li><a href='//programming/python/asyncio.html'>asyncio.org</a></li><li><a href='//programming/python/flask.html'>flask.org</a></li><li><a href='//programming/python/idiomatic-python-note.html'>idiomatic-python-note.org</a></li><li><a href='//programming/python/jinja2.html'>jinja2.org</a></li><li><a href='//programming/python/package-manage.html'>package-manage.org</a></li><li><a href='//programming/python/pygame.html'>pygame.org</a></li><li><a href='//programming/python/tools.html'>tools.org</a></li></ul></details></li><li><details><summary>scala</summary><ul><li><a href='//programming/scala/programming-in-scala.html'>programming-in-scala.org</a></li><li><a href='//programming/scala/scala.html'>scala.org</a></li><li><a href='//programming/scala/scalikeJDBC.html'>scalikeJDBC.org</a></li></ul></details></li><li><a href='//programming/storm.html'>storm.org</a></li><li><a href='//programming/thrift.html'>thrift.org</a></li><li><a href='//programming/typescript.html'>typescript.org</a></li><li><details><summary>web</summary><ul><li><a href='//programming/web/liquid.html'>liquid.org</a></li></ul></details></li></ul></details></li><li><details><summary>rdbms</summary><ul><li><a href='//rdbms/rdbms.html'>rdbms.org</a></li></ul></details></li><li><details><summary>resource</summary><ul><li><a href='//resource/emacs.html'>emacs.md</a></li><li><a href='//resource/ml-resource.html'>ml-resource.md</a></li><li><a href='//resource/nlp-resource.html'>nlp-resource.md</a></li></ul></details></li><li><details><summary>services</summary><ul><li><details><summary>mail</summary><ul><li><a href='//services/mail/mail.html'>mail.org</a></li></ul></details></li></ul></details></li><li><details><summary>subtitle</summary><ul><li><a href='//subtitle/docker.html'>docker.org</a></li></ul></details></li><li><details><summary>toarous</summary><ul><li><a href='//toarous/README.html'>README.md</a></li><li><a href='//toarous/idt.html'>idt.md</a></li><li><a href='//toarous/intel.html'>intel.org</a></li><li><a href='//toarous/notes.html'>notes.org</a></li><li><a href='//toarous/osx-environment.html'>osx-environment.org</a></li><li><a href='//toarous/vga.html'>vga.md</a></li></ul></details></li><li><details><summary>tools</summary><ul><li><a href='//tools/GCP.html'>GCP.org</a></li><li><a href='//tools/ansible.html'>ansible.org</a></li><li><a href='//tools/bash.html'>bash.org</a></li><li><a href='//tools/gerrit.html'>gerrit.org</a></li><li><a href='//tools/git.html'>git.org</a></li><li><a href='//tools/gpg.html'>gpg.org</a></li><li><a href='//tools/markdown.html'>markdown.org</a></li><li><a href='//tools/nginx.html'>nginx.org</a></li><li><a href='//tools/rpm.html'>rpm.org</a></li><li><a href='//tools/spark.html'>spark.org</a></li><li><a href='//tools/tmux.html'>tmux.org</a></li></ul></details></li><li><details><summary>ui</summary><ul><li><a href='//ui/react.html'>react.org</a></li><li><a href='//ui/tk.html'>tk.org</a></li></ul></details></li><li><details><summary>web</summary><ul><li><a href='//web/chrome-extension.html'>chrome-extension.org</a></li></ul></details></li><li><a href='//words.html'>words.org</a></li><li><a href='//%e7%bd%91%e6%b0%91%e7%9a%84%e7%8b%82%e6%ac%a2.html'>网民的狂欢.org</a></li></ul>
+			</nav>
+			<section class="main-article-area">
+				<div id='main'>
+					<h1 id="chapter-1">Chapter 1</h1>
+<h2 id="why-scala">Why scala?</h2>
+<h3 id="简洁性与可扩展性">简洁性与可扩展性</h3>
+<p>在不同规模上的编程需求是不一样的。</p>
+<ul class="incremental">
 <li>对于小的程序，简洁（比如有 Map 的语法支持，省略参数类型）等是重要特性。</li>
 <li>同时需要能够更细致地控制底层实现（在保证语法简洁的前提下）</li>
 </ul>
-</div>
-
-<ul class="org-ul"><li><a id="org2dcd577"></a>扩展基本类型<br><div class="outline-text-5" id="text-org2dcd577">
-<p>
-一个重要的方面是语法的 <b><b>重载</b></b> ，使新增加的库能够以通用的语法来调用
-</p>
-</div></li>
-
-<li><a id="org7fb940d"></a>扩展控制结构<br><div class="outline-text-5" id="text-org7fb940d">
-<p>
-以 Erlang 的消息传递方式，在 scala 中以 actor 方式来实现
-</p>
-</div></li></ul>
-</div>
-</div>
-</div>
-<div id="outline-container-org4487700" class="outline-2">
-<h2 id="org4487700">Chapter 6. Functional Object</h2>
-<div class="outline-text-2" id="text-org4487700">
-<p>
-functional object 指 objects that don't have any mutable state，
-即符合函数式的对象类型
-</p>
-</div>
-
-<div id="outline-container-org3cc1223" class="outline-3">
-<h3 id="org3cc1223">A specification for class <code>Rational</code></h3>
-<div class="outline-text-3" id="text-org3cc1223">
-<p>
-以实现一个分数类 Rational 为例，要求支持四则运算（操作符重载），其状态不可变
-</p>
-</div>
-</div>
-
-<div id="outline-container-org928b85d" class="outline-3">
-<h3 id="org928b85d">Constructing a <code>Rational</code></h3>
-<div class="outline-text-3" id="text-org928b85d">
-<ul class="org-ul">
+<ol class="incremental">
+<li><p>扩展基本类型</p>
+<p>一个重要的方面是语法的 <strong><strong>重载</strong></strong> ，使新增加的库能够以通用的语法来调用</p></li>
+<li><p>扩展控制结构</p>
+<p>以 Erlang 的消息传递方式，在 scala 中以 actor 方式来实现</p></li>
+</ol>
+<h1 id="chapter-6.-functional-object">Chapter 6. Functional Object</h1>
+<p>functional object 指 objects that don't have any mutable state， 即符合函数式的对象类型</p>
+<h2 id="a-specification-for-class-rational">A specification for class <code>Rational</code></h2>
+<p>以实现一个分数类 Rational 为例，要求支持四则运算（操作符重载），其状态不可变</p>
+<h2 id="constructing-a-rational">Constructing a <code>Rational</code></h2>
+<ul class="incremental">
 <li>scala class 支持参数，称为 class parameter</li>
 <li>scala 将 body 中非 field 和 method definition 作为主构造器</li>
 <li>简化了 java 中手写构造函数</li>
 <li>同 case class 一样，不一定要有 body</li>
 <li>class parameter 仅在初始化构造中可见</li>
 </ul>
-</div>
-
-<div id="outline-container-org1d2ba67" class="outline-4">
-<h4 id="org1d2ba67">immutable object 的特点</h4>
-<div class="outline-text-4" id="text-org1d2ba67">
-<ul class="org-ul">
+<h3 id="immutable-object-的特点">immutable object 的特点</h3>
+<ul class="incremental">
 <li>优势
-<ul class="org-ul">
+<ul class="incremental">
 <li>无可变状态</li>
 <li>不用去通过拷贝来保证引用安全</li>
 <li>线程安全</li>
 <li>可以作为 hash table key</li>
 </ul></li>
 <li>劣势
-<ul class="org-ul">
+<ul class="incremental">
 <li>修改只能通过拷贝，影响性能</li>
 </ul></li>
 </ul>
-
-<p>
-实际使用时，需要在 mutable 和 immutable 中作出折衷
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orge3b9b8d" class="outline-3">
-<h3 id="orge3b9b8d">Reimplementing to <code>toString</code> method</h3>
-<div class="outline-text-3" id="text-orge3b9b8d">
-<ul class="org-ul">
+<p>实际使用时，需要在 mutable 和 immutable 中作出折衷</p>
+<h2 id="reimplementing-to-tostring-method">Reimplementing to <code>toString</code> method</h2>
+<ul class="incremental">
 <li>重载 <code>toString</code> 方法， <code>override def toString = ...</code></li>
 <li>类比于 python 中的 <code>__str__</code> 或 <code>__repr__</code> 函数重载</li>
 <li>是一种协议 (protocol) ，没有理由</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgb8e4089" class="outline-3">
-<h3 id="orgb8e4089">Check preconditions</h3>
-<div class="outline-text-3" id="text-orgb8e4089">
-<ul class="org-ul">
+<h2 id="check-preconditions">Check preconditions</h2>
+<ul class="incremental">
 <li>在构造函数中对参数进行检查，并抛出异常</li>
 <li><code>Predef</code> 包中包含了多种方法，如 <code>require</code>, <code>assert</code> 等</li>
 <li><code>require</code> 抛出异常 <code>IllegalArgumentException</code></li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgfd972af" class="outline-3">
-<h3 id="orgfd972af">Adding Fields</h3>
-<div class="outline-text-3" id="text-orgfd972af">
-<p>
-如上所说，class parameter 仅用于 constructor (scala compiler will not emit fields of them)
-</p>
-
-<p>
-如要作为成员变量访问，需要在 body 中赋值为新的变量
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgf9fb820" class="outline-3">
-<h3 id="orgf9fb820">Auxiliary Constructors</h3>
-<div class="outline-text-3" id="text-orgf9fb820">
-<ul class="org-ul">
-<li>除了 primary constructors 的构造器被称为 <b>辅助构造器</b></li>
+<h2 id="adding-fields">Adding Fields</h2>
+<p>如上所说，class parameter 仅用于 constructor (scala compiler will not emit fields of them)</p>
+<p>如要作为成员变量访问，需要在 body 中赋值为新的变量</p>
+<h2 id="auxiliary-constructors">Auxiliary Constructors</h2>
+<ul class="incremental">
+<li>除了 primary constructors 的构造器被称为 <strong>辅助构造器</strong></li>
 <li>定义 <code>this(...)</code> 的多态函数</li>
 <li>但必须调用主构造器或其它构造器来完成初始化</li>
 <li>scala 不同于 java，只有主构造器中可以调用 superclass constructor</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org41c1f5f" class="outline-3">
-<h3 id="org41c1f5f">Private fields and methods</h3>
-<div class="outline-text-3" id="text-org41c1f5f">
-<p>
-使用 <code>private</code> 修饰符来修饰 <code>val</code> 或 <code>def</code> 定义 <sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgd8e370c" class="outline-3">
-<h3 id="orgd8e370c">Defining Operators</h3>
-<div class="outline-text-3" id="text-orgd8e370c">
-<p>
-可以用 <code>def + (...) {...}</code> 直接重载操作符
-</p>
-
-<p>
-有以下特点
-</p>
-<ul class="org-ul">
+<h2 id="private-fields-and-methods">Private fields and methods</h2>
+<p>使用 <code>private</code> 修饰符来修饰 <code>val</code> 或 <code>def</code> 定义 <a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<h2 id="defining-operators">Defining Operators</h2>
+<p>可以用 <code>def + (...) {...}</code> 直接重载操作符</p>
+<p>有以下特点</p>
+<ul class="incremental">
 <li>不同于 python，python 重载的是 <code>__add__</code> 方法</li>
 <li>不用加 override 修饰符</li>
 <li>类似于 clojure/lisp，因为 scala 放宽了对标识符的限制</li>
@@ -409,19 +89,11 @@ functional object 指 objects that don't have any mutable state，
 <li><code>x+y</code> 等价为 <code>x.+(y)</code></li>
 <li>重载操作符不会修改算子的优先级顺序</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org2e7c0c3" class="outline-3">
-<h3 id="org2e7c0c3">Identifiers in Scala</h3>
-<div class="outline-text-3" id="text-org2e7c0c3">
-<p>
-scala 中标识符命名相对自由
-</p>
-
-<ol class="org-ol">
+<h2 id="identifiers-in-scala">Identifiers in Scala</h2>
+<p>scala 中标识符命名相对自由</p>
+<ol class="incremental">
 <li>普通变量
-<ul class="org-ul">
+<ul class="incremental">
 <li><code>alnum + $</code> ， <code>$</code> 由 scala 编译器使用</li>
 <li>用 CamelCase 命名，避免使用下划线风格（与解析有关）</li>
 <li>类和 Trait 应该以大写字母开头</li>
@@ -431,310 +103,134 @@ scala 中标识符命名相对自由
 <li>mixed identifier，如 <code>unary_+</code> 或 <code>myvar_</code></li>
 <li>literal identifier，用于使用一些保留字，如 <code>Thread.`yield`()</code></li>
 </ol>
-</div>
-</div>
-
-
-<div id="outline-container-orgc6c0ad2" class="outline-3">
-<h3 id="orgc6c0ad2">Method Overloading</h3>
-<div class="outline-text-3" id="text-orgc6c0ad2">
-<ul class="org-ul">
+<h2 id="method-overloading">Method Overloading</h2>
+<ul class="incremental">
 <li>Overload: each name is been used by multiple methods</li>
 <li>静态编译时展开（被选择）</li>
 <li>当编译器因为类型模糊无法选择，报 ambiguous reference error</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org82955a0" class="outline-3">
-<h3 id="org82955a0">Implicit Conversion</h3>
-<div class="outline-text-3" id="text-org82955a0">
-<p>
-通过操作符重载可以让 Rational 对象与整数进行计算 <code>r*2</code> ，但如果反过来 <code>2*r</code> 则不能用。
-因为 Int 为标准类型，我们无法在应用中重载标准库的方法。
-</p>
-
-<p>
-Scala 的解决方法是: Create an implicit conversions that automatically converts
-integers to rational numbers when need.
-</p>
-
-<p>
-在 <b>当前 scope</b> 中定义一句 <code>implicit def intToRational(x:Int) = new Rational(x)</code>
-编译器将会对 Int 进行隐式转换。
-</p>
-
-<p>
-参见 <a href="#orge47075d">Chapter21</a> 关于隐式转换的详细说明
-</p>
-</div>
-
-<div id="outline-container-org7e96074" class="outline-4">
-<h4 id="org7e96074"><span class="todo TODO">TODO</span> 问题</h4>
-<div class="outline-text-4" id="text-org7e96074">
-<ol class="org-ol">
+<h2 id="implicit-conversion">Implicit Conversion</h2>
+<p>通过操作符重载可以让 Rational 对象与整数进行计算 <code>r*2</code> ，但如果反过来 <code>2*r</code> 则不能用。 因为 Int 为标准类型，我们无法在应用中重载标准库的方法。</p>
+<p>Scala 的解决方法是: Create an implicit conversions that automatically converts integers to rational numbers when need.</p>
+<p>在 <strong>当前 scope</strong> 中定义一句 <code>implicit def intToRational(x:Int) = new Rational(x)</code> 编译器将会对 Int 进行隐式转换。</p>
+<p>参见 <em>Chapter21</em> 关于隐式转换的详细说明</p>
+<h3 id="问题"><span class="todo TODO">TODO</span> 问题</h3>
+<ol class="incremental">
 <li>隐式转换的机制是什么</li>
 <li>命名是否有要求？</li>
 <li>开销有多大</li>
 <li>是否会出现匹配错误的问题？</li>
 </ol>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-orge001e76" class="outline-3">
-<h3 id="orge001e76">A word of caution</h3>
-<div class="outline-text-3" id="text-orge001e76">
-<ul class="org-ul">
+<h2 id="a-word-of-caution">A word of caution</h2>
+<ul class="incremental">
 <li>Bear in mind that with power comes resposibility</li>
 <li>谨慎使用操作符重载和隐式转换，避免造成额外的心智负担</li>
 <li>在追求简洁性的同时，保证可读性和易理解性</li>
 <li>Conciseness will often be a big part of that readability, but you can take conciseness too far.</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org6a91789" class="outline-3">
-<h3 id="org6a91789">Conclusion</h3>
-<div class="outline-text-3" id="text-org6a91789">
-<ul class="org-ul">
+<h2 id="conclusion">Conclusion</h2>
+<ul class="incremental">
 <li>本章的主要内容有：类参数、辅助构造器、方法重载、隐式转换</li>
-<li><a href="#orge47075d">Chapter 21</a> 中提供了有关隐式转换的详细说明</li>
-<li><a href="#org209a7b7">Chapter 30</a> 提到两个特殊的、需要被重载的方法 <code>equals</code> 和 <code>hashCode</code></li>
+<li><em>Chapter 21</em> 中提供了有关隐式转换的详细说明</li>
+<li><em>Chapter 30</em> 提到两个特殊的、需要被重载的方法 <code>equals</code> 和 <code>hashCode</code></li>
 </ul>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-org6964a1d" class="outline-2">
-<h2 id="org6964a1d">Chapter 8. Functions and closures</h2>
-<div class="outline-text-2" id="text-org6964a1d">
-</div><div id="outline-container-org98635df" class="outline-3">
-<h3 id="org98635df">scala functions vs java functions</h3>
-<div class="outline-text-3" id="text-org98635df">
-<ol class="org-ol">
+<h1 id="chapter-8.-functions-and-closures">Chapter 8. Functions and closures</h1>
+<h2 id="scala-functions-vs-java-functions">scala functions vs java functions</h2>
+<ol class="incremental">
 <li>对象的方法（类比于 java 静态方法）</li>
 <li>functions nested within function（闭包）</li>
 <li>function literal（sugar）</li>
 <li>function value（first class function）</li>
 </ol>
-</div>
-</div>
-
-<div id="outline-container-org2bbe39f" class="outline-3">
-<h3 id="org2bbe39f">local functions</h3>
-<div class="outline-text-3" id="text-org2bbe39f">
-<ul class="org-ul">
+<h2 id="local-functions">local functions</h2>
+<ul class="incremental">
 <li>将函数功能限制在专门的范围，减少代码量，易维护，可重用</li>
 <li>避免 helper 函数（从一个函数调用另一个函数）污染 namespace</li>
 <li>同 java，可以添加 <code>private</code> 关键字来控制访问范围</li>
 <li>scala 中可以在函数中嵌套定义函数，用作 local function</li>
 <li>local function 可以认为是闭包的实际用法</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org57d8b33" class="outline-3">
-<h3 id="org57d8b33">function literal &amp; function value</h3>
-<div class="outline-text-3" id="text-org57d8b33">
-<p>
-语法示例如下：
-</p>
-
-<div class="org-src-container">
-<pre class="src src-scala">(x:Int, y:Int) =&gt; x+y
-</pre>
-</div>
-
-<p>
-不同于 java 中的 method
-</p>
-
-<ul class="org-ul">
+<h2 id="function-literal-function-value">function literal &amp; function value</h2>
+<p>语法示例如下：</p>
+<div class="sourceCode"><pre class="sourceCode scala"><code class="sourceCode scala">(x:Int, y:Int) =&gt; x+y</code></pre></div>
+<p>不同于 java 中的 method</p>
+<ul class="incremental">
 <li>scala 中 function literal 被编译成 class，实例化后为一个 function value</li>
 <li>function value 既是对象，也可以当作函数来调用（protocol?）</li>
 <li>底层扩展实现了 <code>FunctionN</code> trait</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org3621f4d" class="outline-3">
-<h3 id="org3621f4d">short forms of function literals</h3>
-<div class="outline-text-3" id="text-org3621f4d">
-<ol class="org-ol">
+<h2 id="short-forms-of-function-literals">short forms of function literals</h2>
+<ol class="incremental">
 <li>在具体的调用处，可以省略类型，由编译器作类型推导。如 <code>seq.filter((x) =&gt; x &gt; 0)</code></li>
 <li>单参数时省略括号。如 <code>seq.filter(x =&gt; x &gt; 0)</code></li>
 </ol>
-</div>
-</div>
-
-<div id="outline-container-orge57b1b6" class="outline-3">
-<h3 id="orge57b1b6">placeholder syntax</h3>
-<div class="outline-text-3" id="text-orge57b1b6">
-<ul class="org-ul">
-<li>可以用 <code>'_'</code> 来代指参数</li>
+<h2 id="placeholder-syntax">placeholder syntax</h2>
+<ul class="incremental">
+<li>可以用 ='_'= 来代指参数</li>
 <li>必要时需要指定参数类型，如 <code>val = (_:Int) + (_:Int)</code></li>
 <li>注意上例中，是两个参数，而非同一个</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgcec1579" class="outline-3">
-<h3 id="orgcec1579">partially applied functions&#xa0;&#xa0;&#xa0;<span class="tag"><span class="attention">attention</span></span></h3>
-<div class="outline-text-3" id="text-orgcec1579">
-<ul class="org-ul">
+<h2 id="partially-applied-functions">partially applied functions<span class="tag" data-tag-name="attention"></span></h2>
+<ul class="incremental">
 <li>类似于 python, clojure 中的偏函数</li>
 <li>有特殊的语法 <code>val a = println _</code></li>
 <li>上例中 '_' 代指整个参数列表（注意中间的空格）</li>
 <li>注意：a 相当于 println 函数的 wrap，不是同一个函数</li>
-<li><p>
-注意： <b>scala 中的 method 不能被赋给变量!!!</b>
-</p>
-<div class="org-src-container">
-<pre class="src src-scala">val c = sum // error
-</pre>
-</div></li>
-<li><p>
-可以预先指定部分参数如
-</p>
-<div class="org-src-container">
-<pre class="src src-scala">def sum(a: Int, b: Int, c: Int) = a + b + c
-val a = sum(1, _: Int, 3)
-a(2) // =&gt; 6
-</pre>
-</div></li>
+<li><p>注意： <strong>scala 中的 method 不能被赋给变量!!!</strong></p>
+<div class="sourceCode"><pre class="sourceCode scala"><code class="sourceCode scala"><span class="kw">val</span> c = sum <span class="co">// error</span></code></pre></div></li>
+<li><p>可以预先指定部分参数如</p>
+<div class="sourceCode"><pre class="sourceCode scala"><code class="sourceCode scala"><span class="kw">def</span> <span class="fu">sum</span>(a: Int, b: Int, c: Int) = a + b + c
+<span class="kw">val</span> a = <span class="fu">sum</span>(<span class="dv">1</span>, _: Int, <span class="dv">3</span>)
+<span class="fu">a</span>(<span class="dv">2</span>) <span class="co">// =&gt; 6</span></code></pre></div></li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgb6bc100" class="outline-3">
-<h3 id="orgb6bc100">closure</h3>
-<div class="outline-text-3" id="text-orgb6bc100">
-</div><div id="outline-container-orgf86105e" class="outline-4">
-<h4 id="orgf86105e">定义</h4>
-<div class="outline-text-4" id="text-orgf86105e">
-<p>
-The function value (object) that's created at runtime from its function literal is called a <b>closure</b>
-</p>
-
-<p>
-闭包生成时，保存了当前环境（environment/scope）以及变量绑定情况。
-</p>
-</div>
-</div>
-
-<div id="outline-container-org46cba5a" class="outline-4">
-<h4 id="org46cba5a">分类</h4>
-<div class="outline-text-4" id="text-org46cba5a">
-<p>
-按是否有自由变量(free variable) 分为两种
-</p>
-<ol class="org-ol">
+<h2 id="closure">closure</h2>
+<h3 id="定义">定义</h3>
+<p>The function value (object) that's created at runtime from its function literal is called a <strong>closure</strong></p>
+<p>闭包生成时，保存了当前环境（environment/scope）以及变量绑定情况。</p>
+<h3 id="分类">分类</h3>
+<p>按是否有自由变量(free variable) 分为两种</p>
+<ol class="incremental">
 <li>无自由变量，称为 closed term，是闭包的特殊情况</li>
 <li>有自由变量，称为 open term</li>
 </ol>
-</div>
-</div>
-
-<div id="outline-container-org171f9e2" class="outline-4">
-<h4 id="org171f9e2">补充</h4>
-<div class="outline-text-4" id="text-org171f9e2">
-<p>
-scala 中自由变量在闭包生成后改变，会被闭包感知到。
-</p>
-
-<p>
-Cause scala's closures capture variables themseleves, not the value to which variable refer.
-</p>
-</div>
-</div>
-
-<div id="outline-container-org1b081a5" class="outline-4">
-<h4 id="org1b081a5"><span class="todo TODO">TODO</span> 讨论: 闭包引入自由变量是否会造成多线程安全问题？</h4>
-<div class="outline-text-4" id="text-org1b081a5">
-<ul class="org-ul">
+<h3 id="补充">补充</h3>
+<p>scala 中自由变量在闭包生成后改变，会被闭包感知到。</p>
+<p>Cause scala's closures capture variables themseleves, not the value to which variable refer.</p>
+<h3 id="讨论-闭包引入自由变量是否会造成多线程安全问题"><span class="todo TODO">TODO</span> 讨论: 闭包引入自由变量是否会造成多线程安全问题？</h3>
+<ul class="incremental">
 <li>闭包多用在函数式风格中，自由变量不可变</li>
 <li>与引用类型和值类型有关（scala 中相当于引用类型，会发生改变）</li>
 <li>多线程通过闭包访问同一引用类型可能会出问题</li>
 </ul>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org5900c4d" class="outline-3">
-<h3 id="org5900c4d">Special function call forms</h3>
-<div class="outline-text-3" id="text-org5900c4d">
-</div><div id="outline-container-org77046fb" class="outline-4">
-<h4 id="org77046fb">repeated parameter</h4>
-<div class="outline-text-4" id="text-org77046fb">
-<ul class="org-ul">
+<h2 id="special-function-call-forms">Special function call forms</h2>
+<h3 id="repeated-parameter">repeated parameter</h3>
+<ul class="incremental">
 <li>类比于 C 中的 vargs，或 clojure 中的 <code>&amp;</code> ， 或 python 中的 <code>*</code></li>
 <li>函数定义语法上写作 <code>def echo(args: String*) = for(arg &lt;- args) println(arg)</code></li>
 <li>函数调用语法上写作 <code>echo(arr: _*)</code> ， 其中 arr 本身是 <code>Array[T]</code> 类型（类比于 clojure apply）</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgc9ef5ff" class="outline-4">
-<h4 id="orgc9ef5ff">named arguments</h4>
-<div class="outline-text-4" id="text-orgc9ef5ff">
-<p>
-按参数名传参，可改变顺序，如 <code>speed(distance=100,time=10)</code>
-</p>
-</div>
-</div>
-
-<div id="outline-container-org391fc2d" class="outline-4">
-<h4 id="org391fc2d">default parameter value</h4>
-<div class="outline-text-4" id="text-org391fc2d">
-<p>
-函数定义时提供默认参数，配合 named arguments 使用更佳
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org38babe0" class="outline-3">
-<h3 id="org38babe0">Tail recursive</h3>
-<div class="outline-text-3" id="text-org38babe0">
-<ul class="org-ul">
+<h3 id="named-arguments">named arguments</h3>
+<p>按参数名传参，可改变顺序，如 <code>speed(distance=100,time=10)</code></p>
+<h3 id="default-parameter-value">default parameter value</h3>
+<p>函数定义时提供默认参数，配合 named arguments 使用更佳</p>
+<h2 id="tail-recursive">Tail recursive</h2>
+<ul class="incremental">
 <li>tail-recursive function will not build a new stack frame for each calls; all calls will execute in a single frame</li>
 <li>scalac 中加参数 <code>-g:notailcalls</code> 禁用尾递归优化（方便调试）</li>
 <li>受 JVM 限制，对间接调用递归模式，scala 编译器无法进行优化</li>
 </ul>
+<h1 id="chapter-21.-implicit-conversions-and-parameters"><span class="todo TODO">TODO</span> Chapter 21. Implicit Conversions and Parameters</h1>
+<h1 id="chapter-30.-object-equality"><span class="todo TODO">TODO</span> Chapter 30. Object Equality</h1>
+<h1 id="footnotes">Footnotes</h1>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>是否有 <code>protect</code> 修饰符？<a href="#fnref1">↩</a></p></li>
+</ol>
 </div>
-</div>
-</div>
 
-
-
-
-
-
-
-<div id="outline-container-orge47075d" class="outline-2">
-<h2 id="orge47075d"><span class="todo TODO">TODO</span> Chapter 21. Implicit Conversions and Parameters</h2>
-</div>
-<div id="outline-container-org209a7b7" class="outline-2">
-<h2 id="org209a7b7"><span class="todo TODO">TODO</span> Chapter 30. Object Equality</h2>
-</div>
-<div id="footnotes">
-<h2 class="footnotes">Footnotes: </h2>
-<div id="text-footnotes">
-
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
-是否有 <code>protect</code> 修饰符？
-</p></div></div>
-
-
-</div>
-</div></div>
-<div id="postamble" class="status">
-<p class="author">Author: zhaowenbin</p>
-<p class="date">Created: 2018-09-13 四 20:19</p>
-<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
-</div>
-</body>
-</html>
+				</div>
+			</section>
+		</body>
+	</html>
+	

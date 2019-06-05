@@ -1,267 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<!-- 2018-09-13 四 20:19 -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>learning go 笔记</title>
-<meta name="generator" content="Org mode">
-<meta name="author" content="赵文彬">
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
-  .title  { text-align: center;
-             margin-bottom: .2em; }
-  .subtitle { text-align: center;
-              font-size: medium;
-              font-weight: bold;
-              margin-top:0; }
-  .todo   { font-family: monospace; color: red; }
-  .done   { font-family: monospace; color: green; }
-  .priority { font-family: monospace; color: orange; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
-  pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
-  }
-  pre.src {
-    position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
-    padding: 3px;
-    border: 1px solid black;
-  }
-  pre.src:hover:before { display: inline;}
-  /* Languages per Org manual */
-  pre.src-asymptote:before { content: 'Asymptote'; }
-  pre.src-awk:before { content: 'Awk'; }
-  pre.src-C:before { content: 'C'; }
-  /* pre.src-C++ doesn't work in CSS */
-  pre.src-clojure:before { content: 'Clojure'; }
-  pre.src-css:before { content: 'CSS'; }
-  pre.src-D:before { content: 'D'; }
-  pre.src-ditaa:before { content: 'ditaa'; }
-  pre.src-dot:before { content: 'Graphviz'; }
-  pre.src-calc:before { content: 'Emacs Calc'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-fortran:before { content: 'Fortran'; }
-  pre.src-gnuplot:before { content: 'gnuplot'; }
-  pre.src-haskell:before { content: 'Haskell'; }
-  pre.src-java:before { content: 'Java'; }
-  pre.src-js:before { content: 'Javascript'; }
-  pre.src-latex:before { content: 'LaTeX'; }
-  pre.src-ledger:before { content: 'Ledger'; }
-  pre.src-lisp:before { content: 'Lisp'; }
-  pre.src-lilypond:before { content: 'Lilypond'; }
-  pre.src-lua:before { content: 'Lua'; }
-  pre.src-matlab:before { content: 'MATLAB'; }
-  pre.src-mscgen:before { content: 'Mscgen'; }
-  pre.src-ocaml:before { content: 'Objective Caml'; }
-  pre.src-octave:before { content: 'Octave'; }
-  pre.src-org:before { content: 'Org mode'; }
-  pre.src-oz:before { content: 'OZ'; }
-  pre.src-plantuml:before { content: 'Plantuml'; }
-  pre.src-processing:before { content: 'Processing.js'; }
-  pre.src-python:before { content: 'Python'; }
-  pre.src-R:before { content: 'R'; }
-  pre.src-ruby:before { content: 'Ruby'; }
-  pre.src-sass:before { content: 'Sass'; }
-  pre.src-scheme:before { content: 'Scheme'; }
-  pre.src-screen:before { content: 'Gnu Screen'; }
-  pre.src-sed:before { content: 'Sed'; }
-  pre.src-sh:before { content: 'shell'; }
-  pre.src-sql:before { content: 'SQL'; }
-  pre.src-sqlite:before { content: 'SQLite'; }
-  /* additional languages in org.el's org-babel-load-languages alist */
-  pre.src-forth:before { content: 'Forth'; }
-  pre.src-io:before { content: 'IO'; }
-  pre.src-J:before { content: 'J'; }
-  pre.src-makefile:before { content: 'Makefile'; }
-  pre.src-maxima:before { content: 'Maxima'; }
-  pre.src-perl:before { content: 'Perl'; }
-  pre.src-picolisp:before { content: 'Pico Lisp'; }
-  pre.src-scala:before { content: 'Scala'; }
-  pre.src-shell:before { content: 'Shell Script'; }
-  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
-  /* additional language identifiers per "defun org-babel-execute"
-       in ob-*.el */
-  pre.src-cpp:before  { content: 'C++'; }
-  pre.src-abc:before  { content: 'ABC'; }
-  pre.src-coq:before  { content: 'Coq'; }
-  pre.src-groovy:before  { content: 'Groovy'; }
-  /* additional language identifiers from org-babel-shell-names in
-     ob-shell.el: ob-shell is the only babel language using a lambda to put
-     the execution function name together. */
-  pre.src-bash:before  { content: 'bash'; }
-  pre.src-csh:before  { content: 'csh'; }
-  pre.src-ash:before  { content: 'ash'; }
-  pre.src-dash:before  { content: 'dash'; }
-  pre.src-ksh:before  { content: 'ksh'; }
-  pre.src-mksh:before  { content: 'mksh'; }
-  pre.src-posh:before  { content: 'posh'; }
-  /* Additional Emacs modes also supported by the LaTeX listings package */
-  pre.src-ada:before { content: 'Ada'; }
-  pre.src-asm:before { content: 'Assembler'; }
-  pre.src-caml:before { content: 'Caml'; }
-  pre.src-delphi:before { content: 'Delphi'; }
-  pre.src-html:before { content: 'HTML'; }
-  pre.src-idl:before { content: 'IDL'; }
-  pre.src-mercury:before { content: 'Mercury'; }
-  pre.src-metapost:before { content: 'MetaPost'; }
-  pre.src-modula-2:before { content: 'Modula-2'; }
-  pre.src-pascal:before { content: 'Pascal'; }
-  pre.src-ps:before { content: 'PostScript'; }
-  pre.src-prolog:before { content: 'Prolog'; }
-  pre.src-simula:before { content: 'Simula'; }
-  pre.src-tcl:before { content: 'tcl'; }
-  pre.src-tex:before { content: 'TeX'; }
-  pre.src-plain-tex:before { content: 'Plain TeX'; }
-  pre.src-verilog:before { content: 'Verilog'; }
-  pre.src-vhdl:before { content: 'VHDL'; }
-  pre.src-xml:before { content: 'XML'; }
-  pre.src-nxml:before { content: 'XML'; }
-  /* add a generic configuration mode; LaTeX export needs an additional
-     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
-  pre.src-conf:before { content: 'Configuration File'; }
 
-  table { border-collapse:collapse; }
-  caption.t-above { caption-side: top; }
-  caption.t-bottom { caption-side: bottom; }
-  td, th { vertical-align:top;  }
-  th.org-right  { text-align: center;  }
-  th.org-left   { text-align: center;   }
-  th.org-center { text-align: center; }
-  td.org-right  { text-align: right;  }
-  td.org-left   { text-align: left;   }
-  td.org-center { text-align: center; }
-  dt { font-weight: bold; }
-  .footpara { display: inline; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
-    background: #ffffcc;
-  }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
-  textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
-</style>
-<link rel="stylesheet" type="text/css" href="https://www.pirilampo.org/styles/readtheorg/css/htmlize.css"/>
-<link rel="stylesheet" type="text/css" href="https://www.pirilampo.org/styles/readtheorg/css/readtheorg.css"/>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.min.js"></script>
-<script type="text/javascript" src="https://www.pirilampo.org/styles/readtheorg/js/readtheorg.js"></script>
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2017 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
-</head>
-<body>
-<div id="content">
-<header>
-<h1 class="title">learning go 笔记</h1>
-</header><nav id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#org24833b9">Introduction</a></li>
-<li><a href="#org698ebae">基础</a></li>
-<li><a href="#org9ec6fe6">内建函数</a></li>
-<li><a href="#org1ed9c76">函数</a></li>
-<li><a href="#orgbd6dfb0">Packages</a></li>
-<li><a href="#orgf22e6d9">Beyond the basics</a></li>
-<li><a href="#org4308ab7">自定义类型</a></li>
-<li><a href="#org6d00267">Methods</a></li>
-<li><a href="#org19c9cd0">类型转换</a></li>
-<li><a href="#org7573323">Interface</a></li>
-<li><a href="#org48f7355">Concurrency</a></li>
-<li><a href="#org19cb2fe">Communication</a></li>
-<li><a href="#org865fe15">杂项</a></li>
-</ul>
-</div>
-</nav>
-
-<div id="outline-container-org24833b9" class="outline-2">
-<h2 id="org24833b9">Introduction</h2>
-<div class="outline-text-2" id="text-org24833b9">
-</div><div id="outline-container-org91656d8" class="outline-3">
-<h3 id="org91656d8">语言的特性</h3>
-<div class="outline-text-3" id="text-org91656d8">
-<ul class="org-ul">
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<title>learning-go.org</title>
+			<link rel="stylesheet" href="/resources/css/main.css" />
+			<script src="/resources/js/jquery-3.4.1.min.js"></script>
+			<script src="/resources/js/swgen.js"></script>
+		</head>
+		<body>
+			<nav id='content'>
+				<ul><li><details><summary>algorithm</summary><ul><li><details><summary>introduction-to-algorithm</summary><ul><li><a href='//algorithm/introduction-to-algorithm/sort.html'>sort.org</a></li></ul></details></li><li><a href='//algorithm/string-match.html'>string-match.org</a></li></ul></details></li><li><details><summary>blog</summary><ul><li><a href='//blog/rescure-libc-deleted.html'>rescure-libc-deleted.org</a></li><li><a href='//blog/timezone.html'>timezone.org</a></li></ul></details></li><li><details><summary>book</summary><ul><li><a href='//book/git%e6%95%99%e7%a8%8b.html'>git教程.org</a></li><li><a href='//book/go%e8%af%ad%e8%a8%80%e7%bc%96%e7%a8%8b.html'>go语言编程.org</a></li><li><a href='//book/javascript%e5%85%a8%e6%a0%88%e6%95%99%e7%a8%8b.html'>javascript全栈教程.org</a></li><li><a href='//book/rich-dad-and-poor-dad.html'>rich-dad-and-poor-dad.org</a></li><li><a href='//book/%e4%ba%ba%e7%b1%bb%e7%ae%80%e5%8f%b2%e2%80%94%e2%80%94%e4%bb%8e%e5%8a%a8%e7%89%a9%e5%88%b0%e4%b8%8a%e5%b8%9d.html'>人类简史——从动物到上帝.org</a></li><li><details><summary>春秋史话</summary><ul><li><a href='//book/%e6%98%a5%e7%a7%8b%e5%8f%b2%e8%af%9d/%e6%98%a5%e7%a7%8b%e5%8f%b2%e8%af%9d.html'>春秋史话.org</a></li></ul></details></li><li><a href='//book/%e8%9a%8a%e5%ad%90%e5%b9%b2%e5%98%9b%e8%80%81%e5%8f%ae%e6%88%91.html'>蚊子干嘛老叮我.org</a></li></ul></details></li><li><details><summary>cloud</summary><ul><li><a href='//cloud/docker.html'>docker.org</a></li><li><a href='//cloud/gcp.html'>gcp.org</a></li><li><a href='//cloud/gke.html'>gke.org</a></li><li><a href='//cloud/helm.html'>helm.org</a></li><li><details><summary>kubernetes</summary><ul><li><a href='//cloud/kubernetes/README.html'>README.org</a></li><li><a href='//cloud/kubernetes/cloudman.html'>cloudman.org</a></li><li><a href='//cloud/kubernetes/content.html'>content.org</a></li><li><a href='//cloud/kubernetes/controller.html'>controller.org</a></li><li><a href='//cloud/kubernetes/golang.html'>golang.org</a></li><li><a href='//cloud/kubernetes/k8s.html'>k8s.org</a></li><li><a href='//cloud/kubernetes/kubeadm.html'>kubeadm.org</a></li><li><a href='//cloud/kubernetes/kuberbuilder.html'>kuberbuilder.org</a></li><li><a href='//cloud/kubernetes/kubernetes-guide.html'>kubernetes-guide.org</a></li><li><a href='//cloud/kubernetes/operator.html'>operator.org</a></li><li><a href='//cloud/kubernetes/rbac.html'>rbac.org</a></li><li><a href='//cloud/kubernetes/registry.html'>registry.org</a></li><li><a href='//cloud/kubernetes/todo.html'>todo.org</a></li><li><a href='//cloud/kubernetes/tutorial.html'>tutorial.org</a></li><li><a href='//cloud/kubernetes/what-is-container.html'>what-is-container.org</a></li></ul></details></li></ul></details></li><li><details><summary>csapp</summary><ul><li><a href='//csapp/csapp-digest.html'>csapp-digest.org</a></li><li><a href='//csapp/cscpp.html'>cscpp.org</a></li></ul></details></li><li><a href='//docker.html'>docker.org</a></li><li><details><summary>emacs</summary><ul><li><a href='//emacs/orgmode.html'>orgmode.org</a></li></ul></details></li><li><details><summary>history</summary><ul><li><a href='//history/%e5%85%a8%e7%90%83%e9%80%9a%e5%8f%b2.html'>全球通史.org</a></li><li><a href='//history/%e5%8d%97%e5%8c%97%e6%9c%9d.html'>南北朝.org</a></li><li><a href='//history/%e6%99%8b%e5%8f%b2.html'>晋史.org</a></li></ul></details></li><li><details><summary>linux</summary><ul><li><a href='//linux/centos.html'>centos.org</a></li><li><a href='//linux/filesystem.html'>filesystem.org</a></li><li><a href='//linux/init.d.html'>init.d.org</a></li><li><a href='//linux/iptables.html'>iptables.org</a></li><li><a href='//linux/linuxcast.html'>linuxcast.org</a></li><li><a href='//linux/ss.html'>ss.org</a></li><li><a href='//linux/suse.html'>suse.org</a></li><li><a href='//linux/vps.html'>vps.org</a></li></ul></details></li><li><details><summary>literal</summary><ul><li><a href='//literal/book.html'>book.org</a></li><li><a href='//literal/han.html'>han.org</a></li><li><a href='//literal/movie.html'>movie.org</a></li><li><a href='//literal/nounce.html'>nounce.org</a></li><li><a href='//literal/person.html'>person.org</a></li><li><a href='//literal/%e5%9f%ba%e7%9d%a3%e5%b1%b1%e4%bc%af%e7%88%b5.html'>基督山伯爵.org</a></li></ul></details></li><li><details><summary>math</summary><ul><li><a href='//math/%e6%a6%82%e7%8e%87%e8%ae%ba%e4%b8%8e%e6%95%b0%e7%90%86%e7%bb%9f%e8%ae%a1.html'>概率论与数理统计.org</a></li></ul></details></li><li><a href='//mindmap.html'>mindmap.org</a></li><li><details><summary>misc</summary><ul><li><a href='//misc/org-usage.html'>org-usage.org</a></li><li><a href='//misc/screen.html'>screen.org</a></li></ul></details></li><li><details><summary>network</summary><ul><li><a href='//network/ssl.html'>ssl.org</a></li></ul></details></li><li><a href='//opengl.html'>opengl.org</a></li><li><a href='//orgmode.html'>orgmode.org</a></li><li><details><summary>os</summary><ul><li><a href='//os/80386.html'>80386.org</a></li><li><a href='//os/8259a.html'>8259a.org</a></li><li><a href='//os/boot.html'>boot.org</a></li><li><a href='//os/gcc-inline-asm.html'>gcc-inline-asm.md</a></li><li><a href='//os/linux.html'>linux.org</a></li></ul></details></li><li><details><summary>policy</summary><ul><li><a href='//policy/%e5%85%a8%e7%90%83%e5%8c%96%e6%b3%a2%e6%8a%98%e4%b8%8e%e6%b0%91%e8%90%a5%e7%bb%8f%e6%b5%8e%e7%9a%84%e6%9c%aa%e6%9d%a5_%e5%91%a8%e5%85%b6%e4%bb%81.html'>全球化波折与民营经济的未来_周其仁.org</a></li></ul></details></li><li><details><summary>programming</summary><ul><li><details><summary>algorithm</summary><ul><li><details><summary>algorithm4th</summary><ul><li><a href='//programming/algorithm/algorithm4th/algorithm.html'>algorithm.org</a></li></ul></details></li><li><a href='//programming/algorithm/%e5%b0%8f%e7%94%b2%e9%b1%bc-%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84%e4%b8%8e%e7%ae%97%e6%b3%95-%e8%a7%86%e9%a2%91%e7%ac%94%e8%ae%b0.html'>小甲鱼-数据结构与算法-视频笔记.org</a></li></ul></details></li><li><details><summary>clojure</summary><ul><li><a href='//programming/clojure/clojure.tools.logging.html'>clojure.tools.logging.md</a></li></ul></details></li><li><details><summary>cpp</summary><ul><li><a href='//programming/cpp/tutorials.html'>tutorials.org</a></li></ul></details></li><li><details><summary>elasticsearch</summary><ul><li><a href='//programming/elasticsearch/elasticsearch-definitive-guide-note.html'>elasticsearch-definitive-guide-note.org</a></li></ul></details></li><li><details><summary>git</summary><ul><li><a href='//programming/git/git.html'>git.org</a></li></ul></details></li><li><details><summary>golang</summary><ul><li><a href='//programming/golang/cmd.html'>cmd.org</a></li><li><a href='//programming/golang/effective-go.html'>effective-go.org</a></li><li><a href='//programming/golang/go-concurrency.html'>go-concurrency.org</a></li><li><a href='//programming/golang/how-to-write-go-code.html'>how-to-write-go-code.org</a></li><li><a href='//programming/golang/json.html'>json.org</a></li><li><details><summary>learn-go-note</summary><ul><li><a href='//programming/golang/learn-go-note/learning-go.html'>learning-go.org</a></li></ul></details></li><li><a href='//programming/golang/library.html'>library.org</a></li><li><a href='//programming/golang/misc.html'>misc.org</a></li><li><a href='//programming/golang/reflect.html'>reflect.org</a></li><li><a href='//programming/golang/template.html'>template.org</a></li><li><a href='//programming/golang/the-little-go-book.html'>the-little-go-book.org</a></li><li><a href='//programming/golang/%e6%97%a0%e9%97%bb%e8%a7%86%e9%a2%91%e7%ac%94%e8%ae%b0.html'>无闻视频笔记.org</a></li></ul></details></li><li><details><summary>hadoop</summary><ul><li><a href='//programming/hadoop/hdfs-permission-guide-note.html'>hdfs-permission-guide-note.org</a></li></ul></details></li><li><details><summary>java</summary><ul><li><a href='//programming/java/derby.html'>derby.org</a></li><li><a href='//programming/java/ivy-vs-maven.html'>ivy-vs-maven.org</a></li><li><a href='//programming/java/java-note.html'>java-note.org</a></li><li><a href='//programming/java/maven.html'>maven.org</a></li><li><a href='//programming/java/servlet.html'>servlet.org</a></li><li><a href='//programming/java/thing-java.html'>thing-java.org</a></li><li><a href='//programming/java/%e6%b7%b1%e5%85%a5%e7%90%86%e8%a7%a3java%e8%99%9a%e6%8b%9f%e6%9c%ba.html'>深入理解java虚拟机.org</a></li></ul></details></li><li><details><summary>javascript</summary><ul><li><a href='//programming/javascript/angularjs.html'>angularjs.org</a></li><li><a href='//programming/javascript/dom.html'>dom.org</a></li></ul></details></li><li><a href='//programming/javascript.html'>javascript.org</a></li><li><details><summary>lisp</summary><ul><li><a href='//programming/lisp/the-little-schemer.html'>the-little-schemer.org</a></li></ul></details></li><li><details><summary>python</summary><ul><li><a href='//programming/python/asyncio.html'>asyncio.org</a></li><li><a href='//programming/python/flask.html'>flask.org</a></li><li><a href='//programming/python/idiomatic-python-note.html'>idiomatic-python-note.org</a></li><li><a href='//programming/python/jinja2.html'>jinja2.org</a></li><li><a href='//programming/python/package-manage.html'>package-manage.org</a></li><li><a href='//programming/python/pygame.html'>pygame.org</a></li><li><a href='//programming/python/tools.html'>tools.org</a></li></ul></details></li><li><details><summary>scala</summary><ul><li><a href='//programming/scala/programming-in-scala.html'>programming-in-scala.org</a></li><li><a href='//programming/scala/scala.html'>scala.org</a></li><li><a href='//programming/scala/scalikeJDBC.html'>scalikeJDBC.org</a></li></ul></details></li><li><a href='//programming/storm.html'>storm.org</a></li><li><a href='//programming/thrift.html'>thrift.org</a></li><li><a href='//programming/typescript.html'>typescript.org</a></li><li><details><summary>web</summary><ul><li><a href='//programming/web/liquid.html'>liquid.org</a></li></ul></details></li></ul></details></li><li><details><summary>rdbms</summary><ul><li><a href='//rdbms/rdbms.html'>rdbms.org</a></li></ul></details></li><li><details><summary>resource</summary><ul><li><a href='//resource/emacs.html'>emacs.md</a></li><li><a href='//resource/ml-resource.html'>ml-resource.md</a></li><li><a href='//resource/nlp-resource.html'>nlp-resource.md</a></li></ul></details></li><li><details><summary>services</summary><ul><li><details><summary>mail</summary><ul><li><a href='//services/mail/mail.html'>mail.org</a></li></ul></details></li></ul></details></li><li><details><summary>subtitle</summary><ul><li><a href='//subtitle/docker.html'>docker.org</a></li></ul></details></li><li><details><summary>toarous</summary><ul><li><a href='//toarous/README.html'>README.md</a></li><li><a href='//toarous/idt.html'>idt.md</a></li><li><a href='//toarous/intel.html'>intel.org</a></li><li><a href='//toarous/notes.html'>notes.org</a></li><li><a href='//toarous/osx-environment.html'>osx-environment.org</a></li><li><a href='//toarous/vga.html'>vga.md</a></li></ul></details></li><li><details><summary>tools</summary><ul><li><a href='//tools/GCP.html'>GCP.org</a></li><li><a href='//tools/ansible.html'>ansible.org</a></li><li><a href='//tools/bash.html'>bash.org</a></li><li><a href='//tools/gerrit.html'>gerrit.org</a></li><li><a href='//tools/git.html'>git.org</a></li><li><a href='//tools/gpg.html'>gpg.org</a></li><li><a href='//tools/markdown.html'>markdown.org</a></li><li><a href='//tools/nginx.html'>nginx.org</a></li><li><a href='//tools/rpm.html'>rpm.org</a></li><li><a href='//tools/spark.html'>spark.org</a></li><li><a href='//tools/tmux.html'>tmux.org</a></li></ul></details></li><li><details><summary>ui</summary><ul><li><a href='//ui/react.html'>react.org</a></li><li><a href='//ui/tk.html'>tk.org</a></li></ul></details></li><li><details><summary>web</summary><ul><li><a href='//web/chrome-extension.html'>chrome-extension.org</a></li></ul></details></li><li><a href='//words.html'>words.org</a></li><li><a href='//%e7%bd%91%e6%b0%91%e7%9a%84%e7%8b%82%e6%ac%a2.html'>网民的狂欢.org</a></li></ul>
+			</nav>
+			<section class="main-article-area">
+				<div id='main'>
+					<h1 id="introduction">Introduction</h1>
+<h2 id="语言的特性">语言的特性</h2>
+<ul class="incremental">
 <li>Clean and Simple</li>
 <li>Concurrent ( goroutine 轻量级线程 )</li>
 <li>Channels</li>
@@ -273,547 +27,273 @@ for the JavaScript code in this tag.
 <li>Open Source</li>
 <li>Fun</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgc3cb2ae" class="outline-3">
-<h3 id="orgc3cb2ae">查看帮助</h3>
-<div class="outline-text-3" id="text-orgc3cb2ae">
-<dl class="org-dl">
-<dt><code>godoc builtin</code></dt><dd>类似于 <code>java.lang.System</code></dd>
-<dt><code>godoc hash</code></dt><dd>查看包的手册</dd>
+<h2 id="查看帮助">查看帮助</h2>
+<dl class="incremental">
+<dt><code>godoc builtin</code></dt>
+<dd>类似于 <code>java.lang.System</code>
+</dd>
+<dt><code>godoc hash</code></dt>
+<dd>查看包的手册
+</dd>
 </dl>
-</div>
-</div>
-</div>
+<h1 id="基础">基础</h1>
+<h2 id="hello-world">hello world</h2>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">package</span> main
 
-<div id="outline-container-org698ebae" class="outline-2">
-<h2 id="org698ebae">基础</h2>
-<div class="outline-text-2" id="text-org698ebae">
-</div><div id="outline-container-org26d3f7d" class="outline-3">
-<h3 id="org26d3f7d">hello world</h3>
-<div class="outline-text-3" id="text-org26d3f7d">
-<div class="org-src-container">
-<pre class="src src-go">package main
+<span class="kw">import</span> <span class="st">&quot;fmt&quot;</span>
 
-import "fmt"
-
-func main() {
-    fmt.Printf( "Hello World." )
-}
-</pre>
-</div>
-
-<ul class="org-ul">
+<span class="kw">func</span> main() {
+    fmt.Printf( <span class="st">&quot;Hello World.&quot;</span> )
+}</code></pre></div>
+<ul class="incremental">
 <li>可执行程序包名必须是 <code>main</code></li>
 <li>可执行程序的入口是 <code>main.main()</code></li>
 <li>main 的参数由 os.Args 传入（第一个参数为程序名）</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgbcb2e09" class="outline-3">
-<h3 id="orgbcb2e09">编译执行</h3>
-<div class="outline-text-3" id="text-orgbcb2e09">
-<div class="org-src-container">
-<pre class="src src-shell">go build helloworld.go
-</pre>
-</div>
-
-<ul class="org-ul">
+<h2 id="编译执行">编译执行</h2>
+<pre class="shell"><code>go build helloworld.go
+</code></pre>
+<ul class="incremental">
 <li>文件名可以与包名不一致</li>
 <li>生成结果与文件名一致</li>
 <li>可以直接使用 <code>go run helloworld.go</code> 来运行</li>
 </ul>
-</div>
-</div>
-
-
-
-
-<div id="outline-container-org66a558b" class="outline-3">
-<h3 id="org66a558b">基础类型和变量</h3>
-<div class="outline-text-3" id="text-org66a558b">
-</div><div id="outline-container-orgf49d753" class="outline-4">
-<h4 id="orgf49d753">类型后缀形式</h4>
-<div class="outline-text-4" id="text-orgf49d753">
-<div class="org-src-container">
-<pre class="src src-go">var a int
-</pre>
-</div>
-
-<p>
-类型有默认的空值
-</p>
-</div>
-</div>
-
-<div id="outline-container-org774e0fb" class="outline-4">
-<h4 id="org774e0fb">声明与初始化可以写在一起</h4>
-<div class="outline-text-4" id="text-org774e0fb">
-<ul class="org-ul">
+<h2 id="基础类型和变量">基础类型和变量</h2>
+<h3 id="类型后缀形式">类型后缀形式</h3>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">var</span> a <span class="dt">int</span></code></pre></div>
+<p>类型有默认的空值</p>
+<h3 id="声明与初始化可以写在一起">声明与初始化可以写在一起</h3>
+<ul class="incremental">
 <li>如 <code>var a; a = 15</code> 等价于 <code>var a = 15</code></li>
 <li>在函数内部，还可以写作 <code>a := 15</code></li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org63acc79" class="outline-4">
-<h4 id="org63acc79">多个变量申明</h4>
-<div class="outline-text-4" id="text-org63acc79">
-<p>
-多变量申明可以放于一起，类似的还有 <code>const</code> 和 <code>import</code> ，如
-</p>
-
-<div class="org-src-container">
-<pre class="src src-go">var (
-  x int
-  b bool
-)
-</pre>
-</div>
-
-<p>
-相同类型的变量可以一起申明或赋值
-</p>
-
-<pre class="example">
-var x, y int 
+<h3 id="多个变量申明">多个变量申明</h3>
+<p>多变量申明可以放于一起，类似的还有 <code>const</code> 和 <code>import</code> ，如</p>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">var</span> (
+  x <span class="dt">int</span>
+  b <span class="dt">bool</span>
+)</code></pre></div>
+<p>相同类型的变量可以一起申明或赋值</p>
+<pre><code>var x, y int 
 a, b := 20, 16
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgafc0e4c" class="outline-4">
-<h4 id="orgafc0e4c">特殊变量 <code>`_`</code></h4>
-<div class="outline-text-4" id="text-orgafc0e4c">
-<p>
-类似于 lua，表示丢弃这一变量
-</p>
-
-<p>
-go 中检查比较严格，发现未使用的变量会报错，使用 <code>_</code> 来显示的解决错误
-</p>
-</div>
-</div>
-
-<div id="outline-container-org40f76ed" class="outline-4">
-<h4 id="org40f76ed">Boolean</h4>
-<div class="outline-text-4" id="text-org40f76ed">
-<ul class="org-ul">
+</code></pre>
+<h3 id="特殊变量-_">特殊变量 <code>`_`</code></h3>
+<p>类似于 lua，表示丢弃这一变量</p>
+<p>go 中检查比较严格，发现未使用的变量会报错，使用 <code>_</code> 来显示的解决错误</p>
+<h3 id="boolean">Boolean</h3>
+<ul class="incremental">
 <li>关键字是 <code>bool</code></li>
 <li>两个字面值是 <code>true</code> 和 <code>false</code></li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org921e491" class="outline-4">
-<h4 id="org921e491">Numerical</h4>
-<div class="outline-text-4" id="text-org921e491">
-<dl class="org-dl">
-<dt><code>int</code></dt><dd>宽度视平台而定</dd>
-<dt><code>uint</code></dt><dd>同上</dd>
-<dt><code>[u]int{8,16,32,64}</code></dt><dd>指定具体宽度</dd>
-<dt><code>byte</code></dt><dd>对应 <code>uint8</code></dd>
-<dt><code>float{32,64}</code></dt><dd>浮点数（无 double）</dd>
+<h3 id="numerical">Numerical</h3>
+<dl class="incremental">
+<dt><code>int</code></dt>
+<dd>宽度视平台而定
+</dd>
+<dt><code>uint</code></dt>
+<dd>同上
+</dd>
+<dt><code>[u]int{8,16,32,64}</code></dt>
+<dd>指定具体宽度
+</dd>
+<dt><code>byte</code></dt>
+<dd>对应 <code>uint8</code>
+</dd>
+<dt><code>float{32,64}</code></dt>
+<dd>浮点数（无 double）
+</dd>
 </dl>
-</div>
-
-<ul class="org-ul"><li><a id="org5d89f69"></a><span class="todo TODO">TODO</span> 类型转换<br><div class="outline-text-5" id="text-org5d89f69">
-<p>
-不同类型之前直接不可赋值或计算 
-</p>
-</div></li></ul>
-</div>
-
-<div id="outline-container-org00233af" class="outline-4">
-<h4 id="org00233af">Constants</h4>
-<div class="outline-text-4" id="text-org00233af">
-<p>
-在编译时生成，只能是数字、字符串或布尔值。
-</p>
-</div>
-
-<ul class="org-ul"><li><a id="org28aaac4"></a><span class="todo TODO">TODO</span> 枚举<br><div class="outline-text-5" id="text-org28aaac4">
-<p>
-使用 <code>iota</code> 来生成枚举（ iota 指极少量）
-</p>
-
-<p>
-为什么这里的 iota 可以省略？
-</p>
-
-<div class="org-src-container">
-<pre class="src src-go">const (
-  a = iota
+<ol class="incremental">
+<li><p><span class="todo TODO">TODO</span> 类型转换</p>
+<p>不同类型之前直接不可赋值或计算</p></li>
+</ol>
+<h3 id="constants">Constants</h3>
+<p>在编译时生成，只能是数字、字符串或布尔值。</p>
+<ol class="incremental">
+<li><p><span class="todo TODO">TODO</span> 枚举</p>
+<p>使用 <code>iota</code> 来生成枚举（ iota 指极少量）</p>
+<p>为什么这里的 iota 可以省略？</p>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">const</span> (
+  a = <span class="ot">iota</span>
   b
-)
-</pre>
-</div>
-</div></li></ul>
-</div>
-
-
-
-
-
-
-
-<div id="outline-container-orgd5b7009" class="outline-4">
-<h4 id="orgd5b7009"><span class="todo TODO">TODO</span> Strings</h4>
-<div class="outline-text-4" id="text-orgd5b7009">
-<ul class="org-ul">
+)</code></pre></div></li>
+</ol>
+<h3 id="strings"><span class="todo TODO">TODO</span> Strings</h3>
+<ul class="incremental">
 <li>以双引号表示</li>
 <li>？单引号表示字符？</li>
 <li>字符串不可修改（immutable）</li>
 </ul>
-</div>
-</div>
-
-
-<div id="outline-container-orgd3a5768" class="outline-4">
-<h4 id="orgd3a5768"><span class="todo TODO">TODO</span> Runes</h4>
-<div class="outline-text-4" id="text-orgd3a5768">
-<p>
-是 <code>int32</code> 的别名，保存 utf8 编码，方便对宽字符集作操作
-</p>
-
-<p>
-可以修改？
-</p>
-</div>
-</div>
-
-
-<div id="outline-container-orgd729e73" class="outline-4">
-<h4 id="orgd729e73"><span class="todo TODO">TODO</span> Complex Numbers</h4>
-<div class="outline-text-4" id="text-orgd729e73">
-<p>
-原生支持复数，有两个类型
-</p>
-
-<ol class="org-ol">
+<h3 id="runes"><span class="todo TODO">TODO</span> Runes</h3>
+<p>是 <code>int32</code> 的别名，保存 utf8 编码，方便对宽字符集作操作</p>
+<p>可以修改？</p>
+<h3 id="complex-numbers"><span class="todo TODO">TODO</span> Complex Numbers</h3>
+<p>原生支持复数，有两个类型</p>
+<ol class="incremental">
 <li><code>complex128</code></li>
 <li><code>complex64</code></li>
 </ol>
-
-<p>
-有没有字面表示方法？
-</p>
-</div>
-</div>
-
-
-<div id="outline-container-orgcc36b5b" class="outline-4">
-<h4 id="orgcc36b5b"><span class="todo TODO">TODO</span> Error</h4>
-<div class="outline-text-4" id="text-orgcc36b5b">
-<ul class="org-ul">
+<p>有没有字面表示方法？</p>
+<h3 id="error"><span class="todo TODO">TODO</span> Error</h3>
+<ul class="incremental">
 <li>默认值是 <code>nil</code></li>
 </ul>
-</div>
-</div>
-</div>
-
-
-
-
-
-
-
-<div id="outline-container-orge52e59b" class="outline-3">
-<h3 id="orge52e59b">操作符和基本函数</h3>
-<div class="outline-text-3" id="text-orge52e59b">
-<p>
-go 不支持运算符重载！
-</p>
-</div>
-</div>
-
-
-
-<div id="outline-container-org50b1d61" class="outline-3">
-<h3 id="org50b1d61">控制结构</h3>
-<div class="outline-text-3" id="text-org50b1d61">
-</div><div id="outline-container-org0ad0c41" class="outline-4">
-<h4 id="org0ad0c41">if-else</h4>
-<div class="outline-text-4" id="text-org0ad0c41">
-<ul class="org-ul">
+<h2 id="操作符和基本函数">操作符和基本函数</h2>
+<p>go 不支持运算符重载！</p>
+<h2 id="控制结构">控制结构</h2>
+<h3 id="if-else">if-else</h3>
+<ul class="incremental">
 <li>if 可以像 for 有初始步骤</li>
 <li>条件不加括号</li>
 <li>body 必须使用大括号</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgf923a95" class="outline-4">
-<h4 id="orgf923a95">goto</h4>
-<div class="outline-text-4" id="text-orgf923a95">
-<ul class="org-ul">
+<h3 id="goto">goto</h3>
+<ul class="incremental">
 <li>和 C 一样，跳转到 label 处</li>
 <li>label 大小写无要求</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgf0ae4da" class="outline-4">
-<h4 id="orgf0ae4da">for</h4>
-<div class="outline-text-4" id="text-orgf0ae4da">
-<ul class="org-ul">
+<h3 id="for">for</h3>
+<ul class="incremental">
 <li>基本形式与 C 的一致</li>
 <li>可以省略初始和变化而部分，退化成 <code>while(condition)</code></li>
 <li>可以全部省略三个参数，退化成 <code>while()</code></li>
 <li>for 中初始的变量只能在 for 中使用</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org74461ea" class="outline-4">
-<h4 id="org74461ea">break and continue</h4>
-<div class="outline-text-4" id="text-org74461ea">
-<ul class="org-ul">
+<h3 id="break-and-continue">break and continue</h3>
+<ul class="incremental">
 <li>基本用法和 C 的致</li>
 <li>另外可以指定退出的 label，跳出多层循环</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgf2b4ebc" class="outline-4">
-<h4 id="orgf2b4ebc">range</h4>
-<div class="outline-text-4" id="text-orgf2b4ebc">
-<ul class="org-ul">
+<h3 id="range">range</h3>
+<ul class="incremental">
 <li>关键字 <code>range</code> 用于迭代序列 (loop over)</li>
 <li>对于 slice 或 array，返回 <code>index: int</code> 和 <code>value: string</code></li>
 <li>字符串是对每个 UTF8 字符进行迭代，postition 为字节数</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgd92b5b1" class="outline-4">
-<h4 id="orgd92b5b1"><span class="todo TODO">TODO</span> switch</h4>
-<div class="outline-text-4" id="text-orgd92b5b1">
-<div class="org-src-container">
-<pre class="src src-go">switch{
-  case '0' &lt;= c &amp;&amp; c &lt;= '9':
-    return c - '0'
-  case 'a' &lt;= c &amp;&amp; c &lt;= 'f':
-    return c - 'a' + 10
-  case 'A' &lt;= c &amp;&amp; c &lt;= 'F':
-    return c - 'A' + 10
+<h3 id="switch"><span class="todo TODO">TODO</span> switch</h3>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">switch</span>{
+  <span class="kw">case</span> <span class="ch">&#39;0&#39;</span> &lt;= c &amp;&amp; c &lt;= <span class="ch">&#39;9&#39;</span>:
+    <span class="kw">return</span> c - <span class="ch">&#39;0&#39;</span>
+  <span class="kw">case</span> <span class="ch">&#39;a&#39;</span> &lt;= c &amp;&amp; c &lt;= <span class="ch">&#39;f&#39;</span>:
+    <span class="kw">return</span> c - <span class="ch">&#39;a&#39;</span> + <span class="dv">10</span>
+  <span class="kw">case</span> <span class="ch">&#39;A&#39;</span> &lt;= c &amp;&amp; c &lt;= <span class="ch">&#39;F&#39;</span>:
+    <span class="kw">return</span> c - <span class="ch">&#39;A&#39;</span> + <span class="dv">10</span>
 }
 
-switch i {
-  case 0, 1:
+<span class="kw">switch</span> i {
+  <span class="kw">case</span> <span class="dv">0</span>, <span class="dv">1</span>:
     f()
-  case 2: fallthrough
-  case 3: 
+  <span class="kw">case</span> <span class="dv">2</span>: <span class="kw">fallthrough</span>
+  <span class="kw">case</span> <span class="dv">3</span>: 
     h()
-  default:
-    g()
-</pre>
-</div>
-
-<ul class="org-ul">
+  <span class="kw">default</span>:
+    g()</code></pre></div>
+<ul class="incremental">
 <li>匹配的可以不止是整数（与C相比）</li>
 <li>不加条件的 switch 相当于 <code>switch true</code> ， 可以用于生成条件分支</li>
 <li>不用加 break，若要生成多条件匹配，用关键字 <code>fallthrough</code></li>
 <li>默认分支用 <code>default</code> 标识</li>
 <li>case 后可以跟多个条件</li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org9ec6fe6" class="outline-2">
-<h2 id="org9ec6fe6">内建函数</h2>
-<div class="outline-text-2" id="text-org9ec6fe6">
-</div><div id="outline-container-orgd3b1180" class="outline-3">
-<h3 id="orgd3b1180">基础</h3>
-<div class="outline-text-3" id="text-orgd3b1180">
-<p>
-<b>使用 <code>godoc builtin</code> 来查看内建函数手册</b>
-</p>
-
-<dl class="org-dl">
-<dt>close</dt><dd>close a channel</dd>
-<dt>delete</dt><dd>delete entries in maps</dd>
-<dt>len/cap</dt><dd>长度，容量</dd>
-<dt>new</dt><dd>allocating memory for user defined data types.</dd>
-<dt>make</dt><dd>allocating memory for builtin types (maps,slices,channels)</dd>
-<dt>copy/append</dt><dd>copy or concatenating slices</dd>
-<dt>panic,recover</dt><dd>used for an exception mechanism</dd>
-<dt>complex,real,img</dt><dd>deal with complex numbers</dd>
+<h1 id="内建函数">内建函数</h1>
+<h2 id="基础-1">基础</h2>
+<p><strong>使用 <code>godoc builtin</code> 来查看内建函数手册</strong></p>
+<dl class="incremental">
+<dt>close</dt>
+<dd>close a channel
+</dd>
+<dt>delete</dt>
+<dd>delete entries in maps
+</dd>
+<dt>len/cap</dt>
+<dd>长度，容量
+</dd>
+<dt>new</dt>
+<dd>allocating memory for user defined data types.
+</dd>
+<dt>make</dt>
+<dd>allocating memory for builtin types (maps,slices,channels)
+</dd>
+<dt>copy/append</dt>
+<dd>copy or concatenating slices
+</dd>
+<dt>panic,recover</dt>
+<dd>used for an exception mechanism
+</dd>
+<dt>complex,real,img</dt>
+<dd>deal with complex numbers
+</dd>
 </dl>
-</div>
-</div>
-
-<div id="outline-container-orgc41392b" class="outline-3">
-<h3 id="orgc41392b">Arrays</h3>
-<div class="outline-text-3" id="text-orgc41392b">
-</div><div id="outline-container-org7f7d86b" class="outline-4">
-<h4 id="org7f7d86b">示例</h4>
-<div class="outline-text-4" id="text-org7f7d86b">
-<div class="org-src-container">
-<pre class="src src-go">var arr [10]int
-a := [3]int{1,2,3}
-b := [...]int{1,2,3,4} // composite literal
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org4e30b06" class="outline-4">
-<h4 id="org4e30b06">特性</h4>
-<div class="outline-text-4" id="text-org4e30b06">
-<ul class="org-ul">
+<h2 id="arrays">Arrays</h2>
+<h3 id="示例">示例</h3>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">var</span> arr [<span class="dv">10</span>]<span class="dt">int</span>
+a := [<span class="dv">3</span>]<span class="dt">int</span>{<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>}
+b := [...]<span class="dt">int</span>{<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>} <span class="co">// composite literal</span></code></pre></div>
+<h3 id="特性">特性</h3>
+<ul class="incremental">
 <li>有固定长度</li>
 <li>函数参数时传递拷贝，而非指针</li>
 </ul>
-</div>
-</div>
-</div>
-
-
-
-
-
-
-
-
-<div id="outline-container-org3fb545c" class="outline-3">
-<h3 id="org3fb545c">Slices</h3>
-<div class="outline-text-3" id="text-org3fb545c">
-<ul class="org-ul">
-<li>类似于数组，但可以动态扩展（通过 <b>append</b> 和 <b>copy</b> ）方法</li>
+<h2 id="slices">Slices</h2>
+<ul class="incremental">
+<li>类似于数组，但可以动态扩展（通过 <strong>append</strong> 和 <strong>copy</strong> ）方法</li>
 <li>底层也是 array</li>
 <li>是到 array 的指针（类似于 C++ 中的引用类型）</li>
-<li>引用类型通过 <b>make</b> 生成</li>
+<li>引用类型通过 <strong>make</strong> 生成</li>
 </ul>
-</div>
-
-<div id="outline-container-org78656ef" class="outline-4">
-<h4 id="org78656ef">示例</h4>
-<div class="outline-text-4" id="text-org78656ef">
-<div class="org-src-container">
-<pre class="src src-go">c  := [...]int{1,2,3,4,5}
-sa := make([]int, 10)
-sb := c[:3]
-sc := c[0:3:4] // 同时设定 cap
-</pre>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-orgef44c5c" class="outline-4">
-<h4 id="orgef44c5c">append</h4>
-<div class="outline-text-4" id="text-orgef44c5c">
-<ul class="org-ul">
+<h3 id="示例-1">示例</h3>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go">c  := [...]<span class="dt">int</span>{<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>}
+sa := <span class="bu">make</span>([]<span class="dt">int</span>, <span class="dv">10</span>)
+sb := c[:<span class="dv">3</span>]
+sc := c[<span class="dv">0</span>:<span class="dv">3</span>:<span class="dv">4</span>] <span class="co">// 同时设定 cap</span></code></pre></div>
+<h3 id="append">append</h3>
+<ul class="incremental">
 <li>append 会生成新的底层数组</li>
 <li>后面跟数组元素类型时，添加元素: <code>append(s,1,2,3)</code></li>
-<li>后面跟数组类型时，添加数组（注意 <b>`&#x2026;`</b> ） <code>append(s,s2...)</code></li>
+<li>后面跟数组类型时，添加数组（注意 <strong>`...`</strong> ） <code>append(s,s2...)</code></li>
 </ul>
-
-<div class="org-src-container">
-<pre class="src src-go">s1 := []int{1,2,3}
-s2 := []int{5,6,7}
-fmt.Println( append(s1,s2...) )
-</pre>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-org2b8b1e8" class="outline-4">
-<h4 id="org2b8b1e8">copy</h4>
-<div class="outline-text-4" id="text-org2b8b1e8">
-<ul class="org-ul">
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go">s1 := []<span class="dt">int</span>{<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>}
+s2 := []<span class="dt">int</span>{<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>}
+fmt.Println( <span class="bu">append</span>(s1,s2...) )</code></pre></div>
+<h3 id="copy">copy</h3>
+<ul class="incremental">
 <li>copy 返回实际拷贝长度（类似 memcpy）</li>
 </ul>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgb56586a" class="outline-3">
-<h3 id="orgb56586a"><span class="todo TODO">TODO</span> Array VS Slices</h3>
-<div class="outline-text-3" id="text-orgb56586a">
-</div><div id="outline-container-org03548b4" class="outline-4">
-<h4 id="org03548b4">初始化方式</h4>
-<div class="outline-text-4" id="text-org03548b4">
-<p>
-Array 初始化时需要指定长度: `[3]int{1,2,3}` 或 `[&#x2026;]int{1,2,3}` ；
-而 Slices 不需要指定: `[]int{1,2,3}`
-</p>
-</div>
-</div>
-
-<div id="outline-container-org1f6bd9b" class="outline-4">
-<h4 id="org1f6bd9b"><span class="todo TODO">TODO</span> 如何确定 array 或 slices</h4>
-</div>
-</div>
-
-<div id="outline-container-orgc21091f" class="outline-3">
-<h3 id="orgc21091f">Maps</h3>
-<div class="outline-text-3" id="text-orgc21091f">
-</div><div id="outline-container-orgc4a054c" class="outline-4">
-<h4 id="orgc4a054c">类比</h4>
-<div class="outline-text-4" id="text-orgc4a054c">
-<ul class="org-ul">
+<h2 id="array-vs-slices"><span class="todo TODO">TODO</span> Array VS Slices</h2>
+<h3 id="初始化方式">初始化方式</h3>
+<p>Array 初始化时需要指定长度: `[3]int{1,2,3}` 或 `[...]int{1,2,3}` ； 而 Slices 不需要指定: `[]int{1,2,3}`</p>
+<h3 id="如何确定-array-或-slices"><span class="todo TODO">TODO</span> 如何确定 array 或 slices</h3>
+<h2 id="maps">Maps</h2>
+<h3 id="类比">类比</h3>
+<ul class="incremental">
 <li>Perl 中的 hash</li>
 <li>python 中的 dictionary</li>
 <li>C++ 中的maps</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgcb5321e" class="outline-4">
-<h4 id="orgcb5321e">语法</h4>
-<div class="outline-text-4" id="text-orgcb5321e">
-<div class="org-src-container">
-<pre class="src src-go">monthdays := map[string]int{
-  "Jan": 31, "Feb": 28, "Mar": 31,
-  "Apr": 30, "May": 31, "Jun": 30,
-  "Jul": 31, "Aug": 31, "Sep": 30,
-  "Oct": 31, "Nov": 30, "Dec": 31,
-}
-</pre>
-</div>
-
-<ul class="org-ul">
+<h3 id="语法">语法</h3>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go">monthdays := <span class="kw">map</span>[<span class="dt">string</span>]<span class="dt">int</span>{
+  <span class="st">&quot;Jan&quot;</span>: <span class="dv">31</span>, <span class="st">&quot;Feb&quot;</span>: <span class="dv">28</span>, <span class="st">&quot;Mar&quot;</span>: <span class="dv">31</span>,
+  <span class="st">&quot;Apr&quot;</span>: <span class="dv">30</span>, <span class="st">&quot;May&quot;</span>: <span class="dv">31</span>, <span class="st">&quot;Jun&quot;</span>: <span class="dv">30</span>,
+  <span class="st">&quot;Jul&quot;</span>: <span class="dv">31</span>, <span class="st">&quot;Aug&quot;</span>: <span class="dv">31</span>, <span class="st">&quot;Sep&quot;</span>: <span class="dv">30</span>,
+  <span class="st">&quot;Oct&quot;</span>: <span class="dv">31</span>, <span class="st">&quot;Nov&quot;</span>: <span class="dv">30</span>, <span class="st">&quot;Dec&quot;</span>: <span class="dv">31</span>,
+}</code></pre></div>
+<ul class="incremental">
 <li>通用的语法是: <code>map[&lt;from type&gt;]&lt;to type&gt;</code></li>
-<li>注意， <b>结尾的逗号是必须的</b></li>
+<li>注意， <strong>结尾的逗号是必须的</strong></li>
 <li>使用 <code>make[string]int</code> 来生成一个 map</li>
 <li>map 是一个引用类型</li>
 <li>与数组一样，通过方括号进行访问</li>
-<li>通过 <b>range</b> 来迭代</li>
-<li>通过 <code>value, present := monthdays["Jan"]</code> 来测试是否存在</li>
-<li>通过 <code>delete( monthdays, "Mar" )</code> 来删除键值</li>
+<li>通过 <strong>range</strong> 来迭代</li>
+<li>通过 <code>value, present := monthdays[&quot;Jan&quot;]</code> 来测试是否存在</li>
+<li>通过 <code>delete( monthdays, &quot;Mar&quot; )</code> 来删除键值</li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org1ed9c76" class="outline-2">
-<h2 id="org1ed9c76">函数</h2>
-<div class="outline-text-2" id="text-org1ed9c76">
-</div><div id="outline-container-org917e703" class="outline-3">
-<h3 id="org917e703"><span class="todo TODO">TODO</span> receiver</h3>
-</div>
-<div id="outline-container-orgc5cc484" class="outline-3">
-<h3 id="orgc5cc484">定义函数</h3>
-<div class="outline-text-3" id="text-orgc5cc484">
-<div class="org-src-container">
-<pre class="src src-go">type mytype int
-func ( p mytype ) funcname ( q int ) ( r, s int ) { return 0, 0 }
-</pre>
-</div>
-</div>
-
-<div id="outline-container-org55247b2" class="outline-4">
-<h4 id="org55247b2"><span class="todo TODO">TODO</span> 说明</h4>
-<div class="outline-text-4" id="text-org55247b2">
-<ul class="org-ul">
+<h1 id="函数">函数</h1>
+<h2 id="receiver"><span class="todo TODO">TODO</span> receiver</h2>
+<h2 id="定义函数">定义函数</h2>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">type</span> mytype <span class="dt">int</span>
+<span class="kw">func</span> ( p mytype ) funcname ( q <span class="dt">int</span> ) ( r, s <span class="dt">int</span> ) { <span class="kw">return</span> <span class="dv">0</span>, <span class="dv">0</span> }</code></pre></div>
+<h3 id="说明"><span class="todo TODO">TODO</span> 说明</h3>
+<ul class="incremental">
 <li>optionally bind to a specific type called receiver ( method )</li>
 <li>parameters are passed pass-by-value</li>
 <li>functions in Go can have multiple return values</li>
@@ -822,417 +302,234 @@ func ( p mytype ) funcname ( q int ) ( r, s int ) { return 0, 0 }
 <li>不允许函数嵌套定义！！但可以使用匿名函数</li>
 <li>可以递归。尾递归？？</li>
 </ul>
-</div>
-</div>
-</div>
-
-
-
-<div id="outline-container-org5258edf" class="outline-3">
-<h3 id="org5258edf">作用域</h3>
-<div class="outline-text-3" id="text-org5258edf">
-<ul class="org-ul">
+<h2 id="作用域">作用域</h2>
+<ul class="incremental">
 <li>注意赋值 <code>=</code> 与定义 <code>:=</code> 的区别</li>
 <li>函数的局部变量不会绑定到要调用的函数环境中</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org0b74996" class="outline-3">
-<h3 id="org0b74996">高阶函数</h3>
-<div class="outline-text-3" id="text-org0b74996">
-<div class="org-src-container">
-<pre class="src src-go">var xs = map[int]func() int{
-  1: func() int {return 10},
-  2: func() int {return 20},
-  3: func() int {return 30},
-}
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgfd6de6c" class="outline-3">
-<h3 id="orgfd6de6c">defer</h3>
-<div class="outline-text-3" id="text-orgfd6de6c">
-<ul class="org-ul">
+<h2 id="高阶函数">高阶函数</h2>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">var</span> xs = <span class="kw">map</span>[<span class="dt">int</span>]<span class="kw">func</span>() <span class="dt">int</span>{
+  <span class="dv">1</span>: <span class="kw">func</span>() <span class="dt">int</span> {<span class="kw">return</span> <span class="dv">10</span>},
+  <span class="dv">2</span>: <span class="kw">func</span>() <span class="dt">int</span> {<span class="kw">return</span> <span class="dv">20</span>},
+  <span class="dv">3</span>: <span class="kw">func</span>() <span class="dt">int</span> {<span class="kw">return</span> <span class="dv">30</span>},
+}</code></pre></div>
+<h2 id="defer">defer</h2>
+<ul class="incremental">
 <li>不是 lazy eval，而类似于 atexit。在函数退出时被回调</li>
 <li>可以多次注册，以 LIFO （栈）形式被回调</li>
 <li>defer 还可以用于装饰返回结果（如 JSON 序列化）</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org630d1a2" class="outline-3">
-<h3 id="org630d1a2">变长参数列表</h3>
-<div class="outline-text-3" id="text-org630d1a2">
-<p>
-类似于 scala，示例如下：
-</p>
-
-<div class="org-src-container">
-<pre class="src src-go">func myfunc2( args ...string ) {
-	for _, v := range args {
-		fmt.Println( v )
-	}
+<h2 id="变长参数列表">变长参数列表</h2>
+<p>类似于 scala，示例如下：</p>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">func</span> myfunc2( args ...<span class="dt">string</span> ) {
+        <span class="kw">for</span> _, v := <span class="kw">range</span> args {
+                fmt.Println( v )
+        }
 }
 
-func myfunc( args ...string ) {
-	myfunc2( args[3:]... )
-}
-</pre>
-</div>
-</div>
-
-<div id="outline-container-org4bf8335" class="outline-4">
-<h4 id="org4bf8335"><span class="todo TODO">TODO</span> interface</h4>
-<div class="outline-text-4" id="text-org4bf8335">
-<p>
-If you don't specify the type of the varadic argument
-it defaults to the empty interface <code>interface{}</code>
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org739b187" class="outline-3">
-<h3 id="org739b187">Panic and recovering</h3>
-<div class="outline-text-3" id="text-org739b187">
-</div><div id="outline-container-org8197996" class="outline-4">
-<h4 id="org8197996"><span class="todo TODO">TODO</span> Exception vs Panic-Recovering</h4>
-<div class="outline-text-4" id="text-org8197996">
-<p>
-GO 不提供异常捕获机制
-</p>
-</div>
-
-<ul class="org-ul"><li><a id="orgb510b9e"></a><span class="todo TODO">TODO</span> 原因<br></li>
-
-<li><a id="org4b4d35b"></a><span class="todo TODO">TODO</span> 区别<br></li>
-
-<li><a id="orgfabe371"></a><span class="todo TODO">TODO</span> 细节<br><ul class="org-ul"><li><a id="orge2b9346"></a>Panic<br><div class="outline-text-6" id="text-orge2b9346">
-<ul class="org-ul">
+<span class="kw">func</span> myfunc( args ...<span class="dt">string</span> ) {
+        myfunc2( args[<span class="dv">3</span>:]... )
+}</code></pre></div>
+<h3 id="interface"><span class="todo TODO">TODO</span> interface</h3>
+<p>If you don't specify the type of the varadic argument it defaults to the empty interface <code>interface{}</code></p>
+<h2 id="panic-and-recovering">Panic and recovering</h2>
+<h3 id="exception-vs-panic-recovering"><span class="todo TODO">TODO</span> Exception vs Panic-Recovering</h3>
+<p>GO 不提供异常捕获机制</p>
+<ol class="incremental">
+<li><p><span class="todo TODO">TODO</span> 原因</p></li>
+<li><p><span class="todo TODO">TODO</span> 区别</p></li>
+<li><p><span class="todo TODO">TODO</span> 细节</p>
+<ol class="incremental">
+<li><p>Panic</p>
+<ul class="incremental">
 <li>函数调用 <code>panic</code> 时，函数的 defer 被回调，然后返回到被调用处</li>
 <li>对外层函数，触发 panic 的函数，此时相当于一个 panic</li>
 <li>沿着栈回溯向下</li>
-</ul>
-</div></li>
-
-<li><a id="orgc8d83f7"></a>Recover<br><div class="outline-text-6" id="text-orgc8d83f7">
-<ul class="org-ul">
+</ul></li>
+<li><p>Recover</p>
+<ul class="incremental">
 <li>正常执行中，返回 nil，无其它作用</li>
 <li>用于恢复被 panic 打断的执行</li>
-</ul>
-</div></li></ul></li></ul>
-</div>
-</div>
-</div>
-
-
-
-<div id="outline-container-orgbd6dfb0" class="outline-2">
-<h2 id="orgbd6dfb0">Packages</h2>
-<div class="outline-text-2" id="text-orgbd6dfb0">
-</div><div id="outline-container-orgc47a662" class="outline-3">
-<h3 id="orgc47a662">定义</h3>
-<div class="outline-text-3" id="text-orgc47a662">
-<p>
-A package is a collection of functions and data.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgb2e2653" class="outline-3">
-<h3 id="orgb2e2653">说明</h3>
-<div class="outline-text-3" id="text-orgb2e2653">
-<ul class="org-ul">
+</ul></li>
+</ol></li>
+</ol>
+<h1 id="packages">Packages</h1>
+<h2 id="定义">定义</h2>
+<p>A package is a collection of functions and data.</p>
+<h2 id="说明-1">说明</h2>
+<ul class="incremental">
 <li>文件名与包名无关</li>
 <li>包名通常用小写命名</li>
 <li>多个文件可以取相同的包名</li>
 <li>包里的以大写开头的函数对外可见（exported）</li>
 <li>导入名与代码路径一致</li>
 <li>包名是路径的最后一级</li>
-<li><code>import bar "bytes"</code> 重命名包</li>
+<li>~import bar &quot;bytes&quot;~ 重命名包</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgd8a1a74" class="outline-3">
-<h3 id="orgd8a1a74"><span class="todo TODO">TODO</span> 多文件包融合问题</h3>
-</div>
-
-<div id="outline-container-org3356d3e" class="outline-3">
-<h3 id="org3356d3e"><span class="todo TODO">TODO</span> Document</h3>
-<div class="outline-text-3" id="text-org3356d3e">
-<ul class="org-ul">
+<h2 id="多文件包融合问题"><span class="todo TODO">TODO</span> 多文件包融合问题</h2>
+<h2 id="document"><span class="todo TODO">TODO</span> Document</h2>
+<ul class="incremental">
 <li>在 <code>package</code> 关键字节可以加入块级注释，作为代码的文档</li>
 <li>用 <code>go doc</code> 来查看</li>
 <li>多文件的包应该只写一次（重复写会怎样？）</li>
 <li>习惯上建立一个 <code>doc.go</code> 来写文档</li>
 <li>函数注释同理</li>
 </ul>
-</div>
-</div>
-
-
-<div id="outline-container-org247174d" class="outline-3">
-<h3 id="org247174d"><span class="todo TODO">TODO</span> Testing packages</h3>
-<div class="outline-text-3" id="text-org247174d">
-<ul class="org-ul">
+<h2 id="testing-packages"><span class="todo TODO">TODO</span> Testing packages</h2>
+<ul class="incremental">
 <li>使用 <code>testing</code> 包提供的功能</li>
 <li>调用 <code>go test</code> 测试</li>
 <li>test 文件以 <code>*_test.go</code> 为后缀</li>
 <li>test 函数原型是 <code>Test: func TestXxx( t *testing.T )</code></li>
 <li>使用 <code>go doc testing</code> 或 <code>go help testfun</code> 来查看帮助</li>
 </ul>
-</div>
-
-<div id="outline-container-org63faa02" class="outline-4">
-<h4 id="org63faa02">常用函数</h4>
-<div class="outline-text-4" id="text-org63faa02">
-<dl class="org-dl">
-<dt><code>func (t *T) Fail()</code></dt><dd>failed but continues execution</dd>
-<dt><code>func (t *T) FailNow()</code></dt><dd>fail and stop execution</dd>
-<dt><code>func (t *T) Log( args ...interface{} )</code></dt><dd>error log</dd>
-<dt><code>func (t *T) Fatal(args ...interface{} )</code></dt><dd>Log + FailNow</dd>
+<h3 id="常用函数">常用函数</h3>
+<dl class="incremental">
+<dt><code>func (t *T) Fail()</code></dt>
+<dd>failed but continues execution
+</dd>
+<dt><code>func (t *T) FailNow()</code></dt>
+<dd>fail and stop execution
+</dd>
+<dt><code>func (t *T) Log( args ...interface{} )</code></dt>
+<dd>error log
+</dd>
+<dt><code>func (t *T) Fatal(args ...interface{} )</code></dt>
+<dd>Log + FailNow
+</dd>
 </dl>
-</div>
-</div>
-</div>
-
-
-
-
-
-
-
-
-<div id="outline-container-org563ffb7" class="outline-3">
-<h3 id="org563ffb7">常用 Packages</h3>
-<div class="outline-text-3" id="text-org563ffb7">
-</div><div id="outline-container-org8ccd43d" class="outline-4">
-<h4 id="org8ccd43d">列表</h4>
-<div class="outline-text-4" id="text-org8ccd43d">
-<dl class="org-dl">
-<dt>fmt</dt><dd>注意比 C 多出的 <code>%v</code>, <code>%#v</code>, <code>%T</code></dd>
-<dt>io</dt><dd>I/O primitives</dd>
-<dt>bufio</dt><dd>buffered I/O</dd>
-<dt>sort</dt><dd>sorting</dd>
-<dt>strconv</dt><dd>string &lt;-&gt; basic data type</dd>
-<dt>os</dt><dd>platform-independent interface</dd>
-<dt>sync</dt><dd>synchronization primitives such as mutual exclusion locks</dd>
-<dt>flag</dt><dd>argparses or getopt</dd>
-<dt>encoding/json</dt><dd>RFC4627</dd>
-<dt>html/template</dt><dd>generate HTML</dd>
-<dt>net/http</dt><dd>HTTP server/client</dd>
-<dt>unsafe</dt><dd>??</dd>
-<dt>reflect</dt><dd>run-time reflection</dd>
-<dt>os/exec</dt><dd>os.system in python</dd>
+<h2 id="常用-packages">常用 Packages</h2>
+<h3 id="列表">列表</h3>
+<dl class="incremental">
+<dt>fmt</dt>
+<dd>注意比 C 多出的 <code>%v</code>, <code>%#v</code>, <code>%T</code>
+</dd>
+<dt>io</dt>
+<dd>I/O primitives
+</dd>
+<dt>bufio</dt>
+<dd>buffered I/O
+</dd>
+<dt>sort</dt>
+<dd>sorting
+</dd>
+<dt>strconv</dt>
+<dd>string &lt;-&gt; basic data type
+</dd>
+<dt>os</dt>
+<dd>platform-independent interface
+</dd>
+<dt>sync</dt>
+<dd>synchronization primitives such as mutual exclusion locks
+</dd>
+<dt>flag</dt>
+<dd>argparses or getopt
+</dd>
+<dt>encoding/json</dt>
+<dd>RFC4627
+</dd>
+<dt>html/template</dt>
+<dd>generate HTML
+</dd>
+<dt>net/http</dt>
+<dd>HTTP server/client
+</dd>
+<dt>unsafe</dt>
+<dd>??
+</dd>
+<dt>reflect</dt>
+<dd>run-time reflection
+</dd>
+<dt>os/exec</dt>
+<dd>os.system in python
+</dd>
 </dl>
-</div>
-</div>
-
-<div id="outline-container-orgc5860b8" class="outline-4">
-<h4 id="orgc5860b8">其它</h4>
-<div class="outline-text-4" id="text-orgc5860b8">
-<ul class="org-ul">
+<h3 id="其它">其它</h3>
+<ul class="incremental">
 <li>在 <code>$GOROOT/src/pkg</code> 目录下查看</li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-orgf22e6d9" class="outline-2">
-<h2 id="orgf22e6d9">Beyond the basics</h2>
-<div class="outline-text-2" id="text-orgf22e6d9">
-</div><div id="outline-container-org4ee0eb7" class="outline-3">
-<h3 id="org4ee0eb7">Pointer</h3>
-<div class="outline-text-3" id="text-org4ee0eb7">
-</div><div id="outline-container-org844697e" class="outline-4">
-<h4 id="org844697e">概念</h4>
-<div class="outline-text-4" id="text-org844697e">
-<ul class="org-ul">
+<h1 id="beyond-the-basics">Beyond the basics</h1>
+<h2 id="pointer">Pointer</h2>
+<h3 id="概念">概念</h3>
+<ul class="incremental">
 <li>Go has pointers.</li>
 <li>There is however no pointer arithmetic</li>
 <li>Go pointers act more like references than pointers in C</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org32a073e" class="outline-4">
-<h4 id="org32a073e">语法</h4>
-<div class="outline-text-4" id="text-org32a073e">
-<ul class="org-ul">
+<h3 id="语法-1">语法</h3>
+<ul class="incremental">
 <li>在类型前前缀 '*'</li>
 <li>默认指向 <code>nil</code></li>
 <li>使用 '&amp;' 来取地址，并给指针赋值</li>
 <li>使用 '*' 来反引用（取指向数据）</li>
 </ul>
-</div>
-</div>
+<h3 id="例子">例子</h3>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">var</span> p *<span class="dt">int</span>
+fmt.Printf( <span class="st">&quot;%v %T</span><span class="ch">\n</span><span class="st">&quot;</span>, p, p )
 
-<div id="outline-container-orgf36dfc3" class="outline-4">
-<h4 id="orgf36dfc3">例子</h4>
-<div class="outline-text-4" id="text-orgf36dfc3">
-<div class="org-src-container">
-<pre class="src src-go">var p *int
-fmt.Printf( "%v %T\n", p, p )
-
-var i int
+<span class="kw">var</span> i <span class="dt">int</span>
 p = &amp;i
-fmt.Printf( "%v %v %T\n", p, *p, p )
-</pre>
-</div>
-</div>
-</div>
-</div>
-
-
-
-
-<div id="outline-container-orgce24713" class="outline-3">
-<h3 id="orgce24713">Allocation</h3>
-<div class="outline-text-3" id="text-orgce24713">
-</div><div id="outline-container-orgf835250" class="outline-4">
-<h4 id="orgf835250">概念</h4>
-<div class="outline-text-4" id="text-orgf835250">
-<ul class="org-ul">
+fmt.Printf( <span class="st">&quot;%v %v %T</span><span class="ch">\n</span><span class="st">&quot;</span>, p, *p, p )</code></pre></div>
+<h2 id="allocation">Allocation</h2>
+<h3 id="概念-1">概念</h3>
+<ul class="incremental">
 <li>go 有自动内存管理，无须手动释放</li>
 <li>申请有两个原语: <code>new</code> 和 <code>make</code></li>
-<li><b>new</b> alloctes; <b>make</b> initializes</li>
+<li><strong>new</strong> alloctes; <strong>make</strong> initializes</li>
 </ul>
-</div>
-</div>
-
-
-<div id="outline-container-org77b526f" class="outline-4">
-<h4 id="org77b526f">new</h4>
-<div class="outline-text-4" id="text-org77b526f">
-<p>
-<code>new(T)</code> 为类型 T 申请一个空的空间，返回地址( *T )
-</p>
-</div>
-</div>
-
-
-<div id="outline-container-org06ade5e" class="outline-4">
-<h4 id="org06ade5e">make</h4>
-<div class="outline-text-4" id="text-org06ade5e">
-<ul class="org-ul">
+<h3 id="new">new</h3>
+<p><code>new(T)</code> 为类型 T 申请一个空的空间，返回地址( *T )</p>
+<h3 id="make">make</h3>
+<ul class="incremental">
 <li><code>make(T, args)</code> 用于创建 slices, map, 或 channels</li>
 <li>返回是 T 本身，而非地址</li>
 </ul>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgbb00c30" class="outline-3">
-<h3 id="orgbb00c30">Composite literals</h3>
-<div class="outline-text-3" id="text-orgbb00c30">
-<p>
-Composite literal is an expression that creates a new instance each time it is evaluated.
-</p>
-</div>
-
-<div id="outline-container-org5af337e" class="outline-4">
-<h4 id="org5af337e"><span class="todo TODO">TODO</span> 例子</h4>
-<div class="outline-text-4" id="text-org5af337e">
-<div class="org-src-container">
-<pre class="src src-go">func NewFile( fd int, name string )*File {
-  if fd &lt; 0 {
-    return nil
+<h2 id="composite-literals">Composite literals</h2>
+<p>Composite literal is an expression that creates a new instance each time it is evaluated.</p>
+<h3 id="例子-1"><span class="todo TODO">TODO</span> 例子</h3>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">func</span> NewFile( fd <span class="dt">int</span>, name <span class="dt">string</span> )*File {
+  <span class="kw">if</span> fd &lt; <span class="dv">0</span> {
+    <span class="kw">return</span> <span class="ot">nil</span>
   }
 
-  f := File{fd, name, nil, 0}
-  return &amp;f
-}
-</pre>
-</div>
-
-<p>
-注意返回一个局部变量 f 在 golang 中是允许的，go 会自动提升变量存活时长
-</p>
-</div>
-</div>
-
-
-<div id="outline-container-org7794219" class="outline-4">
-<h4 id="org7794219">说明</h4>
-<div class="outline-text-4" id="text-org7794219">
-<ul class="org-ul">
+  f := File{fd, name, <span class="ot">nil</span>, <span class="dv">0</span>}
+  <span class="kw">return</span> &amp;f
+}</code></pre></div>
+<p>注意返回一个局部变量 f 在 golang 中是允许的，go 会自动提升变量存活时长</p>
+<h3 id="说明-2">说明</h3>
+<ul class="incremental">
 <li>laid out in order and must all be present： <code>File{fd,name,nil,0}</code></li>
 <li>也可以加 label，乱序和选填： <code>File{fd:fd, name;name]</code></li>
 <li>甚至可以不填: <code>File{}</code></li>
 <li>返回是一个实例, 可以解引用： <code>&amp;File{}</code></li>
-<li>字符串数组，忽略 field: <code>[...]string{Enone: "no error", Einval: "invalid argument"}</code></li>
+<li>字符串数组，忽略 field: <code>[...]string{Enone: &quot;no error&quot;, Einval: &quot;invalid argument&quot;}</code></li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-
-
-
-
-
-<div id="outline-container-org4308ab7" class="outline-2">
-<h2 id="org4308ab7">自定义类型</h2>
-<div class="outline-text-2" id="text-org4308ab7">
-</div><div id="outline-container-orga0d915d" class="outline-3">
-<h3 id="orga0d915d">基本语法</h3>
-<div class="outline-text-3" id="text-orga0d915d">
-<ul class="org-ul">
+<h1 id="自定义类型">自定义类型</h1>
+<h2 id="基本语法">基本语法</h2>
+<ul class="incremental">
 <li>基本语法是 <code>type foo int</code> ，创建一个类型 foo，定义是 int</li>
 <li>与 C 中的 typedef 相似，顺序相反</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgf343540" class="outline-3">
-<h3 id="orgf343540">例子</h3>
-<div class="outline-text-3" id="text-orgf343540">
-<div class="org-src-container">
-<pre class="src src-go">type Point struct{
-	x float64
-	y float64
+<h2 id="例子-2">例子</h2>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">type</span> Point <span class="kw">struct</span>{
+        x <span class="dt">float64</span>
+        y <span class="dt">float64</span>
 }
 
-func main() {
-	p := &amp;Point{x:10}
-	fmt.Printf( "%v %v %T\n", p, *p, p )
-}
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgb8fe163" class="outline-3">
-<h3 id="orgb8fe163">struct</h3>
-<div class="outline-text-3" id="text-orgb8fe163">
-<ul class="org-ul">
+<span class="kw">func</span> main() {
+        p := &amp;Point{x:<span class="dv">10</span>}
+        fmt.Printf( <span class="st">&quot;%v %v %T</span><span class="ch">\n</span><span class="st">&quot;</span>, p, *p, p )
+}</code></pre></div>
+<h2 id="struct">struct</h2>
+<ul class="incremental">
 <li>struct 可以没有 field</li>
 <li>可以有多个 field</li>
 <li>可以只有类型，称为 anonymous field</li>
 <li>field 以大写开关的表示全局可见，否则只能在本包内使用</li>
 </ul>
-</div>
-</div>
-</div>
-
-
-
-
-
-
-<div id="outline-container-org6d00267" class="outline-2">
-<h2 id="org6d00267">Methods</h2>
-<div class="outline-text-2" id="text-org6d00267">
-</div><div id="outline-container-org2fd6886" class="outline-3">
-<h3 id="org2fd6886">基础</h3>
-<div class="outline-text-3" id="text-org2fd6886">
-<ul class="org-ul">
+<h1 id="methods">Methods</h1>
+<h2 id="基础-2">基础</h2>
+<ul class="incremental">
 <li>目标是为类型提供方法调用</li>
 <li>但不是以 Java/C++/Python OOP 形式</li>
 <li>更像是 lisp/scheme 中的 GOOP 形式，或 Clojure 中的 Protocol</li>
@@ -1240,241 +537,112 @@ func main() {
 <li>其它情况 method 和 function 都可使用</li>
 <li>对于指针的方法，可以用 <code>x.m()</code> 来简写 <code>(&amp;x).m</code></li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org7af6a25" class="outline-3">
-<h3 id="org7af6a25"><span class="todo TODO">TODO</span> 继承关系</h3>
-</div>
-</div>
-
-
-
-<div id="outline-container-org19c9cd0" class="outline-2">
-<h2 id="org19c9cd0">类型转换</h2>
-<div class="outline-text-2" id="text-org19c9cd0">
-<ul class="org-ul">
+<h2 id="继承关系"><span class="todo TODO">TODO</span> 继承关系</h2>
+<h1 id="类型转换-1">类型转换</h1>
+<ul class="incremental">
 <li>通过操作符(operator)来转换（与函数形式一样，本质上有所不同）</li>
 <li>字符串可以转换为 <code>byte[]</code> 或 <code>rune[]</code> ，反之亦然</li>
 <li>自定义类型与其别名之间可以相互转换</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org7573323" class="outline-2">
-<h2 id="org7573323">Interface</h2>
-<div class="outline-text-2" id="text-org7573323">
-</div><div id="outline-container-orgb814f9d" class="outline-3">
-<h3 id="orgb814f9d">意义</h3>
-<div class="outline-text-3" id="text-orgb814f9d">
-<ul class="org-ul">
+<h1 id="interface-1">Interface</h1>
+<h2 id="意义">意义</h2>
+<ul class="incremental">
 <li>用于函数定义与类型绑定 GOOPS</li>
 <li>定义一个 interface 类型，表示方法的集合: 鸭子类型</li>
 <li>Go 可以使用 interface 类型作为参数类型，称为 interface value</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org1476603" class="outline-3">
-<h3 id="org1476603">示例</h3>
-<div class="outline-text-3" id="text-org1476603">
-<div class="org-src-container">
-<pre class="src src-go">type I interface {
-  Get() int
-  Put(int)
+<h2 id="示例-2">示例</h2>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">type</span> I <span class="kw">interface</span> {
+  Get() <span class="dt">int</span>
+  Put(<span class="dt">int</span>)
 }
 
-func f( p I ) {
+<span class="kw">func</span> f( p I ) {
   fmt.Println( p.Get() )
-  p.Put(1)
-}
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org778baf3" class="outline-3">
-<h3 id="org778baf3">拆分多态</h3>
-<div class="outline-text-3" id="text-org778baf3">
-<div class="org-src-container">
-<pre class="src src-go">func f(p I) {
-  switch t := p.(type) {
-    case *S:
-    case *R:
-    default:
-}
-</pre>
-</div>
-
-<p>
-其中 <code>(.type)</code> 语法只在 switch 中有效，也可以写成
-</p>
-
-<div class="org-src-container">
-<pre class="src src-go">if t, ok := something.(I); ok {
-   // 检查 something 是否实现了接口 I
-}
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org54a5485" class="outline-3">
-<h3 id="org54a5485">Empty Interface</h3>
-<div class="outline-text-3" id="text-org54a5485">
-<ul class="org-ul">
+  p.Put(<span class="dv">1</span>)
+}</code></pre></div>
+<h2 id="拆分多态">拆分多态</h2>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">func</span> f(p I) {
+  <span class="kw">switch</span> t := p.(<span class="kw">type</span>) {
+    <span class="kw">case</span> *S:
+    <span class="kw">case</span> *R:
+    <span class="kw">default</span>:
+}</code></pre></div>
+<p>其中 <code>(.type)</code> 语法只在 switch 中有效，也可以写成</p>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">if</span> t, ok := something.(I); ok {
+   <span class="co">// 检查 something 是否实现了接口 I</span>
+}</code></pre></div>
+<h2 id="empty-interface">Empty Interface</h2>
+<ul class="incremental">
 <li>每个类型都默认实现了 <code>interface{}</code></li>
 <li>用于创建通用函数</li>
 <li>通用函数，动态的获取其中的函数</li>
 </ul>
-</div>
-
-<div id="outline-container-org23d0b0c" class="outline-4">
-<h4 id="org23d0b0c">示例</h4>
-<div class="outline-text-4" id="text-org23d0b0c">
-<div class="org-src-container">
-<pre class="src src-go">func g( something interface{} ) int {
-    return something.(I).Get()
-}
-</pre>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org668b708" class="outline-3">
-<h3 id="org668b708">Methods</h3>
-<div class="outline-text-3" id="text-org668b708">
-<ul class="org-ul">
+<h3 id="示例-3">示例</h3>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">func</span> g( something <span class="kw">interface</span>{} ) <span class="dt">int</span> {
+    <span class="kw">return</span> something.(I).Get()
+}</code></pre></div>
+<h2 id="methods-1">Methods</h2>
+<ul class="incremental">
 <li>Methods are functions that have a receiver</li>
 <li>可以对任何类型定义方法，包括内置类型（除了 int 之外）</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orgad98f87" class="outline-3">
-<h3 id="orgad98f87"><span class="todo TODO">TODO</span> Methods on interface faces</h3>
-<div class="outline-text-3" id="text-orgad98f87">
-<ul class="org-ul">
+<h2 id="methods-on-interface-faces"><span class="todo TODO">TODO</span> Methods on interface faces</h2>
+<ul class="incremental">
 <li>An interface defines a set of methods : 定义</li>
 <li>A method contains the actual code ： 实现</li>
 <li>receiver can not be an interface type?</li>
 </ul>
-</div>
-
-<div id="outline-container-orga047964" class="outline-4">
-<h4 id="orga047964">receiver type</h4>
-<div class="outline-text-4" id="text-orga047964">
-<ul class="org-ul">
+<h3 id="receiver-type">receiver type</h3>
+<ul class="incremental">
 <li>有两种形式 <code>T</code> 或者 <code>*T</code></li>
 <li>T is called the base type</li>
 <li>T must not be a pointer or interface type</li>
 <li>T must be declared in the same package as the method</li>
 <li>不应该对 interface value 作指针</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org31d8a5b" class="outline-4">
-<h4 id="org31d8a5b">Interface names</h4>
-<div class="outline-text-4" id="text-org31d8a5b">
-<ul class="org-ul">
+<h3 id="interface-names">Interface names</h3>
+<ul class="incremental">
 <li>如果只有一个方法，以 <code>-er</code> 为后缀，如 Reader, Writer, Formatter</li>
 <li>方法名避免与标准函数重名</li>
 </ul>
-</div>
-</div>
-</div>
-
-
-
-
-
-
-
-<div id="outline-container-org1f28c85" class="outline-3">
-<h3 id="org1f28c85"><span class="todo TODO">TODO</span> tag</h3>
-</div>
-<div id="outline-container-orgfb135f4" class="outline-3">
-<h3 id="orgfb135f4">Introspection and reflection</h3>
-<div class="outline-text-3" id="text-orgfb135f4">
-</div><div id="outline-container-org4e4b388" class="outline-4">
-<h4 id="org4e4b388">示例</h4>
-<div class="outline-text-4" id="text-org4e4b388">
-<div class="org-src-container">
-<pre class="src src-go">type Person struct {
-    name string "namestr"
-    age int
+<h2 id="tag"><span class="todo TODO">TODO</span> tag</h2>
+<h2 id="introspection-and-reflection">Introspection and reflection</h2>
+<h3 id="示例-4">示例</h3>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">type</span> Person <span class="kw">struct</span> {
+    name <span class="dt">string</span> <span class="st">&quot;namestr&quot;</span>
+    age <span class="dt">int</span>
 }
 
 
-func ShowTag( i interface[] ) {
-    switch t:= reflect.TypeOf(i); t.Kind() {
-    case reflect.Ptr:
-	tag := t.Elem().Field(0).Tag
-}
-</pre>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-orgf7627e3" class="outline-4">
-<h4 id="orgf7627e3"><span class="todo TODO">TODO</span> 说明</h4>
-<div class="outline-text-4" id="text-orgf7627e3">
-<ul class="org-ul">
+<span class="kw">func</span> ShowTag( i <span class="kw">interface</span>[] ) {
+    <span class="kw">switch</span> t:= reflect.TypeOf(i); t.Kind() {
+    <span class="kw">case</span> reflect.Ptr:
+        tag := t.Elem().Field(<span class="dv">0</span>).Tag
+}</code></pre></div>
+<h3 id="说明-3"><span class="todo TODO">TODO</span> 说明</h3>
+<ul class="incremental">
 <li>要通过内存中的变量，得到关于结构体等定义信息</li>
 <li>用于区分 type 和 value</li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org48f7355" class="outline-2">
-<h2 id="org48f7355">Concurrency</h2>
-<div class="outline-text-2" id="text-org48f7355">
-</div><div id="outline-container-orgcda275f" class="outline-3">
-<h3 id="orgcda275f">概述</h3>
-<div class="outline-text-3" id="text-orgcda275f">
-<ul class="org-ul">
+<h1 id="concurrency">Concurrency</h1>
+<h2 id="概述">概述</h2>
+<ul class="incremental">
 <li>Parallelism is about performance.</li>
 <li>Concurrency is about program design</li>
 <li>核心是 channel 和 goroutine</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org9408a38" class="outline-3">
-<h3 id="org9408a38">goroutine</h3>
-<div class="outline-text-3" id="text-org9408a38">
+<h2 id="goroutine">goroutine</h2>
 <blockquote>
-<p>
-It is a function executing in parallel with other goroutines in the same address sapce. 
-It is lightweight, cosing little more than the allocation of stack space.
-And the stacks start small, so they are cheap, and grow by 
-allocating( and freeing) heap storage as required.
-</p>
+<p>It is a function executing in parallel with other goroutines in the same address sapce. It is lightweight, cosing little more than the allocation of stack space. And the stacks start small, so they are cheap, and grow by allocating( and freeing) heap storage as required.</p>
 </blockquote>
-</div>
-
-<div id="outline-container-org4c4fd20" class="outline-4">
-<h4 id="org4c4fd20">说明</h4>
-<div class="outline-text-4" id="text-org4c4fd20">
-<ul class="org-ul">
+<h3 id="说明-4">说明</h3>
+<ul class="incremental">
 <li>普通函数，以关键字 <code>go</code> 开头</li>
 </ul>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orge3eec35" class="outline-3">
-<h3 id="orge3eec35">channel</h3>
-<div class="outline-text-3" id="text-orge3eec35">
-</div><div id="outline-container-org0a324e1" class="outline-4">
-<h4 id="org0a324e1">说明</h4>
-<div class="outline-text-4" id="text-org0a324e1">
-<ul class="org-ul">
+<h2 id="channel">channel</h2>
+<h3 id="说明-5">说明</h3>
+<ul class="incremental">
 <li>类似于双向的 pipe</li>
 <li>只能以 channel 定义的数据类型进行交流</li>
 <li>通过 <code>make(chan int)</code> 来生成</li>
@@ -1482,76 +650,43 @@ allocating( and freeing) heap storage as required.
 <li>通过 <code>&lt;-</code> 来发送信息和接收</li>
 <li>使用函数 <code>select</code> 来监听接收信息</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org2c600c5" class="outline-4">
-<h4 id="org2c600c5">示例</h4>
-<div class="outline-text-4" id="text-org2c600c5">
-<div class="org-src-container">
-<pre class="src src-go">func ready( w string, sec int ) {
+<h3 id="示例-5">示例</h3>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">func</span> ready( w <span class="dt">string</span>, sec <span class="dt">int</span> ) {
     time.Sleep( time.Duration(sec) * time.Second )
-    fmt.Println( w, "is ready" )
+    fmt.Println( w, <span class="st">&quot;is ready&quot;</span> )
     c &lt;- w
 }
 
-func main() {
-    c = make(chan string)
-    go ready( "2sec", 2 )
-    go ready( "1sec", 1 )
-    fmt.Println( "I'm waiting" )
+<span class="kw">func</span> main() {
+    c = <span class="bu">make</span>(<span class="kw">chan</span> <span class="dt">string</span>)
+    <span class="kw">go</span> ready( <span class="st">&quot;2sec&quot;</span>, <span class="dv">2</span> )
+    <span class="kw">go</span> ready( <span class="st">&quot;1sec&quot;</span>, <span class="dv">1</span> )
+    fmt.Println( <span class="st">&quot;I&#39;m waiting&quot;</span> )
     fmt.Println( &lt;-c )
     fmt.Println( &lt;-c )
-    fmt.Println( "over" )
-}
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org1ef4e3b" class="outline-4">
-<h4 id="org1ef4e3b">缓存</h4>
-<div class="outline-text-4" id="text-org1ef4e3b">
-<ul class="org-ul">
+    fmt.Println( <span class="st">&quot;over&quot;</span> )
+}</code></pre></div>
+<h3 id="缓存">缓存</h3>
+<ul class="incremental">
 <li><code>make(chan bool)</code> 创建的是 unbuffered channel for bools</li>
 <li>unbuffered channel 用于同步多个 goroutine</li>
 <li><code>make(chan bool, 4)</code> 创建带缓存的 channel</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org03491a1" class="outline-4">
-<h4 id="org03491a1">关闭</h4>
-<div class="outline-text-4" id="text-org03491a1">
-<ul class="org-ul">
+<h3 id="关闭">关闭</h3>
+<ul class="incremental">
 <li>channel 会被单向关闭</li>
 <li>可以以 <code>x, ok = &lt;-ch</code> 来检查是否关闭（ok 为 false 表示关闭）</li>
 </ul>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-orgc90b33d" class="outline-3">
-<h3 id="orgc90b33d">parallel</h3>
-<div class="outline-text-3" id="text-orgc90b33d">
-<ul class="org-ul">
+<h2 id="parallel">parallel</h2>
+<ul class="incremental">
 <li>goroutine concurrently，而非并行</li>
 <li>使用 <code>runtime.GOMAXPROCS(n)</code> 来设置最大并行度</li>
 <li>也可以设置 <code>GOMAXPROCS</code> 环境变量</li>
 <li>默认并行度是 CPU 的核数</li>
 </ul>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org19cb2fe" class="outline-2">
-<h2 id="org19cb2fe">Communication</h2>
-<div class="outline-text-2" id="text-org19cb2fe">
-</div><div id="outline-container-org3db5af3" class="outline-3">
-<h3 id="org3db5af3">清单</h3>
-<div class="outline-text-3" id="text-org3db5af3">
-<ul class="org-ul">
+<h1 id="communication">Communication</h1>
+<h2 id="清单">清单</h2>
+<ul class="incremental">
 <li>与外界交互，如 file, directories, networking, system(shell)</li>
 <li>I/O 接口 <code>io.Reader</code> 和 <code>io.Writer</code></li>
 <li><code>os.Open</code>, <code>os.Close</code>, <code>os.Stdout</code>, <code>os.Stat</code>, <code>os.Mkdir</code></li>
@@ -1559,85 +694,43 @@ func main() {
 <li>bufio( Buffered I/O ), 如 NewReader, NewWriter, Read, Write, Flush, ReadString, ReadLine</li>
 <li>日志 <code>log</code>, 如 Fatalf</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org064e581" class="outline-3">
-<h3 id="org064e581">命令行参数</h3>
-<div class="outline-text-3" id="text-org064e581">
-<ul class="org-ul">
+<h2 id="命令行参数">命令行参数</h2>
+<ul class="incremental">
 <li>os.Args （类似于 sys.args in python）</li>
 <li>flag 包来解析参数 （类似于 argparsers, optparser in python， getopt）</li>
 <li><code>flag.{Bool,String}</code> , <code>flag.Usage</code>, <code>flag.Parse</code>, <code>flag.PrintDefaults</code></li>
 </ul>
-</div>
-
-<div id="outline-container-org35b9684" class="outline-4">
-<h4 id="org35b9684"><span class="todo TODO">TODO</span> 效率？？</h4>
-</div>
-</div>
-
-<div id="outline-container-orgdfa355f" class="outline-3">
-<h3 id="orgdfa355f">系统命令</h3>
-<div class="outline-text-3" id="text-orgdfa355f">
-<ul class="org-ul">
+<h3 id="效率"><span class="todo TODO">TODO</span> 效率？？</h3>
+<h2 id="系统命令">系统命令</h2>
+<ul class="incremental">
 <li><code>os/exec</code> 提供了调用外部命令的函数</li>
 <li><code>exec.Command</code></li>
 <li><code>cmd.Run</code>, <code>cmd.Output</code></li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-org25987f0" class="outline-3">
-<h3 id="org25987f0">Networking</h3>
-<div class="outline-text-3" id="text-org25987f0">
-</div><div id="outline-container-org383ebe1" class="outline-4">
-<h4 id="org383ebe1">低级接口</h4>
-<div class="outline-text-4" id="text-org383ebe1">
-<ul class="org-ul">
+<h2 id="networking">Networking</h2>
+<h3 id="低级接口">低级接口</h3>
+<ul class="incremental">
 <li>在包 <code>net</code> 中定义</li>
 <li><code>net.DIal</code> 返回一个 <code>Conn</code> 接口类型，可以用来收发信息</li>
 <li><code>Conn</code> 实现了 <code>io.Reader</code> 和 <code>io.Writer</code> 类型</li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-orged9cd76" class="outline-4">
-<h4 id="orged9cd76">http 接口</h4>
-<div class="outline-text-4" id="text-orged9cd76">
-<ul class="org-ul">
+<h3 id="http-接口">http 接口</h3>
+<ul class="incremental">
 <li><code>http</code> 包， Get 方法，对返回结果的 Body 进行操作</li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org865fe15" class="outline-2">
-<h2 id="org865fe15">杂项</h2>
-<div class="outline-text-2" id="text-org865fe15">
-</div><div id="outline-container-orga9efdef" class="outline-3">
-<h3 id="orga9efdef"><span class="todo TODO">TODO</span> iota</h3>
-<div class="outline-text-3" id="text-orga9efdef">
-<div class="org-src-container">
-<pre class="src src-go">const (
-   _ = 1000 * iota
+<h1 id="杂项">杂项</h1>
+<h2 id="iota"><span class="todo TODO">TODO</span> iota</h2>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">const</span> (
+   _ = <span class="dv">1000</span> * <span class="ot">iota</span>
    ADD
    SUB
    MUL
    DIV
-   MAXPOS = 11
-)
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div id="postamble" class="status">
-<p class="author">Author: 赵文彬</p>
-<p class="date">Created: 2018-09-13 四 20:19</p>
-<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
-</div>
-</body>
-</html>
+   MAXPOS = <span class="dv">11</span>
+)</code></pre></div>
+
+				</div>
+			</section>
+		</body>
+	</html>
+	
