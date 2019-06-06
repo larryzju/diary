@@ -151,3 +151,40 @@
 
 
 * Maps, Arrays and Slices
+
+** Arrays
+
+- 固定长度，申明时须指定长度
+- 下标从 0 开始，越界访问会报错
+- 使用 =len= 获取长度
+- 通过 ~for index, value := range scores~ 来遍历
+
+** Slices
+
+- Go 中很少直接使用 array，而是使用 slices
+- Slice 是基于 Array 的一个轻量封装
+- 可以用 =[]int{}= 或 =make([]int, 10)= 来构造
+- =make= 不同于 =new= ，后者仅建立了对象，而前者还要申请底层的数组空间
+- slices 有两个长度： =cap= 表示底层数组的容量， =len= 表示 slice 的实际长度
+- =make([]int, length, capacity)= 可以同时指定 len 和 cap
+- 访问 len 范围之外的元素用报错
+- =append= 方法可以安全的在 slice 中添加元素，必要时会申请新的 array 并将数据拷贝过去
+- =scores[0:8]= 来 re-slice，重新定义 slice 的 length，容量不变
+- Ruby 或者 javascript 中，slice 方法将生成一个新的数组（拷贝出）; 但在 Go 中 Slice 共享底层数据
+- 不同于 Python，Go 不支持负索引
+- =copy(dst, src)= 函数复制 slice 的数据，注意层级数据的覆盖
+
+** Maps
+
+- 使用 =make(map[string]int)= 或 =map[string]int{}= 构造
+- =len= 求得内容数量
+- =delete(m, key)= 删除键值对
+- 可以指定初始容量 =make(map[string]int, 100)=
+- 用 ~for key, value := range lookup~ 遍历所有键值对，不应假设遍历顺序
+
+** 值类型
+
+- slices 是引用类型
+- map 是引用类型
+
+
