@@ -188,3 +188,38 @@
 - map 是引用类型
 
 
+* Code Organization and Interfaces
+
+** Packages
+
+- 通常包名与目录名一致，使用 =package= 关键字申明
+- 导入时使用完整路径，使用 =import= 关键字导入
+- 可执行命令通常放在 =main= 子目录中， =main.go= 文件中定义 =main= 方法
+
+*** 循环依赖 (Cyclical Imports)
+
+- 不允许两个 package 相互引用: /import cycle not allowed/
+- 可以抽象出一个公用 package 为两者导入使用
+
+*** TODO 可见性
+
+- 首字母小写包外不可见
+- 有无文件级的可见性隔离机制？
+
+*** 包管理
+
+- =go get= 命令，支持多种协议，包括 github
+- 同时会下载依赖
+- =-u= 参数更新包
+
+
+
+
+** Interfaces
+
+- 定义接口，没有具体实现
+- 用于解耦具体实现与标准接口，可以用于避免循环导入
+- 不同于 C# 或者 Java，实现接口时不需要显式地声明
+- 满足接口的实现将自动被认为实现了该接口
+- 习惯将接口设计的比较简单、单一、少量
+- 接口也支持 composition，可以与其它接口混合，例如 =io.ReadCloser= 混合了 =io.Reader= 和 =io.Closer=
