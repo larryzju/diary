@@ -1,0 +1,161 @@
+* Styling text
+
+** Styling Font
+
+*** color
+
+See also `text-decoration`
+
+*** font-family
+
+Browser will use a default font if the applied font it's not available on the host.
+
+Supply a *font stack* (multiple fonts) to choose from.
+
+#+BEGIN_SRC css
+p {
+  color: red;
+  font-family: Helvetica, Arial, sans-serif;
+}
+#+END_SRC
+
+**** web safe fonts
+
+Which are generally avaialbe across all systems and can therefore be used without much worry.
+
+- serif
+  + Georgia
+  + Times New Roman
+- sans-serif
+  + Trebuchet MS
+  + Verdana
+- monospace
+  + Courier New
+
+**** default fonts
+
+Five generic names
+- serif
+- sans-serif
+- monospace
+- cursive (hand writting)
+- fantasy (decoratived)
+
+*** font-size
+
+#+BEGIN_SRC css
+html {
+  font-size: 10px;
+}
+
+h1 {
+  font-size: 2.6rem;
+}
+
+p {
+  font-size: 1.4rem;
+  color: red;
+  font-family: Helvetica, Arial, sans-serif;
+}
+#+END_SRC
+
+**** units
+
+- px :: absolute unit
+- em :: width of the parent element's letter 'M' 
+
+*** font-style
+
+- normal
+- italic
+- oblique: simulated version of an italic font
+
+*** font-weight
+
+how bold the text is
+- normal
+- bold
+- lighter
+- bolder
+- 100-900
+
+*** text-transform
+
+- none
+- uppercase
+- lowercase
+- capitalize
+- full-width (?)
+
+*** text-decoration
+
+Combine =text-decoration-line=, =text-decoration-style= and =text-decoration-color=
+#+BEGIN_SRC css
+text-decoration: wavy line-through red;
+#+END_SRC
+
+=text-decoration-style= can be one of
+- none
+- underline
+- overline
+- line-through
+
+*** text-shadow
+
+#+BEGIN_SRC css
+text-shadow: 4px 4px 5px red;
+#+END_SRC
+
+Four properties:
+- horizontal offset
+- vertical offset
+- blur radius: blur for large value
+
+**** multiple shadows
+
+#+BEGIN_SRC css
+text-shadow: -1px -1px 1px #aaa,
+             0px 4px 1px rgba(0,0,0,0.5),
+             4px 4px 5px rgba(0,0,0,0.7),
+             0px 0px 7px rgba(0,0,0,0.4);
+#+END_SRC
+     
+*** misc
+
+- font-variant :: small-caps, slashed-zero, common-ligature (compress "fi", "fl")
+- font-kerning ::
+
+
+** Styling Layout
+
+*** text-align
+
+- left
+- right
+- center
+- justify (use this carefully)
+
+*** line-height
+
+Can be set to the multiple of =font-size=, the recommended line height is around 1.5-2
+
+*** misc
+
+- letter-spacing :: 
+- word-spacing ::
+- text-indent :: paragraph indent
+- text-overflow :: =ellipsis=
+- text-orientation :: 
+- writing-mode :: 
+- word-break :: 
+
+
+** Styling List
+
+** Styling Links
+
+** Web fonts
+
+* Reference
+
+- [[https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text][Styling text, MDN]]
