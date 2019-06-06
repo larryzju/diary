@@ -65,11 +65,8 @@
 - 使用 go build 来编译，生成可执行文件
 - 入口是 main 包的 main 函数
 - 非 main 包不能执行
-- 非 main 包能 build，但不会生成库文件
+- 非 main 包能 build，但不会生成可执行文件
 - build 生成的可执行文件与源码同名
-
-
-
 
 ** Import
 
@@ -84,15 +81,12 @@
 - 或者使用 ~:=~ 来定义局部变量，类型由值推导而来
 - 默认会赋予 zero value
 - 可以多变量赋值
-- 不允许的未被使用的变量
+- 不允许存在未被使用的变量
 
 *** 注意
 
 - ~:=~ 会阻止重复定义
 - 但只要左值有一个是新的变量， ~:=~ 将允许赋值
-
-
-
 
 ** 函数声明
 
@@ -101,6 +95,59 @@
 - 相同参数类型时，可以简写类型到最后（ shorter syntax ）
 - Named return values
 
-
 * Structure
 
+** Overview
+
+- Go 不支持继承 (inheritance), 不支持多态 (polymorphism) 和重载 (overloading)
+- Go 提供 composition 功能
+- 可以为结构体添加方法
+
+** 声明与初始化
+
+- =Struct{Key: value, Key2: value2,}= 构造结构体
+- 也可以忽略键名，顺序传入参数构造结构体: =Struct{value, value2}=
+- Go 默认以拷贝形式传参，通过指针避免拷贝结构体
+- 使用 =&= 符号来通变量值的地址，使用 =*= 来取指针指向的对象
+- 指针拷贝开销低，并且拷贝指针指向的内容还是原地址
+- 指针是一个内存地址，指向实际变量值
+
+** 方法
+
+- =func(s *Struct) Func() {...}= 为结构体定义一个方法
+- 其中 =*Struct= 被称为 =Func= 的接收者 (receiver)
+
+** 构造器
+
+- Go 中结构体没有构造器
+- 实现一个普通函数来生成并返回结构体即可
+
+** new 方法
+
+- =new(X)= 等价于 =&X{}=
+- 更习惯于使用后者
+
+
+** 结构体成员
+
+- 结构体成员称为 field
+- 可以是任何类型：结构体，array, map, interface 或者 function
+
+** Composition
+
+- 将一个结构体包含于另一个
+- 也称为 trait 或者 mixin
+- 避免手工封闭子结构体及其方法
+- 外部结构体可以复写(overwrite) 内部结构体的方法
+- Composition 较之 inheritance 更健壮
+- inheritance 方式下我们将更多关注继承关系，而非子类的行为
+
+** 指针
+
+- 时刻关注应该用“值”还是“指针”
+- 值传递更安全，开销也更大
+
+
+
+
+* Maps, Arrays and Slices
