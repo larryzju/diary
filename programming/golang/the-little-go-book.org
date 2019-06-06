@@ -268,3 +268,52 @@
 - 类似 C 的函数指针，定义一个函数 =type Add func(a int, b int) int=
 - 函数类型是第一类型，可以做为其它函数的参数或返回值
 - 如同 interface, 可以用于解耦函数定义和函数实现
+
+* Concurrency
+
+** Goroutines
+
+- 类似于线程 (thread)，但由 Go 核心管理，而非操作系统
+- 开销较线程小，可以开很多个。多个 goroutines 可以共享于同一个 thread 中
+- 并发 (concurrency) 而非并行：有独立的上下文，但不保证同时被调度
+- =go= 关键字使后面的函数调用在新的 goroutine 中执行
+
+*** Synchronization
+
+- 主协程退出将导致其它协程一并退出
+- 协程间访问共享数据可能会出现抢占错误，需要考虑对共享数据进行加锁保护 (=sync.Mutex=)
+- 加锁可能降低性能，可能造成死锁 (deadlock)
+- =sync.RWMutex= 实现读写锁
+
+** Channels
+
+- erlang 的思路，消息传递方式实现多协程间的通信，避免在协程间共享数据
+- channel 用于在 goroutines 之间传递数据，同一时刻只能有一个 goroutine 来访问 channel
+- channel 指定传输数据的类型， =make(chan int)= 创建一个 int 类型的 channel，其类型为 =chan int=
+- =ch <- data= 写数据，channel 没有容量写数据，将导致写 channel 的 goroutine 被阻塞
+- ~v := <-ch~ 读数据，channel 中没有数据，将导致读 channel 的 goroutine 被阻塞
+- 创建时可以指定 channel 的容量 =make(chan int, 100)=
+- =len(ch)= 可以检查 channel 中的元素数量
+
+*** select
+
+- 语法类似于 =switch= , =default= 入口用于处理 channel 资源不可得的情况
+- 通常用于同时监听多个 channel，随机选中可以访问的 channel
+- 没有 =default= 分支，则在无数据就绪时将被阻塞
+
+
+*** timeout
+
+#+BEGIN_SRC go
+  for {
+          select {
+          case c <- rand.Int():
+          case <-time.After(time.Millisecond * 100):
+                  fmt.Println("timed out")
+          }
+          time.Sleep(time.Millisecond * 50)
+  }
+#+END_SRC
+
+- =time.After()= 创建一个 channel，并在 timeout 时间后向其中传递一个值
+- 若在指定时间没有其它数据到达， =select= 将进入超时处理流程
