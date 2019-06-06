@@ -20,7 +20,7 @@ $(document).ready(function() {
 		$('nav#content').append(ul);
 
 		// highlight the link
-		let urlpath = document.location.pathname;
+		let urlpath = decodeURI(location.pathname);
 
 		// show current links
 		let link = $(`nav#content li a[href="${urlpath}"]`)
