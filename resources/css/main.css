@@ -34,3 +34,14 @@ nav#content li:has(> a) {
 	border: 2px solid red;
 }
 
+h1 {
+    font-size: 2rem;
+    font-weight: bolder;
+    border-bottom-color: brown;
+    border-bottom-width: 2px;
+    border-bottom-style: ridge;
+}
+
+h2 {
+    font-size: 1.4rem;
+}
