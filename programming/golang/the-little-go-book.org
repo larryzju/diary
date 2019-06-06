@@ -223,3 +223,48 @@
 - 满足接口的实现将自动被认为实现了该接口
 - 习惯将接口设计的比较简单、单一、少量
 - 接口也支持 composition，可以与其它接口混合，例如 =io.ReadCloser= 混合了 =io.Reader= 和 =io.Closer=
+* Tidbits
+** Error handling
+
+- Go 通过返回 error 值来表示错误
+- error 接口中只有一个方法 =Error() string= ，可以自定义 Error 类型
+- =errors.New()= 函数生成一个新的 Error 对象
+- Go 提供了 =panic= 和 =recover= 函数，前者抛出异常，后者捕获异常。但很少用
+
+** Defer
+
+- Go 带有 GC （垃圾回收），但有时我们需要显式地关闭资源（如关闭文件）
+- =defer= 语句保证在函数结束前被调用，在有多返回点时可以避免忘记显式关闭资源
+- 可以用于结束时打印函数用时
+
+
+** go fmt
+
+- =go fmt= 格式化代码成标准格式
+- =go fmt ./...= 来格式化当前所有的包
+
+** Initialized if
+
+- Go 的 =if= 语句支持变量构造: ~if err := process(); err != nil {...}~
+- 构造的变量可以在配对的 =else= 和 =else if= 访问，但不能在外部访问
+
+** Empty Interface and Conversions
+
+- Go 没有继承，也就不存在 =object= 对象做为所有对象的基类对象
+- 所有的对象都可以被转换为 =interface{}= 类型
+- 通过 type assert 来转换类型，例如 =a.(int)= 
+- switch 语句支持类型分支，如 =switch a.(type) {case int: ...; default: ...}=
+- 谨慎使用 =interface{}= 来表示抽象类型，丢失类型对静态语言不是个好事情
+
+** Strings and Byte Arrays
+
+- 字符串类型和 byte 数组可以相互转换： =[]byte(s)=, =string(byts)=
+- Go 的字符串类型是不可变类型， =[]byte(s)= 会产生数据拷贝
+- =len(s)= 表示字节数，而非字符 (rune) 数
+- 对 string 类型进行 for 遍历时，访问的是 rune 元素
+
+** Function Type
+
+- 类似 C 的函数指针，定义一个函数 =type Add func(a int, b int) int=
+- 函数类型是第一类型，可以做为其它函数的参数或返回值
+- 如同 interface, 可以用于解耦函数定义和函数实现
