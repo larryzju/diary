@@ -1,0 +1,11 @@
+* Reverse Linked List
+
+#+BEGIN_SRC go
+func Reverse(lst *List) *List{
+	var p, q *List = nil, lst
+	for q != nil {
+		p, q.next, q = q, p, q.next
+	}
+	return p
+}
+#+END_SRC
