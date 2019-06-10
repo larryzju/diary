@@ -1,0 +1,53 @@
+* Overview
+
+- Git version: =0da56e6e516b61704dcce834b9afb1e3192371f2=
+- Sources
+  + =kernel/include/multiboot.h=
+  + =kernel/core/multiboot.c=
+  + =kernel/main.c=
+- Specification: multibook1
+
+* Background
+
+Specification for OS implement that can be load by boot loader support this multiboot method.
+
+** Qemu boot loader
+
+#+BEGIN_SRC bash
+qemu-system-i386 -kernel toaruos-kernel -initrd toaruos-initrd
+#+END_SRC
+
+* Parameters
+
+#+BEGIN_SRC 
+MULTIBOOT header at 0x00009500:
+Flags : 0x0000024f Mem Lo: 0x0000027f Mem Hi: 0x0001fb80 Boot d: 0x8000ffff
+cmdlin: 0x0010d01f Mods  : 0x00000001 Addr  : 0x0010d000 Syms  : 0x00000000
+Syms  : 0x00000000 Syms  : 0x00000000 Syms  : 0x00000000 MMap  : 0x00000090
+Addr  : 0x00009000 Drives: 0x00000000 Addr  : 0x00000000 Config: 0x00000000
+Loader: 0x0010d02f APM   : 0x00000000 VBE Co: 0x00000000 VBE Mo: 0x00000000
+VBE In: 0x00000000 VBE se: 0x00000000 VBE of: 0x00000000 VBE le: 0x00000000
+#+END_SRC
+
+** initrd
+
+bit 3 of the =flags= is set, then the =mods= fields indicate to the kernel what boot modules were loaded along with the kernel image.
+
+So in =main.c=, kernel load the initrd to ramdisk (memory from =mod_start= to =mod_end=) defined by the struct shows below
+#+BEGIN_SRC 
+struct {
+    uintptr_t mod_start;
+    uintptr_t mod_end;
+    uintptr_t string; // command 
+    uint32 reversed;  // always 0
+}
+#+END_SRC
+
+And then mount it as ext2 filesystem.
+
+* Reference
+
+- [[https://www.gnu.org/software/grub/manual/multiboot/multiboot.html][Multiboot1 Specification]]
+
+
+
