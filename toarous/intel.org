@@ -309,9 +309,304 @@ CS
 
 对于数据引用，其默认的段寄存器取决于所选择的基地址寄存器。如果基地址寄存器是
 ESP 或者 EBP，则默认的段寄存器从通常的 DS 改为 SS。
+* Interrupt & Exception
+
+** Overview
+
+Both are special kinds of control transfer like unprogrammed =CALLs=
+which alter the normal program flow to handle external events or to
+report errors or exceptional conditions.
+
+The difference betwwen the interrupt and exception is that
+- Interrupt is used to handle asynchronous events external to the process
+- Exceptions is used to handle events of executing instruction 
+
+** Interrupt
+
+*** Type
+
+1. Maskable interrupt: signalled via the =INTR= pin
+2. Non-Maskable interrupt: signalled via the =NMI= pin
+
+** Exception
+
+*** Type
+
+1. Processor detected: faults, traps, aborts
+2. Programmed: =INTO=, =int 3=, =int n= and =bound= (software interrupts)
+
+*** fault, trp and abort
+
+- the way they are reported
+- whether restart of the instruction
+  + fault: reported "before" the instruction causing the exception
+  + trap: reported at the instruction boundary immediately after the instruction
+  + abort: don't know percise location and don't restart the program
+
+** Identity
+
+*** Princple
+
+- =ID [0-32)= is used to represent NMI and exception
+- =ID [32-256)= is used for Maskable interrupt (via Intel's 8259A PIC chip)
+
+*** Detail
+
+| id | description                             |
+|----+-----------------------------------------|
+|  0 | Divide error                            |
+|  1 | Debug exceptions                        |
+|  2 | Nonmaskable interrupt                   |
+|  3 | Breakpoint (one-byte INT 3 instruction) |
+|  4 | Overflow (INTO instruction)             |
+|  5 | Bounds check (BOUND instruction)        |
+|  6 | Invalid opcode                          |
+|  7 | Coprocessor not available               |
+|  8 | Double fault                            |
+|  9 | (reserved)                              |
+| 10 | Invalid TSS                             |
+| 11 | Segment not present                     |
+| 12 | Stack exception                         |
+| 13 | General protection                      |
+| 14 | Page fault                              |
+| 15 | (reserved)                              |
+| 16 | Coprecessor error                       |
+
+** Enable/Disable
+
+*** NMI Masks Further NMIs
+
+Only one NMI handler is executing at the same time (until the next =IRET=)
+
+*** IF Masks INTR
+
+When IF (interrupt-enable flag) = 0, =INTR= interrupts are inhibited.
+
+Use =CLI= and =STI= instruction to alter the setting of IF.
+
+*** RF Masks Debug Faults
+
+RF bit in EFLAGS controls the recongnition of debug faults.
+
+*** MOV or POP to SS Masks Some Interrupts and Exception
+
+#+BEGIN_SRC 
+MOV SS, AX
+MOV ESP, StackTop
+#+END_SRC
+
+Protect no interrupt handler called before the ESP being set.
+
+** TODO Priority
+
+1. High priority handler first
+2. lower priority exceptions are discarded
+3. lower priority interrupts are held pending
+
+*** Details
+
+| Priority | Class of Interrupt or Exception      |
+|----------+--------------------------------------|
+| HIGHEST  | Faults except debug faults           |
+|          | Trap instructions INTO, INT n, INT 3 |
+|          | Debug traps for this instruction     |
+|          | Debug faults for next instruction    |
+|          | NMI interrupt                        |
+| LOWEST   | INTR interrupt                       |
+
+** IDT
+
+Interrupt Descriptor Table (IDT) associates identifier with a descriptor (for handler).
+- IDT is an array of 8-byte descrpitors
+- may reside anywhere in physical memory
+- Located by IDTR (IDT register)
+- Use =LIDT= and =SIDT= operate on the IDTR (with 6 byte operand: base address and limit values)
+
+*** Illustration
+
+#+BEGIN_VERSE
+                                              INTERRUPT DESCRIPTOR TABLE
+                                              +------+-----+-----+------+
+                                        +---->|      |     |     |      |
+                                        |     |- GATE FOR INTERRUPT #N -|
+                                        |     |      |     |     |      |
+                                        |     +------+-----+-----+------+
+                                        |     *                         *
+                                        |     *                         *
+                                        |     *                         *
+                                        |     +------+-----+-----+------+
+                                        |     |      |     |     |      |
+                                        |     |- GATE FOR INTERRUPT #2 -|
+                                        |     |      |     |     |      |
+                                        |     |------+-----+-----+------|
+            IDT REGISTER                |     |      |     |     |      |
+                                        |     |- GATE FOR INTERRUPT #1 -|
+                    15            0     |     |      |     |     |      |
+                   +---------------+    |     |------+-----+-----+------|
+                   |   IDT LIMIT   |----+     |      |     |     |      |
+  +----------------+---------------|          |- GATE FOR INTERRUPT #0 -|
+  |            IDT BASE            |--------->|      |     |     |      |
+  +--------------------------------+          +------+-----+-----+------+
+   31                             0
+#+END_VERSE
+
+*** Descriptors
+
+**** Kinds
+
+- Task gates :: task switch in a manner similar to a =CALL=
+- Interrupt gates :: normal handler
+- Trap gates :: invokes the handler in a manner similar to a =CALL= to a call gate
+
+**** Illustration
+
+#+BEGIN_VERSE
+                                80386 TASK GATE
+   31                23                15                7                0
+  +-----------------+-----------------+---+---+---------+-----------------+
+  |#############(NOT USED)############| P |DPL|0 0 1 0 1|###(NOT USED)####|4
+  |-----------------------------------+---+---+---------+-----------------|
+  |             SELECTOR              |#############(NOT USED)############|0
+  +-----------------+-----------------+-----------------+-----------------+
+
+                                80386 INTERRUPT GATE
+   31                23                15                7                0
+  +-----------------+-----------------+---+---+---------+-----+-----------+
+  |           OFFSET 31..16           | P |DPL|0 1 1 1 0|0 0 0|(NOT USED) |4
+  |-----------------------------------+---+---+---------+-----+-----------|
+  |             SELECTOR              |           OFFSET 15..0            |0
+  +-----------------+-----------------+-----------------+-----------------+
+
+                                80386 TRAP GATE
+   31                23                15                7                0
+  +-----------------+-----------------+---+---+---------+-----+-----------+
+  |          OFFSET 31..16            | P |DPL|0 1 1 1 1|0 0 0|(NOT USED) |4
+  |-----------------------------------+---+---+---------+-----+-----------|
+  |             SELECTOR              |           OFFSET 15..0            |0
+  +-----------------+-----------------+-----------------+-----------------+
+#+END_VERSE
+
+** Interrupt Tasks and Interrupt Procedures
+
+*** TODO Difference between task and procedure?
+
+- Procedure execute in the context of the currently executing task
+  + selector points to an executable-segment descriptor in either the GDT or the current LDT
+  + offset points to the relative address of handler procedure
+
+*** Interrupt Procedures
+
+- for interrupt gate or trap gate only
+- pushes the =FLAGS= register onto the stack before the pointer to the interrupted instruction
+- =IRET= is used to exit from an interrupt procedure which is similar to =RET= except
+  + increments EIP by an extra four bytes (for the EFLAG flag on the stack)
+  + move the saved flags into the EFLAGS register
+- Both reset TF (trap flag)
+- Interrupt also resets IF (interrupt-enable flag) but trap gate does not change IF.
+
+
+
+#+BEGIN_VERSE
+                  IDT                                    EXECUTABLE SEGMENT
+           +---------------+                             +---------------+
+           |               |                       OFFSET|               |
+           |---------------|  +------------------------->| ENTRY POINT   |
+           |               |  |      LDT OR GDT          |               |
+           |---------------|  |   +---------------+      |               |
+           |               |  |   |               |      |               |
+INTERRUPT  |---------------|  |   |---------------|      |               |
+   ID----->| TRAP GATE OR  |--+   |               |      |               |
+           |INTERRUPT GATE |--+   |---------------|      |               |
+           |---------------|  |   |               |      |               |
+           |               |  |   |---------------|      |               |
+           |---------------|  +-->|   SEGMENT     |-+    |               |
+           |               |      |  DESCRIPTOR   | |    |               |
+           |---------------|      |---------------| |    |               |
+           |               |      |               | |    |               |
+           |---------------|      |---------------| |    |               |
+           |               |      |               | |BASE|               |
+           +---------------+      |---------------| +--->+---------------+
+                                  |               |
+                                  |               |
+                                  |               |
+                                  +---------------+
+#+END_VERSE
+
+
+*** Interrupt Tasks
+- task gate only
+- selector points to a =TSS= descriptor int the GDT
+- two advantages
+  1. the entire context is saved automatically
+  2. the interrupt handler can be isolated from other tasks by giving it a separate address space, either via its LDT or vira its page directory
+
+**** Illustration
+
+#+BEGIN_VERSE
+            IDT                       GDT
+     +----------------+        +----------------+
+     |                |        |                |              TSS
+     |----------------|        |----------------|       +----------------+
+     |                |        |                |       |                |
+     |----------------|        |----------------|       |                |
+     |                |        |                |       |                |
+     |----------------|        |----------------|       |                |
+ +-->|   TASK GATE    |---+    |                |       |                |
+ |   |----------------|   |    |----------------|       |                |
+ |   |                |   +--->| TSS DESCRIPTOR |---+   |                |
+ |   |----------------|        |----------------|   |   |                |
+ |   |                |        |                |   |   |                |
+ |   |----------------|        |----------------|   +-->+----------------+
+ |   |                |        |                |
+ |   |----------------|        |----------------|
+ |   |                |        |                |
+ |   +----------------+        +----------------+
+ |
+ +-INTERRUPT ID
+#+END_VERSE
+
+** Error Code
+
+Parameter to some handler that will be pushed onto the stakc of the exception handler
+
+*** Format
+
+#+BEGIN_VERSE
+       31              15                                         2 1 0
+      +---------------+----------------+-----------------+-------+-+-+-+
+      |################################|                         |T| |E|
+      |###########UNDEFINED############|     SELECTOR INDEX      | |I| |
+      |################################|                         |I| |X|
+      +---------------+----------------+-----------------+-------+-+-+-+
+#+END_VERSE
+
+1. =EXT= flag to mark the external source
+2. if =I= | =TI=, then use IDT, else use GDT
+
+* instruction
+
+* misc
+
+** interrupt
+
+IRET jump back from the interrupt handler.
+
+** stack
+
+PUSHF and POPF push/pop all flags into stack
+
+* term 
+
+** TODO CPL & IOPL
+protection control
+
+** TODO interrupt gate
+
 * 参考资料
   :PROPERTIES:
   :CUSTOM_ID: 参考资料
   :END:
 
--  [[http://www.bottomupcs.com/chapter07.xhtml][binary format]]
+- [[http://www.bottomupcs.com/chapter07.xhtml][binary format]]
+- [[http://www.logix.cz/michal/doc/i386/][Intel 80386 Programmer's Reference Manual (non-official)]]
+
