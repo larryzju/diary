@@ -203,9 +203,350 @@
 <p>如果存储器操作数是对齐的，寻址时比较快（C 中结构体内存对齐的原因）</p>
 </blockquote>
 <p>对于数据引用，其默认的段寄存器取决于所选择的基地址寄存器。如果基地址寄存器是 ESP 或者 EBP，则默认的段寄存器从通常的 DS 改为 SS。</p>
+<h1 id="interrupt-exception">Interrupt &amp; Exception</h1>
+<h2 id="overview">Overview</h2>
+<p>Both are special kinds of control transfer like unprogrammed <code>CALLs</code> which alter the normal program flow to handle external events or to report errors or exceptional conditions.</p>
+<p>The difference betwwen the interrupt and exception is that</p>
+<ul class="incremental">
+<li>Interrupt is used to handle asynchronous events external to the process</li>
+<li>Exceptions is used to handle events of executing instruction</li>
+</ul>
+<h2 id="interrupt">Interrupt</h2>
+<h3 id="type">Type</h3>
+<ol class="incremental">
+<li>Maskable interrupt: signalled via the <code>INTR</code> pin</li>
+<li>Non-Maskable interrupt: signalled via the <code>NMI</code> pin</li>
+</ol>
+<h2 id="exception">Exception</h2>
+<h3 id="type-1">Type</h3>
+<ol class="incremental">
+<li>Processor detected: faults, traps, aborts</li>
+<li>Programmed: <code>INTO</code>, <code>int 3</code>, <code>int n</code> and <code>bound</code> (software interrupts)</li>
+</ol>
+<h3 id="fault-trp-and-abort">fault, trp and abort</h3>
+<ul class="incremental">
+<li>the way they are reported</li>
+<li>whether restart of the instruction
+<ul class="incremental">
+<li>fault: reported &quot;before&quot; the instruction causing the exception</li>
+<li>trap: reported at the instruction boundary immediately after the instruction</li>
+<li>abort: don't know percise location and don't restart the program</li>
+</ul></li>
+</ul>
+<h2 id="identity">Identity</h2>
+<h3 id="princple">Princple</h3>
+<ul class="incremental">
+<li><code>ID [0-32)</code> is used to represent NMI and exception</li>
+<li><code>ID [32-256)</code> is used for Maskable interrupt (via Intel's 8259A PIC chip)</li>
+</ul>
+<h3 id="detail">Detail</h3>
+<table>
+<thead>
+<tr class="header">
+<th>id</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>Divide error</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Debug exceptions</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>Nonmaskable interrupt</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Breakpoint (one-byte INT 3 instruction)</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>Overflow (INTO instruction)</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>Bounds check (BOUND instruction)</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td>Invalid opcode</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td>Coprocessor not available</td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td>Double fault</td>
+</tr>
+<tr class="even">
+<td>9</td>
+<td>(reserved)</td>
+</tr>
+<tr class="odd">
+<td>10</td>
+<td>Invalid TSS</td>
+</tr>
+<tr class="even">
+<td>11</td>
+<td>Segment not present</td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td>Stack exception</td>
+</tr>
+<tr class="even">
+<td>13</td>
+<td>General protection</td>
+</tr>
+<tr class="odd">
+<td>14</td>
+<td>Page fault</td>
+</tr>
+<tr class="even">
+<td>15</td>
+<td>(reserved)</td>
+</tr>
+<tr class="odd">
+<td>16</td>
+<td>Coprecessor error</td>
+</tr>
+</tbody>
+</table>
+<h2 id="enabledisable">Enable/Disable</h2>
+<h3 id="nmi-masks-further-nmis">NMI Masks Further NMIs</h3>
+<p>Only one NMI handler is executing at the same time (until the next <code>IRET</code>)</p>
+<h3 id="if-masks-intr">IF Masks INTR</h3>
+<p>When IF (interrupt-enable flag) = 0, <code>INTR</code> interrupts are inhibited.</p>
+<p>Use <code>CLI</code> and <code>STI</code> instruction to alter the setting of IF.</p>
+<h3 id="rf-masks-debug-faults">RF Masks Debug Faults</h3>
+<p>RF bit in EFLAGS controls the recongnition of debug faults.</p>
+<h3 id="mov-or-pop-to-ss-masks-some-interrupts-and-exception">MOV or POP to SS Masks Some Interrupts and Exception</h3>
+<pre><code>MOV SS, AX
+MOV ESP, StackTop
+</code></pre>
+<p>Protect no interrupt handler called before the ESP being set.</p>
+<h2 id="priority"><span class="todo TODO">TODO</span> Priority</h2>
+<ol class="incremental">
+<li>High priority handler first</li>
+<li>lower priority exceptions are discarded</li>
+<li>lower priority interrupts are held pending</li>
+</ol>
+<h3 id="details">Details</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Priority</th>
+<th>Class of Interrupt or Exception</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>HIGHEST</td>
+<td>Faults except debug faults</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Trap instructions INTO, INT n, INT 3</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Debug traps for this instruction</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Debug faults for next instruction</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>NMI interrupt</td>
+</tr>
+<tr class="even">
+<td>LOWEST</td>
+<td>INTR interrupt</td>
+</tr>
+</tbody>
+</table>
+<h2 id="idt">IDT</h2>
+<p>Interrupt Descriptor Table (IDT) associates identifier with a descriptor (for handler).</p>
+<ul class="incremental">
+<li>IDT is an array of 8-byte descrpitors</li>
+<li>may reside anywhere in physical memory</li>
+<li>Located by IDTR (IDT register)</li>
+<li>Use <code>LIDT</code> and <code>SIDT</code> operate on the IDTR (with 6 byte operand: base address and limit values)</li>
+</ul>
+<h3 id="illustration">Illustration</h3>
+<div style="white-space: pre-line;">                                            INTERRUPT DESCRIPTOR TABLE
+                                            <del>------</del>-----+-----+------+
+                                      +----&gt;| | | | |
+                                      | |- GATE FOR INTERRUPT #N -|
+                                      | | | | | |
+                                      | <del>------</del>-----+-----+------+
+                                      | * *
+                                      | * *
+                                      | * *
+                                      | <del>------</del>-----+-----+------+
+                                      | | | | | |
+                                      | |- GATE FOR INTERRUPT #2 -|
+                                      | | | | | |
+                                      | |------+-----+-----+------|
+          IDT REGISTER | | | | | |
+                                      | |- GATE FOR INTERRUPT #1 -|
+                  15 0 | | | | | |
+                 <del>---------------</del> | |------+-----+-----+------|
+                 | IDT LIMIT |----+ | | | | |
+<del>----------------</del>---------------| |- GATE FOR INTERRUPT #0 -|
+| IDT BASE |---------&gt;| | | | |
+<del>--------------------------------</del> <del>------</del>-----+-----+------+
+ 31 0</div>
+<h3 id="descriptors">Descriptors</h3>
+<ol class="incremental">
+<li><p>Kinds</p>
+<dl class="incremental">
+<dt>Task gates</dt>
+<dd>task switch in a manner similar to a <code>CALL</code>
+</dd>
+<dt>Interrupt gates</dt>
+<dd>normal handler
+</dd>
+<dt>Trap gates</dt>
+<dd>invokes the handler in a manner similar to a <code>CALL</code> to a call gate
+</dd>
+</dl></li>
+<li><p>Illustration</p>
+<div style="white-space: pre-line;">                              80386 TASK GATE
+ 31 23 15 7 0
+<del>-----------------</del>-----------------+---+---+---------+-----------------+
+|#############(NOT USED)############| P |DPL|0 0 1 0 1|###(NOT USED)####|4
+|-----------------------------------<del>---</del>---+---------+-----------------|
+| SELECTOR |#############(NOT USED)############|0
+<del>-----------------</del>-----------------+-----------------+-----------------+
+
+                              80386 INTERRUPT GATE
+ 31 23 15 7 0
+<del>-----------------</del>-----------------+---+---+---------+-----+-----------+
+| OFFSET 31..16 | P |DPL|0 1 1 1 0|0 0 0|(NOT USED) |4
+|-----------------------------------<del>---</del>---+---------+-----+-----------|
+| SELECTOR | OFFSET 15..0 |0
+<del>-----------------</del>-----------------+-----------------+-----------------+
+
+                              80386 TRAP GATE
+ 31 23 15 7 0
+<del>-----------------</del>-----------------+---+---+---------+-----+-----------+
+| OFFSET 31..16 | P |DPL|0 1 1 1 1|0 0 0|(NOT USED) |4
+|-----------------------------------<del>---</del>---+---------+-----+-----------|
+| SELECTOR | OFFSET 15..0 |0
+<del>-----------------</del>-----------------+-----------------+-----------------+</div></li>
+</ol>
+<h2 id="interrupt-tasks-and-interrupt-procedures">Interrupt Tasks and Interrupt Procedures</h2>
+<h3 id="difference-between-task-and-procedure"><span class="todo TODO">TODO</span> Difference between task and procedure?</h3>
+<ul class="incremental">
+<li>Procedure execute in the context of the currently executing task
+<ul class="incremental">
+<li>selector points to an executable-segment descriptor in either the GDT or the current LDT</li>
+<li>offset points to the relative address of handler procedure</li>
+</ul></li>
+</ul>
+<h3 id="interrupt-procedures">Interrupt Procedures</h3>
+<ul class="incremental">
+<li>for interrupt gate or trap gate only</li>
+<li>pushes the <code>FLAGS</code> register onto the stack before the pointer to the interrupted instruction</li>
+<li><code>IRET</code> is used to exit from an interrupt procedure which is similar to <code>RET</code> except
+<ul class="incremental">
+<li>increments EIP by an extra four bytes (for the EFLAG flag on the stack)</li>
+<li>move the saved flags into the EFLAGS register</li>
+</ul></li>
+<li>Both reset TF (trap flag)</li>
+<li>Interrupt also resets IF (interrupt-enable flag) but trap gate does not change IF.</li>
+</ul>
+<div style="white-space: pre-line;">                  IDT EXECUTABLE SEGMENT
+           <del>---------------</del> <del>---------------</del>
+           | | OFFSET| |
+           |---------------| +-------------------------&gt;| ENTRY POINT |
+           | | | LDT OR GDT | |
+           |---------------| | <del>---------------</del> | |
+           | | | | | | |
+INTERRUPT |---------------| | |---------------| | |
+   ID-----&gt;| TRAP GATE OR |--+ | | | |
+           |INTERRUPT GATE |--+ |---------------| | |
+           |---------------| | | | | |
+           | | | |---------------| | |
+           |---------------| <del>--&gt;| SEGMENT |-</del> | |
+           | | | DESCRIPTOR | | | |
+           |---------------| |---------------| | | |
+           | | | | | | |
+           |---------------| |---------------| | | |
+           | | | | |BASE| |
+           <del>---------------</del> |---------------| <del>---&gt;</del>---------------+
+                                  | |
+                                  | |
+                                  | |
+                                  <del>---------------</del></div>
+<h3 id="interrupt-tasks">Interrupt Tasks</h3>
+<ul class="incremental">
+<li>task gate only</li>
+<li>selector points to a <code>TSS</code> descriptor int the GDT</li>
+<li>two advantages
+<ol class="incremental">
+<li>the entire context is saved automatically</li>
+<li>the interrupt handler can be isolated from other tasks by giving it a separate address space, either via its LDT or vira its page directory</li>
+</ol></li>
+</ul>
+<ol class="incremental">
+<li><p>Illustration</p>
+<div style="white-space: pre-line;">           IDT GDT
+    <del>----------------</del> <del>----------------</del>
+    | | | | TSS
+    |----------------| |----------------| <del>----------------</del>
+    | | | | | |
+    |----------------| |----------------| | |
+    | | | | | |
+    |----------------| |----------------| | |
+<del>--&gt;| TASK GATE |---</del> | | | |
+| |----------------| | |----------------| | |
+| | | <del>---&gt;| TSS DESCRIPTOR |---</del> | |
+| |----------------| |----------------| | | |
+| | | | | | | |
+| |----------------| |----------------| <del>--&gt;</del>----------------+
+| | | | |
+| |----------------| |----------------|
+| | | | |
+| <del>----------------</del> <del>----------------</del>
+|
++-INTERRUPT ID</div></li>
+</ol>
+<h2 id="error-code">Error Code</h2>
+<p>Parameter to some handler that will be pushed onto the stakc of the exception handler</p>
+<h3 id="format">Format</h3>
+<div style="white-space: pre-line;"> 31 15 2 1 0
+<del>---------------</del>----------------+-----------------+-------+-+-+-+
+|################################| |T| |E|
+|###########UNDEFINED############| SELECTOR INDEX | |I| |
+|################################| |I| |X|
+<del>---------------</del>----------------+-----------------+-------+-+-+-+</div>
+<ol class="incremental">
+<li><code>EXT</code> flag to mark the external source</li>
+<li>if <code>I</code> | <code>TI</code>, then use IDT, else use GDT</li>
+</ol>
+<h1 id="instruction">instruction</h1>
+<h1 id="misc">misc</h1>
+<h2 id="interrupt-1">interrupt</h2>
+<p>IRET jump back from the interrupt handler.</p>
+<h2 id="stack">stack</h2>
+<p>PUSHF and POPF push/pop all flags into stack</p>
+<h1 id="term">term</h1>
+<h2 id="cpl-iopl"><span class="todo TODO">TODO</span> CPL &amp; IOPL</h2>
+<p>protection control</p>
+<h2 id="interrupt-gate"><span class="todo TODO">TODO</span> interrupt gate</h2>
 <h1 id="参考资料">参考资料</h1>
 <ul class="incremental">
 <li><a href="http://www.bottomupcs.com/chapter07.xhtml">binary format</a></li>
+<li><a href="http://www.logix.cz/michal/doc/i386/">Intel 80386 Programmer's Reference Manual (non-official)</a></li>
 </ul>
 
 			</div>
