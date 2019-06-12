@@ -424,7 +424,7 @@ Interrupt Descriptor Table (IDT) associates identifier with a descriptor (for ha
 
 *** Illustration
 
-#+BEGIN_VERSE
+#+BEGIN_EXAMPLE
                                               INTERRUPT DESCRIPTOR TABLE
                                               +------+-----+-----+------+
                                         +---->|      |     |     |      |
@@ -460,7 +460,7 @@ Interrupt Descriptor Table (IDT) associates identifier with a descriptor (for ha
 
 **** Illustration
 
-#+BEGIN_VERSE
+#+BEGIN_EXAMPLE
                                 80386 TASK GATE
    31                23                15                7                0
   +-----------------+-----------------+---+---+---------+-----------------+
@@ -506,7 +506,7 @@ Interrupt Descriptor Table (IDT) associates identifier with a descriptor (for ha
 
 
 
-#+BEGIN_VERSE
+#+BEGIN_EXAMPLE
                   IDT                                    EXECUTABLE SEGMENT
            +---------------+                             +---------------+
            |               |                       OFFSET|               |
@@ -542,7 +542,7 @@ INTERRUPT  |---------------|  |   |---------------|      |               |
 
 **** Illustration
 
-#+BEGIN_VERSE
+#+BEGIN_EXAMPLE
             IDT                       GDT
      +----------------+        +----------------+
      |                |        |                |              TSS
@@ -571,7 +571,7 @@ Parameter to some handler that will be pushed onto the stakc of the exception ha
 
 *** Format
 
-#+BEGIN_VERSE
+#+BEGIN_EXAMPLE
        31              15                                         2 1 0
       +---------------+----------------+-----------------+-------+-+-+-+
       |################################|                         |T| |E|
