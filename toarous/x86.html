@@ -381,87 +381,30 @@ MOV ESP, StackTop
 <li>Use <code>LIDT</code> and <code>SIDT</code> operate on the IDTR (with 6 byte operand: base address and limit values)</li>
 </ul>
 <h3 id="illustration">Illustration</h3>
-<p>#+BEGIN<sub>EXAMPLE</sub> INTERRUPT DESCRIPTOR TABLE <del>------</del>-----+-----+------+ +----&gt;| | | | |</p>
-<table>
-<tbody>
-<tr class="odd">
-<td></td>
-<td>- GATE FOR INTERRUPT #N -</td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td><del>------</del>-----+-----+------+</td>
-</tr>
-<tr class="even">
-<td>* *</td>
-</tr>
-<tr class="odd">
-<td>* *</td>
-</tr>
-<tr class="even">
-<td>* *</td>
-</tr>
-<tr class="odd">
-<td><del>------</del>-----+-----+------+</td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td>- GATE FOR INTERRUPT #2 -</td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td>------+-----+-----+------</td>
-</tr>
-</tbody>
-</table>
-<p>IDT REGISTER | | | | | |</p>
-<table>
-<tbody>
-<tr class="odd">
-<td></td>
-<td>- GATE FOR INTERRUPT #1 -</td>
-</tr>
-</tbody>
-</table>
-<p>15 0 | | | | | | <del>---------------</del> | |------+-----+-----+------|</p>
-<table>
-<tbody>
-<tr class="odd">
-<td>IDT LIMIT</td>
-<td>----+</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p><del>----------------</del>---------------| |- GATE FOR INTERRUPT #0 -|</p>
-<table>
-<tbody>
-<tr class="odd">
-<td>IDT BASE</td>
-<td>---------&gt;</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p><del>--------------------------------</del> <del>------</del>-----+-----+------+ 31 0</p>
-<p>#+END<sub>VERSE</sub></p>
+<pre class="example"><code>                                            INTERRUPT DESCRIPTOR TABLE
+                                            +------+-----+-----+------+
+                                      +----&gt;|      |     |     |      |
+                                      |     |- GATE FOR INTERRUPT #N -|
+                                      |     |      |     |     |      |
+                                      |     +------+-----+-----+------+
+                                      |     *                         *
+                                      |     *                         *
+                                      |     *                         *
+                                      |     +------+-----+-----+------+
+                                      |     |      |     |     |      |
+                                      |     |- GATE FOR INTERRUPT #2 -|
+                                      |     |      |     |     |      |
+                                      |     |------+-----+-----+------|
+          IDT REGISTER                |     |      |     |     |      |
+                                      |     |- GATE FOR INTERRUPT #1 -|
+                  15            0     |     |      |     |     |      |
+                 +---------------+    |     |------+-----+-----+------|
+                 |   IDT LIMIT   |----+     |      |     |     |      |
++----------------+---------------|          |- GATE FOR INTERRUPT #0 -|
+|            IDT BASE            |---------&gt;|      |     |     |      |
++--------------------------------+          +------+-----+-----+------+
+ 31                             0
+</code></pre>
 <h3 id="descriptors">Descriptors</h3>
 <ol class="incremental">
 <li><p>Kinds</p>
@@ -477,72 +420,30 @@ MOV ESP, StackTop
 </dd>
 </dl></li>
 <li><p>Illustration</p>
-<p>#+BEGIN<sub>EXAMPLE</sub> 80386 TASK GATE 31 23 15 7 0 <del>-----------------</del>-----------------+---+---+---------+-----------------+</p>
-<table>
-<thead>
-<tr class="header">
-<th>#############(NOT USED)############</th>
-<th>P</th>
-<th>DPL</th>
-<th>0 0 1 0 1</th>
-<th>###(NOT USED)####</th>
-<th>4</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>SELECTOR</td>
-<td>#############(NOT USED)############</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p><del>-----------------</del>-----------------+-----------------+-----------------+</p>
-<p>80386 INTERRUPT GATE 31 23 15 7 0 <del>-----------------</del>-----------------+---+---+---------+-----+-----------+</p>
-<table>
-<thead>
-<tr class="header">
-<th>OFFSET 31..16</th>
-<th>P</th>
-<th>DPL</th>
-<th>0 1 1 1 0</th>
-<th>0 0 0</th>
-<th>(NOT USED)</th>
-<th>4</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>SELECTOR</td>
-<td>OFFSET 15..0</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p><del>-----------------</del>-----------------+-----------------+-----------------+</p>
-<p>80386 TRAP GATE 31 23 15 7 0 <del>-----------------</del>-----------------+---+---+---------+-----+-----------+</p>
-<table>
-<thead>
-<tr class="header">
-<th>OFFSET 31..16</th>
-<th>P</th>
-<th>DPL</th>
-<th>0 1 1 1 1</th>
-<th>0 0 0</th>
-<th>(NOT USED)</th>
-<th>4</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>SELECTOR</td>
-<td>OFFSET 15..0</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p><del>-----------------</del>-----------------+-----------------+-----------------+</p>
-<p>#+END<sub>VERSE</sub></p></li>
+<pre class="example"><code>                              80386 TASK GATE
+ 31                23                15                7                0
++-----------------+-----------------+---+---+---------+-----------------+
+|#############(NOT USED)############| P |DPL|0 0 1 0 1|###(NOT USED)####|4
+|-----------------------------------+---+---+---------+-----------------|
+|             SELECTOR              |#############(NOT USED)############|0
++-----------------+-----------------+-----------------+-----------------+
+
+                              80386 INTERRUPT GATE
+ 31                23                15                7                0
++-----------------+-----------------+---+---+---------+-----+-----------+
+|           OFFSET 31..16           | P |DPL|0 1 1 1 0|0 0 0|(NOT USED) |4
+|-----------------------------------+---+---+---------+-----+-----------|
+|             SELECTOR              |           OFFSET 15..0            |0
++-----------------+-----------------+-----------------+-----------------+
+
+                              80386 TRAP GATE
+ 31                23                15                7                0
++-----------------+-----------------+---+---+---------+-----+-----------+
+|          OFFSET 31..16            | P |DPL|0 1 1 1 1|0 0 0|(NOT USED) |4
+|-----------------------------------+---+---+---------+-----+-----------|
+|             SELECTOR              |           OFFSET 15..0            |0
++-----------------+-----------------+-----------------+-----------------+
+</code></pre></li>
 </ol>
 <h2 id="interrupt-tasks-and-interrupt-procedures">Interrupt Tasks and Interrupt Procedures</h2>
 <h3 id="difference-between-task-and-procedure"><span class="todo TODO">TODO</span> Difference between task and procedure?</h3>
@@ -565,86 +466,30 @@ MOV ESP, StackTop
 <li>Both reset TF (trap flag)</li>
 <li>Interrupt also resets IF (interrupt-enable flag) but trap gate does not change IF.</li>
 </ul>
-<p>#+BEGIN<sub>EXAMPLE</sub> IDT EXECUTABLE SEGMENT <del>---------------</del> <del>---------------</del></p>
-<table>
-<thead>
-<tr class="header">
-<th></th>
-<th>OFFSET</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td></td>
-<td></td>
-<td>LDT OR GDT</td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>INTERRUPT |---------------| | |---------------| | | ID-----&gt;| TRAP GATE OR |--+ | | | |</p>
-<table>
-<thead>
-<tr class="header">
-<th>INTERRUPT GATE</th>
-<th>--+</th>
-<th>---------------</th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td></td>
-<td></td>
-<td></td>
-<td>---------------</td>
-<td></td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td>DESCRIPTOR</td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>BASE</td>
-</tr>
-</tbody>
-</table>
-<p><del>---------------</del> |---------------| <del>---&gt;</del>---------------+</p>
-<table>
-<tbody>
-<tr class="odd">
-<td></td>
-</tr>
-<tr class="even">
-<td></td>
-</tr>
-<tr class="odd">
-<td></td>
-</tr>
-</tbody>
-</table>
-<p><del>---------------</del></p>
-<p>#+END<sub>VERSE</sub></p>
+<pre class="example"><code>                  IDT                                    EXECUTABLE SEGMENT
+           +---------------+                             +---------------+
+           |               |                       OFFSET|               |
+           |---------------|  +-------------------------&gt;| ENTRY POINT   |
+           |               |  |      LDT OR GDT          |               |
+           |---------------|  |   +---------------+      |               |
+           |               |  |   |               |      |               |
+INTERRUPT  |---------------|  |   |---------------|      |               |
+   ID-----&gt;| TRAP GATE OR  |--+   |               |      |               |
+           |INTERRUPT GATE |--+   |---------------|      |               |
+           |---------------|  |   |               |      |               |
+           |               |  |   |---------------|      |               |
+           |---------------|  +--&gt;|   SEGMENT     |-+    |               |
+           |               |      |  DESCRIPTOR   | |    |               |
+           |---------------|      |---------------| |    |               |
+           |               |      |               | |    |               |
+           |---------------|      |---------------| |    |               |
+           |               |      |               | |BASE|               |
+           +---------------+      |---------------| +---&gt;+---------------+
+                                  |               |
+                                  |               |
+                                  |               |
+                                  +---------------+
+</code></pre>
 <h3 id="interrupt-tasks">Interrupt Tasks</h3>
 <ul class="incremental">
 <li>task gate only</li>
@@ -657,134 +502,38 @@ MOV ESP, StackTop
 </ul>
 <ol class="incremental">
 <li><p>Illustration</p>
-<p>#+BEGIN<sub>EXAMPLE</sub> IDT GDT <del>----------------</del> <del>----------------</del></p>
-<table>
-<thead>
-<tr class="header">
-<th></th>
-<th></th>
-<th></th>
-<th>TSS</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p><del>--&gt;| TASK GATE |---</del> | | | |</p>
-<table>
-<tbody>
-<tr class="odd">
-<td></td>
-<td>----------------</td>
-<td></td>
-<td></td>
-<td>----------------</td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td><del>---&gt;| TSS DESCRIPTOR |---</del></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td>----------------</td>
-<td></td>
-<td>----------------</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td>----------------</td>
-<td></td>
-<td>----------------</td>
-<td><del>--&gt;</del>----------------+</td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td>----------------</td>
-<td></td>
-<td>----------------</td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td><del>----------------</del> <del>----------------</del></td>
-</tr>
-<tr class="even">
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>+-INTERRUPT ID</p>
-<p>#+END<sub>VERSE</sub></p></li>
+<pre class="example"><code>           IDT                       GDT
+    +----------------+        +----------------+
+    |                |        |                |              TSS
+    |----------------|        |----------------|       +----------------+
+    |                |        |                |       |                |
+    |----------------|        |----------------|       |                |
+    |                |        |                |       |                |
+    |----------------|        |----------------|       |                |
++--&gt;|   TASK GATE    |---+    |                |       |                |
+|   |----------------|   |    |----------------|       |                |
+|   |                |   +---&gt;| TSS DESCRIPTOR |---+   |                |
+|   |----------------|        |----------------|   |   |                |
+|   |                |        |                |   |   |                |
+|   |----------------|        |----------------|   +--&gt;+----------------+
+|   |                |        |                |
+|   |----------------|        |----------------|
+|   |                |        |                |
+|   +----------------+        +----------------+
+|
++-INTERRUPT ID
+</code></pre></li>
 </ol>
 <h2 id="error-code">Error Code</h2>
 <p>Parameter to some handler that will be pushed onto the stakc of the exception handler</p>
 <h3 id="format">Format</h3>
-<p>#+BEGIN<sub>EXAMPLE</sub> 31 15 2 1 0 <del>---------------</del>----------------+-----------------+-------+-+-+-+</p>
-<table>
-<tbody>
-<tr class="odd">
-<td>################################</td>
-<td></td>
-<td>T</td>
-<td></td>
-<td>E</td>
-</tr>
-<tr class="even">
-<td>###########UNDEFINED############</td>
-<td>SELECTOR INDEX</td>
-<td></td>
-<td>I</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>################################</td>
-<td></td>
-<td>I</td>
-<td></td>
-<td>X</td>
-</tr>
-</tbody>
-</table>
-<p><del>---------------</del>----------------+-----------------+-------+-+-+-+</p>
-<p>#+END<sub>VERSE</sub></p>
+<pre class="example"><code> 31              15                                         2 1 0
++---------------+----------------+-----------------+-------+-+-+-+
+|################################|                         |T| |E|
+|###########UNDEFINED############|     SELECTOR INDEX      | |I| |
+|################################|                         |I| |X|
++---------------+----------------+-----------------+-------+-+-+-+
+</code></pre>
 <ol class="incremental">
 <li><code>EXT</code> flag to mark the external source</li>
 <li>if <code>I</code> | <code>TI</code>, then use IDT, else use GDT</li>
