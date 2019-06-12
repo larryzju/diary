@@ -448,7 +448,7 @@ Interrupt Descriptor Table (IDT) associates identifier with a descriptor (for ha
   |            IDT BASE            |--------->|      |     |     |      |
   +--------------------------------+          +------+-----+-----+------+
    31                             0
-#+END_VERSE
+#+END_EXAMPLE
 
 *** Descriptors
 
@@ -484,7 +484,7 @@ Interrupt Descriptor Table (IDT) associates identifier with a descriptor (for ha
   |-----------------------------------+---+---+---------+-----+-----------|
   |             SELECTOR              |           OFFSET 15..0            |0
   +-----------------+-----------------+-----------------+-----------------+
-#+END_VERSE
+#+END_EXAMPLE
 
 ** Interrupt Tasks and Interrupt Procedures
 
@@ -530,7 +530,7 @@ INTERRUPT  |---------------|  |   |---------------|      |               |
                                   |               |
                                   |               |
                                   +---------------+
-#+END_VERSE
+#+END_EXAMPLE
 
 
 *** Interrupt Tasks
@@ -563,7 +563,7 @@ INTERRUPT  |---------------|  |   |---------------|      |               |
  |   +----------------+        +----------------+
  |
  +-INTERRUPT ID
-#+END_VERSE
+#+END_EXAMPLE
 
 ** Error Code
 
@@ -578,7 +578,7 @@ Parameter to some handler that will be pushed onto the stakc of the exception ha
       |###########UNDEFINED############|     SELECTOR INDEX      | |I| |
       |################################|                         |I| |X|
       +---------------+----------------+-----------------+-------+-+-+-+
-#+END_VERSE
+#+END_EXAMPLE
 
 1. =EXT= flag to mark the external source
 2. if =I= | =TI=, then use IDT, else use GDT
