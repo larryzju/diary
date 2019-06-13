@@ -1,0 +1,340 @@
+* Overview
+
+IDT (Interrupt Descriptor Table) maintains all handlers procedure information
+1. ISR is short for Interrupt Service Routines which is the handler for the internal interrupt or exception.
+2. IRQ for external interrupt or software interrupt
+
+* Kinds
+
+** Exception
+
+Generated internally by the CPU and used to alert the running kernel of an event or situation
+
+** IRQ
+
+Interrupt Request (Hardware Interrupt), which is generated externally
+by the chipset and is signalled by latching onto the =INTR= pin.
+
+** Software Interrupt
+
+To indicate that process need the kernel's attention (system call) with =INT N= instruction.
+
+Most OS kernel choose just one port for software interrupt. Fox example, =0x80=
+
+
+* 8259 PIC
+
+Programmable Interrupt Controller, which the external devices connect
+to this chip rather than connect directly to CPU. If there's an
+interrupt in PIC's pin, CPU will stores state information on the stack
+and jumps to a location pointed to by the IDT.
+
+There're two PICs in cascade mode: master and slave (The IBM PC/AT 8259 PIC Architecture)
+- The slave PIC's output signal is connected to the master PIC's #2 input port.
+- master PIC's output signal is connected to CPU and tell CPU the interrupt occurred and send the interrupt number (=[0-256)=)
+- By default IRQ 0-7 are set to interrupts 08h-0Fh, IRQs 8-15 are set to interrupts 70-77h
+- Vector offset can be changed when re-initializing
+
+** How Does it work?
+
+1. External device notify the PIC that it needs servicing
+2. PIC feed the CUP interrupt signal 
+3. CPU accept the interrupt
+4. PIC supply the interrupt number to the process
+5. CPU looks up the interrupt address and act accordingly.
+
+** Ports
+
+| Chip - Purpose       | I/O port |
+|----------------------+----------|
+| Master PIC - Command | 0x0020   |
+| Master PIC - Data    | 0x0021   |
+| Slave PIC - Command  | 0x00a0   |
+| Slave PIC - Data     | 0x00a1   |
+
+** Instruction
+
+| instruction            | code | description                                                                             |
+|------------------------+------+-----------------------------------------------------------------------------------------|
+| end of interrupt (EOI) | 0x20 | at the end of an IRQ-based interrupt routine                                            |
+| initialise command     | 0x11 | make the PIC wait for 3 extra "initialisation words" on the data port: ICW2, ICW3, ICW4 |
+
+
+** Data
+
+| data | descrition                                         |
+|------+----------------------------------------------------|
+| ICW2 | Its vector offset                                  |
+| ICW3 | Tell it how it is wired to master/slaves           |
+| ICW4 | Gives additional information about the environment |
+
+** Steps
+
+
+
+** TODO External Device Connection Rules
+
+- keyboard: IRQ1
+
+
+
+* Code Analysis
+
+** ISR
+
+=kernel/core/isrs.c= define the =[0,32)= ISR and the code is similar to =kernel/core/irq.c=.
+
+Refer to the [[*IRQ][IRQ]] section.
+
+*** error code
+
+Some of the exceptions don't provide error code to the handler.
+
+#+BEGIN_SRC nasm
+; Interrupt Service Routines
+%macro ISR_NOERR 1
+        global _isr%1
+        _isr%1:
+                cli
+                push byte 0
+                push byte %1
+                jmp isr_common_stub
+%endmacro
+
+%macro ISR_ERR 1
+        global _isr%1
+        _isr%1:
+                cli
+                push byte %1
+                jmp isr_common_stub
+%endmacro
+
+; Standard X86 interrupt service routines
+ISR_NOERR 0
+ISR_NOERR 1
+ISR_NOERR 2
+ISR_NOERR 3
+ISR_NOERR 4
+ISR_NOERR 5
+ISR_NOERR 6
+ISR_NOERR 7
+ISR_ERR   8
+ISR_NOERR 9
+ISR_ERR   10
+ISR_ERR   11
+ISR_ERR   12
+ISR_ERR   13
+ISR_ERR   14
+ISR_NOERR 15
+ISR_NOERR 16
+ISR_NOERR 17
+ISR_NOERR 18
+ISR_NOERR 19
+ISR_NOERR 20
+ISR_NOERR 21
+ISR_NOERR 22
+ISR_NOERR 23
+ISR_NOERR 24
+ISR_NOERR 25
+ISR_NOERR 26
+ISR_NOERR 27
+ISR_NOERR 28
+ISR_NOERR 29
+ISR_NOERR 30
+ISR_NOERR 31
+#+END_SRC
+
+** handler
+
+#+BEGIN_SRC c
+typedef void (*irq_handler_t) (struct regs *);
+#+END_SRC
+
+** IRQ
+
+- install =[32,48)= ISR by default (in =irq_install=)
+- extra 16 IRQ handler for the =[16,32)= ISR
+- register with =irq_install_handler=, unregister with =irq_uninstall_handler=
+
+*** handler
+
+#+BEGIN_SRC c
+typedef void (*irq_handler_t) (struct regs *);
+
+// irq_hander_t is the function pointer
+static irq_handler_t irq_routines[16] = { NULL };
+
+void
+irq_handler(struct regs *r) {
+        // define a new funcion pointer handler
+        void (*handler)(struct regs *r);
+
+        // the function pointer is the IRQ handler
+        handler = irq_routines[r->int_no - 32];
+
+        // skip if no handler was bound
+        if (handler) {
+                handler(r);
+        }
+
+        // interrupt is trigger by PIC2, send EOI to PIC2 data
+        if (r->int_no >= 40) {
+                outportb(0xA0, 0x20);
+        }
+
+        // send EOI to PIC1 data
+        outportb(0x20, 0x20);
+}
+#+END_SRC
+
+
+*** initialise
+
+**** remap vector offset
+
+#+BEGIN_SRC c
+void
+irq_remap() {
+        // PIC1 initialization
+        outportb(0x20, 0x11);
+        // PIC2 initialization
+        outportb(0xA0, 0x11);
+        // PIC1 ICW2 vector offset 0x20
+        outportb(0x21, 0x20);
+        // PIC2 ICW2 vector offset 0x28
+        outportb(0xA1, 0x28);
+        // PIC1 ICW3 wired: 0b00000100, PIC2 output connects to PIC1 input #2
+        outportb(0x21, 0x04);
+        // PIC2 ICW3 identity: 0x02
+        outportb(0xA1, 0x02);
+        // PIC1 ICW4: 8086/88 (MCS-80/85) mode
+        outportb(0x21, 0x01);
+        // PIC2 ICW4: 8086/88 (MCS-80/85) mode
+        outportb(0xA1, 0x01);
+        // clear mask
+        outportb(0x21, 0x0);
+        outportb(0xA1, 0x0);
+}
+#+END_SRC
+
+
+**** set irq handler
+
+#+BEGIN_SRC c
+void
+irq_install() {
+        irq_remap();
+        idt_set_gate(32, (unsigned)_irq0, 0x08, 0x8E);
+        idt_set_gate(33, (unsigned)_irq1, 0x08, 0x8E);
+        idt_set_gate(34, (unsigned)_irq2, 0x08, 0x8E);
+        idt_set_gate(35, (unsigned)_irq3, 0x08, 0x8E);
+        idt_set_gate(36, (unsigned)_irq4, 0x08, 0x8E);
+        idt_set_gate(37, (unsigned)_irq5, 0x08, 0x8E);
+        idt_set_gate(38, (unsigned)_irq6, 0x08, 0x8E);
+        idt_set_gate(39, (unsigned)_irq7, 0x08, 0x8E);
+        idt_set_gate(40, (unsigned)_irq8, 0x08, 0x8E);
+        idt_set_gate(41, (unsigned)_irq9, 0x08, 0x8E);
+        idt_set_gate(42, (unsigned)_irq10, 0x08, 0x8E);
+        idt_set_gate(43, (unsigned)_irq11, 0x08, 0x8E);
+        idt_set_gate(44, (unsigned)_irq12, 0x08, 0x8E);
+        idt_set_gate(45, (unsigned)_irq13, 0x08, 0x8E);
+        idt_set_gate(46, (unsigned)_irq14, 0x08, 0x8E);
+        idt_set_gate(47, (unsigned)_irq15, 0x08, 0x8E);
+        __asm__ __volatile__("sti");
+}
+#+END_SRC
+
+*** C function wrapper
+
+The =irq_handler= C function is wrappered by assemble codes
+
+**** =_irqN= definition
+
+#+BEGIN_SRC nasm
+%macro IRQ_ENTRY 2
+        global _irq%1
+        _irq%1:
+                cli
+                push byte 0
+                push byte %2
+                jmp irq_common_stub
+%endmacro
+
+; Interrupt Requests
+IRQ_ENTRY 0, 32
+IRQ_ENTRY 1, 33
+IRQ_ENTRY 2, 34
+IRQ_ENTRY 3, 35
+IRQ_ENTRY 4, 36
+IRQ_ENTRY 5, 37
+IRQ_ENTRY 6, 38
+IRQ_ENTRY 7, 39
+IRQ_ENTRY 8, 40
+IRQ_ENTRY 9, 41
+IRQ_ENTRY 10, 42
+IRQ_ENTRY 11, 43
+IRQ_ENTRY 12, 44
+IRQ_ENTRY 13, 45
+IRQ_ENTRY 14, 46
+IRQ_ENTRY 15, 47
+#+END_SRC
+
+Define a macro =IRQ_ENTRY= which accepts two parameter and expand to 
+
+#+BEGIN_SRC nasm
+global _irq0
+irq0:
+   cli
+   push byte 0    ; PIC port
+   push byte 32   ; IRQ ID
+   jmp irq_common_stub
+...
+#+END_SRC
+
+**** wrapper
+
+Pass =struct *reg= parameter to C function =irq_handler=
+
+#+BEGIN_SRC c
+// kernel/include/system.h
+/* Registers */
+struct regs {
+        unsigned int gs, fs, es, ds;
+        unsigned int edi, esi, ebp, esp, ebx, edx, ecx, eax;
+        unsigned int int_no, err_code;
+        unsigned int eip, cs, eflags, useresp, ss;
+};      
+#+END_SRC
+
+#+BEGIN_SRC nasm
+irq_common_stub:
+        pusha     ;; any other registers
+        push ds   ;; be care for the order
+        push es
+        push fs
+        push gs
+        mov ax, 0x10   ;; selector ??
+        mov ds, ax
+        mov es, ax
+        mov fs, ax
+        mov gs, ax
+        mov eax, esp
+        push eax
+        ; Call the C kernel hardware interrupt handler
+        mov eax, irq_handler
+        call eax
+        pop eax
+        pop gs
+        pop fs
+        pop es
+        pop ds
+        popa
+        add esp, 8
+        iret
+#+END_SRC
+
+
+* Reference
+
+- [[https://wiki.osdev.org/PIC#Programming_the_PIC_chips][8259 PIC wiki.osdev.org]]
+- [[https://nasm.us/doc/nasmdoc4.html][The NASM Preprocessor]]
