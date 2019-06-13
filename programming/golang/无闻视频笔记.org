@@ -54,8 +54,8 @@ go 通过环境变量来设置参数，常见的有
 
 ** import 小技巧
 
-1. 别名： =import std "fmt"=
-2. 省略调用： =import . "fmt"= ，类似于 python 中 =from fmt import *= ，慎用!
+1. 别名:  ~import std "fmt"~
+2. 省略调用:  ~import . "fmt"~  类似于 python 中 =from fmt import *= ，慎用!
 
 ** 可见性规则
 
