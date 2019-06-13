@@ -412,11 +412,68 @@ n := <span class="kw">map</span>[<span class="dt">string</span>]<span class="dt"
 <li><code>sort.Ints</code></li>
 </ul>
 <h1 id="问题">问题</h1>
+<p>自问自答，不一定正确</p>
 <h2 id="类型转换是静态的还是动态的有没有开销"><span class="todo TODO">TODO</span> 类型转换是静态的？还是动态的？有没有开销</h2>
-<h2 id="string-与-byte-与-rune-的关系"><span class="todo TODO">TODO</span> =string= 与 <code>[]byte</code> 与 <code>[]rune</code> 的关系</h2>
-<h2 id="int-与-int-的区别"><span class="todo TODO">TODO</span> =[10]int= 与 <code>[]int</code> 的区别</h2>
+<h2 id="string-与-byte-与-rune-的关系"><code>string</code> 与 <code>[]byte</code> 与 <code>[]rune</code> 的关系</h2>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">package</span> main
+
+<span class="kw">import</span> (
+    <span class="st">&quot;fmt&quot;</span>
+)
+
+<span class="kw">func</span> main() {
+    s := <span class="st">&quot;I❤学习&quot;</span>
+
+    <span class="co">// len return the []byte size</span>
+    fmt.Println(<span class="bu">len</span>(s))
+
+    <span class="co">// range iterates over []rune, `i` is the offset of the rune</span>
+    <span class="kw">for</span> i, c := <span class="kw">range</span> s {
+        fmt.Printf(<span class="st">&quot;%d: %c</span><span class="ch">\n</span><span class="st">&quot;</span>, i, c)
+    }
+
+    <span class="co">// to iterates over []byte, convert to []byte explicitly</span>
+    <span class="kw">for</span> i, b := <span class="kw">range</span> []<span class="dt">byte</span>(s) {
+        fmt.Printf(<span class="st">&quot;%d: %v</span><span class="ch">\n</span><span class="st">&quot;</span>, i, b)
+    }
+}</code></pre></div>
+<h2 id="int-与-int-的区别"><code>[10]int</code> 与 <code>[]int</code> 的区别</h2>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">package</span> main
+
+<span class="kw">import</span> (
+    <span class="st">&quot;fmt&quot;</span>
+)
+
+<span class="kw">func</span> main() {
+        <span class="co">// v is a array with type [10]int, whose length is 10</span>
+    v := [<span class="dv">10</span>]<span class="dt">int</span>{<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>}
+
+        <span class="co">// s is a slice with type []int, whose length and capacity are both 3</span>
+    s := []<span class="dt">int</span>{<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>}
+    fmt.Printf(<span class="st">&quot;%#v %T %d %d</span><span class="ch">\n</span><span class="st">&quot;</span>, v, v, <span class="bu">len</span>(v), <span class="bu">cap</span>(v))
+    fmt.Printf(<span class="st">&quot;%#v %T %d %d</span><span class="ch">\n</span><span class="st">&quot;</span>, s, s, <span class="bu">len</span>(s), <span class="bu">cap</span>(s))
+}</code></pre></div>
 <h2 id="int123-与-int123-的区别"><span class="todo TODO">TODO</span> =[...]int{1,2,3}= 与 <code>[]int{1,2,3}</code> 的区别</h2>
 <h2 id="for-i-0-i-lena-i-中-lena-是否会造成额外的开销"><span class="todo TODO">TODO</span> ~for i := 0; i &lt; len(a); i++~ 中 <code>len(a)</code> 是否会造成额外的开销</h2>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">package</span> main
+
+<span class="kw">import</span> (
+    <span class="st">&quot;fmt&quot;</span>
+)
+
+<span class="kw">func</span> main() {
+    a := []<span class="dt">int</span>{<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>}
+    myLen := <span class="kw">func</span>(s []<span class="dt">int</span>) <span class="dt">int</span> {
+        fmt.Println(<span class="st">&quot;tick&quot;</span>)
+        <span class="kw">return</span> <span class="bu">len</span>(s)
+    }
+
+        <span class="co">// myLen will be called multiple times</span>
+        <span class="co">// but it doesn&#39;t mean go will not optimize the `len(a)` if a has not been modified</span>
+    <span class="kw">for</span> i := <span class="dv">0</span>; i &lt; myLen(a); i++ {
+        fmt.Println(a[i])
+    }
+}</code></pre></div>
 <h1 id="外部链接">外部链接</h1>
 <ul class="incremental">
 <li>Go 在谷歌：以软件工程为目的的语言设计</li>
