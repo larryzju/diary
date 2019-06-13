@@ -21,7 +21,6 @@ To indicate that process need the kernel's attention (system call) with =INT N= 
 
 Most OS kernel choose just one port for software interrupt. Fox example, =0x80=
 
-
 * 8259 PIC
 
 Programmable Interrupt Controller, which the external devices connect
@@ -77,8 +76,44 @@ There're two PICs in cascade mode: master and slave (The IBM PC/AT 8259 PIC Arch
 - keyboard: IRQ1
 
 
-
 * Code Analysis
+
+** IDT
+
+=kernel/core/idt.c= regists =[0-256)= handler
+1. number
+2. handler address
+3. selector =0x08=
+4. flag =0x8E=
+
+*** Flag
+
+Flag is set to =0x10001110= for the interrupt gate:
+1. P bit = 1
+2. DPL = 0
+
+
+*** TODO Selector
+
+=0x80= ?
+
+*** Format
+
+Refer to x86 IDT descriptor format [[file:x86.org::*Illustration][illustration]]
+
+#+BEGIN_SRC c
+/*
+ * IDT Entry
+ */
+struct idt_entry {
+        unsigned short base_low;
+        unsigned short sel;
+        unsigned char zero;
+        unsigned char flags;
+        unsigned short base_high;
+} __attribute__((packed));
+#+END_SRC
+
 
 ** ISR
 
@@ -142,12 +177,6 @@ ISR_NOERR 28
 ISR_NOERR 29
 ISR_NOERR 30
 ISR_NOERR 31
-#+END_SRC
-
-** handler
-
-#+BEGIN_SRC c
-typedef void (*irq_handler_t) (struct regs *);
 #+END_SRC
 
 ** IRQ
@@ -332,7 +361,6 @@ irq_common_stub:
         add esp, 8
         iret
 #+END_SRC
-
 
 * Reference
 
