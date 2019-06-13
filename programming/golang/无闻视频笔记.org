@@ -482,15 +482,83 @@ reflect 库提供了相关函数，可以从对象中获取相关的结构类型
 
 * 问题
 
+自问自答，不一定正确
+
 ** TODO 类型转换是静态的？还是动态的？有没有开销
 
-** TODO =string= 与 =[]byte= 与 =[]rune= 的关系
+** =string= 与 =[]byte= 与 =[]rune= 的关系
 
-** TODO =[10]int= 与 =[]int= 的区别
+#+BEGIN_SRC go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	s := "I❤学习"
+
+	// len return the []byte size
+	fmt.Println(len(s))
+
+	// range iterates over []rune, `i` is the offset of the rune
+	for i, c := range s {
+		fmt.Printf("%d: %c\n", i, c)
+	}
+
+	// to iterates over []byte, convert to []byte explicitly
+	for i, b := range []byte(s) {
+		fmt.Printf("%d: %v\n", i, b)
+	}
+}
+#+END_SRC
+
+
+** =[10]int= 与 =[]int= 的区别
+
+
+#+BEGIN_SRC go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+        // v is a array with type [10]int, whose length is 10
+	v := [10]int{1, 2, 3}
+
+        // s is a slice with type []int, whose length and capacity are both 3
+	s := []int{1, 2, 3}
+	fmt.Printf("%#v %T %d %d\n", v, v, len(v), cap(v))
+	fmt.Printf("%#v %T %d %d\n", s, s, len(s), cap(s))
+}
+#+END_SRC
 
 ** TODO =[...]int{1,2,3}= 与 =[]int{1,2,3}= 的区别
 ** TODO ~for i := 0; i < len(a); i++~ 中 =len(a)= 是否会造成额外的开销
 
+#+BEGIN_SRC go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	a := []int{1, 2, 3, 4, 5, 6, 7, 8}
+	myLen := func(s []int) int {
+		fmt.Println("tick")
+		return len(s)
+	}
+
+        // myLen will be called multiple times
+        // but it doesn't mean go will not optimize the `len(a)` if a has not been modified
+	for i := 0; i < myLen(a); i++ {
+		fmt.Println(a[i])
+	}
+}
+#+END_SRC
 * 外部链接
 
 - Go 在谷歌：以软件工程为目的的语言设计
