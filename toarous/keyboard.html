@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>keyboard.org</title>
+		<link rel="stylesheet" href="/diary/resources/css/main.css" />
+		<link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+		<script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+		<script src="/diary/resources/js/swgen.js"></script>
+		<script src="/diary/resources/highlight/highlight.pack.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+	</head>
+	<body>
+		<nav id='content'>
+		</nav>
+		<section class="main-article-area">
+			<div id='main'>
+				<h1 id="overview">overview</h1>
+<p>When a key is pressed or released on the keyboard, the keyboard writes its code to port 0x60, writes status to port 0x64, and interrupts 1</p>
+<ol class="incremental">
+<li>read status port 0x64</li>
+<li>if it is 1, we can read port 0x60</li>
+</ol>
+<p>OS send command to keyboard and waiting for the response. Then OS read the scan code from 0x60/0x64 port.</p>
+<h2 id="ps2">PS/2</h2>
+<p>A type of serial communication.</p>
+<h2 id="chip">8042 chip</h2>
+<p>PS/2 controller while the keyboard is the device.</p>
+<p>Each byte send by a device to a controller is transmitted as a packet containing 11 bits.</p>
+<ul class="incremental">
+<li>1 start bit (always 0)</li>
+<li>8 data bits (least significant bit first)</li>
+<li>1 parity bit (odd parity)</li>
+<li>1 stop bit (always 1)</li>
+</ul>
+<p>Each byte sent by a controller to a device is transmitted as a packet containing 12 bits.</p>
+<ul class="incremental">
+<li>1 start bit</li>
+<li>8 data bits</li>
+<li>1 parity bit</li>
+<li>1 stop bit</li>
+<li>1 acknowledgement bit</li>
+</ul>
+<h3 id="connections">Connections</h3>
+<ul class="incremental">
+<li>first device &lt;-&gt; PIC1 <code>IRQ1</code></li>
+<li>second device &lt;-&gt; PIC2 <code>IRQ12</code></li>
+<li>CPU port 0x60 and 0x64
+<ul class="incremental">
+<li>0x60: Data Port, bidirection</li>
+<li>0x60: Status/Command Register</li>
+</ul></li>
+</ul>
+<h3 id="status-register">Status Register</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Bit</th>
+<th>Mean</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>output buffer status</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>input buffer status</td>
+</tr>
+<tr class="odd">
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+<h1 id="command">Command</h1>
+<ul class="incremental">
+<li>Command always is one byte</li>
+<li>Some have data bytes that should be sent after the command byte</li>
+<li>Response with <code>Resend</code> or <code>ACK</code></li>
+</ul>
+<h2 id="cheatsheet">Cheatsheet</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Byte</th>
+<th>Data</th>
+<th>Meaning</th>
+<th>Response</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="response">Response</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Byte</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>scan codes</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="reference">Reference</h1>
+<ul class="incremental">
+<li><a href="https://wiki.osdev.org/Keyboard">PS/2 Keyboard</a></li>
+<li><a href="http://os-development.000webhostapp.com/klavesnica.html">Keyboard klavesnica.html</a></li>
+<li><a href="https://wiki.osdev.org/PS/2">PS/2</a></li>
+<li><a href="http://oldlinux.org/download/CLK-5.0-WithCover.pdf">A Heavily Commemted Linux Kernel Source Code</a></li>
+</ul>
+
+			</div>
+		</section>
+	</body>
+</html>
