@@ -1,0 +1,55 @@
+* inline assembly
+
+** example 1
+
+#+BEGIN_SRC c
+/*
+ * inportb
+ * Read from an I/O port.
+ */
+unsigned char
+inportb(
+		unsigned short _port
+	   ) {
+	unsigned char rv;
+	__asm__ __volatile__ ("inb %1, %0" : "=a" (rv) : "dN" (_port));
+	return rv;
+}
+#+END_SRC
+
+The parameters for =__asm__= are
+1. assembler template: GAS mode, and register name starts with =%%=
+2. output operand
+3. input operand
+
+There can be a fourth parameter, named *clobbered registers list*.
+
+Use C variable =rv= to store the input port. And map the EAX register (for optimal performance) to this variable.
+1. ~=~ means your assembly code does not care about the initial value of the mapped variable
+2. =a= means use EAX register
+
+Input operand
+1. =d= for the "d" register
+2. =N= for the constant is in range 0 to 255
+
+** example 2
+
+#+BEGIN_SRC c
+/*
+ * outportb
+ * Write to an I/O port.
+ */
+void
+outportb(
+		unsigned short _port,
+		unsigned char _data
+		) {
+	__asm__ __volatile__ ("outb %1, %0" : : "dN" (_port), "a" (_data));
+}
+#+END_SRC
+
+Write the value of C variable =_data= (map in EAX register) to the port specificed in =_port= variable (map to EDX register and limit in [0-255] range)
+
+* Reference
+
+- [[https://wiki.osdev.org/Inline_Assembly][Inline Assembly]]
