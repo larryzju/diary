@@ -1,0 +1,70 @@
+* overview
+
+When a key is pressed or released on the keyboard, the keyboard writes its code to port 0x60, writes status to port 0x64, and interrupts 1
+1. read status port 0x64
+2. if it is 1, we can read port 0x60
+
+OS send command to keyboard and waiting for the response. Then OS read the scan code from 0x60/0x64 port.
+
+** PS/2
+
+A type of serial communication. 
+
+** 8042 chip
+
+PS/2 controller while the keyboard is the device.
+
+Each byte send by a device to a controller is transmitted as a packet containing 11 bits.
+- 1 start bit (always 0)
+- 8 data bits (least significant bit first)
+- 1 parity bit (odd parity)
+- 1 stop bit (always 1)
+
+Each byte sent by a controller to a device is transmitted as a packet containing 12 bits.
+- 1 start bit
+- 8 data bits
+- 1 parity bit
+- 1 stop bit
+- 1 acknowledgement bit
+
+*** Connections
+
+- first device <-> PIC1 =IRQ1=
+- second device <-> PIC2 =IRQ12=
+- CPU port 0x60 and 0x64
+  + 0x60: Data Port, bidirection
+  + 0x60: Status/Command Register
+
+*** Status Register
+
+| Bit | Mean                 |
+|-----+----------------------|
+|   0 | output buffer status |
+|   1 | input buffer status  |
+| ... | ...                  |
+
+* Command
+
+- Command always is one byte
+- Some have data bytes that should be sent after the command byte
+- Response with =Resend= or =ACK=
+
+** Cheatsheet
+
+| Byte | Data | Meaning | Response |
+|------+------+---------+----------|
+|      |      |         |          |
+
+
+** Response
+
+| Byte       | Meaning |
+|------------+---------|
+| scan codes |         |
+
+* Reference
+
+- [[https://wiki.osdev.org/Keyboard][PS/2 Keyboard]]
+- [[http://os-development.000webhostapp.com/klavesnica.html][Keyboard klavesnica.html]]
+- [[https://wiki.osdev.org/PS/2][PS/2]]
+- [[http://oldlinux.org/download/CLK-5.0-WithCover.pdf][A Heavily Commemted Linux Kernel Source Code]]
