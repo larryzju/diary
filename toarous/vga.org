@@ -1,0 +1,150 @@
+* 笔记
+  :PROPERTIES:
+  :CUSTOM_ID: 笔记
+  :END:
+
+VGA chip currently a *legacy* device, it is a good place to begin
+practicing your video driver skills.
+
+四个 plane 指向 64KB 内存空间，由 Sequencer 将之映射为相应的颜色。
+
+* VGA 构成
+  :PROPERTIES:
+  :CUSTOM_ID: vga-构成
+  :END:
+
+#+CAPTION: VGA构成示意
+[[http://wiki.osdev.org/images/thumb/7/76/VGA_overview.gif/325px-VGA_overview.gif]]
+
+* 寄存器
+  :PROPERTIES:
+  :CUSTOM_ID: 寄存器
+  :END:
+
+有超过 300 个内部寄存器（8位），通过索引（indexed）方式来节省 I/O
+地址空间
+
+** Port 0x3C0
+   :PROPERTIES:
+   :CUSTOM_ID: port-0x3c0
+   :END:
+
+both the index and data bytes to the same port.
+
+顺序写入时 VGA 循环切换意义，初始化时并不知道是何种状态，取读 0x3DA
+后初始化为 index 状态。
+
+To read the contents, feed the index into port 0x3C0, then read the
+value from 0x3C1
+
+** Port 0x3C2
+   :PROPERTIES:
+   :CUSTOM_ID: port-0x3c2
+   :END:
+
+输出寄存器。使用 0x3C2 来写，0x3CC 来读
+
+第 0 位控制其它寄存器的位置：
+
+-  cleared: port 0x3D4 is mapped to 0x3B4, port 0x3DA is mapped to 0x3BA
+
+** Port 0x3C4, 0x3CE, 0x3D4
+   :PROPERTIES:
+   :CUSTOM_ID: port-0x3c4-0x3ce-0x3d4
+   :END:
+
+索引寄存器，相应的 port + 1 为数据寄存器（用于读写）
+
+有些程序封装的同时读 写 16-bit 内容
+
+** Port 0x3C6
+   :PROPERTIES:
+   :CUSTOM_ID: port-0x3c6
+   :END:
+
+包含 DAC Mask Register, 可以直接进行读写。一般情况设为 0xff
+
+** Port 0x3C8
+   :PROPERTIES:
+   :CUSTOM_ID: port-0x3c8
+   :END:
+
+0x3C8, 0x3C9, 0x3C7 控制 DAC。
+
+DAC 中的寄存器包含 18 位，6 位用表示一种颜色。
+
+要写入一个颜色，把 color index 写入 0x3C8，再写入 3 字节到
+0x3C9（RGB）。如果要写入多个 DAC，可以在 0x3C9 中连续写入。
+
+要读取 DAC 节目，先把 index 写入到 0x3C7，然后可以顺序从 0x3C9 中读取
+
+* Video Memory Layout
+  :PROPERTIES:
+  :CUSTOM_ID: video-memory-layout
+  :END:
+
+包含四个 planes 内存块（64KB），总共提供了 256k 的显示内存。
+
+** Problem
+   :PROPERTIES:
+   :CUSTOM_ID: problem
+   :END:
+
+1. Is plane1 adjoining to plane0 memory block?
+
+与 Sequencer 相连，该组件负责将内存解释为相应的颜色。The way colors are
+organized in this memory mainly depends on the color depth.
+
+Specific details about how memory is accessed from the host is can be
+found by reading about the Graphics Controller(?), detailed information
+about video memory is rendered can be found by reading about the
+Sequencer.
+
+** 16-color graphics mode
+   :PROPERTIES:
+   :CUSTOM_ID: color-graphics-mode
+   :END:
+
+半字节表示一个颜色（16种）。 VGA 对每个像素在 4 个 plane
+中各保存一位空间。
+
+64K * 8 = 512K 个像素点，每个像素点由四个位
+=(Plane3, Plane2, Plane1, Plane0)= 表示
+
+** 256-color graphics mode
+   :PROPERTIES:
+   :CUSTOM_ID: color-graphics-mode-1
+   :END:
+
+Plane0 中每个字节表示一个像素。有两种模式： 1. planar mode: 交互表示四个
+plane 的像素 2. linear mode: 直接表示屏幕上的像素
+
+** text mode
+   :PROPERTIES:
+   :CUSTOM_ID: text-mode
+   :END:
+
+Plane0 包含字符，Plane1 包含相应属性，Plane2 包含字体。
+
+* 不明白的地方
+  :PROPERTIES:
+  :CUSTOM_ID: 不明白的地方
+  :END:
+
+** PCI
+   :PROPERTIES:
+   :CUSTOM_ID: pci
+   :END:
+
+#+BEGIN_QUOTE
+  PCI boards do /not/ report the VGA addresses in their configuration
+  space, and that the address can not be remapped. It is therefore not
+  possible to properly operate two cards in VGA mode at the same time.
+#+END_QUOTE
+
+* 参考资料
+  :PROPERTIES:
+  :CUSTOM_ID: 参考资料
+  :END:
+
+-  [[http://wiki.osdev.org/VGA_Hardware][VGA Hardware]]
