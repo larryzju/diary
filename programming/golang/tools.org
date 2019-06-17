@@ -1,0 +1,75 @@
+* TODO gofix
+
+* cover
+
+Generates coverage staticstics. Test coverage is a term that describes
+how much of a package's code is exercised by running the package's
+tests.
+
+Refer to
+- [[https://blog.golang.org/cover][The cover story -- The Go Blog]]
+
+
+** Go is suitable for supporting good tooling
+
+- regular syntax that is easy to parse
+  - upper-case letter to define exported names
+  - radically simplified scoping rules
+- builtin lex, parse and pretty-print library
+
+** GNU gcov program
+
+sets breakpoints at branches executed by the binary. As each branch
+executes, the breakpoint is cleared and the target statements of the
+branch are marked as 'covered'.
+
+** Test Coverage for Go
+
+Took a different approach that avoids dynamic debugging. But rewrite
+the package's source code before compilation to add instrumentation,
+compile and run the modified source, and dump the statistics.
+
+#+BEGIN_SRC bash
+% go test -cover
+PASS
+coverage: 42.9% of statements
+ok      size    0.026s
+#+END_SRC
+
+** Viewing the results
+
+#+BEGIN_SRC bash
+% go test -coverprofile=coverage.out 
+PASS
+coverage: 42.9% of statements
+ok      size    0.030s
+#+END_SRC
+
+
+*** broken the coverage statistics down by function
+
+#+BEGIN_SRC bash
+% go tool cover -func=coverage.out
+size.go:    Size          42.9%
+total:      (statements)  42.9%
+#+END_SRC
+
+*** output into HTML 
+
+#+BEGIN_SRC bash
+$ go tool cover -html=coverage.out
+#+END_SRC
+
+
+** Heat maps
+
+How many times the statement has been executed.
+
+Set by the =-covermode= flag
+- set :: did each statement run? (default)
+- count :: how many times did each statement run?
+- atomic :: like count, but counts precisely in parallel programs
+
+** Basic blocks
+
+Based on line statement, treat =f() && g()= as a single expression
