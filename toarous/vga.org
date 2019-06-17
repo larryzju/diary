@@ -49,13 +49,8 @@ value from 0x3C1
 -  cleared: port 0x3D4 is mapped to 0x3B4, port 0x3DA is mapped to 0x3BA
 
 ** Port 0x3C4, 0x3CE, 0x3D4
-   :PROPERTIES:
-   :CUSTOM_ID: port-0x3c4-0x3ce-0x3d4
-   :END:
 
-索引寄存器，相应的 port + 1 为数据寄存器（用于读写）
-
-有些程序封装的同时读 写 16-bit 内容
+指定要操作索引(index byte)，数据端口为当前端口 + 1
 
 ** Port 0x3C6
    :PROPERTIES:
@@ -77,6 +72,7 @@ DAC 中的寄存器包含 18 位，6 位用表示一种颜色。
 0x3C9（RGB）。如果要写入多个 DAC，可以在 0x3C9 中连续写入。
 
 要读取 DAC 节目，先把 index 写入到 0x3C7，然后可以顺序从 0x3C9 中读取
+
 
 * Video Memory Layout
   :PROPERTIES:
@@ -126,6 +122,17 @@ plane 的像素 2. linear mode: 直接表示屏幕上的像素
 
 Plane0 包含字符，Plane1 包含相应属性，Plane2 包含字体。
 
+* Graphic Controller
+
+GC for directing memory reads and writes to and from video memory. Write 4 bytes at the same time (to 4 planes).
+
+Avilable modes are
+- Mode 3 (text mode)
+- Mode 11h (Planar 16 color mode)
+- Mode 13h (Linear 256 color mode)
+- Mode X (Planar 256 color mode)
+
+
 * 不明白的地方
   :PROPERTIES:
   :CUSTOM_ID: 不明白的地方
@@ -142,9 +149,92 @@ Plane0 包含字符，Plane1 包含相应属性，Plane2 包含字体。
   possible to properly operate two cards in VGA mode at the same time.
 #+END_QUOTE
 
+* Code Analysis
+
+* Text UI
+
+Use the VGA mode 3 (text mode with 80 x 25 characters): it allows
+direct memory access to a linear address containing each character and
+its associated attributes.
+
+The linear text buffer is located in physical at =0xB80000=. Reading
+and writing to and from this address will provide direct manipulation
+of on screen text.
+
+Each character takes up two bytes of space in memory. 
+1. the first byte is split into two segments: foreground color and background color
+2. the second byte is an 8-bit ASCII value of the character to print
+
+** Color
+
+- The 3rd bit if the bright bit
+- 2-0 bits for 8 types of color
+
+
+** clear screen
+
+#+BEGIN_SRC c
+/*
+ * cls
+ * Clear the screen
+ */                                                                                                                                                            
+void
+cls() {
+        unsigned blank;
+        int i;
+        blank = 0x20 | (attrib << 8);                                                                                                                          
+        for (i = 0; i < 25; ++i) {
+                memsetw(textmemptr + i * 80, blank, 80);                                                                                                       
+        }
+        csr_x = 0;
+        csr_y = 0;                                                                                                                                             
+        move_csr();
+}
+
+/*      
+ * settextcolor                                                                                                                                                
+ * Sets the foreground and background color                                                                                                                    
+ */     
+void            
+settextcolor(                                                                                                                                                  
+                unsigned char forecolor,                                                                                                                       
+                unsigned char backcolor                                                                                                                        
+                ) {                                                                                                                                            
+        attrib = (backcolor << 4) | (forecolor & 0x0F);                                                                                                        
+}
+#+END_SRC
+
+1. ~attrib = 0x0F~
+2. blank color =0xF0=: black backcolor and white forecolor
+3. character =0x20=: space
+
+** move cursor
+#+BEGIN_SRC c
+void
+move_csr() {
+        unsigned temp;
+        temp = csr_y * 80 + csr_x;
+
+        /*
+         * Write stuff out.
+         */
+        outportb(0x3D4, 14);
+        outportb(0x3D5, temp >> 8);
+        outportb(0x3D4, 15);
+        outportb(0x3D5, temp);
+}
+#+END_SRC
+
+Refer to [[https://wiki.osdev.org/Text_Mode_Cursor#Moving_the_Cursor_2][moving the cursor without BIOS]].
+
+1. 80 characters can be displayed per line
+2. set 0x3D4 to 0x0E/0x0F and set the cursor position.
+
 * 参考资料
   :PROPERTIES:
   :CUSTOM_ID: 参考资料
   :END:
 
--  [[http://wiki.osdev.org/VGA_Hardware][VGA Hardware]]
+- [[http://wiki.osdev.org/VGA_Hardware][VGA Hardware]]
+- [[https://wiki.osdev.org/Text_Mode_Cursor#Enabling_the_Cursor][Text Mode Cursor]]
+- [[https://wiki.osdev.org/Text_UI][Text UI]]
