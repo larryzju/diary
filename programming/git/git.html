@@ -66,6 +66,55 @@
 <img src="https://git-scm.com/book/en/v2/images/advance-master.png" alt="Divergent history" />
 <p class="caption">Divergent history</p>
 </div>
+<h2 id="basic-workflow">Basic Workflow</h2>
+<dl class="incremental">
+<dt>create a feature branch <code>iss53</code></dt>
+<dd><code>git checkout -b iss53</code>
+</dd>
+<dt>work on and commit as normal</dt>
+<dd><code>git commit -a -m &lt;msg&gt;</code>
+</dd>
+<dt>switch to master branch when we need to make hotfix</dt>
+<dd><code>git checkout master</code>
+</dd>
+<dt>create a hotfix branch</dt>
+<dd><code>git checkout -b hotfix</code>
+</dd>
+<dt>make the fix and commit</dt>
+<dd><code>git commit -a -m &lt;hotfixmsg&gt;</code>
+</dd>
+<dt>merge <code>hotfix</code> branch back into <code>master</code> branch</dt>
+<dd><code>git checkout master &amp;&amp; git merge hotfix</code>
+</dd>
+<dt>deploy and then delete <code>hotfix</code> branch</dt>
+<dd><code>git branch -d hotfix</code>
+</dd>
+<dt>go back to the iss53 branch and continue working on it</dt>
+<dd><code>git checkout iss53</code>
+</dd>
+<dt>you can also merge the <code>master</code> branch into <code>iss53</code> if you what</dt>
+<dd><code>git merge master</code>
+</dd>
+</dl>
+<h2 id="merge">Merge</h2>
+<h3 id="fast-forward">Fast Forward</h3>
+<p>When you try to merge one commit with a commit that can be reached by following the first commit's history, Git simplifies things by moving the pointer forward because there is no divergent work to merge together.</p>
+<h3 id="basic-merging">Basic Merging</h3>
+<div class="figure">
+<img src="https://git-scm.com/book/en/v2/images/basic-merging-1.png" alt="Three-way merge" />
+<p class="caption">Three-way merge</p>
+</div>
+<p>The three snapshots are</p>
+<ol class="incremental">
+<li>two snapshots pointed to by the branch tips</li>
+<li>common ancestor of the two</li>
+</ol>
+<p>Git creates a new snapshot that results from this three-way merge and automatically creates a new commit that points to it. (This is referred to as a merge commit, and is special in that it has more than one parent).</p>
+<div class="figure">
+<img src="https://git-scm.com/book/en/v2/images/basic-merging-2.png" alt="Merge commit" />
+<p class="caption">Merge commit</p>
+</div>
+<h2 id="stashing-and-cleaning"><span class="todo TODO">TODO</span> Stashing and Cleaning</h2>
 <h2 id="cookbook">Cookbook</h2>
 <dl class="incremental">
 <dt>create a branch but don't switch to it</dt>
