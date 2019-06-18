@@ -43,6 +43,47 @@ A branch is simply a lightweight movable pointer to one of these commits:
 #+CAPTION: Divergent history
 [[https://git-scm.com/book/en/v2/images/advance-master.png]]
 
+** Basic Workflow
+
+- create a feature branch =iss53= :: =git checkout -b iss53=
+- work on and commit as normal :: =git commit -a -m <msg>=
+- switch to master branch when we need to make hotfix :: =git checkout master=
+- create a hotfix branch :: =git checkout -b hotfix=
+- make the fix and commit :: ~git commit -a -m <hotfixmsg>~
+- merge =hotfix= branch back into =master= branch :: =git checkout master && git merge hotfix=
+- deploy and then delete =hotfix= branch :: =git branch -d hotfix=
+- go back to the iss53 branch and continue working on it :: =git checkout iss53=
+- you can also merge the =master= branch into =iss53= if you what :: =git merge master=
+
+
+** Merge
+
+*** Fast Forward
+
+When you try to merge one commit with a commit that can be reached by
+following the first commit's history, Git simplifies things by moving
+the pointer forward because there is no divergent work to merge
+together.
+
+*** Basic Merging
+
+#+CAPTION: Three-way merge
+[[https://git-scm.com/book/en/v2/images/basic-merging-1.png]]
+
+The three snapshots are
+1. two snapshots pointed to by the branch tips
+2. common ancestor of the two
+
+Git creates a new snapshot that results from this three-way merge and
+automatically creates a new commit that points to it. (This is
+referred to as a merge commit, and is special in that it has more than
+one parent).
+
+#+CAPTION: Merge commit
+[[https://git-scm.com/book/en/v2/images/basic-merging-2.png]]
+
+** TODO Stashing and Cleaning
+
 ** Cookbook
 
 - create a branch but don't switch to it :: =git branch <name>=
