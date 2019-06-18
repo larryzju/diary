@@ -1,4 +1,55 @@
-#+TITLE: git 备忘
+#+TITLE: git
+
+* Commit
+
+** TODO Objects
+
+- blobs :: file contents
+- tree object :: collection of blob
+- commit object :: metadata (author, committer, parent) and pointer to the root project tree object
+
+* Branch
+
+** Why so fast?
+
+Git stores a [[*Objects][commit object]] that contains a pointer to the snapshot of the content you staged.
+
+Commit object contains:
+- author's name and email address
+- commit message
+- pointer to the commit, and parent(s) commit
+  + zero parents for the initial commit
+  + one parent for a normal commit
+  + multiple parents for a commit that results from a merge of two or more branches
+
+A branch is simply a lightweight movable pointer to one of these commits:
+- create a new branch is equal to creating a new pointer for you to move around.
+
+*** TODO Can a commit has more than two parents?
+
+** Term
+
+- master :: default branch name
+- HEAD :: special pointer pointer to current branch
+
+** Switch Branch
+
+=git checkout master= does two things:
+1. move the HEAD pointer back to point to the =master= branch
+2. revert the files in your working directory back to the snapshot that =master= points to
+
+** Divergent
+
+#+CAPTION: Divergent history
+[[https://git-scm.com/book/en/v2/images/advance-master.png]]
+
+** Cookbook
+
+- create a branch but don't switch to it :: =git branch <name>=
+- create a branch and switch to it :: =git checkout -b <newbranchname>=
+- switch branch :: =git checkout testing=
+- show where the branch pointers are pointing :: =git log --decorate=
+- show all history :: =git log --oneline --decorate --graph --all=
 
 * 配置
 
@@ -20,3 +71,7 @@ git config --global core.quotepath off
 - `git stash {apply,drop,pop,list}
 - `git branch --set-upstream <branch-name> <origin/branch-name>`: 本地分支与远程进行关联
 
+* Reference
+
+- [[file:~/diary/book/git%E6%95%99%E7%A8%8B.org][Git 教程笔记]]
+- [[https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell][Git branching]]
