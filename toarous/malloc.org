@@ -1,0 +1,47 @@
+* Overview
+
+** brk and sbrk
+
+A process has several segments of memory[fn:1]:
+- Code (text) segmemnt, which contains the code to be executed
+- Data segment, which contains data the compiler knows about (globals and statics)
+- Stack segment, which contains (drumroll..) the stack
+
+The =brk()= system call is used to change th point where the data
+segment "breaks" (ends). And =sbrk(intptr_t increment)= increments the
+program's data space by =increment= bytes.
+
+
+
+
+Heap is memory block with a contiguous series of addresses. Program
+can expand or contract and use as its own accord (system break).
+
+POSIX =sbrk= API is used to move the system break. But normally,
+program use a *memory allocation system* to handle chuncking up and
+keeping track of which memory is allocated and which is freed.
+
+C API for memory allocation
+- =malloc(size_t bytes)= :: reverse a contiguous block of memory
+- =realloc(void *space, size_t bytes)= :: resize an existing memory allocation
+- =calloc(size_t nmemb, size_t size)= :: initialize memory contents to zero
+- =free(void *ptr)= :: make it available for use in the subsequent calls to the other allocation functions
+
+Call =sbrk= to increase the size of the heap. For typical
+architectures the heap will grow upwards and the stack grows
+downwards.
+
+** program break
+
+* TODO TODO
+
+** mmap
+
+** jemalloc
+
+
+
+* Footnotes
+
+- [fn:1] [[https://stackoverflow.com/questions/6338162/what-is-program-break-where-does-it-start-from-0x00][Stackoverflow: What is program break? Where does it start from, 0x00?]]
+
