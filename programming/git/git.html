@@ -14,7 +14,77 @@
 		</nav>
 		<section class="main-article-area">
 			<div id='main'>
-				<h1 id="配置">配置</h1>
+				<h1 id="commit">Commit</h1>
+<h2 id="objects"><span class="todo TODO">TODO</span> Objects</h2>
+<dl class="incremental">
+<dt>blobs</dt>
+<dd>file contents
+</dd>
+<dt>tree object</dt>
+<dd>collection of blob
+</dd>
+<dt>commit object</dt>
+<dd>metadata (author, committer, parent) and pointer to the root project tree object
+</dd>
+</dl>
+<h1 id="branch">Branch</h1>
+<h2 id="why-so-fast">Why so fast?</h2>
+<p>Git stores a <em>commit object</em> that contains a pointer to the snapshot of the content you staged.</p>
+<p>Commit object contains:</p>
+<ul class="incremental">
+<li>author's name and email address</li>
+<li>commit message</li>
+<li>pointer to the commit, and parent(s) commit
+<ul class="incremental">
+<li>zero parents for the initial commit</li>
+<li>one parent for a normal commit</li>
+<li>multiple parents for a commit that results from a merge of two or more branches</li>
+</ul></li>
+</ul>
+<p>A branch is simply a lightweight movable pointer to one of these commits:</p>
+<ul class="incremental">
+<li>create a new branch is equal to creating a new pointer for you to move around.</li>
+</ul>
+<h3 id="can-a-commit-has-more-than-two-parents"><span class="todo TODO">TODO</span> Can a commit has more than two parents?</h3>
+<h2 id="term">Term</h2>
+<dl class="incremental">
+<dt>master</dt>
+<dd>default branch name
+</dd>
+<dt>HEAD</dt>
+<dd>special pointer pointer to current branch
+</dd>
+</dl>
+<h2 id="switch-branch">Switch Branch</h2>
+<p><code>git checkout master</code> does two things:</p>
+<ol class="incremental">
+<li>move the HEAD pointer back to point to the <code>master</code> branch</li>
+<li>revert the files in your working directory back to the snapshot that <code>master</code> points to</li>
+</ol>
+<h2 id="divergent">Divergent</h2>
+<div class="figure">
+<img src="https://git-scm.com/book/en/v2/images/advance-master.png" alt="Divergent history" />
+<p class="caption">Divergent history</p>
+</div>
+<h2 id="cookbook">Cookbook</h2>
+<dl class="incremental">
+<dt>create a branch but don't switch to it</dt>
+<dd><code>git branch &lt;name&gt;</code>
+</dd>
+<dt>create a branch and switch to it</dt>
+<dd><code>git checkout -b &lt;newbranchname&gt;</code>
+</dd>
+<dt>switch branch</dt>
+<dd><code>git checkout testing</code>
+</dd>
+<dt>show where the branch pointers are pointing</dt>
+<dd><code>git log --decorate</code>
+</dd>
+<dt>show all history</dt>
+<dd><code>git log --oneline --decorate --graph --all</code>
+</dd>
+</dl>
+<h1 id="配置">配置</h1>
 <h2 id="git-status-octal">git status octal</h2>
 <p>默认 git status 显示的 utf8 中文名是以 octal 显示的，需要进行如下设置</p>
 <pre class="shell"><code>git config --global core.quotepath off
@@ -28,6 +98,11 @@
 <li>HEAD 指向 master，master 指向当前提交</li>
 <li>`git stash {apply,drop,pop,list}</li>
 <li>`git branch --set-upstream &lt;branch-name&gt; &lt;origin/branch-name&gt;`: 本地分支与远程进行关联</li>
+</ul>
+<h1 id="reference">Reference</h1>
+<ul class="incremental">
+<li><a href="~/diary/book/git%E6%95%99%E7%A8%8B.org">Git 教程笔记</a></li>
+<li><a href="https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell">Git branching</a></li>
 </ul>
 
 			</div>

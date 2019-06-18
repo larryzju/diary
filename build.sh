@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-set -e
+set -ex
 
+echo $PWD
 DEFAULT_REPO=https://github.com/larryzju/diary
 REPO=$1
 REPO=${REPO:-${DEFAULT_REPO}}
@@ -11,7 +12,7 @@ if [ ! -d ${MASTER_WORKTREE} ]; then
 	git worktree add -f ${MASTER_WORKTREE} master
 fi
 
-MASTER_COMMIT=$(cd ${MASTER_WORKTREE} && git pull ${REPO}> /dev/null && git rev-parse HEAD)
+MASTER_COMMIT=$(cd $PWD/${MASTER_WORKTREE}; git pull ${REPO}> /dev/null && git rev-parse HEAD)
 LAST_BUILD_COMMIT=$(cat BUILD.sha1)
 if [ ${MASTER_COMMIT} == ${LAST_BUILD_COMMIT} ]; then 
 	echo "no more commit"
