@@ -406,6 +406,49 @@
 <h2 id="integer-representations">Integer Representations</h2>
 <h2 id="integer-arithmetic">Integer Arithmetic</h2>
 <h2 id="floating-point">Floating Point</h2>
+<h1 id="virtual-memory-1">Virtual Memory</h1>
+<h2 id="overview-1">Overview</h2>
+<p>与 CPU 共享不同，CPU 共享最多因为进程数增大而变慢。内存共享可能会有其它问题</p>
+<ol class="incremental">
+<li>某些进程得不到需要的内存</li>
+<li>内存内容被破坏</li>
+</ol>
+<p>Modern systems provide an abstraction of main memory known as <em>virtual memory</em> (VM).</p>
+<p>Virtual memory is an elegant interaction to provide each process with a address space that</p>
+<ul class="incremental">
+<li>large</li>
+<li>uniform</li>
+<li>private</li>
+</ul>
+<p>The aspects to interact with are</p>
+<ul class="incremental">
+<li>hardware exception</li>
+<li>hardware address translation</li>
+<li>main memory</li>
+<li>disk file (swap)</li>
+<li>kernel software</li>
+</ul>
+<p>Virtual memory provides 3 important capabilities:</p>
+<ol class="incremental">
+<li>[swap] use main memory effciently by treating it as a cache for an address space stored on disk, keeping only athe active areas in main memory and transferring data back and forth between disk and memory as needed</li>
+<li>[flat address] it simplifies memory management by providing each process with a uniform address space</li>
+<li>[isolation] it protects the address space of each process from corruption by other processes</li>
+</ol>
+<h3 id="why-would-a-programmer-need-to-understand-it">Why would a programmer need to understand it?</h3>
+<ol class="incremental">
+<li>[central] pervades all levels of computer systems: hardware exception, assemblers, linkers, loaders, shared objects, files and processes</li>
+<li>[powerful] <code>malloc</code>, <code>mmap</code>, share memory with other processes</li>
+<li>[dangerous] segmentation fault or protection fault</li>
+</ol>
+<h3 id="two-angles-to-learn-virtual-memory">Two angles to learn virtual memory</h3>
+<ol class="incremental">
+<li>how does it work</li>
+<li>how it is used and managed by application</li>
+</ol>
+<h2 id="physical-and-virtual-addressing">Physical and Virtual Addressing</h2>
+<p>PA (physical address) is organized as an array of M contiguous byte-size cells.</p>
+<p>VA (virtual address) is converted to the appropriate physical address before being sent to main memory.</p>
+<p>Address translation is performed on the CPU chip called memory management unit (MMU), using a lookup table stored in main memory whose contents are managed by the operating system.</p>
 <h1 id="footnotes">Footnotes</h1>
 <div class="footnotes">
 <hr />
