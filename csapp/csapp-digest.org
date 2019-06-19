@@ -294,7 +294,6 @@ For GNU c compiler
 3. =--std=c99=: ISO C99(1999)
 4. =--std=gnu99=: GNU extends for ISO C99
 
-
 ** Information Storage
 
 We use *bytes* as the unit of memory which is consisted by 8 bits.
@@ -376,6 +375,64 @@ platform. But it's a fault error in 64bit platform.
 ** Integer Arithmetic
 
 ** Floating Point 
+
+
+* Virtual Memory
+
+** Overview
+
+与 CPU 共享不同，CPU 共享最多因为进程数增大而变慢。内存共享可能会有其它问题
+1. 某些进程得不到需要的内存
+2. 内存内容被破坏
+
+Modern systems provide an abstraction of main memory known as /virtual memory/ (VM).
+
+Virtual memory is an elegant interaction to provide each process with a address space that
+- large
+- uniform
+- private 
+
+The aspects to interact with are
+- hardware exception
+- hardware address translation
+- main memory
+- disk file (swap)
+- kernel software 
+
+Virtual memory provides 3 important capabilities:
+1. [swap] use main memory effciently by treating it as a cache for an
+   address space stored on disk, keeping only athe active areas in
+   main memory and transferring data back and forth between disk and
+   memory as needed
+2. [flat address] it simplifies memory management by providing each
+   process with a uniform address space
+3. [isolation] it protects the address space of each process from
+   corruption by other processes
+
+*** Why would a programmer need to understand it?
+
+1. [central] pervades all levels of computer systems: hardware
+   exception, assemblers, linkers, loaders, shared objects, files and
+   processes
+2. [powerful] =malloc=, =mmap=, share memory with other processes
+3. [dangerous] segmentation fault or protection fault
+
+*** Two angles to learn virtual memory
+
+1. how does it work
+2. how it is used and managed by application
+
+** Physical and Virtual Addressing
+
+PA (physical address) is organized as an array of M contiguous
+byte-size cells.
+
+VA (virtual address) is converted to the appropriate physical address
+before being sent to main memory.
+
+Address translation is performed on the CPU chip called memory
+management unit (MMU), using a lookup table stored in main memory
+whose contents are managed by the operating system.
 
 * Footnotes
 
