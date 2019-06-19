@@ -51,3 +51,71 @@ obj.EXPECT().Method(gomock.Eq(arg), gomock.Any()).Do(func(a int, b interface{}) 
 }).Return(nil)
 #+END_SRC
 
+* net
+** github.com/gorilla/mux
+
+Like =http.ServeMux= but add extra dispatch features
+
+*** Richer matcher function
+
+- host, method, scheme, header, query value match
+- custom matcher function
+- combine multiple matchers in a single route
+
+*** subrouter 
+
+Define subrouter and combine other matchers. Mostly used as namespace abstraction.
+
+*** Registered URLs
+
+Name the handle function and build the URL (or Host, or Path) by feed it parameters
+
+#+BEGIN_SRC go
+r := mux.NewRouter()
+r.Host("{subdomain}.example.com").
+  Path("/articles/{category}/{id:[0-9]+}").
+  Queries("filter", "{filter}").
+  HandlerFunc(ArticleHandler).
+  Name("article")
+
+// url.String() will be "http://news.example.com/articles/technology/42?filter=gorilla"
+url, err := r.Get("article").URL("subdomain", "news",
+                                 "category", "technology",
+                                 "id", "42",
+                                 "filter", "gorilla")
+#+END_SRC
+
+*** Walking Routes
+
+Loop over all the registered routes. Simliar to =filepath.Walk()=
+
+*** Middleware
+
+Almost like clojure ring middleware (and also python's
+decorator). Hack the request for each middlewares and pass the new
+request to the next one.
+
+#+BEGIN_SRC go
+type MiddlewareFunc func(http.Handler) http.Handler
+#+END_SRC
+
+Some common use cases for middleware are
+- request logging
+- header manipulation
+- =ResponseWriter= hijacking
+
+To use the middleware
+#+BEGIN_SRC go
+r := mux.NewRouter()
+r.HandleFunc("/", handler)
+r.Use(loggingMiddleware)
+
+func loggingMiddleware(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        // Do stuff here
+        log.Println(r.RequestURI)
+        // Call the next handler, which can be another middleware in the chain, or the final handler.
+        next.ServeHTTP(w, r)
+    })
+}
+#+END_SRC
