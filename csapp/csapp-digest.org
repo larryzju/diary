@@ -454,7 +454,45 @@ different address space.
 |      46 | 64T          | 64T-1                            |
 |      54 | 16P          | 16P-1                            |
 
-** TODO VM as a Tool for Caching
+** [1/6] TODO VM as a Tool for Caching
+
+Cache the contiguous addressed disk space into virtual memory in unit of fix sized block:
+- /virtual pages/ (VPs) for virtual memory
+- /physical pages/ (PPs) for physical memory, also referered as /page frames/
+
+Virtual pages is partitioned into 3 disjoint subsets:
+- Unallocated :: pages have not yet been allocated by VM system (has no data associated with)
+- Cached :: cached in physical memory
+- UnCached :: allocated pages that are not cached in physical memory
+
+#+CAPTION: VM as Cache
+[[./img/9.3.vp-pp-mapping.jpg]]
+
+
+*** DONE DRAM Cache Organization
+
+**** Term
+
+- *SRAM* cache denotes the L1, L2, and L3 cache memories between the CPU and main memory. 
+- *DRAM* cache to denote the VM system's cache that caches virtual pages in main memory.
+
+**** Compare
+
+DRAM is important because of
+1. read from disk is too slow (about 100,000 slower than a DRAM)
+2. read the first byte from a disk sector is about 100,000 times slower than reading successive bytes in the sector
+
+The bottom line is that the organization of the DRAM cache is driven entirely by the enormous cost of misses.
+
+*** TODO Page Tables
+
+*** TODO Page Hits
+
+*** TODO Page Faults
+
+*** TODO Allocating Page
+
+*** TODO Locality to the Rescue Again
 
 ** TODO VM as a Tool for Memory Management
 
