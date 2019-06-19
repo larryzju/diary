@@ -54,6 +54,55 @@
 obj := mocks.NewMockedObject(ctrl)
 obj.EXPECT().Method(gomock.Eq(arg), gomock.Any()).Do(<span class="kw">func</span>(a <span class="dt">int</span>, b <span class="kw">interface</span>{}) {
 }).Return(<span class="ot">nil</span>)</code></pre></div>
+<h1 id="net">net</h1>
+<h2 id="github.comgorillamux">github.com/gorilla/mux</h2>
+<p>Like <code>http.ServeMux</code> but add extra dispatch features</p>
+<h3 id="richer-matcher-function">Richer matcher function</h3>
+<ul class="incremental">
+<li>host, method, scheme, header, query value match</li>
+<li>custom matcher function</li>
+<li>combine multiple matchers in a single route</li>
+</ul>
+<h3 id="subrouter">subrouter</h3>
+<p>Define subrouter and combine other matchers. Mostly used as namespace abstraction.</p>
+<h3 id="registered-urls">Registered URLs</h3>
+<p>Name the handle function and build the URL (or Host, or Path) by feed it parameters</p>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go">r := mux.NewRouter()
+r.Host(<span class="st">&quot;{subdomain}.example.com&quot;</span>).
+  Path(<span class="st">&quot;/articles/{category}/{id:[0-9]+}&quot;</span>).
+  Queries(<span class="st">&quot;filter&quot;</span>, <span class="st">&quot;{filter}&quot;</span>).
+  HandlerFunc(ArticleHandler).
+  Name(<span class="st">&quot;article&quot;</span>)
+
+<span class="co">// url.String() will be &quot;http://news.example.com/articles/technology/42?filter=gorilla&quot;</span>
+url, err := r.Get(<span class="st">&quot;article&quot;</span>).URL(<span class="st">&quot;subdomain&quot;</span>, <span class="st">&quot;news&quot;</span>,
+                                 <span class="st">&quot;category&quot;</span>, <span class="st">&quot;technology&quot;</span>,
+                                 <span class="st">&quot;id&quot;</span>, <span class="st">&quot;42&quot;</span>,
+                                 <span class="st">&quot;filter&quot;</span>, <span class="st">&quot;gorilla&quot;</span>)</code></pre></div>
+<h3 id="walking-routes">Walking Routes</h3>
+<p>Loop over all the registered routes. Simliar to <code>filepath.Walk()</code></p>
+<h3 id="middleware">Middleware</h3>
+<p>Almost like clojure ring middleware (and also python's decorator). Hack the request for each middlewares and pass the new request to the next one.</p>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">type</span> MiddlewareFunc <span class="kw">func</span>(http.Handler) http.Handler</code></pre></div>
+<p>Some common use cases for middleware are</p>
+<ul class="incremental">
+<li>request logging</li>
+<li>header manipulation</li>
+<li><code>ResponseWriter</code> hijacking</li>
+</ul>
+<p>To use the middleware</p>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go">r := mux.NewRouter()
+r.HandleFunc(<span class="st">&quot;/&quot;</span>, handler)
+r.Use(loggingMiddleware)
+
+<span class="kw">func</span> loggingMiddleware(next http.Handler) http.Handler {
+    <span class="kw">return</span> http.HandlerFunc(<span class="kw">func</span>(w http.ResponseWriter, r *http.Request) {
+        <span class="co">// Do stuff here</span>
+        log.Println(r.RequestURI)
+        <span class="co">// Call the next handler, which can be another middleware in the chain, or the final handler.</span>
+        next.ServeHTTP(w, r)
+    })
+}</code></pre></div>
 
 			</div>
 		</section>
