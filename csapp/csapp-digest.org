@@ -377,9 +377,9 @@ platform. But it's a fault error in 64bit platform.
 ** Floating Point 
 
 
-* Virtual Memory
+* [3/13] Virtual Memory
 
-** Overview
+** DONE Overview
 
 与 CPU 共享不同，CPU 共享最多因为进程数增大而变慢。内存共享可能会有其它问题
 1. 某些进程得不到需要的内存
@@ -422,7 +422,7 @@ Virtual memory provides 3 important capabilities:
 1. how does it work
 2. how it is used and managed by application
 
-** Physical and Virtual Addressing
+** DONE Physical and Virtual Addressing
 
 PA (physical address) is organized as an array of M contiguous
 byte-size cells.
@@ -433,6 +433,48 @@ before being sent to main memory.
 Address translation is performed on the CPU chip called memory
 management unit (MMU), using a lookup table stored in main memory
 whose contents are managed by the operating system.
+
+** DONE Address Spaces
+
+/linear address space/: the address space that the addresses are consecutive.
+
+Represent with the number of bits that are needed to represent the largest address:
+- 32-bit
+- 64-bit
+
+Distinct data object (bytes) and their attributes (addresses). Each
+object can have multiple independent addresses, each chosen from a
+different address space.
+
+| VA bits | Number of VA | Largest possible virtual address |
+|---------+--------------+----------------------------------|
+|       4 | 16           | 15                               |
+|      14 | 16K          | 16K-1                            |
+|      24 | 16M          | 16M-1                            |
+|      46 | 64T          | 64T-1                            |
+|      54 | 16P          | 16P-1                            |
+
+** TODO VM as a Tool for Caching
+
+** TODO VM as a Tool for Memory Management
+
+** TODO VM as a Tool for Memory Protection
+
+** TODO Address Translation
+
+** TODO Case Study: The Intel Core i7/Linux Memory System
+
+** TODO Memory Mapping
+
+** TODO Dynamic Memory Allocation
+
+** TODO Garbage Collection
+
+** TODO Common Memory-Related Bugs in C Programs
+
+** TODO Summary
+
+
 
 * Footnotes
 
