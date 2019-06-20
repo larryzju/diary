@@ -1,0 +1,27 @@
+* Overview
+
+Domain Information Groper is a tool for querying DNS servers.
+
+By default, it use system's default resolver (=resolv.conf=). Dig can specific the name server to use.
+
+* [0/2] TODO Concept
+
+** TODO DNS root zone
+
+** TODO IDN (Internationalized Domain Name)
+
+
+* [0/2] TODO Other tools
+
+** TODO nslookup
+
+** TODO host
+
+* [0/1] Protocol
+
+** TODO NS/A/SOA/MX
+
+
+* References
+
+- [[https://en.wikipedia.org/wiki/Dig_(command)][Wikipedia: dig(command)]]
