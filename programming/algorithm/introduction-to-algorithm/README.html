@@ -17,6 +17,25 @@
 				<h1 id="set">Set</h1>
 <p>本质上 Set 与 Dict 是一回事，可以把 Dict 看成是 <code>Set&lt;Pair&lt;key,value&gt;&gt;</code> 特殊类型。Set 只用到元素中的 Key 属性，元素可以包括有其它信息。</p>
 <p>除了常见的插入、删除、查找外，还需要支持：最大、最小、前序、后序查找。如下所示</p>
+<h2 id="elementary-data-structure">Elementary Data Structure</h2>
+<h3 id="stack-queues"><span class="todo TODO">TODO</span> Stack &amp; Queues</h3>
+<p>两者的区别在于元素的取出顺序：</p>
+<ul class="incremental">
+<li>stack 为 LIFO</li>
+<li>queue 为 FIFO</li>
+</ul>
+<p>Stack 的基本操作为 Push 和 Pop，如下所示</p>
+<p>可以用数组来实现</p>
+<ul class="incremental">
+<li>维护一个指针 top，指向栈顶</li>
+<li>top 为 0 时，表示 Stack 为空</li>
+<li>对空栈调用 Pop 时，产生 underflow 错误</li>
+<li>对满栈调用 Push 时，产生 overflow 错误</li>
+</ul>
+<p>Go 语言中，Slice 相当于一个可以动态扩容的 Array。为了与书上统一，我们使用固定长度的 Slice 来实现 Stack</p>
+<h3 id="queue"><span class="todo TODO">TODO</span> Queue</h3>
+<h3 id="linked-list"><span class="todo TODO">TODO</span> Linked List</h3>
+<h3 id="rooted-tree"><span class="todo TODO">TODO</span> Rooted Tree</h3>
 
 			</div>
 		</section>
