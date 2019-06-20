@@ -1,0 +1,7 @@
+* Set
+
+本质上 Set 与 Dict 是一回事，可以把 Dict 看成是 =Set<Pair<key,value>>= 特殊类型。Set 只用到元素中的 Key 属性，元素可以包括有其它信息。
+
+除了常见的插入、删除、查找外，还需要支持：最大、最小、前序、后序查找。如下所示
+
+#+INCLUDE: "./code/set/set.go" src go
