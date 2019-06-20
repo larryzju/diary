@@ -1,6 +1,8 @@
+package set
+
 type Key int64
 
-type Element interface{
+type Element interface {
 	Key() Key
 }
 
