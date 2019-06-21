@@ -376,7 +376,7 @@ platform. But it's a fault error in 64bit platform.
 ** Floating Point 
 
 
-* [5/13] Virtual Memory
+* [6/13] Virtual Memory
 
 ** DONE Overview
 
@@ -586,7 +586,19 @@ system:
 - simplifying memory allocation :: the virtual memory allocated by
      =malloc= can scatter randomly in physical memory
 
-** TODO VM as a Tool for Memory Protection
+** DONE VM as a Tool for Memory Protection
+
+MMU provides access control by read the PTE's permission bits. Any
+violation will trigger a general *protection fault* and get a
+=SIGSEGV= signal in the offending process (the notorious *segmentation
+fault* error)
+
+| Bit Name | Description                                                   |
+|----------+---------------------------------------------------------------|
+| SUP      | Supervisor: must be running in kernel mode to access the page |
+| READ     | read permission to the page                                   |
+| WRITE    | write permission to the page                                  |
+
 ** TODO Address Translation
 
 ** TODO Case Study: The Intel Core i7/Linux Memory System
