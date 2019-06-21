@@ -508,12 +508,16 @@
 </tr>
 </tbody>
 </table>
-<h2 id="vm-as-a-tool-for-caching"><span class="todo TODO">TODO</span> [1/6] VM as a Tool for Caching</h2>
+<h2 id="vm-as-a-tool-for-caching"><span class="todo TODO">TODO</span> [2/6] VM as a Tool for Caching</h2>
 <p>Cache the contiguous addressed disk space into virtual memory in unit of fix sized block:</p>
-<ul class="incremental">
-<li><em>virtual pages</em> (VPs) for virtual memory</li>
-<li><em>physical pages</em> (PPs) for physical memory, also referered as <em>page frames</em></li>
-</ul>
+<dl class="incremental">
+<dt><em>virtual pages</em> (VPs)</dt>
+<dd>for virtual memory
+</dd>
+<dt><em>physical pages</em> (PPs)</dt>
+<dd>for physical memory, also referered as <em>page frames</em>
+</dd>
+</dl>
 <p>Virtual pages is partitioned into 3 disjoint subsets:</p>
 <dl class="incremental">
 <dt>Unallocated</dt>
@@ -544,7 +548,94 @@
 </ol>
 <p>The bottom line is that the organization of the DRAM cache is driven entirely by the enormous cost of misses.</p></li>
 </ol>
-<h3 id="page-tables"><span class="todo TODO">TODO</span> Page Tables</h3>
+<h3 id="page-tables"><span class="done DONE">DONE</span> Page Tables</h3>
+<p>Determine</p>
+<ul class="incremental">
+<li>if a <strong>virtual page</strong> is cached</li>
+<li>which <strong>physical page</strong> it is cached in</li>
+<li>Or is stored on disk
+<ul class="incremental">
+<li>determine where it is stored</li>
+<li>select a victim page in physical memory</li>
+<li>copy the virtual page from disk to DRAM, replacing the victim page</li>
+</ul></li>
+</ul>
+<p>These capabilites are provided by</p>
+<ol class="incremental">
+<li><strong>MMU</strong> (hardware) for address translating: read the mapping rules from <strong>page table</strong></li>
+<li><strong>page table</strong>: OS maintain a data structure in physical memory that maps virtual pages to physical pages</li>
+</ol>
+<figure>
+<img src="./img/page-table.png" alt="" /><figcaption>Page Table</figcaption>
+</figure>
+<p>In the figure above:</p>
+<ul class="incremental">
+<li>PTE (<em>page table entries</em>): is the element type of page table, contains <code>valid</code> and <code>address</code> fields</li>
+<li>each page in VA space has a PTE at a <strong>fixed offset</strong> in the page table</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>Valid</th>
+<th>Address</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>addr</td>
+<td>virtual page is currently cached in physical address `addr` in DRAM</td>
+</tr>
+<tr class="even">
+<td>0</td>
+<td>null</td>
+<td>unallocated</td>
+</tr>
+<tr class="odd">
+<td>0</td>
+<td>addr</td>
+<td>address points to the start of the virtual page on disk</td>
+</tr>
+</tbody>
+</table>
+<ol class="incremental">
+<li><p>Practice Problem 9.2</p>
+<p>determine the number of PTEs that are needed for the following combinations of virtual address size (n) and page size (P):</p>
+<pre><code>nPTEs = (1&lt;&lt;n) / P
+</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>n</th>
+<th><span class="math inline">\(P = 2^p\)</span></th>
+<th>Number of PTEs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>12</td>
+<td>1K</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>16</td>
+<td>16K</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>24</td>
+<td>2M</td>
+<td>8</td>
+</tr>
+<tr class="even">
+<td>36</td>
+<td>1G</td>
+<td>64</td>
+</tr>
+</tbody>
+</table></li>
+</ol>
 <h3 id="page-hits"><span class="todo TODO">TODO</span> Page Hits</h3>
 <h3 id="page-faults"><span class="todo TODO">TODO</span> Page Faults</h3>
 <h3 id="allocating-page"><span class="todo TODO">TODO</span> Allocating Page</h3>

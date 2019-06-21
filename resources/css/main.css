@@ -68,4 +68,5 @@ td, th {
 
 table {
     border-style: hidden;
+    border-collapse: collapse;
 }
