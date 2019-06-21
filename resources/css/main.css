@@ -45,3 +45,27 @@ h1 {
 h2 {
     font-size: 1.4rem;
 }
+
+.todo {
+    color: red;
+}
+
+.done {
+    color: #1e9223;
+}
+
+
+th {
+    border-bottom: 2px solid black;
+}
+
+td, th {
+    padding: .2em 1em;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-left-color: black;
+}
+
+table {
+    border-style: hidden;
+}

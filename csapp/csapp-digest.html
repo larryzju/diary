@@ -414,7 +414,7 @@
 <li>内存内容被破坏</li>
 </ol>
 <p>Modern systems provide an abstraction of main memory known as <em>virtual memory</em> (VM).</p>
-<p>Virtual memory is an elegant interaction to provide each process with a address space that</p>
+<p>Virtual memory is an elegant interaction to provide each process with a address space that is</p>
 <ul class="incremental">
 <li>large</li>
 <li>uniform</li>
@@ -429,34 +429,49 @@
 <li>kernel software</li>
 </ul>
 <p>Virtual memory provides 3 important capabilities:</p>
-<ol class="incremental">
-<li>[swap] use main memory effciently by treating it as a cache for an address space stored on disk, keeping only athe active areas in main memory and transferring data back and forth between disk and memory as needed</li>
-<li>[flat address] it simplifies memory management by providing each process with a uniform address space</li>
-<li>[isolation] it protects the address space of each process from corruption by other processes</li>
-</ol>
+<dl class="incremental">
+<dt>swap</dt>
+<dd>use main memory effciently by treating it as a cache for an address space stored on disk, keeping only the active areas in main memory and transferring data back and forth between disk and memory as needed
+</dd>
+<dt>flat address</dt>
+<dd>it simplifies memory management by providing each process with a uniform address space
+</dd>
+<dt>isolation</dt>
+<dd>it protects the address space of each process from corruption by other processes
+</dd>
+</dl>
 <h3 id="why-would-a-programmer-need-to-understand-it">Why would a programmer need to understand it?</h3>
-<ol class="incremental">
-<li>[central] pervades all levels of computer systems: hardware exception, assemblers, linkers, loaders, shared objects, files and processes</li>
-<li>[powerful] <code>malloc</code>, <code>mmap</code>, share memory with other processes</li>
-<li>[dangerous] segmentation fault or protection fault</li>
-</ol>
+<dl class="incremental">
+<dt>central</dt>
+<dd>pervades all levels of computer systems: hardware exception, assemblers, linkers, loaders, shared objects, files and processes
+</dd>
+<dt>powerful</dt>
+<dd><code>malloc</code>, <code>mmap</code>, share memory with other processes
+</dd>
+<dt>dangerous</dt>
+<dd>segmentation fault or protection fault
+</dd>
+</dl>
 <h3 id="two-angles-to-learn-virtual-memory">Two angles to learn virtual memory</h3>
 <ol class="incremental">
 <li>how does it work</li>
 <li>how it is used and managed by application</li>
 </ol>
 <h2 id="physical-and-virtual-addressing"><span class="done DONE">DONE</span> Physical and Virtual Addressing</h2>
-<p>PA (physical address) is organized as an array of M contiguous byte-size cells.</p>
-<p>VA (virtual address) is converted to the appropriate physical address before being sent to main memory.</p>
-<p>Address translation is performed on the CPU chip called memory management unit (MMU), using a lookup table stored in main memory whose contents are managed by the operating system.</p>
+<dl class="incremental">
+<dt>PA (physical address)</dt>
+<dd>is organized as an array of M contiguous byte-size cells.
+</dd>
+<dt>VA (virtual address)</dt>
+<dd>is converted to the appropriate physical address before being sent to main memory.
+</dd>
+<dt>MMU (Memory management unit)</dt>
+<dd>using a lookup table stored in main memory, whose contents are managed by the operating system, to perform the address transferring
+</dd>
+</dl>
 <h2 id="address-spaces"><span class="done DONE">DONE</span> Address Spaces</h2>
-<p><em>linear address space</em>: the address space that the addresses are consecutive.</p>
-<p>Represent with the number of bits that are needed to represent the largest address:</p>
-<ul class="incremental">
-<li>32-bit</li>
-<li>64-bit</li>
-</ul>
-<p>Distinct data object (bytes) and their attributes (addresses). Each object can have multiple independent addresses, each chosen from a different address space.</p>
+<p><em>linear address space</em>: the address space that the addresses are consecutive. Represent with the number of bits (32-bit or 64-bit) that are needed to represent the largest address:</p>
+<p>Distinct data object (bytes) and their attributes (addresses). Each object can have multiple independent addresses, each chosen from a different address space. (?)</p>
 <table>
 <thead>
 <tr class="header">
@@ -493,7 +508,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="todo-vm-as-a-tool-for-caching">[1/6] TODO VM as a Tool for Caching</h2>
+<h2 id="vm-as-a-tool-for-caching"><span class="todo TODO">TODO</span> [1/6] VM as a Tool for Caching</h2>
 <p>Cache the contiguous addressed disk space into virtual memory in unit of fix sized block:</p>
 <ul class="incremental">
 <li><em>virtual pages</em> (VPs) for virtual memory</li>
