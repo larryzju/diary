@@ -1,0 +1,301 @@
+* Overview
+** 什么是 Consul？
+
+#+BEGIN_VERSE
+Consul is a service mesh solution providing a full featured control plane with service discovery, configuration, 
+and segmentation functionality.
+
+Consul requires a data plane and supports both a proxy and native integration model. Consul ships with a simple
+built-in proxy so that everything works out of the box, but also supports 3rd party proxy integrations such as Envoy.
+#+END_VERSE
+
+*** 服务发现
+
+提供者注册服务信息，使用者查找具体的服务地址。支持 DNS 和 HTTP 两种方式。
+
+类似于一个公告栏机制。
+
+*** Health Checking
+
+Agent 内置了 Health Check 功能，可以配置对 service 或 node 定期检查
+1. ops 维护 consul 集群
+2. 服务使用者跳过不健康的服务或主机
+
+*** TODO Secure Service Communication
+
+**** TODO Intentions
+
+*** TODO Multi Datacenter
+
+** Consul 可以用来做什么？
+* Architecture
+
+- Agent 
+  + 检查当前 Node 上的 service 和 node 的健康状态
+  + 与其它 Server 通信 (通过任何一个 agent 可以访问到所有 Server)
+- Server
+  + 保存数据
+  + 副本同步
+  + 选举 Leader
+- Data Center
+  + 一组 Server 构成 Cluster
+  + DC 之间可以转发消息
+* Service
+
+注册一个服务（ID 和 TAG）指向本机的某个端口？客户端需要查找具体的服务地址再自行去访问？
+Server 本质只是个特殊格式的注册信息？注册的服务必须通过 Agent 来访问？注册的服务仅针对某个 Agent?
+
+** 配置
+
+在配置目录（通过 =-config-dir= 来传入），定义服务 Route 信息
+
+#+BEGIN_SRC yam
+service:
+  name: web
+  tags:
+  - rails
+  port: 80
+#+END_SRC
+
+注意：
+- 每个 json 文件配置一个服务
+- 可以有多个服务
+- 启动后显示 =Syned= 表示 agent 已经加载了服务定义并注册到 catalog(?)
+- tag?
+
+
+** Query
+
+两种方式：DNS API 或 HTTP API
+
+*** TODO DNS API
+
+**** A Record
+
+#+BEGIN_SRC shell
+$ dig @127.0.0.1 -p 8600 web.service.consul
+
+;; QUESTION SECTION:
+;web.service.consul.        IN  A
+
+;; ANSWER SECTION:
+web.service.consul. 0   IN  A   127.0.0.1
+#+END_SRC
+
+有什么用？怎么样传入参数？怎么样返回结果？怎么样调用具体的服务代码？
+
+**** SRV
+
+#+BEGIN_SRC shell
+$ dig @127.0.0.1 -p 8600 web.service.consul SRV
+
+;; QUESTION SECTION:
+;web.service.consul.        IN  SRV
+
+;; ANSWER SECTION:
+web.service.consul. 0   IN  SRV 1 1 80 Armons-MacBook-Air.node.dc1.consul.
+
+;; ADDITIONAL SECTION:
+Armons-MacBook-Air.node.dc1.consul. 0 IN A  127.0.0.1
+#+END_SRC
+
+SRV 记录的地址是 consul 运行的主机地址？端口 80？有什么用？
+
+**** TAG
+
+#+BEGIN_SRC shell
+$ dig @127.0.0.1 -p 8600 rails.web.service.consul
+
+;; QUESTION SECTION:
+;rails.web.service.consul.      IN  A
+
+;; ANSWER SECTION:
+rails.web.service.consul.   0   IN  A   127.0.0.1
+#+END_SRC
+
+TAG? 子域名？
+
+
+*** HTTP API
+
+**** query
+
+#+BEGIN_SRC shell
+$ curl http://localhost:8500/v1/catalog/service/web
+
+[{"Node":"Armons-MacBook-Air","Address":"172.20.20.11","ServiceID":"web", \
+    "ServiceName":"web","ServiceTags":["rails"],"ServicePort":80}]
+#+END_SRC
+
+**** health check
+
+#+BEGIN_SRC shell
+$ curl 'http://localhost:8500/v1/health/service/web?passing'
+
+[{"Node":"Armons-MacBook-Air","Address":"172.20.20.11","Service":{ \
+    "ID":"web", "Service":"web", "Tags":["rails"],"Port":80}, "Checks": ...}]
+#+END_SRC
+
+
+** 更新配置
+
+1. 修改配置，发送 SIGHUP(1) 到 console agent 进程重新加载配置
+2. 使用 consule reload 命令（同上）
+3. 或者使用 REST API 来动态修改配置
+
+** TODO Service Type
+
+** TODO Service instances
+* Nodes
+* Key/Values
+
+类似于 zookeeper，按目录层次来划分不同的应用和种类
+* Connect
+
+** TODO 为什么要联结两个 Service?
+
+提供一种 Route 方式？客户端直接访问 Consul 提供的 Service 就能直接被定位到底层服务？
+
+代理？针对 HTTP 还是 TCP？
+
+提供 TLS 接口，底层可以不加密
+
+** TODO 怎么联结两个 Service?
+
+需要启动一个代理程序？为每个 Connect?
+
+如何配置 TLS 连接？
+
+** Demo1
+
+*** Run service
+
+#+BEGIN_SRC shell
+$ socat -v tcp-l:8181,fork exec:"/bin/cat"
+#+END_SRC
+
+echo server, listen on TCP 8181 port
+
+*** Register service
+
+#+BEGIN_SRC yaml
+service:
+  connect:
+    sidecar_service: {}
+  name: socat
+  port: 8181
+#+END_SRC
+
+注册一个新服务 socat，其中 =connect= 字段要求 Consul 注册一个 sidecar proxy
+1. 监听一个随机端口
+2. TLS 认证连接
+3. 转发到 8181 服务
+
+注意：此时还没有真正运行 sidecar proxy
+
+*** 启动 proxy
+
+#+BEGIN_SRC bash
+$ consul connect proxy -sidecar-for socat
+==> Consul Connect proxy starting...
+    Configuration mode: Agent API
+        Sidecar for ID: socat
+              Proxy ID: socat-sidecar-proxy
+
+...
+#+END_SRC
+
+*** 建立连接
+
+#+BEGIN_SRC bash
+$ consul connect proxy -service web -upstream socat:9191
+==> Consul Connect proxy starting...
+    Configuration mode: Flags
+               Service: web
+              Upstream: socat => :9191
+       Public listener: Disabled
+
+...
+#+END_SRC
+
+1. 启动一个新的服务 web
+2. web 依赖于 socat 服务，端口是 9191
+3. 访问本地 9191 的流量将被定向到 socat 端口
+
+** Demo2 :Registering a Dependent Service
+
+创建一个 web 服务（上例用的是 =consul connect proxy= ，仅用于临时调试）
+
+#+BEGIN_SRC yaml
+service:
+  connect:
+    sidecar_service:
+      proxy:
+        upstreams:
+        - destination_name: socat
+          local_bind_port: 9191
+  name: web
+  port: 8080
+#+END_SRC
+
+加 =-sidecar-for= 生成 proxy
+
+#+BEGIN_SRC bash
+$ consul connect proxy -sidecar-for web
+==> Consul Connect proxy starting...
+    Configuration mode: Agent API
+        Sidecar for ID: web
+              Proxy ID: web-sidecar-proxy
+
+==> Log data will now stream in as it occurs:
+
+    2018/10/09 12:34:20 [INFO] 127.0.0.1:9191->service:default/socat starting on 127.0.0.1:9191
+    2018/10/09 12:34:20 [INFO] Proxy loaded config and ready to serve
+    2018/10/09 12:34:20 [INFO] TLS Identity: spiffe://df34ef6b-5971-ee61-0790-ca8622c3c287.consul/ns/default/dc/dc1/svc/web
+    2018/10/09 12:34:20 [INFO] TLS Roots   : [Consul CA 7]
+#+END_SRC
+
+为什么 web 监听 8080，sidecar proxy 监听 9191。与 web 服务本身有无关系？
+
+* Intentions
+
+ACL 设置，控制服务之间的访问
+
+#+BEGIN_SRC 
+$ consul intention create -deny web socat
+Created: web => socat (deny)
+#+END_SRC
+
+禁止 web 到 socat 的通信
+
+* Cluster
+* TODO Problem
+** Server
+*** 如何相互发现
+*** 如何协作
+** Client
+*** 作用
+1. register services ?
+2. run health check
+3. forwards queries to servers ?
+
+*** 协议
+** Gossip Protocol
+** DNS Interface
+** REST API
+
+8500 端口
+*** catalog
+**** nodes
+** Guess
+
+*** agent
+
+- =consul agent= 同时启动了 server 和 client？
+- 其中 server 提供 raft 支持
+- client 提供接口
+
+
+** Agent
+
+Agent 到底是单指 client，还是同时指 server?
