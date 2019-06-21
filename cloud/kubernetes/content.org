@@ -4,7 +4,7 @@
 
 *** 什么是容器
 
-#+INCLUDE: "what-is-contianer.org"
+#+INCLUDE: "what-is-container.org"
 
 *** 什么是镜像
 

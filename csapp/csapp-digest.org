@@ -1,7 +1,6 @@
 #+TITLE: CSAPP 摘要
 #+AUTHOR: Zhao WenBin
 #+STATUS: 55/1078
-#+OPTIONS: html5-fancy
 #+OPTIONS: toc:2
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="style.css">
 

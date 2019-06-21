@@ -1,5 +1,4 @@
 #+TITLE: java note 笔记
-#+OPTIONS: TOC:1
 
 * 1. The mental landscape
 

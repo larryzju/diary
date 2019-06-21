@@ -144,7 +144,7 @@ for p != nil {
 
 单链实现代码如下所示（go 语言）
 
-#+INCLUDE: "/Users/larry/go/src/github.com/larryzju/fishc-go/linkedlist.go" src go
+# #+INCLUDE: "/Users/larry/go/src/github.com/larryzju/fishc-go/linkedlist.go" src go
 
 *** 单链表与顺序存储比较
 
@@ -172,7 +172,7 @@ C 语言的指针提供了极大的灵活性（面向对象使用对象引用机
 
 代码实现如下所示
 
-#+INCLUDE: "/Users/larry/go/src/github.com/larryzju/fishc-go/staticlist.go" src go
+# #+INCLUDE: "/Users/larry/go/src/github.com/larryzju/fishc-go/staticlist.go" src go
 
 需要维护两个链表：
 1. 实际链表
