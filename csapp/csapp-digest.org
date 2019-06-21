@@ -376,7 +376,7 @@ platform. But it's a fault error in 64bit platform.
 ** Floating Point 
 
 
-* [3/13] Virtual Memory
+* [4/13] Virtual Memory
 
 ** DONE Overview
 
@@ -449,7 +449,7 @@ different address space. (?)
 |      46 | 64T          | 64T-1                            |
 |      54 | 16P          | 16P-1                            |
 
-** TODO [2/6] VM as a Tool for Caching
+** DONE VM as a Tool for Caching
 
 Cache the contiguous addressed disk space into virtual memory in unit of fix sized block:
 - /virtual pages/ (VPs) :: for virtual memory
@@ -464,8 +464,7 @@ Virtual pages is partitioned into 3 disjoint subsets:
 #+CAPTION: VM as Cache
 [[./img/9.3.vp-pp-mapping.jpg]]
 
-
-*** DONE DRAM Cache Organization
+*** DRAM Cache Organization
 
 **** Term
 
@@ -480,7 +479,7 @@ DRAM is important because of
 
 The bottom line is that the organization of the DRAM cache is driven entirely by the enormous cost of misses.
 
-*** DONE Page Tables
+*** Page Tables
 
 Determine 
 - if a *virtual page* is cached
@@ -524,14 +523,46 @@ nPTEs = (1<<n) / P
 | 24 | 2M        |              8 |
 | 36 | 1G        |             64 |
 
+*** Page Hits
 
-*** TODO Page Hits
+When visiting the cached virtual page, the MMU will translate the
+address to the real address in physical memory.
 
-*** TODO Page Faults
+*** Page Faults
 
-*** TODO Allocating Page
+/page fault/: a virtual page cache miss happened when MMU is trying to get the physical memory.
 
-*** TODO Locality to the Rescue Again
+A /page fault exception/ will invoke the handler in kernel to select a victim page and
++ copy to disk if another virtual page (VPx) mapped to this PP (PPx) and has been modified
++ disassociate the PTE for VPx (uncached)
++ copy the disk cache to PPx in memory
++ update PTE this VP
++ return from handler
++ restarts the faulting instruction
+
+The virtual memory block is also known as /pages/. The activity of
+transferring a page between disk and memory is known as /swapping/ or
+/paging/. Pages are /swapped in (paged in)/ from disk to DRAM, and
+/swapped out (paged out)/ from DRAM to disk. The strategy of waiting
+until the last moment to swap in a page, when a miss occurs, is known
+as /demand paging/.
+
+*** Allocating Page
+
+Swapped out VPE now points to a block located on disk.
+
+*** Locality to the Rescue Again
+
+Virtual memory's performance is benefited by the /locality/. The
+principle of locality promises that at any point in time they will
+tend to work on a smaller set of /active pages/ known as the /working
+set/ or /resident set/.
+
+/thrashing/: where pages are swapped in and out continuously.
+
+
+In Linux, we can use =getrusage= API to check the page faults. See
+=rusage.ru_majflt= field in =man 2 getrusage=.
 
 ** TODO VM as a Tool for Memory Management
 
