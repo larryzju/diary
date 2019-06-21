@@ -18,10 +18,9 @@
 <p>VGA chip currently a <strong>legacy</strong> device, it is a good place to begin practicing your video driver skills.</p>
 <p>四个 plane 指向 64KB 内存空间，由 Sequencer 将之映射为相应的颜色。</p>
 <h1 id="vga-构成">VGA 构成</h1>
-<div class="figure">
-<img src="http://wiki.osdev.org/images/thumb/7/76/VGA_overview.gif/325px-VGA_overview.gif" alt="VGA构成示意" />
-<p class="caption">VGA构成示意</p>
-</div>
+<figure>
+<img src="http://wiki.osdev.org/images/thumb/7/76/VGA_overview.gif/325px-VGA_overview.gif" alt="" /><figcaption>VGA构成示意</figcaption>
+</figure>
 <h1 id="寄存器">寄存器</h1>
 <p>有超过 300 个内部寄存器（8位），通过索引（indexed）方式来节省 I/O 地址空间</p>
 <h2 id="port-0x3c0">Port 0x3C0</h2>
@@ -87,53 +86,53 @@
 <li>2-0 bits for 8 types of color</li>
 </ul>
 <h2 id="clear-screen">clear screen</h2>
-<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">/*</span>
-<span class="co"> * cls</span>
-<span class="co"> * Clear the screen</span>
-<span class="co"> */</span>                                                                                                                                                            
-<span class="dt">void</span>
-cls() {
-        <span class="dt">unsigned</span> blank;
-        <span class="dt">int</span> i;
-        blank = <span class="bn">0x20</span> | (attrib &lt;&lt; <span class="dv">8</span>);                                                                                                                          
-        <span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">25</span>; ++i) {
-                memsetw(textmemptr + i * <span class="dv">80</span>, blank, <span class="dv">80</span>);                                                                                                       
-        }
-        csr_x = <span class="dv">0</span>;
-        csr_y = <span class="dv">0</span>;                                                                                                                                             
-        move_csr();
-}
-
-<span class="co">/*      </span>
-<span class="co"> * settextcolor                                                                                                                                                </span>
-<span class="co"> * Sets the foreground and background color                                                                                                                    </span>
-<span class="co"> */</span>     
-<span class="dt">void</span>            
-settextcolor(                                                                                                                                                  
-                <span class="dt">unsigned</span> <span class="dt">char</span> forecolor,                                                                                                                       
-                <span class="dt">unsigned</span> <span class="dt">char</span> backcolor                                                                                                                        
-                ) {                                                                                                                                            
-        attrib = (backcolor &lt;&lt; <span class="dv">4</span>) | (forecolor &amp; <span class="bn">0x0F</span>);                                                                                                        
-}</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">/*</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co"> * cls</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co"> * Clear the screen</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co"> */</span>                                                                                                                                                            </span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="dt">void</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>cls() {</span>
+<span id="cb1-7"><a href="#cb1-7"></a>        <span class="dt">unsigned</span> blank;</span>
+<span id="cb1-8"><a href="#cb1-8"></a>        <span class="dt">int</span> i;</span>
+<span id="cb1-9"><a href="#cb1-9"></a>        blank = <span class="bn">0x20</span> | (attrib &lt;&lt; <span class="dv">8</span>);                                                                                                                          </span>
+<span id="cb1-10"><a href="#cb1-10"></a>        <span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">25</span>; ++i) {</span>
+<span id="cb1-11"><a href="#cb1-11"></a>                memsetw(textmemptr + i * <span class="dv">80</span>, blank, <span class="dv">80</span>);                                                                                                       </span>
+<span id="cb1-12"><a href="#cb1-12"></a>        }</span>
+<span id="cb1-13"><a href="#cb1-13"></a>        csr_x = <span class="dv">0</span>;</span>
+<span id="cb1-14"><a href="#cb1-14"></a>        csr_y = <span class="dv">0</span>;                                                                                                                                             </span>
+<span id="cb1-15"><a href="#cb1-15"></a>        move_csr();</span>
+<span id="cb1-16"><a href="#cb1-16"></a>}</span>
+<span id="cb1-17"><a href="#cb1-17"></a></span>
+<span id="cb1-18"><a href="#cb1-18"></a><span class="co">/*      </span></span>
+<span id="cb1-19"><a href="#cb1-19"></a><span class="co"> * settextcolor                                                                                                                                                </span></span>
+<span id="cb1-20"><a href="#cb1-20"></a><span class="co"> * Sets the foreground and background color                                                                                                                    </span></span>
+<span id="cb1-21"><a href="#cb1-21"></a><span class="co"> */</span>     </span>
+<span id="cb1-22"><a href="#cb1-22"></a><span class="dt">void</span>            </span>
+<span id="cb1-23"><a href="#cb1-23"></a>settextcolor(                                                                                                                                                  </span>
+<span id="cb1-24"><a href="#cb1-24"></a>                <span class="dt">unsigned</span> <span class="dt">char</span> forecolor,                                                                                                                       </span>
+<span id="cb1-25"><a href="#cb1-25"></a>                <span class="dt">unsigned</span> <span class="dt">char</span> backcolor                                                                                                                        </span>
+<span id="cb1-26"><a href="#cb1-26"></a>                ) {                                                                                                                                            </span>
+<span id="cb1-27"><a href="#cb1-27"></a>        attrib = (backcolor &lt;&lt; <span class="dv">4</span>) | (forecolor &amp; <span class="bn">0x0F</span>);                                                                                                        </span>
+<span id="cb1-28"><a href="#cb1-28"></a>}</span></code></pre></div>
 <ol class="incremental">
 <li><code>attrib = 0x0F</code></li>
 <li>blank color <code>0xF0</code>: black backcolor and white forecolor</li>
 <li>character <code>0x20</code>: space</li>
 </ol>
 <h2 id="move-cursor">move cursor</h2>
-<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span>
-move_csr() {
-        <span class="dt">unsigned</span> temp;
-        temp = csr_y * <span class="dv">80</span> + csr_x;
-
-        <span class="co">/*</span>
-<span class="co">         * Write stuff out.</span>
-<span class="co">         */</span>
-        outportb(<span class="bn">0x3D4</span>, <span class="dv">14</span>);
-        outportb(<span class="bn">0x3D5</span>, temp &gt;&gt; <span class="dv">8</span>);
-        outportb(<span class="bn">0x3D4</span>, <span class="dv">15</span>);
-        outportb(<span class="bn">0x3D5</span>, temp);
-}</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1"></a><span class="dt">void</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>move_csr() {</span>
+<span id="cb2-3"><a href="#cb2-3"></a>        <span class="dt">unsigned</span> temp;</span>
+<span id="cb2-4"><a href="#cb2-4"></a>        temp = csr_y * <span class="dv">80</span> + csr_x;</span>
+<span id="cb2-5"><a href="#cb2-5"></a></span>
+<span id="cb2-6"><a href="#cb2-6"></a>        <span class="co">/*</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co">         * Write stuff out.</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co">         */</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>        outportb(<span class="bn">0x3D4</span>, <span class="dv">14</span>);</span>
+<span id="cb2-10"><a href="#cb2-10"></a>        outportb(<span class="bn">0x3D5</span>, temp &gt;&gt; <span class="dv">8</span>);</span>
+<span id="cb2-11"><a href="#cb2-11"></a>        outportb(<span class="bn">0x3D4</span>, <span class="dv">15</span>);</span>
+<span id="cb2-12"><a href="#cb2-12"></a>        outportb(<span class="bn">0x3D5</span>, temp);</span>
+<span id="cb2-13"><a href="#cb2-13"></a>}</span></code></pre></div>
 <p>Refer to <a href="https://wiki.osdev.org/Text_Mode_Cursor#Moving_the_Cursor_2">moving the cursor without BIOS</a>.</p>
 <ol class="incremental">
 <li>80 characters can be displayed per line</li>

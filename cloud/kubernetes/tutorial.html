@@ -22,7 +22,7 @@
 <p>Masters manage the cluster and the nodes are used to host the running applications</p>
 <ul class="incremental">
 <li>Kubernetes cluster runs containerized application which is not dependent to host environment</li>
-<li>There's process named <code>kubelet</code> running on each node which will communicate with master and operate to local virtual infrastructure (docker/rkt/...)</li>
+<li>There's process named <code>kubelet</code> running on each node which will communicate with master and operate to local virtual infrastructure (docker/rkt/…)</li>
 </ul>
 <h3 id="cluster-interactive"><span class="todo TODO">TODO</span> cluster-interactive</h3>
 <p>google doc can not been seen</p>
@@ -38,7 +38,7 @@
 <li>Kubernetes provides extra features such as <strong>scale</strong> and <strong>update</strong></li>
 </ul>
 <h3 id="interactive"><span class="todo TODO">TODO</span> Interactive</h3>
-<p>Google doc can not been seen...</p>
+<p>Google doc can not been seen…</p>
 <ul class="incremental">
 <li><code>kubectl run --image=... --port=...</code> to make a new deployment</li>
 <li><code>kubectl get deployment</code> to see the deployment</li>
@@ -59,7 +59,7 @@
 </ul>
 <ol class="incremental">
 <li><p><span class="todo TODO">TODO</span> Interactive</p>
-<p>Google doc can not be seen...</p></li>
+<p>Google doc can not be seen…</p></li>
 </ol>
 <h2 id="expose-your-app-publicly">Expose Your App Publicly</h2>
 <p>User <code>services</code> to expose application services in Pod.</p>
@@ -71,7 +71,7 @@
 </ul>
 <h3 id="best-practice"><span class="todo TODO">TODO</span> Best Practice</h3>
 <p>You can create a Service at the same time you create a Deplyment by using <strong><code>--expose</code></strong> in kubectl</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">kubectl</span> expose deployment/kubernetes-bootcamp --type=<span class="st">&quot;NodePort&quot;</span> --port 8080</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">kubectl</span> expose deployment/kubernetes-bootcamp --type=<span class="st">&quot;NodePort&quot;</span> --port 8080</span></code></pre></div>
 <ul class="incremental">
 <li>what's the mean of <code>deployment</code>?</li>
 <li>NAT forward 8080 port to other port with internal IP</li>
@@ -89,7 +89,7 @@
 <li>After service was deleted, the Pod is running</li>
 </ul>
 <h3 id="note-2"><span class="todo TODO">TODO</span> Note</h3>
-<p>Google Docs can not been seen...</p>
+<p>Google Docs can not been seen…</p>
 <ul class="incremental">
 <li>Pod has lifecycle, can be died (when node failed?).</li>
 <li><code>ReplicationController</code> will create new Pod for recovery from failure automatically</li>
@@ -104,14 +104,14 @@
 </ul>
 <h2 id="scale-your-app">Scale Your App</h2>
 <h3 id="kubectl-scale-command"><code>kubectl scale</code> command</h3>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">kubectl</span> scale deployments/kubernetes-bootcamp --replicas=4</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="ex">kubectl</span> scale deployments/kubernetes-bootcamp --replicas=4</span></code></pre></div>
 <ul class="incremental">
 <li>The scaled Pods has difference IP address (can be check by <code>kubectl get pods -o wide</code>)</li>
 <li>Request to service will be route to different Pods</li>
 <li>Count of replica can be reduce, some Pods will be terminated.</li>
 </ul>
 <h3 id="note-3"><span class="todo TODO">TODO</span> Note</h3>
-<p>Google docs can not been seen...</p>
+<p>Google docs can not been seen…</p>
 <ul class="incremental">
 <li>Deploy with multiple instance using <code>-replicas</code> parameters</li>
 <li>Duplicated Pods will be created</li>
@@ -124,14 +124,14 @@
 <p>Rolling updates allow Deployments' update to take place with zero downtime by incrementally updating Pods instances with new ones</p>
 <p>If a Deployment is exposed publicly, the Service will load-balance the traffic only to available Pods during the update</p>
 <h3 id="usage"><span class="todo TODO">TODO</span> Usage</h3>
-<p>Google docs can not been seen...</p>
+<p>Google docs can not been seen…</p>
 <h3 id="update-deployments-image">Update Deployment's image</h3>
 <p>use <code>set image</code> command change image (specific deployment and new image)</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">kubectl</span> set image deployments/kubernetes-bootcamp kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="ex">kubectl</span> set image deployments/kubernetes-bootcamp kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2</span></code></pre></div>
 <h3 id="rollout-status"><span class="todo TODO">TODO</span> Rollout Status</h3>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">kubectl</span> rollout status deployments/kubernetes-bootcamp</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="ex">kubectl</span> rollout status deployments/kubernetes-bootcamp</span></code></pre></div>
 <h3 id="revert"><span class="todo TODO">TODO</span> Revert</h3>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">kubectl</span> rollout undo deployments/kubernetes-bootcamp</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">kubectl</span> rollout undo deployments/kubernetes-bootcamp</span></code></pre></div>
 <ul class="incremental">
 <li>zero downtime rolling update with similar policy as scaling</li>
 <li>update is versioned</li>
@@ -143,40 +143,40 @@
 <h3 id="basic-step">Basic Step</h3>
 <ol class="incremental">
 <li><p>create ConfigMap from local file</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">kubectl</span> create configmap example-redis-config --from-file=redis-config</code></pre></div></li>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="ex">kubectl</span> create configmap example-redis-config --from-file=redis-config</span></code></pre></div></li>
 <li><p>check Configmap</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">kubectl</span> get configmap example-redis-config -o yaml</code></pre></div></li>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="ex">kubectl</span> get configmap example-redis-config -o yaml</span></code></pre></div></li>
 <li><p>Use ConfigMap (dump configmap to mounted file) for Pod. The pod spec looks like:</p>
-<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">apiVersion:</span><span class="at"> v1                  </span><span class="co"># version number</span>
-<span class="fu">kind:</span><span class="at"> Pod</span>
-<span class="fu">metatdata:</span>
-  <span class="fu">name:</span><span class="at"> redis</span>
-<span class="fu">spec:</span>
-  <span class="fu">containers:</span>
-  <span class="kw">-</span> <span class="fu">name:</span><span class="at"> redis                 </span><span class="co"># Container redis</span>
-    <span class="fu">image:</span><span class="at"> kubernetes/redis:v1  </span><span class="co"># Image</span>
-    <span class="fu">env:</span><span class="at">                        </span><span class="co"># set environment variables</span>
-    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> MASTER</span>
-      <span class="fu">value:</span><span class="at"> </span><span class="st">&quot;true&quot;</span>
-    <span class="fu">ports:</span>
-    <span class="kw">-</span> <span class="fu">containerPort:</span><span class="at"> 6379</span>
-    <span class="fu">resources:</span>
-      <span class="fu">limits:</span>
-        <span class="fu">cpu:</span><span class="at"> </span><span class="st">&quot;0.1&quot;</span>
-    <span class="fu">volumeMounts:</span>
-    <span class="kw">-</span> <span class="fu">mountPath:</span><span class="at"> /redis-master-data</span>
-      <span class="fu">name:</span><span class="at"> data                </span><span class="co"># mount Volume(data) to /redis-master-data</span>
-    <span class="kw">-</span> <span class="fu">mountPath:</span><span class="at"> /redis-master </span>
-      <span class="fu">name:</span><span class="at"> config              </span><span class="co"># mount Volume(config) to /redis-master</span>
-  <span class="fu">volumes:</span>
-    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> data</span>
-      <span class="fu">emptyDir:</span><span class="at"> </span><span class="kw">{}</span>
-    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> config              </span><span class="co"># define new volume named `config`</span>
-      <span class="fu">configMap:</span><span class="at">                </span><span class="co"># `configMap` is a type of volume</span>
-        <span class="fu">name:</span><span class="at"> example-redis-config </span><span class="co"># configMap name as identity</span>
-        <span class="fu">items:</span>
-        <span class="kw">-</span> <span class="fu">key:</span><span class="at"> redis-config</span>
-          <span class="fu">path:</span><span class="at"> redis.conf      </span><span class="co"># configMap&#39;s path, will be mounted to `&lt;mountPath&gt;/redis.conf`</span></code></pre></div></li>
+<div class="sourceCode" id="cb8"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> v1</span><span class="co">                  # version number</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Pod</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="fu">metatdata</span><span class="kw">:</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> redis</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="at">  </span><span class="fu">containers</span><span class="kw">:</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> redis</span><span class="co">                 # Container redis</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> kubernetes/redis:v1</span><span class="co">  # Image</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="at">    </span><span class="fu">env</span><span class="kw">:</span><span class="co">                        # set environment variables</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> MASTER</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="at">      </span><span class="fu">value</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;true&quot;</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">containerPort</span><span class="kw">:</span><span class="at"> </span><span class="dv">6379</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="at">    </span><span class="fu">resources</span><span class="kw">:</span></span>
+<span id="cb8-15"><a href="#cb8-15"></a><span class="at">      </span><span class="fu">limits</span><span class="kw">:</span></span>
+<span id="cb8-16"><a href="#cb8-16"></a><span class="at">        </span><span class="fu">cpu</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;0.1&quot;</span></span>
+<span id="cb8-17"><a href="#cb8-17"></a><span class="at">    </span><span class="fu">volumeMounts</span><span class="kw">:</span></span>
+<span id="cb8-18"><a href="#cb8-18"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">mountPath</span><span class="kw">:</span><span class="at"> /redis-master-data</span></span>
+<span id="cb8-19"><a href="#cb8-19"></a><span class="at">      </span><span class="fu">name</span><span class="kw">:</span><span class="at"> data</span><span class="co">                # mount Volume(data) to /redis-master-data</span></span>
+<span id="cb8-20"><a href="#cb8-20"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">mountPath</span><span class="kw">:</span><span class="at"> /redis-master </span></span>
+<span id="cb8-21"><a href="#cb8-21"></a><span class="at">      </span><span class="fu">name</span><span class="kw">:</span><span class="at"> config</span><span class="co">              # mount Volume(config) to /redis-master</span></span>
+<span id="cb8-22"><a href="#cb8-22"></a><span class="at">  </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb8-23"><a href="#cb8-23"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> data</span></span>
+<span id="cb8-24"><a href="#cb8-24"></a><span class="at">      </span><span class="fu">emptyDir</span><span class="kw">:</span><span class="at"> </span><span class="kw">{}</span></span>
+<span id="cb8-25"><a href="#cb8-25"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> config</span><span class="co">              # define new volume named `config`</span></span>
+<span id="cb8-26"><a href="#cb8-26"></a><span class="at">      </span><span class="fu">configMap</span><span class="kw">:</span><span class="co">                # `configMap` is a type of volume</span></span>
+<span id="cb8-27"><a href="#cb8-27"></a><span class="at">        </span><span class="fu">name</span><span class="kw">:</span><span class="at"> example-redis-config</span><span class="co"> # configMap name as identity</span></span>
+<span id="cb8-28"><a href="#cb8-28"></a><span class="at">        </span><span class="fu">items</span><span class="kw">:</span></span>
+<span id="cb8-29"><a href="#cb8-29"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">key</span><span class="kw">:</span><span class="at"> redis-config</span></span>
+<span id="cb8-30"><a href="#cb8-30"></a><span class="at">          </span><span class="fu">path</span><span class="kw">:</span><span class="at"> redis.conf</span><span class="co">      # configMap&#39;s path, will be mounted to `&lt;mountPath&gt;/redis.conf`</span></span></code></pre></div></li>
 </ol>
 <h3 id="note-4">Note</h3>
 <ul class="incremental">
@@ -206,66 +206,66 @@
 </ul></li>
 <li><p>Define container environment variables using ConfigMap data</p>
 <ol class="incremental">
-<li>First create ConfigMap <code>special-config</code> with kv pair <code>special.how=&lt;value&gt;</code></li>
+<li><p>First create ConfigMap <code>special-config</code> with kv pair <code>special.how=&lt;value&gt;</code></p></li>
 <li><p>Create Pod with settings looks like (env <code>SPECIAL_LEVEL_KEY</code> will be replaces with ConfigMap's <code>&lt;value&gt;</code> of <code>special.how</code>)</p>
-<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">apiVersion:</span><span class="at"> v1</span>
-<span class="fu">kind:</span><span class="at"> Pod</span>
-<span class="fu">metadata:</span>
-  <span class="fu">name:</span><span class="at"> dapi-test-pod</span>
-<span class="fu">spec:</span>
-  <span class="fu">containers:</span>
-    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> test-container</span>
-      <span class="fu">image:</span><span class="at"> k8s.gcr.io/busybox</span>
-      <span class="fu">command:</span><span class="at"> </span><span class="kw">[</span> <span class="st">&quot;/bin/sh&quot;</span><span class="kw">,</span> <span class="st">&quot;-c&quot;</span><span class="kw">,</span> <span class="st">&quot;env&quot;</span> <span class="kw">]</span>
-      <span class="fu">env:</span>
-        <span class="co"># Define the environment variable</span>
-        <span class="kw">-</span> <span class="fu">name:</span><span class="at"> SPECIAL_LEVEL_KEY</span>
-          <span class="fu">valueFrom:</span>
-            <span class="fu">configMapKeyRef:</span>
-              <span class="co"># The ConfigMap containing the value you want to assign to SPECIAL_LEVEL_KEY</span>
-              <span class="fu">name:</span><span class="at"> special-config</span>
-              <span class="co"># Specify the key associated with the value</span>
-              <span class="fu">key:</span><span class="at"> special.how</span>
-  <span class="fu">restartPolicy:</span><span class="at"> Never</span></code></pre></div></li>
+<div class="sourceCode" id="cb9"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> v1</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Pod</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> dapi-test-pod</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="at">  </span><span class="fu">containers</span><span class="kw">:</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> test-container</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="at">      </span><span class="fu">image</span><span class="kw">:</span><span class="at"> k8s.gcr.io/busybox</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="at">      </span><span class="fu">command</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at"> </span><span class="st">&quot;/bin/sh&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;-c&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;env&quot;</span><span class="at"> </span><span class="kw">]</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="at">      </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="co">        # Define the environment variable</span></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> SPECIAL_LEVEL_KEY</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a><span class="at">          </span><span class="fu">valueFrom</span><span class="kw">:</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a><span class="at">            </span><span class="fu">configMapKeyRef</span><span class="kw">:</span></span>
+<span id="cb9-15"><a href="#cb9-15"></a><span class="co">              # The ConfigMap containing the value you want to assign to SPECIAL_LEVEL_KEY</span></span>
+<span id="cb9-16"><a href="#cb9-16"></a><span class="at">              </span><span class="fu">name</span><span class="kw">:</span><span class="at"> special-config</span></span>
+<span id="cb9-17"><a href="#cb9-17"></a><span class="co">              # Specify the key associated with the value</span></span>
+<span id="cb9-18"><a href="#cb9-18"></a><span class="at">              </span><span class="fu">key</span><span class="kw">:</span><span class="at"> special.how</span></span>
+<span id="cb9-19"><a href="#cb9-19"></a><span class="at">  </span><span class="fu">restartPolicy</span><span class="kw">:</span><span class="at"> Never</span></span></code></pre></div></li>
 </ol></li>
 <li><p>Configure all key-value pairs in a ConfigMap as container environment variables</p>
 <p>Use <code>envFrom</code> to define all of the ConfigMap's data as container environment variables</p>
-<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">apiVersion:</span><span class="at"> v1</span>
-<span class="fu">kind:</span><span class="at"> Pod</span>
-<span class="fu">metadata:</span>
-  <span class="fu">name:</span><span class="at"> dapi-test-pod</span>
-<span class="fu">spec:</span>
-  <span class="fu">containers:</span>
-    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> test-container</span>
-      <span class="fu">image:</span><span class="at"> k8s.gcr.io/busybox</span>
-      <span class="fu">command:</span><span class="at"> </span><span class="kw">[</span> <span class="st">&quot;/bin/sh&quot;</span><span class="kw">,</span> <span class="st">&quot;-c&quot;</span><span class="kw">,</span> <span class="st">&quot;env&quot;</span> <span class="kw">]</span>
-      <span class="fu">envFrom:</span>
-      <span class="kw">-</span> <span class="fu">configMapRef:</span>
-          <span class="fu">name:</span><span class="at"> special-config</span>
-  <span class="fu">restartPolicy:</span><span class="at"> Never</span></code></pre></div></li>
+<div class="sourceCode" id="cb10"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> v1</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Pod</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> dapi-test-pod</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="at">  </span><span class="fu">containers</span><span class="kw">:</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> test-container</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="at">      </span><span class="fu">image</span><span class="kw">:</span><span class="at"> k8s.gcr.io/busybox</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="at">      </span><span class="fu">command</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at"> </span><span class="st">&quot;/bin/sh&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;-c&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;env&quot;</span><span class="at"> </span><span class="kw">]</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="at">      </span><span class="fu">envFrom</span><span class="kw">:</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">configMapRef</span><span class="kw">:</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a><span class="at">          </span><span class="fu">name</span><span class="kw">:</span><span class="at"> special-config</span></span>
+<span id="cb10-13"><a href="#cb10-13"></a><span class="at">  </span><span class="fu">restartPolicy</span><span class="kw">:</span><span class="at"> Never</span></span></code></pre></div></li>
 <li><p>Use ConfigMap-defined environment variables in Pod commands</p>
 <p>Like shell variable substitutioin syntax, use <code>$(VAR_NAME)</code>. For example</p>
-<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">apiVersion:</span><span class="at"> v1</span>
-<span class="fu">kind:</span><span class="at"> Pod</span>
-<span class="fu">metadata:</span>
-  <span class="fu">name:</span><span class="at"> dapi-test-pod</span>
-<span class="fu">spec:</span>
-  <span class="fu">containers:</span>
-    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> test-container</span>
-      <span class="fu">image:</span><span class="at"> k8s.gcr.io/busybox</span>
-      <span class="fu">command:</span><span class="at"> </span><span class="kw">[</span> <span class="st">&quot;/bin/sh&quot;</span><span class="kw">,</span> <span class="st">&quot;-c&quot;</span><span class="kw">,</span> <span class="st">&quot;echo $(SPECIAL_LEVEL_KEY) $(SPECIAL_TYPE_KEY)&quot;</span> <span class="kw">]</span>
-      <span class="fu">env:</span>
-        <span class="kw">-</span> <span class="fu">name:</span><span class="at"> SPECIAL_LEVEL_KEY</span>
-          <span class="fu">valueFrom:</span>
-            <span class="fu">configMapKeyRef:</span>
-              <span class="fu">name:</span><span class="at"> special-config</span>
-              <span class="fu">key:</span><span class="at"> SPECIAL_LEVEL</span>
-        <span class="kw">-</span> <span class="fu">name:</span><span class="at"> SPECIAL_TYPE_KEY</span>
-          <span class="fu">valueFrom:</span>
-            <span class="fu">configMapKeyRef:</span>
-              <span class="fu">name:</span><span class="at"> special-config</span>
-              <span class="fu">key:</span><span class="at"> SPECIAL_TYPE</span>
-  <span class="fu">restartPolicy:</span><span class="at"> Never</span></code></pre></div></li>
+<div class="sourceCode" id="cb11"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> v1</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Pod</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> dapi-test-pod</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a><span class="at">  </span><span class="fu">containers</span><span class="kw">:</span></span>
+<span id="cb11-7"><a href="#cb11-7"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> test-container</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a><span class="at">      </span><span class="fu">image</span><span class="kw">:</span><span class="at"> k8s.gcr.io/busybox</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a><span class="at">      </span><span class="fu">command</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at"> </span><span class="st">&quot;/bin/sh&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;-c&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;echo $(SPECIAL_LEVEL_KEY) $(SPECIAL_TYPE_KEY)&quot;</span><span class="at"> </span><span class="kw">]</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a><span class="at">      </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb11-11"><a href="#cb11-11"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> SPECIAL_LEVEL_KEY</span></span>
+<span id="cb11-12"><a href="#cb11-12"></a><span class="at">          </span><span class="fu">valueFrom</span><span class="kw">:</span></span>
+<span id="cb11-13"><a href="#cb11-13"></a><span class="at">            </span><span class="fu">configMapKeyRef</span><span class="kw">:</span></span>
+<span id="cb11-14"><a href="#cb11-14"></a><span class="at">              </span><span class="fu">name</span><span class="kw">:</span><span class="at"> special-config</span></span>
+<span id="cb11-15"><a href="#cb11-15"></a><span class="at">              </span><span class="fu">key</span><span class="kw">:</span><span class="at"> SPECIAL_LEVEL</span></span>
+<span id="cb11-16"><a href="#cb11-16"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> SPECIAL_TYPE_KEY</span></span>
+<span id="cb11-17"><a href="#cb11-17"></a><span class="at">          </span><span class="fu">valueFrom</span><span class="kw">:</span></span>
+<span id="cb11-18"><a href="#cb11-18"></a><span class="at">            </span><span class="fu">configMapKeyRef</span><span class="kw">:</span></span>
+<span id="cb11-19"><a href="#cb11-19"></a><span class="at">              </span><span class="fu">name</span><span class="kw">:</span><span class="at"> special-config</span></span>
+<span id="cb11-20"><a href="#cb11-20"></a><span class="at">              </span><span class="fu">key</span><span class="kw">:</span><span class="at"> SPECIAL_TYPE</span></span>
+<span id="cb11-21"><a href="#cb11-21"></a><span class="at">  </span><span class="fu">restartPolicy</span><span class="kw">:</span><span class="at"> Never</span></span></code></pre></div></li>
 <li><p>Add ConfigMap data to Volume</p>
 <ul class="incremental">
 <li>Act as volume backend</li>
@@ -273,45 +273,45 @@
 <li>Set <code>key</code> and <code>path</code> to a specific path in the Volume</li>
 </ul>
 <p>For example</p>
-<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">apiVersion:</span><span class="at"> v1</span>
-<span class="fu">kind:</span><span class="at"> Pod</span>
-<span class="fu">metadata:</span>
-  <span class="fu">name:</span><span class="at"> dapi-test-pod</span>
-<span class="fu">spec:</span>
-  <span class="fu">containers:</span>
-    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> test-container</span>
-      <span class="fu">image:</span><span class="at"> k8s.gcr.io/busybox</span>
-      <span class="fu">command:</span><span class="at"> </span><span class="kw">[</span> <span class="st">&quot;/bin/sh&quot;</span><span class="kw">,</span> <span class="st">&quot;-c&quot;</span><span class="kw">,</span> <span class="st">&quot;ls /etc/config/&quot;</span> <span class="kw">]</span>
-      <span class="fu">volumeMounts:</span>
-      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> config-volume</span>
-        <span class="fu">mountPath:</span><span class="at"> /etc/config</span>
-  <span class="fu">volumes:</span>
-    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> config-volume</span>
-      <span class="fu">configMap:</span>
-        <span class="co"># Provide the name of the ConfigMap containing the files you want</span>
-        <span class="co"># to add to the container</span>
-        <span class="fu">name:</span><span class="at"> special-config</span>
-  <span class="fu">restartPolicy:</span><span class="at"> Never</span></code></pre></div>
-<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">apiVersion:</span><span class="at"> v1</span>
-<span class="fu">kind:</span><span class="at"> Pod</span>
-<span class="fu">metadata:</span>
-  <span class="fu">name:</span><span class="at"> dapi-test-pod</span>
-<span class="fu">spec:</span>
-  <span class="fu">containers:</span>
-    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> test-container</span>
-      <span class="fu">image:</span><span class="at"> k8s.gcr.io/busybox</span>
-      <span class="fu">command:</span><span class="at"> </span><span class="kw">[</span> <span class="st">&quot;/bin/sh&quot;</span><span class="kw">,</span><span class="st">&quot;-c&quot;</span><span class="kw">,</span><span class="st">&quot;cat /etc/config/keys&quot;</span> <span class="kw">]</span>
-      <span class="fu">volumeMounts:</span>
-      <span class="kw">-</span> <span class="fu">name:</span><span class="at"> config-volume</span>
-        <span class="fu">mountPath:</span><span class="at"> /etc/config</span>
-  <span class="fu">volumes:</span>
-    <span class="kw">-</span> <span class="fu">name:</span><span class="at"> config-volume</span>
-      <span class="fu">configMap:</span>
-        <span class="fu">name:</span><span class="at"> special-config</span>
-        <span class="fu">items:</span>
-        <span class="kw">-</span> <span class="fu">key:</span><span class="at"> special.level</span>
-          <span class="fu">path:</span><span class="at"> keys            </span><span class="co"># mount file `/etc/config/keys` with contents of value of `special.level`</span>
-  <span class="fu">restartPolicy:</span><span class="at"> Never</span></code></pre></div></li>
+<div class="sourceCode" id="cb12"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> v1</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Pod</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> dapi-test-pod</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="at">  </span><span class="fu">containers</span><span class="kw">:</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> test-container</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a><span class="at">      </span><span class="fu">image</span><span class="kw">:</span><span class="at"> k8s.gcr.io/busybox</span></span>
+<span id="cb12-9"><a href="#cb12-9"></a><span class="at">      </span><span class="fu">command</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at"> </span><span class="st">&quot;/bin/sh&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;-c&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;ls /etc/config/&quot;</span><span class="at"> </span><span class="kw">]</span></span>
+<span id="cb12-10"><a href="#cb12-10"></a><span class="at">      </span><span class="fu">volumeMounts</span><span class="kw">:</span></span>
+<span id="cb12-11"><a href="#cb12-11"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> config-volume</span></span>
+<span id="cb12-12"><a href="#cb12-12"></a><span class="at">        </span><span class="fu">mountPath</span><span class="kw">:</span><span class="at"> /etc/config</span></span>
+<span id="cb12-13"><a href="#cb12-13"></a><span class="at">  </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb12-14"><a href="#cb12-14"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> config-volume</span></span>
+<span id="cb12-15"><a href="#cb12-15"></a><span class="at">      </span><span class="fu">configMap</span><span class="kw">:</span></span>
+<span id="cb12-16"><a href="#cb12-16"></a><span class="co">        # Provide the name of the ConfigMap containing the files you want</span></span>
+<span id="cb12-17"><a href="#cb12-17"></a><span class="co">        # to add to the container</span></span>
+<span id="cb12-18"><a href="#cb12-18"></a><span class="at">        </span><span class="fu">name</span><span class="kw">:</span><span class="at"> special-config</span></span>
+<span id="cb12-19"><a href="#cb12-19"></a><span class="at">  </span><span class="fu">restartPolicy</span><span class="kw">:</span><span class="at"> Never</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> v1</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Pod</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> dapi-test-pod</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="at">  </span><span class="fu">containers</span><span class="kw">:</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> test-container</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a><span class="at">      </span><span class="fu">image</span><span class="kw">:</span><span class="at"> k8s.gcr.io/busybox</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a><span class="at">      </span><span class="fu">command</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at"> </span><span class="st">&quot;/bin/sh&quot;</span><span class="kw">,</span><span class="st">&quot;-c&quot;</span><span class="kw">,</span><span class="st">&quot;cat /etc/config/keys&quot;</span><span class="at"> </span><span class="kw">]</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a><span class="at">      </span><span class="fu">volumeMounts</span><span class="kw">:</span></span>
+<span id="cb13-11"><a href="#cb13-11"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> config-volume</span></span>
+<span id="cb13-12"><a href="#cb13-12"></a><span class="at">        </span><span class="fu">mountPath</span><span class="kw">:</span><span class="at"> /etc/config</span></span>
+<span id="cb13-13"><a href="#cb13-13"></a><span class="at">  </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb13-14"><a href="#cb13-14"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> config-volume</span></span>
+<span id="cb13-15"><a href="#cb13-15"></a><span class="at">      </span><span class="fu">configMap</span><span class="kw">:</span></span>
+<span id="cb13-16"><a href="#cb13-16"></a><span class="at">        </span><span class="fu">name</span><span class="kw">:</span><span class="at"> special-config</span></span>
+<span id="cb13-17"><a href="#cb13-17"></a><span class="at">        </span><span class="fu">items</span><span class="kw">:</span></span>
+<span id="cb13-18"><a href="#cb13-18"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">key</span><span class="kw">:</span><span class="at"> special.level</span></span>
+<span id="cb13-19"><a href="#cb13-19"></a><span class="at">          </span><span class="fu">path</span><span class="kw">:</span><span class="at"> keys</span><span class="co">            # mount file `/etc/config/keys` with contents of value of `special.level`</span></span>
+<span id="cb13-20"><a href="#cb13-20"></a><span class="at">  </span><span class="fu">restartPolicy</span><span class="kw">:</span><span class="at"> Never</span></span></code></pre></div></li>
 <li><p>Understand ConfigMaps and Pods</p>
 <ul class="incremental">
 <li>ConfigMaps act as register table (key-value pairs storage)</li>
@@ -322,14 +322,14 @@
 <li><p>Note</p>
 <ul class="incremental">
 <li><p>ConfigMap can be created use specification looks like these</p>
-<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">apiVersion:</span><span class="at"> v1</span>
-<span class="fu">kind:</span><span class="at"> ConfigMap</span>
-<span class="fu">metadata:</span>
-  <span class="fu">name:</span><span class="at"> special-config</span>
-  <span class="fu">namespace:</span><span class="at"> default</span>
-<span class="fu">data:</span>
-  <span class="fu">special.how:</span><span class="at"> very</span></code></pre></div></li>
-<li>When mount ConfigMap Volume to a mountpoint, other files under the mountpoint will be deleted!</li>
+<div class="sourceCode" id="cb14"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> v1</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> ConfigMap</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> special-config</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="at">  </span><span class="fu">namespace</span><span class="kw">:</span><span class="at"> default</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a><span class="fu">data</span><span class="kw">:</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="at">  </span><span class="fu">special.how</span><span class="kw">:</span><span class="at"> very</span></span></code></pre></div></li>
+<li><p>When mount ConfigMap Volume to a mountpoint, other files under the mountpoint will be deleted!</p></li>
 <li><p>Mounted ConfigMaps are updated automatically in period</p></li>
 </ul></li>
 </ol>
@@ -337,22 +337,22 @@
 <h2 id="steps">Steps</h2>
 <ol class="incremental">
 <li><p>Use <code>kubectl run</code> with <code>--replicas</code> parameter to specific pods count</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">kubectl</span> run hello-world --replicas=5 --labels=<span class="st">&quot;run=load-balancer-example&quot;</span> --image=gcr.io/google-samples/node-hello:1.0  --port=8080</code></pre></div></li>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1"></a><span class="ex">kubectl</span> run hello-world --replicas=5 --labels=<span class="st">&quot;run=load-balancer-example&quot;</span> --image=gcr.io/google-samples/node-hello:1.0  --port=8080</span></code></pre></div></li>
 <li><p>Display deploy information</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">kubectl</span> get deployments hello-world
-<span class="ex">kubectl</span> describe deployments hello-world</code></pre></div></li>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1"></a><span class="ex">kubectl</span> get deployments hello-world</span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="ex">kubectl</span> describe deployments hello-world</span></code></pre></div></li>
 <li><p>Display ReplicaSet objects</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">kubectl</span> get replicasets
-<span class="ex">kubectl</span> describe replicasets</code></pre></div></li>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1"></a><span class="ex">kubectl</span> get replicasets</span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="ex">kubectl</span> describe replicasets</span></code></pre></div></li>
 <li><p>Create Service</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">kubectl</span> expose deployment hello-world --type=LoadBalancer --name=my-service</code></pre></div></li>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1"></a><span class="ex">kubectl</span> expose deployment hello-world --type=LoadBalancer --name=my-service</span></code></pre></div></li>
 <li><p>Display service</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">kubectl</span> get services my-service
-<span class="ex">kubectl</span> describe services my-service</code></pre></div></li>
-<li>Use service</li>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1"></a><span class="ex">kubectl</span> get services my-service</span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="ex">kubectl</span> describe services my-service</span></code></pre></div></li>
+<li><p>Use service</p></li>
 <li><p>Cleanup</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">kubectl</span> delete services my-services
-<span class="ex">kubectl</span> delete deployment hello-world</code></pre></div></li>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1"></a><span class="ex">kubectl</span> delete services my-services</span>
+<span id="cb20-2"><a href="#cb20-2"></a><span class="ex">kubectl</span> delete deployment hello-world</span></code></pre></div></li>
 </ol>
 <h2 id="deployments">Deployments</h2>
 <p>See <a href="k8s.org::*Deployments">Concept/Deployments</a></p>
@@ -374,7 +374,7 @@
 <h2 id="logs"><span class="todo TODO">TODO</span> logs</h2>
 <h2 id="exec">exec</h2>
 <p>Execute bash on the pod/container (seems to be useful for debug)</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">kubectl</span> exec -it <span class="va">$POD_NAME</span> bash</code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1"></a><span class="ex">kubectl</span> exec -it <span class="va">$POD_NAME</span> bash</span></code></pre></div>
 <h2 id="label">label</h2>
 <h2 id="delete">delete</h2>
 <h2 id="rollout">rollout</h2>

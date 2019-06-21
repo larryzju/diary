@@ -254,7 +254,7 @@
 <h1 id="interfaces-and-other-types">Interfaces and other types</h1>
 <h2 id="interfaces">Interfaces</h2>
 <ul class="incremental">
-<li>provider a way to specify the behavior of an object: <strong>If something can do this, then it can be used there.</strong></li>
+<li>provider a way to specify the behavior of an object: <span class="underline">If something can do this, then it can be used there.</span></li>
 <li>只有一到两个方法的 interface 属于常见</li>
 <li>一个类型可以实现多个 interface 的方法，但不指定显示的继承实现路径</li>
 </ul>
@@ -270,7 +270,7 @@
 <li>switch 条件为 <code>value.(type)</code></li>
 <li>通过 <code>value.(typeName)</code> 进行类型断言或转换</li>
 <li>若无法转换，则会 crash with a run-time error</li>
-<li>使用 &quot;val, ok&quot; 来测试是否能够正常转换</li>
+<li>使用 "val, ok" 来测试是否能够正常转换</li>
 </ul>
 <h2 id="generality">Generality</h2>
 <ul class="incremental">
@@ -279,13 +279,13 @@
 <li>通过对 interface 提供的接口进行开发，以实现抽象编程</li>
 </ul>
 <h2 id="interface-and-methods">Interface and methods</h2>
-<p><strong>Almost anything can have methods attached, almost anythin can santisfy an interface</strong></p>
+<p><span class="underline">Almost anything can have methods attached, almost anythin can santisfy an interface</span></p>
 <h1 id="the-blank-identifier">The Blank Identifier</h1>
 <ul class="incremental">
 <li>can be assigned or declared with any value of any type, with the value discarded harmlessly</li>
 <li>用于 multiple assignment</li>
 <li>用于 unused imports and variables，引用未使用的包或变量，以避免编译错误</li>
-<li>用于 import for side effect，如 =import _ &quot;net/http/pprof&quot;=</li>
+<li>用于 import for side effect，如 <code>import _ "net/http/pprof"</code></li>
 <li>用于 interface check，如 <code>var _ json.Marshaler = (*RamMessage)(nil)</code></li>
 <li>类型无需指出它具体实现了哪些接口，而去具体实现相应的方法，大部分转换都在编译时进行的</li>
 <li>使用 <code>value.(type)</code> 进行 check，会在运行时进行</li>

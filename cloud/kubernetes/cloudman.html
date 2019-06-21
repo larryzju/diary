@@ -83,24 +83,24 @@
 </ul>
 <h2 id="service">Service</h2>
 <ul class="incremental">
-<li>Pod 的地址只能在集群内部分使用，而且可能会被频繁地销毁和重启</li>
-<li>Service 定义了外界访问一组特定 Pod 的方式</li>
-<li>有自己的 IP 和端口</li>
-<li>为 Pod 提供了负载均衡能力</li>
+<li><p>Pod 的地址只能在集群内部分使用，而且可能会被频繁地销毁和重启</p></li>
+<li><p>Service 定义了外界访问一组特定 Pod 的方式</p></li>
+<li><p>有自己的 IP 和端口</p></li>
+<li><p>为 Pod 提供了负载均衡能力</p></li>
 <li><p>将 Pod 端口映射到外部</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">kubectl</span> expose deployment/kubernetes-bootcamp \
-        --type=<span class="st">&quot;NodePort&quot;</span> --port 8080</code></pre></div></li>
-<li>用 <code>kubectl get service</code> 查看映射</li>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">kubectl</span> expose deployment/kubernetes-bootcamp \</span>
+<span id="cb1-2"><a href="#cb1-2"></a>        --type=<span class="st">&quot;NodePort&quot;</span> --port 8080</span></code></pre></div></li>
+<li><p>用 <code>kubectl get service</code> 查看映射</p></li>
 <li><p>映射到的外部服务端口号是随机的</p></li>
 </ul>
 <h2 id="rolling">Rolling</h2>
 <ul class="incremental">
 <li><p><code>kubectl set image</code> 命令动态更新 Deployment 中的容器镜像</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># update deployments kubernetes-bootcamp&#39;s container&#39;s image to kubernetes-bootcamp:v2</span>
-<span class="ex">kubectl</span> set image deployments/kubernetes-bootcamp \
-        kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2</code></pre></div></li>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># update deployments kubernetes-bootcamp&#39;s container&#39;s image to kubernetes-bootcamp:v2</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="ex">kubectl</span> set image deployments/kubernetes-bootcamp \</span>
+<span id="cb2-3"><a href="#cb2-3"></a>        kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2</span></code></pre></div></li>
 <li><p><code>kubectl rollout undo</code> 回退版本</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">kubectl</span> rollout undo deployments/kubernetes-bootcamp</code></pre></div></li>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="ex">kubectl</span> rollout undo deployments/kubernetes-bootcamp</span></code></pre></div></li>
 </ul>
 <h1 id="架构">架构</h1>
 <h2 id="pod-的作用">Pod 的作用</h2>
@@ -141,24 +141,24 @@
 <h2 id="kubeadm-方式-ubuntu-16.04">kubeadm 方式 (ubuntu 16.04)</h2>
 <ol class="incremental">
 <li><p>节点安装 docker</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">apt-get</span> update <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> install docker.io</code></pre></div></li>
-<li>节点安装 kubelet, kubeadm, kubectl
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="ex">apt-get</span> update <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> install docker.io</span></code></pre></div></li>
+<li><p>节点安装 kubelet, kubeadm, kubectl</p>
 <ul class="incremental">
-<li>kubelet 负责启动 Pod 和容器</li>
-<li>kubeadm 用于初始化 Cluster</li>
-<li>kubectl 命令行工具</li>
+<li><p>kubelet 负责启动 Pod 和容器</p></li>
+<li><p>kubeadm 用于初始化 Cluster</p></li>
+<li><p>kubectl 命令行工具</p></li>
 <li><p>命令如下</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">apt-get</span> update <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> install -y apt-transport-https
-<span class="ex">curl</span> -s https://packages.cloud.google.com/apt/doc/apt-key.gpg <span class="kw">|</span> <span class="ex">apt-key</span> add -cat <span class="op">&lt;&lt;EOF</span> <span class="op">&gt;</span><span class="ex">/etc/apt/sources.list.d/kubernetes.list</span>
-deb http://apt.kubernetes.io/ kubernetes-xenial main
-EOF
-apt-get updateapt-get install -y kubelet kubeadm kubectl</code></pre></div></li>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">apt-get</span> update <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> install -y apt-transport-https</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="ex">curl</span> -s https://packages.cloud.google.com/apt/doc/apt-key.gpg <span class="kw">|</span> <span class="ex">apt-key</span> add -cat <span class="op">&lt;&lt;EOF</span> <span class="op">&gt;</span><span class="ex">/etc/apt/sources.list.d/kubernetes.list</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>deb http://apt.kubernetes.io/ kubernetes-xenial main</span>
+<span id="cb5-4"><a href="#cb5-4"></a>EOF</span>
+<span id="cb5-5"><a href="#cb5-5"></a>apt-get updateapt-get install -y kubelet kubeadm kubectl</span></code></pre></div></li>
 </ul></li>
 <li><p>初始化 Master （在 Master 节点操作）</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># apiserver 指定 master 网络接口</span>
-<span class="co"># pod-network-cider 指定 Pod 网络范围</span>
-<span class="ex">kubeadm</span> init --apiserver-advertise-address 192.168.56.105 \
-        --pod-network-cidr=10.244.0.0/16</code></pre></div></li>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># apiserver 指定 master 网络接口</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co"># pod-network-cider 指定 Pod 网络范围</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="ex">kubeadm</span> init --apiserver-advertise-address 192.168.56.105 \</span>
+<span id="cb6-4"><a href="#cb6-4"></a>        --pod-network-cidr=10.244.0.0/16</span></code></pre></div></li>
 </ol>
 <h1 id="命令">命令</h1>
 <ul class="incremental">
@@ -185,7 +185,7 @@ apt-get updateapt-get install -y kubelet kubeadm kubectl</code></pre></div></li>
 <dt><code>kubectl run name --image=xx</code></dt>
 <dd>部署应用
 </dd>
-<dt><code>kubectl expose deployment --type=&quot;NodePort&quot; --port 8080</code></dt>
+<dt><code>kubectl expose deployment --type="NodePort" --port 8080</code></dt>
 <dd>映射服务
 </dd>
 </dl></li>

@@ -120,27 +120,27 @@
 <h3 id="example">Example</h3>
 <ol class="incremental">
 <li><p>Do not as a router</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">iptables</span> -P FORWARD DROP        # set <span class="kw">`</span><span class="ex">FORWARD</span><span class="kw">`</span> chains default policy as <span class="kw">`</span><span class="ex">DROP</span><span class="kw">`</span></code></pre></div></li>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">iptables</span> -P FORWARD DROP        <span class="co"># set `FORWARD` chains default policy as `DROP`</span></span></code></pre></div></li>
 <li><p>Reject Dropbox periodly broadcast packets</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">iptables</span> -A INPUT <span class="dt">\ </span>            # append to chain <span class="kw">`</span><span class="ex">INPUT</span><span class="kw">`</span>
-   <span class="ex">-p</span> tcp  <span class="dt">\ </span>                   # protocol TCP
-   <span class="ex">--dport</span> 17500 -j REJECT      # jump to target <span class="kw">`</span><span class="ex">REJECT</span><span class="kw">`</span>
-   <span class="ex">--reject-with</span> icmp-port-unreachable</code></pre></div></li>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="ex">iptables</span> -A INPUT <span class="dt">\ </span>            <span class="co"># append to chain `INPUT`</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>   <span class="ex">-p</span> tcp  <span class="dt">\ </span>                   <span class="co"># protocol TCP</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>   <span class="ex">--dport</span> 17500 -j REJECT      <span class="co"># jump to target `REJECT`</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>   <span class="ex">--reject-with</span> icmp-port-unreachable</span></code></pre></div></li>
 <li><p>Only accept particular IP to use Dropbox broadcast</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">iptables</span> -R INPUT 1 -p tcp --dport 17500 \
-         ! -s 10.0.0.85 -j REJECT --reject-with icmp-port-unreable</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="ex">iptables</span> -R INPUT 1 -p tcp --dport 17500 \</span>
+<span id="cb3-2"><a href="#cb3-2"></a>         ! -s 10.0.0.85 -j REJECT --reject-with icmp-port-unreable</span></code></pre></div>
 <ul class="incremental">
 <li><code>-R</code> for replace our old rule</li>
 <li>Reject all except the packet with the source IP <code>10.0.0.85</code></li>
 </ul></li>
 <li><p>Trust some Dropbox</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">## accept immediately</span>
-<span class="ex">iptables</span> -I INPUT -p tcp --dport 17500 -s 10.0.0.85 -j ACCEPT \
-         -m comment --comment <span class="st">&quot;Friendly Dropbox&quot;</span>
-
-<span class="co">## replace the second rule to `REJECT` all others dropbox broadcast</span>
-<span class="ex">iptables</span> -R INPUT 2 -p tcp --dport 17500 -j REJECT \
-         --reject-with icmp-port-unreachable</code></pre></div></li>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">## accept immediately</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="ex">iptables</span> -I INPUT -p tcp --dport 17500 -s 10.0.0.85 -j ACCEPT \</span>
+<span id="cb4-3"><a href="#cb4-3"></a>         -m comment --comment <span class="st">&quot;Friendly Dropbox&quot;</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="co">## replace the second rule to `REJECT` all others dropbox broadcast</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="ex">iptables</span> -R INPUT 2 -p tcp --dport 17500 -j REJECT \</span>
+<span id="cb4-7"><a href="#cb4-7"></a>         --reject-with icmp-port-unreachable</span></code></pre></div></li>
 <li><p>Logging</p>
 <ul class="incremental">
 <li>Like middleware, not affect the packet flow.</li>
@@ -148,12 +148,12 @@
 <li>Create a <code>logdrop</code> chain to make things happy
 <ol class="incremental">
 <li><p>Create the chain</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">iptables</span> -N logdrop</code></pre></div></li>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">iptables</span> -N logdrop</span></code></pre></div></li>
 <li><p>Add rules</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">iptables</span> -A logdrop -m limit --limit 5/m --limit-burst 10 -j LOG
-<span class="ex">iptables</span> -A logdrop -j DROP</code></pre></div></li>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="ex">iptables</span> -A logdrop -m limit --limit 5/m --limit-burst 10 -j LOG</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="ex">iptables</span> -A logdrop -j DROP</span></code></pre></div></li>
 <li><p>Use the chain</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">iptables</span> -A INPUT -m conntrack --ctstate INVALID -j logdrop</code></pre></div></li>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="ex">iptables</span> -A INPUT -m conntrack --ctstate INVALID -j logdrop</span></code></pre></div></li>
 </ol></li>
 <li>Explain
 <ul class="incremental">

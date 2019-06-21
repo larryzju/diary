@@ -133,11 +133,11 @@
 <ul class="incremental">
 <li>relatively ephemeral</li>
 <li>volume has the same lifetime as the pod</li>
-<li><a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/" class="uri">https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/</a></li>
+<li><a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/">https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/</a></li>
 </ul>
 <h2 id="replication"><span class="todo TODO">TODO</span> replication</h2>
 <p>pod 的一个 node 异常后，将重新发起一个新的 pod 替换之</p>
-<p><a href="https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/" class="uri">https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/</a></p>
+<p><a href="https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/">https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/</a></p>
 <h2 id="motivation">Motivation</h2>
 <ul class="incremental">
 <li>Serve as unit of deployment, horizontal scaling, and replication.</li>
@@ -213,19 +213,19 @@
 <p>Service is assigned a unique IP address which is independent with pods. Traffic will be routed to some pod in the groups of service.</p>
 <h2 id="how-to-create-services">How to create services</h2>
 <ol class="incremental">
-<li><code>kubectl expose &lt;deployment&gt;</code></li>
+<li><p><code>kubectl expose &lt;deployment&gt;</code></p></li>
 <li><p>create by <code>Service</code> API</p>
-<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"> <span class="fu">kind:</span><span class="at"> Service</span>
-<span class="fu">apiVersion:</span><span class="at"> v1</span>
-<span class="fu">metadata:</span>
-  <span class="fu">name:</span><span class="at"> my-service</span>
-<span class="fu">spec:</span>
-  <span class="fu">selector:</span>
-    <span class="fu">app:</span><span class="at"> MyApp</span>
-  <span class="fu">ports:</span>
-  <span class="kw">-</span> <span class="fu">protocol:</span><span class="at"> TCP</span>
-    <span class="fu">port:</span><span class="at"> 80</span>
-    <span class="fu">targetPort:</span><span class="at"> 9376</span></code></pre></div></li>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1"></a><span class="at"> </span><span class="fu">kind</span><span class="kw">:</span><span class="at"> Service</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> v1</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> my-service</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="at">  </span><span class="fu">selector</span><span class="kw">:</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="at">    </span><span class="fu">app</span><span class="kw">:</span><span class="at"> MyApp</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="at">  </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">protocol</span><span class="kw">:</span><span class="at"> TCP</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="at">    </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">80</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="at">    </span><span class="fu">targetPort</span><span class="kw">:</span><span class="at"> </span><span class="dv">9376</span></span></code></pre></div></li>
 </ol>
 <h2 id="endpoints"><code>Endpoints</code></h2>
 <p><code>Endpoints</code> is an object for Pods and will update whenever set of <code>Pods</code> in a <code>Service</code> changed.</p>
@@ -271,8 +271,8 @@
 <h3 id="environment">Environment</h3>
 <ul class="incremental">
 <li><p>After create <code>Services</code>, new <code>Pods</code> will be configured with environment variables</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="va">${SVCNAME}</span><span class="ex">_SERVICE_HOST</span>
-<span class="va">${SVCNAME}</span><span class="ex">_SERVICE_PORT</span></code></pre></div></li>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="va">${SVCNAME}</span><span class="ex">_SERVICE_HOST</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="va">${SVCNAME}</span><span class="ex">_SERVICE_PORT</span></span></code></pre></div></li>
 <li><p>To use env, Services must be created before Pods</p></li>
 </ul>
 <h3 id="dns">DNS</h3>
@@ -293,23 +293,23 @@
 <h2 id="misc">Misc</h2>
 <ul class="incremental">
 <li><p><code>Services</code> can expose more than one port and you must give all of your ports names. For examples:</p>
-<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">kind:</span><span class="at"> Service</span>
-<span class="fu">apiVersion:</span><span class="at"> v1</span>
-<span class="fu">metadata:</span>
-  <span class="fu">name:</span><span class="at"> my-service</span>
-<span class="fu">spec:</span>
-  <span class="fu">selector:</span>
-    <span class="fu">app:</span><span class="at"> MyApp</span>
-  <span class="fu">ports:</span>
-  <span class="kw">-</span> <span class="fu">name:</span><span class="at"> http</span>
-    <span class="fu">protocol:</span><span class="at"> TCP</span>
-    <span class="fu">port:</span><span class="at"> 80</span>
-    <span class="fu">targetPort:</span><span class="at"> 9376</span>
-  <span class="kw">-</span> <span class="fu">name:</span><span class="at"> https</span>
-    <span class="fu">protocol:</span><span class="at"> TCP</span>
-    <span class="fu">port:</span><span class="at"> 443</span>
-    <span class="fu">targetPort:</span><span class="at"> 9377</span></code></pre></div></li>
-<li>Can set clusterIP of <code>Services</code> by <code>.spec.clusterIP</code>. Most useful for legacy system which configured a specific IP address</li>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Service</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> v1</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> my-service</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="at">  </span><span class="fu">selector</span><span class="kw">:</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="at">    </span><span class="fu">app</span><span class="kw">:</span><span class="at"> MyApp</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="at">  </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> http</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="at">    </span><span class="fu">protocol</span><span class="kw">:</span><span class="at"> TCP</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a><span class="at">    </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">80</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="at">    </span><span class="fu">targetPort</span><span class="kw">:</span><span class="at"> </span><span class="dv">9376</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> https</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a><span class="at">    </span><span class="fu">protocol</span><span class="kw">:</span><span class="at"> TCP</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a><span class="at">    </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">443</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a><span class="at">    </span><span class="fu">targetPort</span><span class="kw">:</span><span class="at"> </span><span class="dv">9377</span></span></code></pre></div></li>
+<li><p>Can set clusterIP of <code>Services</code> by <code>.spec.clusterIP</code>. Most useful for legacy system which configured a specific IP address</p></li>
 </ul>
 <h1 id="configmap"><span class="todo TODO">TODO</span> ConfigMap</h1>
 <p>Something like register or key/value database(?)</p>
@@ -329,10 +329,10 @@
 <h1 id="kubectl">kubectl</h1>
 <h2 id="run">run</h2>
 <p>create a deployment</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">kubectl</span> run nginx --image=nginx --replicas=2</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="ex">kubectl</span> run nginx --image=nginx --replicas=2</span></code></pre></div>
 <h2 id="expose">expose</h2>
 <p>create a service for deployment</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">kubectl</span> expose deployment nginx --port=80</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">kubectl</span> expose deployment nginx --port=80</span></code></pre></div>
 
 			</div>
 		</section>

@@ -54,27 +54,27 @@
 <p>待补充</p>
 <h2 id="在-settings.xml-配置">在 settings.xml 配置</h2>
 <p>在 <code>~/.m2/settings.xml</code> 中 profiles 一节中添加配置，如下</p>
-<div class="sourceCode"><pre class="sourceCode xml"><code class="sourceCode xml"><span class="kw">&lt;profile&gt;</span>
-  <span class="kw">&lt;id&gt;</span>cloudera<span class="kw">&lt;/id&gt;</span>
-  <span class="kw">&lt;repositories&gt;</span>
-    <span class="kw">&lt;repository&gt;</span>
-  <span class="kw">&lt;id&gt;</span>cloudera<span class="kw">&lt;/id&gt;</span>
-  <span class="kw">&lt;name&gt;</span>cloudera repo<span class="kw">&lt;/name&gt;</span>
-  <span class="kw">&lt;url&gt;</span>https://repository.cloudera.com/artifactory/cloudera-repos/<span class="kw">&lt;/url&gt;</span>
-    <span class="kw">&lt;/repository&gt;</span>
-  <span class="kw">&lt;/repositories&gt;</span>
-<span class="kw">&lt;/profile&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode xml"><code class="sourceCode xml"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">&lt;profile&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>  <span class="kw">&lt;id&gt;</span>cloudera<span class="kw">&lt;/id&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>  <span class="kw">&lt;repositories&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>    <span class="kw">&lt;repository&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>  <span class="kw">&lt;id&gt;</span>cloudera<span class="kw">&lt;/id&gt;</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>  <span class="kw">&lt;name&gt;</span>cloudera repo<span class="kw">&lt;/name&gt;</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>  <span class="kw">&lt;url&gt;</span>https://repository.cloudera.com/artifactory/cloudera-repos/<span class="kw">&lt;/url&gt;</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>    <span class="kw">&lt;/repository&gt;</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>  <span class="kw">&lt;/repositories&gt;</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="kw">&lt;/profile&gt;</span></span></code></pre></div>
 <p>使用时，需要为 maven 指定 profile，如 <code>mvn -Pcloudera</code></p>
 <h1 id="mirror-配置">mirror 配置</h1>
 <p>国内中央镜像源可以使用阿里镜像，在 <code>~/.m2/settings.xml</code> 中添加</p>
-<div class="sourceCode"><pre class="sourceCode xml"><code class="sourceCode xml"><span class="kw">&lt;mirrors&gt;</span>
-  <span class="kw">&lt;mirror&gt;</span>
-    <span class="kw">&lt;id&gt;</span>aliyun<span class="kw">&lt;/id&gt;</span>
-    <span class="kw">&lt;mirrorOf&gt;</span>central<span class="kw">&lt;/mirrorOf&gt;</span>
-    <span class="kw">&lt;name&gt;</span>Human Readable Name for this Mirror.<span class="kw">&lt;/name&gt;</span>
-    <span class="kw">&lt;url&gt;</span>http://maven.aliyun.com/nexus/content/groups/public<span class="kw">&lt;/url&gt;</span>
-  <span class="kw">&lt;/mirror&gt;</span>
-<span class="kw">&lt;/mirrors&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode xml"><code class="sourceCode xml"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">&lt;mirrors&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>  <span class="kw">&lt;mirror&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="kw">&lt;id&gt;</span>aliyun<span class="kw">&lt;/id&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>    <span class="kw">&lt;mirrorOf&gt;</span>central<span class="kw">&lt;/mirrorOf&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>    <span class="kw">&lt;name&gt;</span>Human Readable Name for this Mirror.<span class="kw">&lt;/name&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>    <span class="kw">&lt;url&gt;</span>http://maven.aliyun.com/nexus/content/groups/public<span class="kw">&lt;/url&gt;</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>  <span class="kw">&lt;/mirror&gt;</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="kw">&lt;/mirrors&gt;</span></span></code></pre></div>
 <h1 id="build-classpath">build classpath</h1>
 <p><code>maven dependency:build-classpath</code> 可以从当前工程（pom.xml）中生成 classpath</p>
 <p>比如 spark hive 需要指定 classpath，可以</p>
@@ -90,7 +90,7 @@
 </code></pre>
 <p>默认情况会从两个位置下载 XML 文件：</p>
 <ol class="incremental">
-<li>remote: <a href="https://repo.maven.apache.org/maven2/archetype-catalog.xml" class="uri">https://repo.maven.apache.org/maven2/archetype-catalog.xml</a></li>
+<li>remote: <a href="https://repo.maven.apache.org/maven2/archetype-catalog.xml">https://repo.maven.apache.org/maven2/archetype-catalog.xml</a></li>
 <li>local: 当前目录下的 archetype-catalog.xml</li>
 </ol>
 <p>然后进入一个交互式选择模式，通过指定模板编号，填写相应的 GAV 名称，生成一个空的项目</p>
@@ -100,7 +100,7 @@
 <li><code>mvn archetype:generate</code> 进入交互式命令行（可能需要一段时间）</li>
 <li>输入 <code>scala</code> 来筛选 scala 相关的模板</li>
 <li>选择具体的编号，这里选择 <code>7: remote -&gt; net.alchim31.maven:scala-archetype-simple</code></li>
-<li>填写 GAV 信息，按 &quot;Y&quot; 生成工程</li>
+<li>填写 GAV 信息，按 "Y" 生成工程</li>
 </ol>
 <h2 id="问题">问题</h2>
 <p>aliyun 的 mirrors 会导致 remote 下载异常？</p>

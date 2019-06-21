@@ -16,13 +16,13 @@
 			<div id='main'>
 				<h1 id="overview">Overview</h1>
 <h2 id="brk-and-sbrk">brk and sbrk</h2>
-<p>A process has several segments of memory<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>:</p>
+<p>A process has several segments of memory<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>:</p>
 <ul class="incremental">
 <li>Code (text) segmemnt, which contains the code to be executed</li>
 <li>Data segment, which contains data the compiler knows about (globals and statics)</li>
 <li>Stack segment, which contains (drumroll..) the stack</li>
 </ul>
-<p>The <code>brk()</code> system call is used to change th point where the data segment &quot;breaks&quot; (ends). And <code>sbrk(intptr_t increment)</code> increments the program's data space by <code>increment</code> bytes.</p>
+<p>The <code>brk()</code> system call is used to change th point where the data segment "breaks" (ends). And <code>sbrk(intptr_t increment)</code> increments the program's data space by <code>increment</code> bytes.</p>
 <p>Heap is memory block with a contiguous series of addresses. Program can expand or contract and use as its own accord (system break).</p>
 <p>POSIX <code>sbrk</code> API is used to move the system break. But normally, program use a <strong>memory allocation system</strong> to handle chuncking up and keeping track of which memory is allocated and which is freed.</p>
 <p>C API for memory allocation</p>
@@ -49,12 +49,12 @@
 <ul class="incremental">
 <li></li>
 </ul>
-<div class="footnotes">
+<section class="footnotes" role="doc-endnotes">
 <hr />
 <ol>
-<li id="fn1"><p><a href="https://stackoverflow.com/questions/6338162/what-is-program-break-where-does-it-start-from-0x00">Stackoverflow: What is program break? Where does it start from, 0x00?</a><a href="#fnref1">↩</a></p></li>
+<li id="fn1" role="doc-endnote"><p><a href="https://stackoverflow.com/questions/6338162/what-is-program-break-where-does-it-start-from-0x00">Stackoverflow: What is program break? Where does it start from, 0x00?</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-</div>
+</section>
 
 			</div>
 		</section>

@@ -30,7 +30,7 @@
 <li>强制代码风格</li>
 <li>统一的错误处理（多返回，defer 机制等）</li>
 <li>非侵入性的接口（鸭子方法，静态编译）</li>
-<li>函数式编程，如匿名函数、闭包<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></li>
+<li>函数式编程，如匿名函数、闭包<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
 </ol>
 <h1 id="footnotes">Footnotes</h1>
 <h1 id="初始-go-语言">初始 go 语言</h1>
@@ -69,7 +69,7 @@
 <li>main 包中 main 函数为入口</li>
 <li>main 函数无返回，无参数传入（通过 <code>os.Args</code> ）</li>
 <li>go run/build 命令运行和编译</li>
-<li>go 命令只是一个前端，编译器与链接器为 6g, 6l 等 <a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></li>
+<li>go 命令只是一个前端，编译器与链接器为 6g, 6l 等 <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
 </ul>
 <h2 id="工程管理">工程管理</h2>
 <ul class="incremental">
@@ -97,7 +97,7 @@
 <li>编译期间就已知且不可改变的值</li>
 <li>字面常量：无类型，视使用值域而定，保持精确度</li>
 <li><code>const</code> 关键字，类似于 <code>var</code> ，可以是无类型的</li>
-<li>预定义了 true, false, iota<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> 等变量</li>
+<li>预定义了 true, false, iota<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> 等变量</li>
 </ul>
 <h2 id="类型">类型</h2>
 <dl class="incremental">
@@ -191,12 +191,12 @@
 <li>基础类型</li>
 <li>复合类型：如数组、结构体、指针等</li>
 <li>可以指向任意对象的类型（Any 类型）</li>
-<li>值语义与引用语义<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a></li>
+<li>值语义与引用语义<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></li>
 <li>面向对象</li>
 <li>接口</li>
 </ol>
 <h3 id="java-类型系统">Java 类型系统</h3>
-<p>以 java 为例，有两套独立的类型系统<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a></p>
+<p>以 java 为例，有两套独立的类型系统<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
 <ol class="incremental">
 <li>值类型：通过装箱才能作为对象，如 int 转换为 Integer 对象</li>
 <li>对象类型/引用类型：只允许在堆上创建（共享内存），以 Object 作为类型系统的根</li>
@@ -215,7 +215,7 @@
 <dd>即 <code>interface{}</code>
 </dd>
 </dl>
-<p>其值主义表现的非常彻底，包括数组、结构体、指针都基于值语义<a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a></p>
+<p>其值主义表现的非常彻底，包括数组、结构体、指针都基于值语义<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
 <p>Go 中有四个引用类型的特别类型：</p>
 <ol class="incremental">
 <li>slice</li>
@@ -248,7 +248,7 @@
 <li>两个类实现了相同的接口，接口放在哪个包好？</li>
 </ol>
 <h3 id="非侵入式接口">非侵入式接口</h3>
-<p>Go 语言中，一个类只要实现了接口要求的所有函数，则自动实现该接口<a href="#fn7" class="footnoteRef" id="fnref7"><sup>7</sup></a>。称为“非侵入式接口”。</p>
+<p>Go 语言中，一个类只要实现了接口要求的所有函数，则自动实现该接口<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>。称为“非侵入式接口”。</p>
 <p>其优势在于：</p>
 <ol class="incremental">
 <li>不再需要绘制类库的继承树图（好事？坏事？）</li>
@@ -263,13 +263,13 @@
 </ol>
 <h3 id="注意">注意</h3>
 <p>Go 会根据 <code>func ( a Integer ) Less ( b Integer ) bool</code> 自动生成：</p>
-<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">func</span> ( a *Integer ) Less ( b Interger ) book {
-    <span class="kw">return</span> (*a).Less(b)
-}</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">func</span> ( a *Integer ) Less ( b Interger ) book {</span>
+<span id="cb1-2"><a href="#cb1-2"></a>    <span class="kw">return</span> (*a).Less(b)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>}</span></code></pre></div>
 <p>反之则不成立（因为 <code>&amp;a.Add()</code> 改变的只是函数的参数，并不对外部的对象产生影响。</p>
 <h2 id="接口查询">接口查询</h2>
 <p>用于检查对象是否实现了接口。注意这是在运行期进行的操作，有成本，且可能失败</p>
-<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go">file, ok := obj.(*File)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb2-1"><a href="#cb2-1"></a>file, ok := obj.(*File)</span></code></pre></div>
 <p>接口查询的主要用途是：</p>
 <ol class="incremental">
 <li>查询接口</li>
@@ -289,18 +289,18 @@
 <li><code>github.com/nfs/gocode</code> 提供代码补全功能</li>
 <li>由于多线程和多进程的引入 ，可视化调试手段功能有限，不如直接 <code>fmt.Println</code></li>
 </ul>
-<div class="footnotes">
+<section class="footnotes" role="doc-endnotes">
 <hr />
 <ol>
-<li id="fn1"><p>闭包在函数式编程中是一个重要想对概念，C++ 式的面向对象编程中把一组函数绑定到特定的数据类型上，而闭包可以说是把一组数据绑定到特定的函数上。<a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>貌似 plan9 中的编译器也是如此。在 1.8 版本的 bin 目录下没有看到 6g, 6l 等文件？<a href="#fnref2">↩</a></p></li>
-<li id="fn3"><p>编译时生成，每次自动加 1。用于生成枚举，多次调用时可以只写第一个，后续省略<a href="#fnref3">↩</a></p></li>
-<li id="fn4"><p>在 C 语言中函数传参方式不同，决定函数是否能够修改外部变量内容<a href="#fnref4">↩</a></p></li>
-<li id="fn5"><p>可以看出 java 不是完整的面向对象语言，在 ruby 等中强制要求所有类型都是对象<a href="#fnref5">↩</a></p></li>
-<li id="fn6"><p>C 语言中数组基于引用，但结构体中的数组基于值<a href="#fnref6">↩</a></p></li>
-<li id="fn7"><p>类似于 python 中的 duck type，但由于 go 是编译语言，在使用时强制转换和检查，能保证更好的可用性和性能<a href="#fnref7">↩</a></p></li>
+<li id="fn1" role="doc-endnote"><p>闭包在函数式编程中是一个重要想对概念，C++ 式的面向对象编程中把一组函数绑定到特定的数据类型上，而闭包可以说是把一组数据绑定到特定的函数上。<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>貌似 plan9 中的编译器也是如此。在 1.8 版本的 bin 目录下没有看到 6g, 6l 等文件？<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p>编译时生成，每次自动加 1。用于生成枚举，多次调用时可以只写第一个，后续省略<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4" role="doc-endnote"><p>在 C 语言中函数传参方式不同，决定函数是否能够修改外部变量内容<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5" role="doc-endnote"><p>可以看出 java 不是完整的面向对象语言，在 ruby 等中强制要求所有类型都是对象<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6" role="doc-endnote"><p>C 语言中数组基于引用，但结构体中的数组基于值<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7" role="doc-endnote"><p>类似于 python 中的 duck type，但由于 go 是编译语言，在使用时强制转换和检查，能保证更好的可用性和性能<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-</div>
+</section>
 
 			</div>
 		</section>

@@ -17,14 +17,18 @@
 				<h1 id="set">Set</h1>
 <p>本质上 Set 与 Dict 是一回事，可以把 Dict 看成是 <code>Set&lt;Pair&lt;key,value&gt;&gt;</code> 特殊类型。Set 只用到元素中的 Key 属性，元素可以包括有其它信息。</p>
 <p>除了常见的插入、删除、查找外，还需要支持：最大、最小、前序、后序查找。如下所示</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode go"><code class="sourceCode go"></code></pre></div>
 <h2 id="elementary-data-structure">Elementary Data Structure</h2>
-<h3 id="stack-queues"><span class="todo TODO">TODO</span> Stack &amp; Queues</h3>
-<p>两者的区别在于元素的取出顺序：</p>
+<h3 id="stack">Stack</h3>
+<p>Stack 与 Queue 两者的区别在于元素的取出顺序：</p>
 <ul class="incremental">
 <li>stack 为 LIFO</li>
 <li>queue 为 FIFO</li>
 </ul>
 <p>Stack 的基本操作为 Push 和 Pop，如下所示</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode go"><code class="sourceCode go"></code></pre></div>
+<ol class="incremental">
+<li><p>数组实现</p>
 <p>可以用数组来实现</p>
 <ul class="incremental">
 <li>维护一个指针 top，指向栈顶</li>
@@ -33,8 +37,39 @@
 <li>对满栈调用 Push 时，产生 overflow 错误</li>
 </ul>
 <p>Go 语言中，Slice 相当于一个可以动态扩容的 Array。为了与书上统一，我们使用固定长度的 Slice 来实现 Stack</p>
-<h3 id="queue"><span class="todo TODO">TODO</span> Queue</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode go"><code class="sourceCode go"></code></pre></div></li>
+<li><p><span class="todo TODO">TODO</span> 双栈</p>
+<p>Exercises 10.1-2. 通过一个数组 <code>A[1..n]</code> 来表示两个栈，只有当两者都满后才无法继续压栈</p>
+<p>待实现</p></li>
+<li><p><span class="todo TODO">TODO</span> 双队列实现</p>
+<p>待实现</p></li>
+</ol>
+<h3 id="queue">Queue</h3>
+<p>Quene 的两个基本操作为 Enqueue 和 Dequque。维护了 <strong>head</strong> 和 <strong>tail</strong> 两个索引，分别指向第一个元素，下一个可以插入的位置。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode go"><code class="sourceCode go"></code></pre></div>
+<p>对于底层长度为 N 的数组，最多可以保存 N-1 个元素（否则 tail 与 head 重合时无法判断是空还是满）</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode go"><code class="sourceCode go"></code></pre></div>
+<ol class="incremental">
+<li><p><span class="todo TODO">TODO</span> 双向队列</p>
+<p>可以分别对 head 和 tail 进行压栈和弹栈操作。这种数据结构称为双端队列 (deque)</p>
+<p>待实现</p></li>
+<li><p>双栈实现法</p>
+<p>参考 <a href="https://www.geeksforgeeks.org/queue-using-stacks/">https://www.geeksforgeeks.org/queue-using-stacks/</a></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode go"><code class="sourceCode go"></code></pre></div>
+<p>假设 b 栈空间不小于 a 栈空间，且队列的可用空间与实际入队出队顺序有关</p></li>
+</ol>
 <h3 id="linked-list"><span class="todo TODO">TODO</span> Linked List</h3>
+<p>与数组不同，可以动态扩展。</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode go"><code class="sourceCode go"></code></pre></div>
+<p>双指针链表包含了 <code>prev</code> 与 <code>next</code> 两个指针。其中头结点 <code>head.prev</code> 为空，尾结点 <code>tail.next</code> 为空</p>
+<p>实际实现中可以改造为</p>
+<ol class="incremental">
+<li>单链表</li>
+<li>排序链表</li>
+<li>循环链表： <code>head.prev == tail</code> , <code>tail.next == head</code></li>
+</ol>
+<p>为了实现简单，可以为 List 中添加一个 dummy object (sentinel)</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode go"><code class="sourceCode go"></code></pre></div>
 <h3 id="rooted-tree"><span class="todo TODO">TODO</span> Rooted Tree</h3>
 
 			</div>

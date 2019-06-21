@@ -14,9 +14,8 @@
 		</nav>
 		<section class="main-article-area">
 			<div id='main'>
-				<p>html5-fancy</p>
-<h1 id="a-tour-of-computer-system">A Tour of Computer System</h1>
-<p>A computer system consists of hardware and system software that work together to run application programs. Besides different among specific implements, the underlying concepts are the same. To be a &quot;power programmer&quot; we must understand the underlying computer system and its impact on your application programs.</p>
+				<h1 id="a-tour-of-computer-system">A Tour of Computer System</h1>
+<p>A computer system consists of hardware and system software that work together to run application programs. Besides different among specific implements, the underlying concepts are the same. To be a "power programmer" we must understand the underlying computer system and its impact on your application programs.</p>
 <p>常见的问题如数字格式、C 程序优化、链接、内存泄露、并行程序开发等。都将在后续展开。</p>
 <h2 id="infomation-is-bits-context">Infomation is Bits + Context</h2>
 <p>计算机中所有的信息都以一系列的位来表示。例如，源代码文件，以字节（8位）为单位保存在文件中。其编码由 ASCII 定义。</p>
@@ -96,13 +95,13 @@
 <dd>用于沟通各个组件，以 word 为单位（4字节或8字节）进行传送
 </dd>
 <dt>IO 设备</dt>
-<dd>包括输入、输出、存储和网络，通过 controller/adapter<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> 接到 IO 总线上
+<dd>包括输入、输出、存储和网络，通过 controller/adapter<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> 接到 IO 总线上
 </dd>
 <dt>主存</dt>
 <dd>DRAM (Dynamic Random Access Memory)，通过唯一的连续地址来访问
 </dd>
 <dt>处理器</dt>
-<dd>CPU 核心（如 PC，寄存器，ALU单元），根据指令集<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>进行取指、择指、执行、下一条的循环过程，常见操作如 load,store,operate,jump 等
+<dd>CPU 核心（如 PC，寄存器，ALU单元），根据指令集<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>进行取指、择指、执行、下一条的循环过程，常见操作如 load,store,operate,jump 等
 </dd>
 </dl>
 <h2 id="caches-matters">Caches Matters</h2>
@@ -275,9 +274,9 @@
 </ol>
 <p>For integer representations, it can be encoded for a comparatively small range of values, but do so precisely. While floating-point representations can encode a wide range of values, but only approximately.</p>
 <p>Here's an example to show why we should be careful for the representation of data (floating-point arithmetic doesn't conform the association rule):</p>
-<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">(<span class="fl">3.14</span> + <span class="fl">1e20</span>) - <span class="fl">1e20</span>            <span class="co">/* 0.0 */</span>
-<span class="fl">3.14</span> + (<span class="fl">1e20</span> - <span class="fl">1e20</span>)            <span class="co">/* 3.14 */</span></code></pre></div>
-<h3 id="c-standard">C standard<span class="tag" data-tag-name="c"></span></h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1"></a>(<span class="fl">3.14</span> + <span class="fl">1e20</span>) - <span class="fl">1e20</span>            <span class="co">/* 0.0 */</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fl">3.14</span> + (<span class="fl">1e20</span> - <span class="fl">1e20</span>)            <span class="co">/* 3.14 */</span></span></code></pre></div>
+<h3 id="c-standard">C standard <span class="tag" data-tag-name="c"><span class="smallcaps">c</span></span></h3>
 <p>For GNU c compiler</p>
 <ol class="incremental">
 <li><code>--ansi</code> or <code>--std=c89</code>: ANSI C(1989)/ISO C99(1990)</li>
@@ -511,10 +510,9 @@
 <dd>allocated pages that are not cached in physical memory
 </dd>
 </dl>
-<div class="figure">
-<img src="./img/9.3.vp-pp-mapping.jpg" alt="VM as Cache" />
-<p class="caption">VM as Cache</p>
-</div>
+<figure>
+<img src="./img/9.3.vp-pp-mapping.jpg" alt="" /><figcaption>VM as Cache</figcaption>
+</figure>
 <h3 id="dram-cache-organization"><span class="done DONE">DONE</span> DRAM Cache Organization</h3>
 <ol class="incremental">
 <li><p>Term</p>
@@ -545,13 +543,13 @@
 <h2 id="common-memory-related-bugs-in-c-programs"><span class="todo TODO">TODO</span> Common Memory-Related Bugs in C Programs</h2>
 <h2 id="summary"><span class="todo TODO">TODO</span> Summary</h2>
 <h1 id="footnotes">Footnotes</h1>
-<div class="footnotes">
+<section class="footnotes" role="doc-endnotes">
 <hr />
 <ol>
-<li id="fn1"><p>Controller 集成在设备或主板上，Adapater 是主板上的插槽的可插拔设备<a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>指令集( Instruction set artichecture ) 相当于对外的接口，CPU 具体实现可以不同，称为 microarchitecture<a href="#fnref2">↩</a></p></li>
+<li id="fn1" role="doc-endnote"><p>Controller 集成在设备或主板上，Adapater 是主板上的插槽的可插拔设备<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>指令集( Instruction set artichecture ) 相当于对外的接口，CPU 具体实现可以不同，称为 microarchitecture<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-</div>
+</section>
 
 			</div>
 		</section>

@@ -15,7 +15,7 @@
 		<section class="main-article-area">
 			<div id='main'>
 				<h1 id="install">install</h1>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">npm</span> install -g typescript</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">npm</span> install -g typescript</span></code></pre></div>
 <h1 id="overview">Overview</h1>
 <p>Typescript is a language extends javascript with static type, OOP, interface, etc. Typescript provides a compiler <code>tsc</code> can convert the <code>.ts</code> to plain javascript.</p>
 <p>Some features upon javascript is similar to other languages like Go, Python:</p>
@@ -50,11 +50,10 @@
 </dd>
 </dl>
 <h2 id="type-assertion">type assertion</h2>
-<p>Programmer can specific precise type constrain and tell the compiler: &quot;trust me, I know what I'm doing&quot;.</p>
+<p>Programmer can specific precise type constrain and tell the compiler: "trust me, I know what I'm doing".</p>
 <p>Simliar to type assertion in Go. No runtime impact, just static check and cast.</p>
-<pre class="typescript"><code>(&lt;string&gt;someValue).length
-(someValue as string).length
-</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb2-1"><a href="#cb2-1"></a>(<span class="op">&lt;</span><span class="dt">string</span><span class="op">&gt;</span>someValue).<span class="at">length</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>(someValue <span class="im">as</span> string).<span class="at">length</span></span></code></pre></div>
 <h2 id="advanced-topics">advanced topics</h2>
 <h3 id="union-type"><span class="todo TODO">TODO</span> union type</h3>
 <h3 id="any-vs-object"><span class="todo TODO">TODO</span> any vs object</h3>

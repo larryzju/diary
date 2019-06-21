@@ -81,9 +81,9 @@
 <li>Ordinal, 无符号整型</li>
 <li>Near Pointer，指针类型，32 位，用于在 flat 或 segment model 中表示 offset</li>
 <li>Far Pointer，48 位地址，包括 segment selector(16位） 和 offset（32位） 两部分，只能在 segment 下使用</li>
-<li>String，最大 <span class="math inline">(2<sup>32</sup>)−1</span> 字节</li>
+<li>String，最大 <span class="math inline">(2<sup>32</sup>) − 1</span> 字节</li>
 <li>Bit field，最大 32 位</li>
-<li>Bit String，最大 <span class="math inline">(2<sup>32</sup>)−1</span> 位</li>
+<li>Bit String，最大 <span class="math inline">(2<sup>32</sup>) − 1</span> 位</li>
 <li>BCD，用后半字节表示 0到9 的数字</li>
 <li>Packed BCD，两个半字节来表示 0 到 99 的数字</li>
 </ul>
@@ -262,7 +262,7 @@
 <p>相比之下，paging 更为有用，segment 机制则深入 x86 设计的各方面，不可避免。</p>
 <p>另外，segment 机制较 paging 优势在于，提供了 ring level 机制（即四个不同的运行级别，操作系统为 0，应用程序为 3），能更好的保护隐私信息。</p>
 <h2 id="流程图"><span class="todo TODO">TODO</span> 流程图</h2>
-<p><a href="./80386/FIG5-1.GIF" class="uri">./80386/FIG5-1.GIF</a></p>
+<p><a href="./80386/FIG5-1.GIF">./80386/FIG5-1.GIF</a></p>
 <p>Paging enabled 的连线是否标注有误??</p>
 <h2 id="segment-机制">segment 机制</h2>
 <p>提供二维地址访问方式，将 logical 地址转换为 linear 地址，并提供内存保护机制。</p>

@@ -39,17 +39,17 @@
 </tr>
 <tr class="odd">
 <td>spark</td>
-<td><code>df.groupBy(&quot;A&quot;,&quot;B&quot;).pivot(&quot;C&quot;).sum(&quot;D&quot;)</code></td>
+<td><code>df.groupBy("A","B").pivot("C").sum("D")</code></td>
 </tr>
 </tbody>
 </table>
 <p>spark 的 pivot 范式如下</p>
-<div class="sourceCode"><pre class="sourceCode scala"><code class="sourceCode scala">df.<span class="fu">groupBy</span>(grouping_columns)
-  .<span class="fu">pivot</span>(pivot_columns, [values])
-  .<span class="fu">agg</span>(aggregate_expressions)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb1-1"><a href="#cb1-1"></a>df.<span class="fu">groupBy</span>(grouping_columns)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>  .<span class="fu">pivot</span>(pivot_columns, [values])</span>
+<span id="cb1-3"><a href="#cb1-3"></a>  .<span class="fu">agg</span>(aggregate_expressions)</span></code></pre></div>
 <h2 id="性能优化建议">性能优化建议</h2>
 <ol class="incremental">
-<li>pivot 支持第二个参数，指定 pivot column，表示 pivot 列可能的取值，提高效率。如 <code>.pivot(&quot;C&quot;,Seq(&quot;small&quot;,&quot;large&quot;))</code></li>
+<li>pivot 支持第二个参数，指定 pivot column，表示 pivot 列可能的取值，提高效率。如 <code>.pivot("C",Seq("small","large"))</code></li>
 <li>指定 pivot column 提前排好序</li>
 <li>spark 不支持直接对多列进行 pivot。需要对多列作 pivot 作计算时，可以用 concat 生成新列</li>
 </ol>

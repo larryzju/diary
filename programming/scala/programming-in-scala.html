@@ -78,7 +78,7 @@
 <li>scala 不同于 java，只有主构造器中可以调用 superclass constructor</li>
 </ul>
 <h2 id="private-fields-and-methods">Private fields and methods</h2>
-<p>使用 <code>private</code> 修饰符来修饰 <code>val</code> 或 <code>def</code> 定义 <a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<p>使用 <code>private</code> 修饰符来修饰 <code>val</code> 或 <code>def</code> 定义 <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <h2 id="defining-operators">Defining Operators</h2>
 <p>可以用 <code>def + (...) {...}</code> 直接重载操作符</p>
 <p>有以下特点</p>
@@ -153,7 +153,7 @@
 </ul>
 <h2 id="function-literal-function-value">function literal &amp; function value</h2>
 <p>语法示例如下：</p>
-<div class="sourceCode"><pre class="sourceCode scala"><code class="sourceCode scala">(x:Int, y:Int) =&gt; x+y</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb1-1"><a href="#cb1-1"></a>(x:Int, y:Int) =&gt; x+y</span></code></pre></div>
 <p>不同于 java 中的 method</p>
 <ul class="incremental">
 <li>scala 中 function literal 被编译成 class，实例化后为一个 function value</li>
@@ -167,22 +167,22 @@
 </ol>
 <h2 id="placeholder-syntax">placeholder syntax</h2>
 <ul class="incremental">
-<li>可以用 ='_'= 来代指参数</li>
+<li>可以用 <code>'_'</code> 来代指参数</li>
 <li>必要时需要指定参数类型，如 <code>val = (_:Int) + (_:Int)</code></li>
 <li>注意上例中，是两个参数，而非同一个</li>
 </ul>
-<h2 id="partially-applied-functions">partially applied functions<span class="tag" data-tag-name="attention"></span></h2>
+<h2 id="partially-applied-functions">partially applied functions <span class="tag" data-tag-name="attention"><span class="smallcaps">attention</span></span></h2>
 <ul class="incremental">
-<li>类似于 python, clojure 中的偏函数</li>
-<li>有特殊的语法 <code>val a = println _</code></li>
-<li>上例中 '_' 代指整个参数列表（注意中间的空格）</li>
-<li>注意：a 相当于 println 函数的 wrap，不是同一个函数</li>
+<li><p>类似于 python, clojure 中的偏函数</p></li>
+<li><p>有特殊的语法 <code>val a = println _</code></p></li>
+<li><p>上例中 '_' 代指整个参数列表（注意中间的空格）</p></li>
+<li><p>注意：a 相当于 println 函数的 wrap，不是同一个函数</p></li>
 <li><p>注意： <strong>scala 中的 method 不能被赋给变量!!!</strong></p>
-<div class="sourceCode"><pre class="sourceCode scala"><code class="sourceCode scala"><span class="kw">val</span> c = sum <span class="co">// error</span></code></pre></div></li>
+<div class="sourceCode" id="cb2"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">val</span> c = sum <span class="co">// error</span></span></code></pre></div></li>
 <li><p>可以预先指定部分参数如</p>
-<div class="sourceCode"><pre class="sourceCode scala"><code class="sourceCode scala"><span class="kw">def</span> <span class="fu">sum</span>(a: Int, b: Int, c: Int) = a + b + c
-<span class="kw">val</span> a = <span class="fu">sum</span>(<span class="dv">1</span>, _: Int, <span class="dv">3</span>)
-<span class="fu">a</span>(<span class="dv">2</span>) <span class="co">// =&gt; 6</span></code></pre></div></li>
+<div class="sourceCode" id="cb3"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">def</span> <span class="fu">sum</span>(a: Int, b: Int, c: Int) = a + b + c</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">val</span> a = <span class="fu">sum</span>(<span class="dv">1</span>, _: Int, <span class="dv">3</span>)</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">a</span>(<span class="dv">2</span>) <span class="co">// =&gt; 6</span></span></code></pre></div></li>
 </ul>
 <h2 id="closure">closure</h2>
 <h3 id="定义">定义</h3>
@@ -223,12 +223,12 @@
 <h1 id="chapter-21.-implicit-conversions-and-parameters"><span class="todo TODO">TODO</span> Chapter 21. Implicit Conversions and Parameters</h1>
 <h1 id="chapter-30.-object-equality"><span class="todo TODO">TODO</span> Chapter 30. Object Equality</h1>
 <h1 id="footnotes">Footnotes</h1>
-<div class="footnotes">
+<section class="footnotes" role="doc-endnotes">
 <hr />
 <ol>
-<li id="fn1"><p>是否有 <code>protect</code> 修饰符？<a href="#fnref1">↩</a></p></li>
+<li id="fn1" role="doc-endnote"><p>是否有 <code>protect</code> 修饰符？<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-</div>
+</section>
 
 			</div>
 		</section>

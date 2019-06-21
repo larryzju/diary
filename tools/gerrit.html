@@ -16,19 +16,19 @@
 			<div id='main'>
 				<h1 id="basic-procedures">Basic procedures</h1>
 <ol class="incremental">
-<li>clone from gerrit repo</li>
+<li><p>clone from gerrit repo</p></li>
 <li><p>add <code>change-id</code> to commits</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">scp</span> -p -P 29418 gerrithost:hooks/commit-msg RecipeBook/.git/hooks/
-$ <span class="fu">chmod</span> u+x .git/hooks/commit-msg</code></pre></div></li>
-<li>make changes and commit</li>
-<li>push to specific branch <code>refs/for/&lt;branch-name&gt;</code> to create review</li>
-<li>ask reviewer to make <code>code-review</code></li>
-<li>reviewer comment and rank the commit (with <code>[-2,2]</code>) for feedback</li>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a>$ <span class="fu">scp</span> -p -P 29418 gerrithost:hooks/commit-msg RecipeBook/.git/hooks/</span>
+<span id="cb1-2"><a href="#cb1-2"></a>$ <span class="fu">chmod</span> u+x .git/hooks/commit-msg</span></code></pre></div></li>
+<li><p>make changes and commit</p></li>
+<li><p>push to specific branch <code>refs/for/&lt;branch-name&gt;</code> to create review</p></li>
+<li><p>ask reviewer to make <code>code-review</code></p></li>
+<li><p>reviewer comment and rank the commit (with <code>[-2,2]</code>) for feedback</p></li>
 <li><p>author rework the commit and amend the commit</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">git</span> commit --amend
-$ <span class="fu">git</span> push origin HEAD:refs/for/master</code></pre></div></li>
-<li>reviewer recheck</li>
-<li>trigger the verify workflow such as checking that the code compiles, unit tests pass, and other actions</li>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a>$ <span class="fu">git</span> commit --amend</span>
+<span id="cb2-2"><a href="#cb2-2"></a>$ <span class="fu">git</span> push origin HEAD:refs/for/master</span></code></pre></div></li>
+<li><p>reviewer recheck</p></li>
+<li><p>trigger the verify workflow such as checking that the code compiles, unit tests pass, and other actions</p></li>
 <li><p>publish and submit the change which would merge the commit to master branch</p></li>
 </ol>
 

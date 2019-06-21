@@ -47,7 +47,7 @@
 <li>Traverable</li>
 <li>Iterable</li>
 <li>Seq, Set, Map</li>
-<li>...</li>
+<li>…</li>
 </ol>
 <h3 id="scala.collection.immutable-数据结构层次">scala.collection.immutable 数据结构层次</h3>
 <p><img src="image/collections.immutable.png" /></p>
@@ -57,7 +57,7 @@
 <p>直接用类型加参数列表构造，常见语法如</p>
 <ul class="incremental">
 <li><code>Traversable(1,2,3)</code></li>
-<li><code>Map(&quot;x&quot;-&gt;24,&quot;y&quot;-&gt;25,&quot;z&quot;-&gt;26)</code></li>
+<li><code>Map("x"-&gt;24,"y"-&gt;25,"z"-&gt;26)</code></li>
 </ul>
 <h3 id="api">API</h3>
 <ul class="incremental">
@@ -137,11 +137,11 @@
 <h3 id="linearseq-类型">LinearSeq 类型</h3>
 <p>LinearSeq 底层是 MutableList，那么 LinearSeq 本质上是个 class 还是 type?</p>
 <h1 id="string-interpolation">String Interpolation</h1>
-<p>String Interpolation 是在 2.10.0 中加入的功能，可以在字符串中嵌入变量引用，如 =s&quot;Hello, $name&quot;=</p>
+<p>String Interpolation 是在 2.10.0 中加入的功能，可以在字符串中嵌入变量引用，如 <code>s"Hello, $name"</code></p>
 <p>内置三种前缀字母，表示不同的处理方法：</p>
 <ol class="incremental">
 <li>s 前缀，类似 ruby，替换用 <code>$var</code> 表示的变量，也可将表达式放在 <code>${}</code> 中</li>
-<li>f 前缀，类似 printf 语法，如 =f&quot;$name%s is $height%2.2f meters tall&quot;=</li>
+<li>f 前缀，类似 printf 语法，如 <code>f"$name%s is $height%2.2f meters tall"</code></li>
 <li>raw 前缀，类似 python 'r' 前缀，同 's'，但不会处理转义字符</li>
 </ol>
 <p>String Interpolation 本质上是语法糖，对应于 <code>StringContext.id</code> 函数调用，可以自定义，需要实现一个 implicit 类，方法略</p>
@@ -186,7 +186,7 @@
 <h2 id="概述">概述</h2>
 <p>trait 类似 java 的 interface，用于定义类的方法模板。</p>
 <h2 id="继承inherit与混成mixin">继承(inherit)与混成(mixin)</h2>
-<p>mixin 类比于电影中合成技术（混成），对于两个相同规格的场景（基础类），混成出一个全新的场景（extends ... with）。</p>
+<p>mixin 类比于电影中合成技术（混成），对于两个相同规格的场景（基础类），混成出一个全新的场景（extends … with）。</p>
 <p>trait 可以扩展(extends) 抽象类，实现扩展的方法。并在同样继承(inherit) 抽象类的类中，混成 trait 扩展的方法。</p>
 <p>优点在于，将扩展的通用实现加入到朴素的原始数据结构中。</p>
 <p>如：</p>

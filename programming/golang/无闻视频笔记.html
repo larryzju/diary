@@ -58,8 +58,8 @@
 </ol>
 <h2 id="import-小技巧">import 小技巧</h2>
 <ol class="incremental">
-<li>别名: ~import std &quot;fmt&quot;~</li>
-<li>省略调用: ~import . &quot;fmt&quot;~ 类似于 python 中 <code>from fmt import *</code> ，慎用!</li>
+<li>别名: <code>import std "fmt"</code></li>
+<li>省略调用: <code>import . "fmt"</code> 类似于 python 中 <code>from fmt import *</code> ，慎用!</li>
 </ol>
 <h2 id="可见性规则">可见性规则</h2>
 <p>通过首字母大写来判定可见性</p>
@@ -88,7 +88,7 @@
 <li>func: 第一类成员</li>
 </ul>
 <h2 id="零值">零值</h2>
-<p>每种类型都有默认零值，如 0, false, &quot;&quot;</p>
+<p>每种类型都有默认零值，如 0, false, ""</p>
 <h2 id="类型别名">类型别名</h2>
 <ul class="incremental">
 <li>用 <code>type</code> 来定义别名</li>
@@ -123,22 +123,22 @@
 <li>常量一般命名成全大写（加下划线）或骆驼写法</li>
 </ul>
 <h2 id="范式">范式</h2>
-<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">const</span> (
-        Readble = <span class="dv">1</span> &lt;&lt; <span class="ot">iota</span>
-        Writable
-        Executable
-)
-
-<span class="kw">const</span> (
-        B <span class="dt">float64</span> = <span class="dv">1</span> &lt;&lt; (<span class="ot">iota</span> * <span class="dv">10</span>)
-        KB
-        MB
-        GB
-        TB
-        PB
-        ZB
-        EB
-)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">const</span> (</span>
+<span id="cb1-2"><a href="#cb1-2"></a>        Readble = <span class="dv">1</span> &lt;&lt; <span class="ot">iota</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>        Writable</span>
+<span id="cb1-4"><a href="#cb1-4"></a>        Executable</span>
+<span id="cb1-5"><a href="#cb1-5"></a>)</span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="kw">const</span> (</span>
+<span id="cb1-8"><a href="#cb1-8"></a>        B <span class="dt">float64</span> = <span class="dv">1</span> &lt;&lt; (<span class="ot">iota</span> * <span class="dv">10</span>)</span>
+<span id="cb1-9"><a href="#cb1-9"></a>        KB</span>
+<span id="cb1-10"><a href="#cb1-10"></a>        MB</span>
+<span id="cb1-11"><a href="#cb1-11"></a>        GB</span>
+<span id="cb1-12"><a href="#cb1-12"></a>        TB</span>
+<span id="cb1-13"><a href="#cb1-13"></a>        PB</span>
+<span id="cb1-14"><a href="#cb1-14"></a>        ZB</span>
+<span id="cb1-15"><a href="#cb1-15"></a>        EB</span>
+<span id="cb1-16"><a href="#cb1-16"></a>)</span></code></pre></div>
 <h2 id="运算符">运算符</h2>
 <p>Go 中的运算符统一从左向右结合</p>
 <p>下面举例说明</p>
@@ -176,17 +176,17 @@
 <li>不用为每个 case 作 break，相反应该加入 fallthrough 如果不需要跳出</li>
 </ul>
 <p>例子如下</p>
-<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">switch</span> a {
-  <span class="kw">case</span> <span class="dv">0</span>: fmt.Println(<span class="st">&quot;0&quot;</span>)
-  <span class="kw">case</span> <span class="dv">1</span>: fmt.Println(<span class="st">&quot;1&quot;</span>)
-  <span class="kw">default</span>: fmt.Println(<span class="st">&quot;other&quot;</span>)
-}
-
-<span class="kw">switch</span> {
-  <span class="kw">case</span> a &lt; <span class="dv">0</span>: fmt.Println(<span class="st">&quot;invalid&quot;</span>)
-  <span class="kw">case</span> a &lt; <span class="dv">10</span>: fmt.Println(<span class="st">&quot;good&quot;</span>)
-  <span class="kw">default</span>: fmt.Println(<span class="st">&quot;too large&quot;</span>)
-}</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">switch</span> a {</span>
+<span id="cb2-2"><a href="#cb2-2"></a>  <span class="kw">case</span> <span class="dv">0</span>: fmt.Println(<span class="st">&quot;0&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3"></a>  <span class="kw">case</span> <span class="dv">1</span>: fmt.Println(<span class="st">&quot;1&quot;</span>)</span>
+<span id="cb2-4"><a href="#cb2-4"></a>  <span class="kw">default</span>: fmt.Println(<span class="st">&quot;other&quot;</span>)</span>
+<span id="cb2-5"><a href="#cb2-5"></a>}</span>
+<span id="cb2-6"><a href="#cb2-6"></a></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="kw">switch</span> {</span>
+<span id="cb2-8"><a href="#cb2-8"></a>  <span class="kw">case</span> a &lt; <span class="dv">0</span>: fmt.Println(<span class="st">&quot;invalid&quot;</span>)</span>
+<span id="cb2-9"><a href="#cb2-9"></a>  <span class="kw">case</span> a &lt; <span class="dv">10</span>: fmt.Println(<span class="st">&quot;good&quot;</span>)</span>
+<span id="cb2-10"><a href="#cb2-10"></a>  <span class="kw">default</span>: fmt.Println(<span class="st">&quot;too large&quot;</span>)</span>
+<span id="cb2-11"><a href="#cb2-11"></a>}</span></code></pre></div>
 <h2 id="跳转语句goto-continue-break">跳转语句（goto, continue, break)</h2>
 <p>continue 和 break 均支持标签（label），将跳转到与标签同级的循环中</p>
 <h1 id="数组-array">数组 Array</h1>
@@ -200,23 +200,23 @@
 </ul>
 <h2 id="指针的数组">指针的数组</h2>
 <p>表示数组的内容为指针</p>
-<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go">a := <span class="dv">10</span>
-b := <span class="dv">10</span>
-c := [...]*<span class="dt">int</span>{&amp;a, &amp;b}</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb3-1"><a href="#cb3-1"></a>a := <span class="dv">10</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>b := <span class="dv">10</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>c := [...]*<span class="dt">int</span>{&amp;a, &amp;b}</span></code></pre></div>
 <h2 id="字面量">字面量</h2>
-<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go">a := [<span class="dv">2</span>]<span class="dt">int</span>{<span class="dv">1</span>}
-b := [<span class="dv">2</span>]<span class="dt">int</span>{<span class="dv">1</span>,<span class="dv">2</span>}
-c := [<span class="dv">20</span>]<span class="dt">int</span>{<span class="dv">19</span>:<span class="dv">1</span>}
-d := [...]<span class="dt">int</span>{<span class="dv">99</span>:<span class="dv">1</span>}
-e := [<span class="dv">2</span>][<span class="dv">3</span>]<span class="dt">int</span>{
-  {<span class="dv">1</span>:<span class="dv">1</span>},
-  {<span class="dv">2</span>:<span class="dv">2</span>},
-}
-<span class="co">// 多维数组第一维可以自动推导</span>
-f := [...][<span class="dv">3</span>]<span class="dt">int</span>{
-  {<span class="dv">1</span>:<span class="dv">1</span>},
-  {<span class="dv">2</span>:<span class="dv">2</span>},
-}</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb4-1"><a href="#cb4-1"></a>a := [<span class="dv">2</span>]<span class="dt">int</span>{<span class="dv">1</span>}</span>
+<span id="cb4-2"><a href="#cb4-2"></a>b := [<span class="dv">2</span>]<span class="dt">int</span>{<span class="dv">1</span>,<span class="dv">2</span>}</span>
+<span id="cb4-3"><a href="#cb4-3"></a>c := [<span class="dv">20</span>]<span class="dt">int</span>{<span class="dv">19</span>:<span class="dv">1</span>}</span>
+<span id="cb4-4"><a href="#cb4-4"></a>d := [...]<span class="dt">int</span>{<span class="dv">99</span>:<span class="dv">1</span>}</span>
+<span id="cb4-5"><a href="#cb4-5"></a>e := [<span class="dv">2</span>][<span class="dv">3</span>]<span class="dt">int</span>{</span>
+<span id="cb4-6"><a href="#cb4-6"></a>  {<span class="dv">1</span>:<span class="dv">1</span>},</span>
+<span id="cb4-7"><a href="#cb4-7"></a>  {<span class="dv">2</span>:<span class="dv">2</span>},</span>
+<span id="cb4-8"><a href="#cb4-8"></a>}</span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="co">// 多维数组第一维可以自动推导</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a>f := [...][<span class="dv">3</span>]<span class="dt">int</span>{</span>
+<span id="cb4-11"><a href="#cb4-11"></a>  {<span class="dv">1</span>:<span class="dv">1</span>},</span>
+<span id="cb4-12"><a href="#cb4-12"></a>  {<span class="dv">2</span>:<span class="dv">2</span>},</span>
+<span id="cb4-13"><a href="#cb4-13"></a>}</span></code></pre></div>
 <h1 id="切片-slice">切片 Slice</h1>
 <ul class="incremental">
 <li>切片是对底层数组结构的引用类型（可以建立对同一数组的多个引用，也可以对切片建立新的引用切片）</li>
@@ -236,7 +236,7 @@ f := [...][<span class="dv">3</span>]<span class="dt">int</span>{
 <ol class="incremental">
 <li><code>var m map[int]string = map[int]string{}</code></li>
 <li><code>m := make(map[int]string)</code></li>
-<li><code>m := map[int]string{1:&quot;a&quot;}</code></li>
+<li><code>m := map[int]string{1:"a"}</code></li>
 </ol>
 <h2 id="访问与操作">访问与操作</h2>
 <ul class="incremental">
@@ -254,11 +254,11 @@ f := [...][<span class="dv">3</span>]<span class="dt">int</span>{
 <h2 id="对-map-按-key-排序">对 map 按 key 排序</h2>
 <p>思路是将 map 的 key 拷贝到相同长度的 slice 中，再用 sort.Ints 对 slice 排序（索引）</p>
 <h2 id="交换-key-和-value">交换 key 和 value</h2>
-<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go">m := <span class="kw">map</span>[<span class="dt">int</span>]<span class="dt">string</span>{<span class="dv">1</span>:<span class="st">&quot;a&quot;</span>, <span class="dv">2</span>:<span class="st">&quot;b&quot;</span>, <span class="dv">3</span>:<span class="st">&quot;c&quot;</span>, <span class="dv">4</span>:<span class="st">&quot;d&quot;</span>, <span class="dv">5</span>:<span class="st">&quot;e&quot;</span>}
-n := <span class="kw">map</span>[<span class="dt">string</span>]<span class="dt">int</span>{}
-<span class="kw">for</span> k, v := <span class="kw">range</span> m {
-    n[v] = k
-}</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb5-1"><a href="#cb5-1"></a>m := <span class="kw">map</span>[<span class="dt">int</span>]<span class="dt">string</span>{<span class="dv">1</span>:<span class="st">&quot;a&quot;</span>, <span class="dv">2</span>:<span class="st">&quot;b&quot;</span>, <span class="dv">3</span>:<span class="st">&quot;c&quot;</span>, <span class="dv">4</span>:<span class="st">&quot;d&quot;</span>, <span class="dv">5</span>:<span class="st">&quot;e&quot;</span>}</span>
+<span id="cb5-2"><a href="#cb5-2"></a>n := <span class="kw">map</span>[<span class="dt">string</span>]<span class="dt">int</span>{}</span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="kw">for</span> k, v := <span class="kw">range</span> m {</span>
+<span id="cb5-4"><a href="#cb5-4"></a>    n[v] = k</span>
+<span id="cb5-5"><a href="#cb5-5"></a>}</span></code></pre></div>
 <h1 id="函数-function">函数 function</h1>
 <h2 id="特点">特点</h2>
 <ul class="incremental">
@@ -290,42 +290,42 @@ n := <span class="kw">map</span>[<span class="dt">string</span>]<span class="dt"
 <li>即使发生严重错误 (panic) 也会执行</li>
 </ul>
 <p>panic/recover 的例子如下</p>
-<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">func</span> main() {
-        a()
-        b()
-        c()
-}
-
-<span class="kw">func</span> a() {
-        fmt.Println(<span class="st">&quot;a&quot;</span>)
-}
-
-<span class="kw">func</span> b() {
-        <span class="kw">defer</span> <span class="kw">func</span>() {
-                <span class="kw">if</span> err := <span class="bu">recover</span>(); err != <span class="ot">nil</span> {
-                        fmt.Println(<span class="st">&quot;recover in b&quot;</span>)
-                }
-        }()
-        <span class="bu">panic</span>(<span class="st">&quot;panic in b&quot;</span>)
-}
-
-<span class="kw">func</span> c() {
-        fmt.Println(<span class="st">&quot;c&quot;</span>)
-}</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">func</span> main() {</span>
+<span id="cb6-2"><a href="#cb6-2"></a>        a()</span>
+<span id="cb6-3"><a href="#cb6-3"></a>        b()</span>
+<span id="cb6-4"><a href="#cb6-4"></a>        c()</span>
+<span id="cb6-5"><a href="#cb6-5"></a>}</span>
+<span id="cb6-6"><a href="#cb6-6"></a></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="kw">func</span> a() {</span>
+<span id="cb6-8"><a href="#cb6-8"></a>        fmt.Println(<span class="st">&quot;a&quot;</span>)</span>
+<span id="cb6-9"><a href="#cb6-9"></a>}</span>
+<span id="cb6-10"><a href="#cb6-10"></a></span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="kw">func</span> b() {</span>
+<span id="cb6-12"><a href="#cb6-12"></a>        <span class="kw">defer</span> <span class="kw">func</span>() {</span>
+<span id="cb6-13"><a href="#cb6-13"></a>                <span class="kw">if</span> err := <span class="bu">recover</span>(); err != <span class="ot">nil</span> {</span>
+<span id="cb6-14"><a href="#cb6-14"></a>                        fmt.Println(<span class="st">&quot;recover in b&quot;</span>)</span>
+<span id="cb6-15"><a href="#cb6-15"></a>                }</span>
+<span id="cb6-16"><a href="#cb6-16"></a>        }()</span>
+<span id="cb6-17"><a href="#cb6-17"></a>        <span class="bu">panic</span>(<span class="st">&quot;panic in b&quot;</span>)</span>
+<span id="cb6-18"><a href="#cb6-18"></a>}</span>
+<span id="cb6-19"><a href="#cb6-19"></a></span>
+<span id="cb6-20"><a href="#cb6-20"></a><span class="kw">func</span> c() {</span>
+<span id="cb6-21"><a href="#cb6-21"></a>        fmt.Println(<span class="st">&quot;c&quot;</span>)</span>
+<span id="cb6-22"><a href="#cb6-22"></a>}</span></code></pre></div>
 <h2 id="闭包">闭包</h2>
-<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">func</span> main() {
-        <span class="kw">var</span> fs = [<span class="dv">4</span>]<span class="kw">func</span>(){}
-
-        <span class="kw">for</span> i := <span class="dv">0</span>; i &lt; <span class="dv">4</span>; i++ {
-                <span class="kw">defer</span> fmt.Println(<span class="st">&quot;defer i = &quot;</span>, i) <span class="co">// 0,1,2,3 ?</span>
-                <span class="kw">defer</span> <span class="kw">func</span>() { fmt.Println(<span class="st">&quot;defer_closure i = &quot;</span>, i) }() <span class="co">// 为 4</span>
-                fs[i] = <span class="kw">func</span>() { fmt.Println(<span class="st">&quot;closure i = &quot;</span>, i) }
-        }
-
-        <span class="kw">for</span> _, f := <span class="kw">range</span> fs {
-                f()  <span class="co">// 首先打印，闭包中引用 i 对象，值为 4</span>
-        }
-}</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">func</span> main() {</span>
+<span id="cb7-2"><a href="#cb7-2"></a>        <span class="kw">var</span> fs = [<span class="dv">4</span>]<span class="kw">func</span>(){}</span>
+<span id="cb7-3"><a href="#cb7-3"></a></span>
+<span id="cb7-4"><a href="#cb7-4"></a>        <span class="kw">for</span> i := <span class="dv">0</span>; i &lt; <span class="dv">4</span>; i++ {</span>
+<span id="cb7-5"><a href="#cb7-5"></a>                <span class="kw">defer</span> fmt.Println(<span class="st">&quot;defer i = &quot;</span>, i) <span class="co">// 0,1,2,3 ?</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>                <span class="kw">defer</span> <span class="kw">func</span>() { fmt.Println(<span class="st">&quot;defer_closure i = &quot;</span>, i) }() <span class="co">// 为 4</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a>                fs[i] = <span class="kw">func</span>() { fmt.Println(<span class="st">&quot;closure i = &quot;</span>, i) }</span>
+<span id="cb7-8"><a href="#cb7-8"></a>        }</span>
+<span id="cb7-9"><a href="#cb7-9"></a></span>
+<span id="cb7-10"><a href="#cb7-10"></a>        <span class="kw">for</span> _, f := <span class="kw">range</span> fs {</span>
+<span id="cb7-11"><a href="#cb7-11"></a>                f()  <span class="co">// 首先打印，闭包中引用 i 对象，值为 4</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a>        }</span>
+<span id="cb7-13"><a href="#cb7-13"></a>}</span></code></pre></div>
 <p><code>defer i</code> 能正常输出，因为在定义 defer 时求值，对 i 按值进行拷贝</p>
 <p>与之相反，闭包保留了 i 变量的地址，因此最后其值为 4</p>
 <h1 id="结构-struct">结构 struct</h1>
@@ -342,22 +342,22 @@ n := <span class="kw">map</span>[<span class="dt">string</span>]<span class="dt"
 <li>多个同级嵌套结构中不能有同名字段</li>
 </ul>
 <h2 id="示例">示例</h2>
-<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">func</span> main() {
-        t2 := Teacher{Person{<span class="st">&quot;haah&quot;</span>, <span class="dv">19</span>}, <span class="st">&quot;math&quot;</span>, <span class="dv">30</span>}
-        t3 := Teacher{Person: Person{<span class="st">&quot;haa&quot;</span>, <span class="dv">18</span>}}
-        fmt.Println(t2, t3, t2.Age, t2.Person.Age)
-}
-
-<span class="kw">type</span> Person <span class="kw">struct</span> {
-        Name <span class="dt">string</span>
-        Age  <span class="dt">int</span>
-}
-
-<span class="kw">type</span> Teacher <span class="kw">struct</span> {
-        Person
-        Title <span class="dt">string</span>
-        Age   <span class="dt">int</span>
-}</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">func</span> main() {</span>
+<span id="cb8-2"><a href="#cb8-2"></a>        t2 := Teacher{Person{<span class="st">&quot;haah&quot;</span>, <span class="dv">19</span>}, <span class="st">&quot;math&quot;</span>, <span class="dv">30</span>}</span>
+<span id="cb8-3"><a href="#cb8-3"></a>        t3 := Teacher{Person: Person{<span class="st">&quot;haa&quot;</span>, <span class="dv">18</span>}}</span>
+<span id="cb8-4"><a href="#cb8-4"></a>        fmt.Println(t2, t3, t2.Age, t2.Person.Age)</span>
+<span id="cb8-5"><a href="#cb8-5"></a>}</span>
+<span id="cb8-6"><a href="#cb8-6"></a></span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="kw">type</span> Person <span class="kw">struct</span> {</span>
+<span id="cb8-8"><a href="#cb8-8"></a>        Name <span class="dt">string</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a>        Age  <span class="dt">int</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a>}</span>
+<span id="cb8-11"><a href="#cb8-11"></a></span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="kw">type</span> Teacher <span class="kw">struct</span> {</span>
+<span id="cb8-13"><a href="#cb8-13"></a>        Person</span>
+<span id="cb8-14"><a href="#cb8-14"></a>        Title <span class="dt">string</span></span>
+<span id="cb8-15"><a href="#cb8-15"></a>        Age   <span class="dt">int</span></span>
+<span id="cb8-16"><a href="#cb8-16"></a>}</span></code></pre></div>
 <h1 id="方法-method">方法 method</h1>
 <ul class="incremental">
 <li>语法上类似于函数定义，多了一个 Receiver 对象</li>
@@ -415,65 +415,65 @@ n := <span class="kw">map</span>[<span class="dt">string</span>]<span class="dt"
 <p>自问自答，不一定正确</p>
 <h2 id="类型转换是静态的还是动态的有没有开销"><span class="todo TODO">TODO</span> 类型转换是静态的？还是动态的？有没有开销</h2>
 <h2 id="string-与-byte-与-rune-的关系"><code>string</code> 与 <code>[]byte</code> 与 <code>[]rune</code> 的关系</h2>
-<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">package</span> main
-
-<span class="kw">import</span> (
-    <span class="st">&quot;fmt&quot;</span>
-)
-
-<span class="kw">func</span> main() {
-    s := <span class="st">&quot;I❤学习&quot;</span>
-
-    <span class="co">// len return the []byte size</span>
-    fmt.Println(<span class="bu">len</span>(s))
-
-    <span class="co">// range iterates over []rune, `i` is the offset of the rune</span>
-    <span class="kw">for</span> i, c := <span class="kw">range</span> s {
-        fmt.Printf(<span class="st">&quot;%d: %c</span><span class="ch">\n</span><span class="st">&quot;</span>, i, c)
-    }
-
-    <span class="co">// to iterates over []byte, convert to []byte explicitly</span>
-    <span class="kw">for</span> i, b := <span class="kw">range</span> []<span class="dt">byte</span>(s) {
-        fmt.Printf(<span class="st">&quot;%d: %v</span><span class="ch">\n</span><span class="st">&quot;</span>, i, b)
-    }
-}</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">package</span> main</span>
+<span id="cb9-2"><a href="#cb9-2"></a></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="kw">import</span> (</span>
+<span id="cb9-4"><a href="#cb9-4"></a>    <span class="st">&quot;fmt&quot;</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>)</span>
+<span id="cb9-6"><a href="#cb9-6"></a></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="kw">func</span> main() {</span>
+<span id="cb9-8"><a href="#cb9-8"></a>    s := <span class="st">&quot;I❤学习&quot;</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a></span>
+<span id="cb9-10"><a href="#cb9-10"></a>    <span class="co">// len return the []byte size</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a>    fmt.Println(<span class="bu">len</span>(s))</span>
+<span id="cb9-12"><a href="#cb9-12"></a></span>
+<span id="cb9-13"><a href="#cb9-13"></a>    <span class="co">// range iterates over []rune, `i` is the offset of the rune</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a>    <span class="kw">for</span> i, c := <span class="kw">range</span> s {</span>
+<span id="cb9-15"><a href="#cb9-15"></a>        fmt.Printf(<span class="st">&quot;%d: %c</span><span class="ch">\n</span><span class="st">&quot;</span>, i, c)</span>
+<span id="cb9-16"><a href="#cb9-16"></a>    }</span>
+<span id="cb9-17"><a href="#cb9-17"></a></span>
+<span id="cb9-18"><a href="#cb9-18"></a>    <span class="co">// to iterates over []byte, convert to []byte explicitly</span></span>
+<span id="cb9-19"><a href="#cb9-19"></a>    <span class="kw">for</span> i, b := <span class="kw">range</span> []<span class="dt">byte</span>(s) {</span>
+<span id="cb9-20"><a href="#cb9-20"></a>        fmt.Printf(<span class="st">&quot;%d: %v</span><span class="ch">\n</span><span class="st">&quot;</span>, i, b)</span>
+<span id="cb9-21"><a href="#cb9-21"></a>    }</span>
+<span id="cb9-22"><a href="#cb9-22"></a>}</span></code></pre></div>
 <h2 id="int-与-int-的区别"><code>[10]int</code> 与 <code>[]int</code> 的区别</h2>
-<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">package</span> main
-
-<span class="kw">import</span> (
-    <span class="st">&quot;fmt&quot;</span>
-)
-
-<span class="kw">func</span> main() {
-        <span class="co">// v is a array with type [10]int, whose length is 10</span>
-    v := [<span class="dv">10</span>]<span class="dt">int</span>{<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>}
-
-        <span class="co">// s is a slice with type []int, whose length and capacity are both 3</span>
-    s := []<span class="dt">int</span>{<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>}
-    fmt.Printf(<span class="st">&quot;%#v %T %d %d</span><span class="ch">\n</span><span class="st">&quot;</span>, v, v, <span class="bu">len</span>(v), <span class="bu">cap</span>(v))
-    fmt.Printf(<span class="st">&quot;%#v %T %d %d</span><span class="ch">\n</span><span class="st">&quot;</span>, s, s, <span class="bu">len</span>(s), <span class="bu">cap</span>(s))
-}</code></pre></div>
-<h2 id="int123-与-int123-的区别"><span class="todo TODO">TODO</span> =[...]int{1,2,3}= 与 <code>[]int{1,2,3}</code> 的区别</h2>
-<h2 id="for-i-0-i-lena-i-中-lena-是否会造成额外的开销"><span class="todo TODO">TODO</span> ~for i := 0; i &lt; len(a); i++~ 中 <code>len(a)</code> 是否会造成额外的开销</h2>
-<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">package</span> main
-
-<span class="kw">import</span> (
-    <span class="st">&quot;fmt&quot;</span>
-)
-
-<span class="kw">func</span> main() {
-    a := []<span class="dt">int</span>{<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>}
-    myLen := <span class="kw">func</span>(s []<span class="dt">int</span>) <span class="dt">int</span> {
-        fmt.Println(<span class="st">&quot;tick&quot;</span>)
-        <span class="kw">return</span> <span class="bu">len</span>(s)
-    }
-
-        <span class="co">// myLen will be called multiple times</span>
-        <span class="co">// but it doesn&#39;t mean go will not optimize the `len(a)` if a has not been modified</span>
-    <span class="kw">for</span> i := <span class="dv">0</span>; i &lt; myLen(a); i++ {
-        fmt.Println(a[i])
-    }
-}</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">package</span> main</span>
+<span id="cb10-2"><a href="#cb10-2"></a></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="kw">import</span> (</span>
+<span id="cb10-4"><a href="#cb10-4"></a>    <span class="st">&quot;fmt&quot;</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a>)</span>
+<span id="cb10-6"><a href="#cb10-6"></a></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="kw">func</span> main() {</span>
+<span id="cb10-8"><a href="#cb10-8"></a>        <span class="co">// v is a array with type [10]int, whose length is 10</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a>    v := [<span class="dv">10</span>]<span class="dt">int</span>{<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>}</span>
+<span id="cb10-10"><a href="#cb10-10"></a></span>
+<span id="cb10-11"><a href="#cb10-11"></a>        <span class="co">// s is a slice with type []int, whose length and capacity are both 3</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a>    s := []<span class="dt">int</span>{<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>}</span>
+<span id="cb10-13"><a href="#cb10-13"></a>    fmt.Printf(<span class="st">&quot;%#v %T %d %d</span><span class="ch">\n</span><span class="st">&quot;</span>, v, v, <span class="bu">len</span>(v), <span class="bu">cap</span>(v))</span>
+<span id="cb10-14"><a href="#cb10-14"></a>    fmt.Printf(<span class="st">&quot;%#v %T %d %d</span><span class="ch">\n</span><span class="st">&quot;</span>, s, s, <span class="bu">len</span>(s), <span class="bu">cap</span>(s))</span>
+<span id="cb10-15"><a href="#cb10-15"></a>}</span></code></pre></div>
+<h2 id="int123-与-int123-的区别"><span class="todo TODO">TODO</span> <code>[...]int{1,2,3}</code> 与 <code>[]int{1,2,3}</code> 的区别</h2>
+<h2 id="for-i-0-i-lena-i-中-lena-是否会造成额外的开销"><span class="todo TODO">TODO</span> <code>for i := 0; i &lt; len(a); i++</code> 中 <code>len(a)</code> 是否会造成额外的开销</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">package</span> main</span>
+<span id="cb11-2"><a href="#cb11-2"></a></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="kw">import</span> (</span>
+<span id="cb11-4"><a href="#cb11-4"></a>    <span class="st">&quot;fmt&quot;</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>)</span>
+<span id="cb11-6"><a href="#cb11-6"></a></span>
+<span id="cb11-7"><a href="#cb11-7"></a><span class="kw">func</span> main() {</span>
+<span id="cb11-8"><a href="#cb11-8"></a>    a := []<span class="dt">int</span>{<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>}</span>
+<span id="cb11-9"><a href="#cb11-9"></a>    myLen := <span class="kw">func</span>(s []<span class="dt">int</span>) <span class="dt">int</span> {</span>
+<span id="cb11-10"><a href="#cb11-10"></a>        fmt.Println(<span class="st">&quot;tick&quot;</span>)</span>
+<span id="cb11-11"><a href="#cb11-11"></a>        <span class="kw">return</span> <span class="bu">len</span>(s)</span>
+<span id="cb11-12"><a href="#cb11-12"></a>    }</span>
+<span id="cb11-13"><a href="#cb11-13"></a></span>
+<span id="cb11-14"><a href="#cb11-14"></a>        <span class="co">// myLen will be called multiple times</span></span>
+<span id="cb11-15"><a href="#cb11-15"></a>        <span class="co">// but it doesn&#39;t mean go will not optimize the `len(a)` if a has not been modified</span></span>
+<span id="cb11-16"><a href="#cb11-16"></a>    <span class="kw">for</span> i := <span class="dv">0</span>; i &lt; myLen(a); i++ {</span>
+<span id="cb11-17"><a href="#cb11-17"></a>        fmt.Println(a[i])</span>
+<span id="cb11-18"><a href="#cb11-18"></a>    }</span>
+<span id="cb11-19"><a href="#cb11-19"></a>}</span></code></pre></div>
 <h1 id="外部链接">外部链接</h1>
 <ul class="incremental">
 <li>Go 在谷歌：以软件工程为目的的语言设计</li>

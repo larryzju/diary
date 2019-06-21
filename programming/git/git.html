@@ -62,10 +62,9 @@
 <li>revert the files in your working directory back to the snapshot that <code>master</code> points to</li>
 </ol>
 <h2 id="divergent">Divergent</h2>
-<div class="figure">
-<img src="https://git-scm.com/book/en/v2/images/advance-master.png" alt="Divergent history" />
-<p class="caption">Divergent history</p>
-</div>
+<figure>
+<img src="https://git-scm.com/book/en/v2/images/advance-master.png" alt="" /><figcaption>Divergent history</figcaption>
+</figure>
 <h2 id="basic-workflow">Basic Workflow</h2>
 <dl class="incremental">
 <dt>create a feature branch <code>iss53</code></dt>
@@ -100,20 +99,18 @@
 <h3 id="fast-forward">Fast Forward</h3>
 <p>When you try to merge one commit with a commit that can be reached by following the first commit's history, Git simplifies things by moving the pointer forward because there is no divergent work to merge together.</p>
 <h3 id="basic-merging">Basic Merging</h3>
-<div class="figure">
-<img src="https://git-scm.com/book/en/v2/images/basic-merging-1.png" alt="Three-way merge" />
-<p class="caption">Three-way merge</p>
-</div>
+<figure>
+<img src="https://git-scm.com/book/en/v2/images/basic-merging-1.png" alt="" /><figcaption>Three-way merge</figcaption>
+</figure>
 <p>The three snapshots are</p>
 <ol class="incremental">
 <li>two snapshots pointed to by the branch tips</li>
 <li>common ancestor of the two</li>
 </ol>
 <p>Git creates a new snapshot that results from this three-way merge and automatically creates a new commit that points to it. (This is referred to as a merge commit, and is special in that it has more than one parent).</p>
-<div class="figure">
-<img src="https://git-scm.com/book/en/v2/images/basic-merging-2.png" alt="Merge commit" />
-<p class="caption">Merge commit</p>
-</div>
+<figure>
+<img src="https://git-scm.com/book/en/v2/images/basic-merging-2.png" alt="" /><figcaption>Merge commit</figcaption>
+</figure>
 <h2 id="stashing-and-cleaning"><span class="todo TODO">TODO</span> Stashing and Cleaning</h2>
 <h2 id="cookbook">Cookbook</h2>
 <dl class="incremental">
@@ -142,11 +139,11 @@
 <ul class="incremental">
 <li>Git revert 如何看以后的版本？ `reflog` 合集</li>
 <li>soft 与 hard 与 mixed 的区别？</li>
-<li>`git checkout -- file` 丢弃工作区修改（从缓存区）</li>
+<li>`git checkout – file` 丢弃工作区修改（从缓存区）</li>
 <li>`git reset HEAD file` 从提交中</li>
 <li>HEAD 指向 master，master 指向当前提交</li>
 <li>`git stash {apply,drop,pop,list}</li>
-<li>`git branch --set-upstream &lt;branch-name&gt; &lt;origin/branch-name&gt;`: 本地分支与远程进行关联</li>
+<li>`git branch –set-upstream &lt;branch-name&gt; &lt;origin/branch-name&gt;`: 本地分支与远程进行关联</li>
 </ul>
 <h1 id="reference">Reference</h1>
 <ul class="incremental">

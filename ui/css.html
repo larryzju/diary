@@ -21,10 +21,10 @@
 <h3 id="font-family">font-family</h3>
 <p>Browser will use a default font if the applied font it's not available on the host.</p>
 <p>Supply a <strong>font stack</strong> (multiple fonts) to choose from.</p>
-<div class="sourceCode"><pre class="sourceCode css"><code class="sourceCode css">p {
-  <span class="kw">color</span>: <span class="dv">red</span>;
-  <span class="kw">font-family</span>: Helvetica, Arial, <span class="dv">sans-serif</span>;
-}</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb1-1"><a href="#cb1-1"></a>p {</span>
+<span id="cb1-2"><a href="#cb1-2"></a>  <span class="kw">color</span>: <span class="cn">red</span><span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>  <span class="kw">font-family</span>: Helvetica<span class="op">,</span> Arial<span class="op">,</span> <span class="dv">sans-serif</span><span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>}</span></code></pre></div>
 <ol class="incremental">
 <li><p>web safe fonts</p>
 <p>Which are generally avaialbe across all systems and can therefore be used without much worry.</p>
@@ -55,19 +55,19 @@
 </ul></li>
 </ol>
 <h3 id="font-size">font-size</h3>
-<div class="sourceCode"><pre class="sourceCode css"><code class="sourceCode css">html {
-  <span class="kw">font-size</span>: <span class="dv">10px</span>;
-}
-
-h1 {
-  <span class="kw">font-size</span>: <span class="dv">2.6rem</span>;
-}
-
-p {
-  <span class="kw">font-size</span>: <span class="dv">1.4rem</span>;
-  <span class="kw">color</span>: <span class="dv">red</span>;
-  <span class="kw">font-family</span>: Helvetica, Arial, <span class="dv">sans-serif</span>;
-}</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb2-1"><a href="#cb2-1"></a>html {</span>
+<span id="cb2-2"><a href="#cb2-2"></a>  <span class="kw">font-size</span>: <span class="dv">10</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>}</span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a>h1 {</span>
+<span id="cb2-6"><a href="#cb2-6"></a>  <span class="kw">font-size</span>: <span class="dv">2.6</span><span class="dt">rem</span><span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>}</span>
+<span id="cb2-8"><a href="#cb2-8"></a></span>
+<span id="cb2-9"><a href="#cb2-9"></a>p {</span>
+<span id="cb2-10"><a href="#cb2-10"></a>  <span class="kw">font-size</span>: <span class="dv">1.4</span><span class="dt">rem</span><span class="op">;</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a>  <span class="kw">color</span>: <span class="cn">red</span><span class="op">;</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>  <span class="kw">font-family</span>: Helvetica<span class="op">,</span> Arial<span class="op">,</span> <span class="dv">sans-serif</span><span class="op">;</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>}</span></code></pre></div>
 <ol class="incremental">
 <li><p>units</p>
 <dl class="incremental">
@@ -104,7 +104,7 @@ p {
 </ul>
 <h3 id="text-decoration">text-decoration</h3>
 <p>Combine <code>text-decoration-line</code>, <code>text-decoration-style</code> and <code>text-decoration-color</code></p>
-<div class="sourceCode"><pre class="sourceCode css"><code class="sourceCode css">text-decoration<span class="in">:</span> wavy line-through red;</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb3-1"><a href="#cb3-1"></a>text-decoration<span class="in">: wavy</span> line-through red;</span></code></pre></div>
 <p><code>text-decoration-style</code> can be one of</p>
 <ul class="incremental">
 <li>none</li>
@@ -113,7 +113,7 @@ p {
 <li>line-through</li>
 </ul>
 <h3 id="text-shadow">text-shadow</h3>
-<div class="sourceCode"><pre class="sourceCode css"><code class="sourceCode css">text-shadow<span class="in">:</span> 4px 4px 5px red;</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb4-1"><a href="#cb4-1"></a>text-shadow<span class="in">: 4px 4px 5px red</span>;</span></code></pre></div>
 <p>Four properties:</p>
 <ul class="incremental">
 <li>horizontal offset</li>
@@ -122,15 +122,15 @@ p {
 </ul>
 <ol class="incremental">
 <li><p>multiple shadows</p>
-<div class="sourceCode"><pre class="sourceCode css"><code class="sourceCode css">text-shadow<span class="in">:</span> -1px -1px 1px <span class="pp">#aaa</span>,
-             0px 4px 1px rgba(0,0,0,0<span class="fu">.5</span>),
-             4px 4px 5px rgba(0,0,0,0<span class="fu">.7</span>),
-             0px 0px 7px rgba(0,0,0,0<span class="fu">.4</span>);</code></pre></div></li>
+<div class="sourceCode" id="cb5"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb5-1"><a href="#cb5-1"></a>text-shadow<span class="in">: -1px</span> -1px 1px <span class="pp">#aaa</span><span class="op">,</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>             0px 4px 1px rgba(0<span class="op">,</span>0<span class="op">,</span>0<span class="op">,</span>0<span class="fu">.5</span>)<span class="op">,</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>             4px 4px 5px rgba(0<span class="op">,</span>0<span class="op">,</span>0<span class="op">,</span>0<span class="fu">.7</span>)<span class="op">,</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>             0px 0px 7px rgba(0<span class="op">,</span>0<span class="op">,</span>0<span class="op">,</span>0<span class="fu">.4</span>);</span></code></pre></div></li>
 </ol>
 <h3 id="misc">misc</h3>
 <dl class="incremental">
 <dt>font-variant</dt>
-<dd>small-caps, slashed-zero, common-ligature (compress &quot;fi&quot;, &quot;fl&quot;)
+<dd>small-caps, slashed-zero, common-ligature (compress "fi", "fl")
 </dd>
 <dt>font-kerning</dt>
 <dd>

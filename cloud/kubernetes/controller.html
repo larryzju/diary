@@ -21,38 +21,38 @@
 <li>add/update/delete Custom Resource</li>
 <li>create custom controller and associate it with the new created custom resource</li>
 </ol>
-<p>See <a href="https://github.com/kubernetes/sample-controller" class="uri">https://github.com/kubernetes/sample-controller</a> for details</p>
+<p>See <a href="https://github.com/kubernetes/sample-controller">https://github.com/kubernetes/sample-controller</a> for details</p>
 <h1 id="create-custom-resource">Create Custom Resource</h1>
 <h2 id="create-namespace">Create Namespace</h2>
-<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">apiVersion:</span><span class="at"> v1</span>
-<span class="fu">kind:</span><span class="at"> Namespace</span>
-<span class="fu">metadata:</span>
-  <span class="fu">name:</span><span class="at"> larry</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> v1</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Namespace</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> larry</span></span></code></pre></div>
 <h2 id="create-customresourcedefinition">Create CustomResourceDefinition</h2>
 <p>CRD is not namespaced (but scoped)</p>
-<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">apiVersion:</span><span class="at"> apiextensions.k8s.io/v1beta1</span>
-<span class="fu">kind:</span><span class="at"> CustomResourceDefinition</span>
-<span class="fu">metadata:</span>
-  <span class="fu">name:</span><span class="at"> foos.samplecontroller.k8s.io</span>
-<span class="fu">spec:</span>
-  <span class="fu">group:</span><span class="at"> samplecontroller.k8s.io</span>
-  <span class="fu">version:</span><span class="at"> v1alpha</span>
-  <span class="fu">names:</span>
-    <span class="fu">kind:</span><span class="at"> Foo</span>
-    <span class="fu">plural:</span><span class="at"> foos</span>
-  <span class="fu">scope:</span><span class="at"> Namespaced</span>
-</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> apiextensions.k8s.io/v1beta1</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> CustomResourceDefinition</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> foos.samplecontroller.k8s.io</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="at">  </span><span class="fu">group</span><span class="kw">:</span><span class="at"> samplecontroller.k8s.io</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="at">  </span><span class="fu">version</span><span class="kw">:</span><span class="at"> v1alpha</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="at">  </span><span class="fu">names</span><span class="kw">:</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="at">    </span><span class="fu">kind</span><span class="kw">:</span><span class="at"> Foo</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="at">    </span><span class="fu">plural</span><span class="kw">:</span><span class="at"> foos</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="at">  </span><span class="fu">scope</span><span class="kw">:</span><span class="at"> Namespaced</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a></span></code></pre></div>
 <h2 id="create-customresource-foo">Create CustomResource Foo</h2>
-<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">apiVersion:</span><span class="at"> samplecontroller.k8s.io/v1alpha</span>
-<span class="fu">kind:</span><span class="at"> Foo</span>
-<span class="fu">metadata:</span>
-  <span class="fu">name:</span><span class="at"> example-foo</span>
-  <span class="fu">namespace:</span><span class="at"> larry</span>
-<span class="fu">spec:</span>
-  <span class="fu">deploymentName:</span><span class="at"> example-foo</span>
-  <span class="fu">replicas:</span><span class="at"> 1</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> samplecontroller.k8s.io/v1alpha</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Foo</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> example-foo</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="at">  </span><span class="fu">namespace</span><span class="kw">:</span><span class="at"> larry</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="at">  </span><span class="fu">deploymentName</span><span class="kw">:</span><span class="at"> example-foo</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="at">  </span><span class="fu">replicas</span><span class="kw">:</span><span class="at"> </span><span class="dv">1</span></span></code></pre></div>
 <h2 id="check-the-foo-objects">Check the Foo objects</h2>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">kubectl</span> get foos example-foo -n larry -o yaml</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="ex">kubectl</span> get foos example-foo -n larry -o yaml</span></code></pre></div>
 <h1 id="define-custom-resource-spec-for-controller">Define Custom Resource Spec for Controller</h1>
 <h1 id="validation"><span class="todo TODO">TODO</span> Validation</h1>
 <p>CustomResourceValidation</p>

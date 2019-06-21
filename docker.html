@@ -88,8 +88,8 @@
 <li>Based on go <code>filepath.Match</code></li>
 <li>Special
 <ol class="incremental">
-<li><code>**</code> match any level directory</li>
-<li><code>?</code> match single letter</li>
+<li><p><code>**</code> match any level directory</p></li>
+<li><p><code>?</code> match single letter</p></li>
 <li><p><code>!</code> reverse match rules (weird!)</p>
 <pre class="text"><code># No markdown files are included in the context except README files other than README-secret.md.
 *.md
@@ -118,12 +118,12 @@ README-secret.md
 <p>Use <code>ENV</code> define variables, refer by '$'</p>
 <ul class="incremental">
 <li><p>Define</p>
-<div class="sourceCode"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span class="kw">FROM</span> busybox
-<span class="kw">ENV</span> foo /bar
-<span class="kw">WORKDIR</span> ${foo}   <span class="co"># WORKDIR /bar</span>
-<span class="kw">ADD</span> . $foo       <span class="co"># ADD . /bar</span>
-<span class="kw">COPY</span> \$foo /quux <span class="co"># COPY $foo /quux</span></code></pre></div></li>
-<li>Bash like
+<div class="sourceCode" id="cb2"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">FROM</span> busybox</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">ENV</span> foo /bar</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="kw">WORKDIR</span> ${foo}   <span class="co"># WORKDIR /bar</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="kw">ADD</span> . $foo       <span class="co"># ADD . /bar</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="kw">COPY</span> \$foo /quux <span class="co"># COPY $foo /quux</span></span></code></pre></div></li>
+<li><p>Bash like</p>
 <ul class="incremental">
 <li><code>${var:-word}</code>: if var is not set, then return word</li>
 <li><code>${var:+word}</code>: if var is set, return word, else return nil</li>
@@ -135,26 +135,26 @@ README-secret.md
 <pre class="text"><code>FROM &lt;image&gt; [As &lt;name&gt;]
 image: image | image:tag | image@digest
 </code></pre></li>
-<li><code>&lt;name&gt;</code> is used for <code>COPY --from=&lt;name&gt;</code> scenario</li>
-<li>Can be used multiple times</li>
+<li><p><code>&lt;name&gt;</code> is used for <code>COPY --from=&lt;name&gt;</code> scenario</p></li>
+<li><p>Can be used multiple times</p></li>
 <li><p>Prefix with <code>ARGS</code> parameters</p>
-<div class="sourceCode"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span class="kw">ARG</span> VERSION=latest
-<span class="kw">FROM</span> busybox:$VERSION
-<span class="kw">ARG</span> VERSION
-<span class="kw">RUN</span> echo $VERSION &gt; image_version</code></pre></div></li>
+<div class="sourceCode" id="cb4"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">ARG</span> VERSION=latest</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="kw">FROM</span> busybox:$VERSION</span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="kw">ARG</span> VERSION</span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="kw">RUN</span> echo $VERSION &gt; image_version</span></code></pre></div></li>
 </ul>
 <h3 id="run-instruction">RUN instruction</h3>
 <ul class="incremental">
 <li>Syntax
 <ol class="incremental">
 <li>sh -c mode: <code>RUN &lt;command&gt;</code></li>
-<li>exec mode: <code>RUN [&quot;execution&quot;, &quot;param1&quot;, &quot;param2&quot;]</code></li>
+<li>exec mode: <code>RUN ["execution", "param1", "param2"]</code></li>
 </ol></li>
 <li>Note
 <ul class="incremental">
 <li>exec mode will be commit in JSON format, string must be quoted</li>
 <li>exec mode will not expand container environment variable (which is shell's job)</li>
-<li>can split long ocmmand line with ''</li>
+<li>can split long ocmmand line with '\'</li>
 <li>use <code>SHELL</code> command to set which shell to be used</li>
 <li>generate new commit cache, use <code>docker build --no-cache</code> to ignore</li>
 </ul></li>
@@ -167,21 +167,21 @@ image: image | image:tag | image@digest
 <li>Only last one will take effect</li>
 <li>Three formats
 <ul class="incremental">
-<li>exec form: <code>CMD [&quot;executable&quot;, &quot;param1&quot;, &quot;param2&quot;]</code></li>
-<li>as the default parameters to ENTRYPOINT: <code>CMD [&quot;param1&quot;, &quot;param2&quot;]</code></li>
+<li>exec form: <code>CMD ["executable", "param1", "param2"]</code></li>
+<li>as the default parameters to ENTRYPOINT: <code>CMD ["param1", "param2"]</code></li>
 <li>shell form: <code>CMD command param1 param2</code></li>
 </ul></li>
 </ul>
 <h3 id="label-instruction">LABEL instruction</h3>
 <ul class="incremental">
 <li><p>Add metadata to image</p>
-<div class="sourceCode"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span class="kw">LABEL</span> <span class="st">&quot;com.example.vendor&quot;</span>=<span class="st">&quot;ACME Incorporated&quot;</span>
-<span class="kw">LABEL</span> com.example.label-with-value=<span class="st">&quot;foo&quot;</span>
-<span class="kw">LABEL</span> version=<span class="st">&quot;1.0&quot;</span>
-<span class="kw">LABEL</span> description=<span class="st">&quot;This text illustrates </span>\
-<span class="st">        that label-values can span multiple lines.&quot;</span>
-<span class="kw">LABEL</span> multi.label1=<span class="st">&quot;value1&quot;</span> multi.label2=<span class="st">&quot;value2&quot;</span> other=<span class="st">&quot;value3&quot;</span></code></pre></div></li>
-<li>Check with <code>docker inspect</code></li>
+<div class="sourceCode" id="cb5"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">LABEL</span> <span class="st">&quot;com.example.vendor&quot;</span>=<span class="st">&quot;ACME Incorporated&quot;</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="kw">LABEL</span> com.example.label-with-value=<span class="st">&quot;foo&quot;</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="kw">LABEL</span> version=<span class="st">&quot;1.0&quot;</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="kw">LABEL</span> description=<span class="st">&quot;This text illustrates </span><span class="op">\</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="st">        that label-values can span multiple lines.&quot;</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="kw">LABEL</span> multi.label1=<span class="st">&quot;value1&quot;</span> multi.label2=<span class="st">&quot;value2&quot;</span> other=<span class="st">&quot;value3&quot;</span></span></code></pre></div></li>
+<li><p>Check with <code>docker inspect</code></p></li>
 <li><p>Image will inherit base or parent image's labels</p></li>
 </ul>
 <h3 id="expose-instruction">EXPOSE instruction</h3>
@@ -189,9 +189,9 @@ image: image | image:tag | image@digest
 <li><p>Syntax</p>
 <pre class="text"><code>EXPOSE &lt;port&gt; [&lt;port&gt;/&lt;protocol&gt;]
 </code></pre></li>
-<li>Just inform the listen port at runtime, do not publish the port</li>
+<li><p>Just inform the listen port at runtime, do not publish the port</p></li>
 <li><p>Manual publish with <code>docker run -p/-P</code></p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">docker</span> run -p 80:80/tcp -p 80:80/udp</code></pre></div></li>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="ex">docker</span> run -p 80:80/tcp -p 80:80/udp</span></code></pre></div></li>
 </ul>
 <h3 id="env-instruction">ENV instruction</h3>
 <ul class="incremental">
@@ -199,22 +199,22 @@ image: image | image:tag | image@digest
 <pre class="text"><code>ENV &lt;key&gt; &lt;value&gt;
 ENV &lt;key&gt;=&lt;value&gt; &lt;key&gt;=&lt;value&gt; ...
 </code></pre></li>
-<li>Will be replaced with its value</li>
-<li>Both Dockerfile and runtime (os environment) can see</li>
+<li><p>Will be replaced with its value</p></li>
+<li><p>Both Dockerfile and runtime (os environment) can see</p></li>
 <li><p>Can also set by command line</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">docker</span> run --env <span class="op">&lt;</span>key<span class="op">&gt;</span>=<span class="op">&lt;</span>value<span class="op">&gt;</span></code></pre></div></li>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a><span class="ex">docker</span> run --env <span class="op">&lt;</span>key<span class="op">&gt;</span>=<span class="op">&lt;</span>value<span class="op">&gt;</span></span></code></pre></div></li>
 <li><p>Be care for overwriting the SHELL environment, use</p>
-<div class="sourceCode"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span class="kw">RUN</span> &lt;key&gt;=&lt;value&gt; &lt;command&gt;</code></pre></div></li>
+<div class="sourceCode" id="cb10"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">RUN</span> &lt;key&gt;=&lt;value&gt; &lt;command&gt;</span></code></pre></div></li>
 </ul>
 <h3 id="add-instruction">ADD instruction</h3>
 <ul class="incremental">
-<li>Copy files/directories/remote-resources to image's destination</li>
+<li><p>Copy files/directories/remote-resources to image's destination</p></li>
 <li><p>syntax</p>
 <pre class="text"><code>ADD [--chown=&lt;user&gt;:&lt;group&gt;] &lt;src&gt;... &lt;dest&gt;
 ADD [--chown=&lt;user&gt;:&lt;group&gt;] [&quot;&lt;src&gt;&quot;,... &quot;&lt;dest&gt;&quot;]
 </code></pre></li>
-<li>Default owner is <code>0:0</code></li>
-<li>Rules
+<li><p>Default owner is <code>0:0</code></p></li>
+<li><p>Rules</p>
 <ul class="incremental">
 <li>src
 <ul class="incremental">
@@ -238,13 +238,13 @@ ADD [--chown=&lt;user&gt;:&lt;group&gt;] [&quot;&lt;src&gt;&quot;,... &quot;&lt;
 </ul>
 <h3 id="entrypoint-instruction">ENTRYPOINT instruction</h3>
 <ul class="incremental">
-<li>Configure the container to run as an executable</li>
-<li>syntax
+<li><p>Configure the container to run as an executable</p></li>
+<li><p>syntax</p>
 <ul class="incremental">
-<li>exec form: <code>ENTRYPOINT [&quot;executable&quot;, &quot;param1&quot;, &quot;param2&quot;]</code></li>
+<li>exec form: <code>ENTRYPOINT ["executable", "param1", "param2"]</code></li>
 <li>shell form: <code>ENTRYPOINT command param1 param2</code></li>
 </ul></li>
-<li>note
+<li><p>note</p>
 <ol class="incremental">
 <li>add <code>exec</code> in shell form for receiving Unix signals, else <code>docker stop</code> will not work</li>
 <li>shell form execute with <code>sh -c</code></li>
@@ -295,8 +295,8 @@ ADD [--chown=&lt;user&gt;:&lt;group&gt;] [&quot;&lt;src&gt;&quot;,... &quot;&lt;
 </ul>
 <h3 id="user-instruction">USER instruction</h3>
 <ul class="incremental">
-<li>set the user (and group) to use when running the image</li>
-<li>for <code>RUN</code>, <code>CMD</code> and <code>ENTRYPOINT</code> instructions the follow it in the <code>Dockerfile</code></li>
+<li><p>set the user (and group) to use when running the image</p></li>
+<li><p>for <code>RUN</code>, <code>CMD</code> and <code>ENTRYPOINT</code> instructions the follow it in the <code>Dockerfile</code></p></li>
 <li><p>syntax</p>
 <pre class="text"><code>USER &lt;user&gt;[:&lt;group&gt;] or
 USER &lt;UID&gt;[:&lt;GID&gt;]
@@ -305,9 +305,9 @@ USER &lt;UID&gt;[:&lt;GID&gt;]
 <h3 id="build-cache"><span class="todo TODO">TODO</span> build cache</h3>
 <p><a href="https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#build-cache">build cache reference</a></p>
 <h3 id="push-a-repository-to-its-registry"><span class="todo TODO">TODO</span> push a repository to its registry</h3>
-<p><a href="https://docs.docker.com/engine/tutorials/dockerrepos/#/contributing-to-docker-hub" class="uri">https://docs.docker.com/engine/tutorials/dockerrepos/#/contributing-to-docker-hub</a></p>
+<p><a href="https://docs.docker.com/engine/tutorials/dockerrepos/#/contributing-to-docker-hub">https://docs.docker.com/engine/tutorials/dockerrepos/#/contributing-to-docker-hub</a></p>
 <h3 id="base-image"><span class="todo TODO">TODO</span> base image</h3>
-<p><a href="https://docs.docker.com/engine/reference/glossary/#base-image" class="uri">https://docs.docker.com/engine/reference/glossary/#base-image</a></p>
+<p><a href="https://docs.docker.com/engine/reference/glossary/#base-image">https://docs.docker.com/engine/reference/glossary/#base-image</a></p>
 <h1 id="best-practice"><span class="todo TODO">TODO</span> best practice</h1>
 <h2 id="docker-overview">Docker Overview</h2>
 <p>Dockerfile instruct docker daemon build image in multiple layers. Then generate a container, you add a new writable layer (container layer) on top of the underlying layers.</p>
@@ -321,13 +321,13 @@ USER &lt;UID&gt;[:&lt;GID&gt;]
 <h3 id="exclude-with-.dockerignore">Exclude with <code>.dockerignore</code></h3>
 <p>similar to <code>.gitignore</code></p>
 <h3 id="multi-stage-builds-docker-17.05-or-higher">Multi-stage builds (Docker 17.05 or higher)</h3>
-<div class="sourceCode"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span class="kw">FROM</span> golang:1.9.2-alpine3.6 AS build
-<span class="co">## skip ...</span>
-
-<span class="kw">FROM</span> scratch
-<span class="kw">COPY</span> --from=build /bin/project /bin/project
-<span class="co">## skip ...</span></code></pre></div>
-<p><a href="https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/" class="uri">https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/</a></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">FROM</span> golang:1.9.2-alpine3.6 AS build</span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="co">## skip ...</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a></span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="kw">FROM</span> scratch</span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="kw">COPY</span> --from=build /bin/project /bin/project</span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="co">## skip ...</span></span></code></pre></div>
+<p><a href="https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/">https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/</a></p>
 <h3 id="dont-install-unnecessary-packages">Don't install unnecessary packages</h3>
 <h1 id="docker-network">docker network</h1>
 <h2 id="overview-2">Overview</h2>
@@ -376,9 +376,9 @@ USER &lt;UID&gt;[:&lt;GID&gt;]
 <h2 id="bridge-network">Bridge Network</h2>
 <p>Software bridge network which can isolate from containers not connected to the bridge and can automatically install rules in host OS.</p>
 <p>By default, Docker create network named <code>bridge</code>. Check with</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">docker</span> network ls</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1"></a><span class="ex">docker</span> network ls</span></code></pre></div>
 <p>User can create his own bridge network which is recommended in production environments:</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">docker</span> network create --driver bridge brg0</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1"></a><span class="ex">docker</span> network create --driver bridge brg0</span></code></pre></div>
 <p>Docker container can join the bridge network by:</p>
 <ol class="incremental">
 <li><code>docker run</code> with <code>--network &lt;network&gt;</code> parameter</li>
@@ -397,11 +397,11 @@ USER &lt;UID&gt;[:&lt;GID&gt;]
 </ol>
 <p>On user-defined networks, containers can communicate by container name (<strong>automatic service discovery</strong>) when the container on and only on the same bridge network.</p>
 <ul class="incremental">
-<li><a href="https://docs.docker.com/network/" class="uri">https://docs.docker.com/network/</a></li>
+<li><a href="https://docs.docker.com/network/">https://docs.docker.com/network/</a></li>
 </ul>
 <h1 id="manage-containers">manage containers</h1>
 <ul class="incremental">
-<li><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html-single/managing_containers/" class="uri">https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html-single/managing_containers/</a></li>
+<li><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html-single/managing_containers/">https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html-single/managing_containers/</a></li>
 </ul>
 <h2 id="attach-with-detach"><span class="todo TODO">TODO</span> attach with detach</h2>
 <h2 id="parameters-in-docker-run">parameters in <code>docker run</code></h2>

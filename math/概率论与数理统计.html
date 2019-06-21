@@ -33,14 +33,14 @@
 </ul>
 <h3 id="样本空间">样本空间</h3>
 <ul class="incremental">
-<li>随机试验的每一可能结果称为样本点，记为 <em>ω</em></li>
-<li>由所有样本点全体组成的集合称为样本空间，记为 <em>Ω</em></li>
+<li>随机试验的每一可能结果称为样本点，记为 ω</li>
+<li>由所有样本点全体组成的集合称为样本空间，记为 Ω</li>
 </ul>
 <h3 id="随机事件">随机事件</h3>
 <p>随机试验样本空间的子集称为随机事件，简称事件：</p>
 <ol class="incremental">
 <li>由一个样本点组成的子集是最简单事件，称为基本事件</li>
-<li>每次试验 <em>Ω</em> 必发生，称 <em>Ω</em> 为必然事件</li>
+<li>每次试验 Ω 必发生，称 Ω 为必然事件</li>
 <li>每次试验 ∅ 必不发生，称 ∅ 为不可能事件</li>
 </ol>
 <h2 id="事件的关系与运算">事件的关系与运算</h2>
@@ -80,10 +80,10 @@
 <dd><span class="math inline"><em>A</em> ∪ <em>B</em> = <em>B</em> ∪ <em>A</em></span>, <span class="math inline"><em>A</em> ∩ <em>B</em> = <em>B</em> ∩ <em>A</em></span>
 </dd>
 <dt>结合律</dt>
-<dd><span class="math inline">(<em>A</em> ∪ <em>B</em>)∪<em>C</em> = <em>A</em> ∪ (<em>B</em> ∪ <em>C</em>)</span>, <span class="math inline">(<em>A</em> ∩ <em>B</em>)∩<em>C</em> = <em>A</em> ∩ (<em>B</em> ∩ <em>C</em>)</span>
+<dd><span class="math inline">(<em>A</em> ∪ <em>B</em>) ∪ <em>C</em> = <em>A</em> ∪ (<em>B</em> ∪ <em>C</em>)</span>, <span class="math inline">(<em>A</em> ∩ <em>B</em>) ∩ <em>C</em> = <em>A</em> ∩ (<em>B</em> ∩ <em>C</em>)</span>
 </dd>
 <dt>分配律</dt>
-<dd><span class="math inline"><em>A</em> ∩ (<em>B</em> ∪ <em>C</em>)=(<em>A</em> ∩ <em>B</em>)∪(<em>A</em> ∩ <em>C</em>)</span>, <span class="math inline"><em>A</em> ∪ (<em>B</em> ∩ <em>C</em>)=(<em>A</em> ∪ <em>B</em>)∩(<em>A</em> ∪ <em>C</em>)</span>
+<dd><span class="math inline"><em>A</em> ∩ (<em>B</em> ∪ <em>C</em>) = (<em>A</em> ∩ <em>B</em>) ∪ (<em>A</em> ∩ <em>C</em>)</span>, <span class="math inline"><em>A</em> ∪ (<em>B</em> ∩ <em>C</em>) = (<em>A</em> ∪ <em>B</em>) ∩ (<em>A</em> ∪ <em>C</em>)</span>
 </dd>
 <dt>对偶律</dt>
 <dd><span class="math inline">$\overline{A\cup B} = \overline{A}\cap \overline{B}$</span>, <span class="math inline">$\overline{A\cap{}B} = \overline{A}\cup\overline{B}$</span>, <span class="math inline">$\overline{\cup_{i=1}^n A_i} = \cap_{i=1}^{n}\overline{A_i}$</span>, <span class="math inline">$\overline{\cap_{i=1}^{n}{A_i}} = \cup_{i=1}^n\overline{A_i}$</span>
@@ -91,32 +91,32 @@
 </dl>
 <h2 id="条伯概率与独立性">条伯概率与独立性</h2>
 <h3 id="概率公理">概率公理</h3>
-<p>试验 E 的样本空间为 <em>Ω</em>，称实值函数 P 为概率，P 满足如下条件：</p>
+<p>试验 E 的样本空间为 Ω，称实值函数 P 为概率，P 满足如下条件：</p>
 <ol class="incremental">
-<li>对于任意事件 A，有 <span class="math inline"><em>P</em>(<em>A</em>)≥0</span></li>
-<li>对于必然事件 <em>Ω</em>，有 <span class="math inline"><em>P</em>(<em>Ω</em>)=1</span></li>
-<li>对于两两互斥事件，有 <span class="math inline"><em>P</em>(<em>A</em><sub>1</sub> ∪ <em>A</em><sub>2</sub>⋯<em>A</em><sub><em>n</em></sub>)=<em>P</em>(<em>A</em><sub>1</sub>)+<em>P</em>(<em>A</em><sub>2</sub>)+⋯+<em>P</em>(<em>A</em><sub><em>n</em></sub>)</span></li>
+<li>对于任意事件 A，有 <span class="math inline"><em>P</em>(<em>A</em>) ≥ 0</span></li>
+<li>对于必然事件 Ω，有 <span class="math inline"><em>P</em>(<em>Ω</em>) = 1</span></li>
+<li>对于两两互斥事件，有 <span class="math inline"><em>P</em>(<em>A</em><sub>1</sub> ∪ <em>A</em><sub>2</sub>⋯<em>A</em><sub><em>n</em></sub>) = <em>P</em>(<em>A</em><sub>1</sub>) + <em>P</em>(<em>A</em><sub>2</sub>) + ⋯ + <em>P</em>(<em>A</em><sub><em>n</em></sub>)</span></li>
 </ol>
 <p>称 P(A) 为事件 A 的概率</p>
 <h3 id="条件概率">条件概率</h3>
-<p>A, B 为两事件，且 <span class="math inline"><em>P</em>(<em>A</em>)&gt;0</span> ，称 <span class="math inline">$P(B|A) = \frac{P(AB)}{P(A)}$</span> 为事件 A 发生条件下事件 B 发生的条件概率</p>
+<p>A, B 为两事件，且 <span class="math inline"><em>P</em>(<em>A</em>) &gt; 0</span> ，称 <span class="math inline">$P(B|A) = \frac{P(AB)}{P(A)}$</span> 为事件 A 发生条件下事件 B 发生的条件概率</p>
 <h3 id="事件独立性">事件独立性</h3>
 <ul class="incremental">
-<li>设 A，B 两事件满足 <span class="math inline"><em>P</em>(<em>A</em><em>B</em>)=<em>P</em>(<em>A</em>)<em>P</em>(<em>B</em>)</span> ，则称 A 与 B 相互独立</li>
-<li>若 <span class="math inline"><em>P</em>(<em>A</em><sub>1</sub><em>A</em><sub>2</sub>⋯<em>A</em><sub><em>k</em></sub>)=<em>P</em>(<em>A</em><sub>1</sub>)<em>P</em>(<em>A</em><sub>2</sub>)⋯<em>P</em>(<em>A</em><sub><em>n</em></sub>)</span> ，则称 A<sub>1</sub>, A<sub>2</sub>, ..., A<sub>n</sub> 为相互独立的事件</li>
+<li>设 A，B 两事件满足 <span class="math inline"><em>P</em>(<em>A</em><em>B</em>) = <em>P</em>(<em>A</em>)<em>P</em>(<em>B</em>)</span> ，则称 A 与 B 相互独立</li>
+<li>若 <span class="math inline"><em>P</em>(<em>A</em><sub>1</sub><em>A</em><sub>2</sub>⋯<em>A</em><sub><em>k</em></sub>) = <em>P</em>(<em>A</em><sub>1</sub>)<em>P</em>(<em>A</em><sub>2</sub>)⋯<em>P</em>(<em>A</em><sub><em>n</em></sub>)</span> ，则称 A<sub>1</sub>, A<sub>2</sub>, …, A<sub>n</sub> 为相互独立的事件</li>
 </ul>
 <h3 id="概率的性质">概率的性质</h3>
 <ul class="incremental">
-<li><span class="math inline"><em>P</em>(∅)=0</span></li>
-<li>对于两两互斥的有限事件有 <span class="math inline"><em>P</em>(<em>A</em><sub>1</sub> ∪ <em>A</em><sub>2</sub> ∪ ⋯ ∪ <em>A</em><sub><em>n</em></sub>)=<em>P</em>(<em>A</em><sub>1</sub>)+<em>P</em>(<em>A</em><sub>2</sub>)+⋯+<em>P</em>(<em>A</em><sub><em>n</em></sub>)</span></li>
+<li><span class="math inline"><em>P</em>(∅) = 0</span></li>
+<li>对于两两互斥的有限事件有 <span class="math inline"><em>P</em>(<em>A</em><sub>1</sub> ∪ <em>A</em><sub>2</sub> ∪ ⋯ ∪ <em>A</em><sub><em>n</em></sub>) = <em>P</em>(<em>A</em><sub>1</sub>) + <em>P</em>(<em>A</em><sub>2</sub>) + ⋯ + <em>P</em>(<em>A</em><sub><em>n</em></sub>)</span></li>
 <li><span class="math inline">$P(\overline{A}) = 1 - P(A)$</span></li>
-<li>若 <span class="math inline"><em>A</em> ⊂ <em>B</em></span> ，则 <span class="math inline"><em>P</em>(<em>A</em>)≤<em>P</em>(<em>B</em>)</span></li>
-<li><span class="math inline">0 ≤ <em>P</em>(<em>A</em>)≤1</span></li>
+<li>若 <span class="math inline"><em>A</em> ⊂ <em>B</em></span> ，则 <span class="math inline"><em>P</em>(<em>A</em>) ≤ <em>P</em>(<em>B</em>)</span></li>
+<li><span class="math inline">0 ≤ <em>P</em>(<em>A</em>) ≤ 1</span></li>
 </ul>
 <h3 id="相互独立的性质">相互独立的性质</h3>
 <ul class="incremental">
 <li>A 与 B 相互独立的充要条件是 <span class="math inline"><em>A</em></span> 与 <span class="math inline"><em>B̄</em></span> 或 <span class="math inline"><em>Ā</em></span> 与 <span class="math inline"><em>B</em></span> 或 <span class="math inline"><em>Ā</em></span> 与 <span class="math inline"><em>B̄</em></span> 相互独立</li>
-<li>当 <span class="math inline">0 &lt; <em>P</em>(<em>A</em>)&lt;1</span> 时，A 与 B 独立等价于 <span class="math inline"><em>P</em>(<em>B</em>|<em>A</em>)=<em>P</em>(<em>B</em>)<em>或</em><em>P</em>(<em>B</em>|<em>A</em>)=<em>P</em>(<em>B</em>|<em>Ā</em>)</span> 成立</li>
+<li>当 <span class="math inline">0 &lt; <em>P</em>(<em>A</em>) &lt; 1</span> 时，A 与 B 独立等价于 <span class="math inline"><em>P</em>(<em>B</em>|<em>A</em>) = <em>P</em>(<em>B</em>)<em>或</em><em>P</em>(<em>B</em>|<em>A</em>) = <em>P</em>(<em>B</em>|<em>Ā</em>)</span> 成立</li>
 <li>若 <span class="math inline"><em>A</em><sub>1</sub>, <em>A</em><sub>2</sub>, ⋯<em>A</em><sub><em>n</em></sub></span> 相互独立，则 <span class="math inline"><em>A</em><sub>1</sub>, <em>A</em><sub>2</sub>, ⋯<em>A</em><sub><em>n</em></sub></span> 必两两独立；反之不一定成立</li>
 <li>当 <span class="math inline"><em>A</em><sub>1</sub>, <em>A</em><sub>2</sub>, ⋯<em>A</em><sub><em>n</em></sub></span> 相互独立，它们的部分事件也是相互独立的</li>
 </ul>

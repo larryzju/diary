@@ -90,7 +90,7 @@
 <tr class="even">
 <td>initialise command</td>
 <td>0x11</td>
-<td>make the PIC wait for 3 extra &quot;initialisation words&quot; on the data port: ICW2, ICW3, ICW4</td>
+<td>make the PIC wait for 3 extra "initialisation words" on the data port: ICW2, ICW3, ICW4</td>
 </tr>
 </tbody>
 </table>
@@ -141,72 +141,72 @@
 <p><code>0x80</code> ?</p>
 <h3 id="format">Format</h3>
 <p>Refer to x86 IDT descriptor format <a href="x86.org::*Illustration">illustration</a></p>
-<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">/*</span>
-<span class="co"> * IDT Entry</span>
-<span class="co"> */</span>
-<span class="kw">struct</span> idt_entry {
-        <span class="dt">unsigned</span> <span class="dt">short</span> base_low;
-        <span class="dt">unsigned</span> <span class="dt">short</span> sel;
-        <span class="dt">unsigned</span> <span class="dt">char</span> zero;
-        <span class="dt">unsigned</span> <span class="dt">char</span> flags;
-        <span class="dt">unsigned</span> <span class="dt">short</span> base_high;
-} __attribute__((packed));</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">/*</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co"> * IDT Entry</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co"> */</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="kw">struct</span> idt_entry {</span>
+<span id="cb1-5"><a href="#cb1-5"></a>        <span class="dt">unsigned</span> <span class="dt">short</span> base_low;</span>
+<span id="cb1-6"><a href="#cb1-6"></a>        <span class="dt">unsigned</span> <span class="dt">short</span> sel;</span>
+<span id="cb1-7"><a href="#cb1-7"></a>        <span class="dt">unsigned</span> <span class="dt">char</span> zero;</span>
+<span id="cb1-8"><a href="#cb1-8"></a>        <span class="dt">unsigned</span> <span class="dt">char</span> flags;</span>
+<span id="cb1-9"><a href="#cb1-9"></a>        <span class="dt">unsigned</span> <span class="dt">short</span> base_high;</span>
+<span id="cb1-10"><a href="#cb1-10"></a>} __attribute__((packed));</span></code></pre></div>
 <h2 id="isr">ISR</h2>
 <p><code>kernel/core/isrs.c</code> define the <code>[0,32)</code> ISR and the code is similar to <code>kernel/core/irq.c</code>.</p>
 <p>Refer to the <em>IRQ</em> section.</p>
 <h3 id="error-code">error code</h3>
 <p>Some of the exceptions don't provide error code to the handler.</p>
-<div class="sourceCode"><pre class="sourceCode nasm"><code class="sourceCode nasm"><span class="co">; Interrupt Service Routines</span>
-<span class="ot">%macro ISR_NOERR 1</span>
-        <span class="kw">global</span> _isr<span class="ot">%1</span>
-        _isr<span class="ot">%1:</span>
-                <span class="kw">cli</span>
-                <span class="kw">push</span> <span class="dt">byte</span> <span class="dv">0</span>
-                <span class="kw">push</span> <span class="dt">byte</span> <span class="ot">%1</span>
-                <span class="kw">jmp</span> isr_common_stub
-<span class="ot">%endmacro</span>
-
-<span class="ot">%macro ISR_ERR 1</span>
-        <span class="kw">global</span> _isr<span class="ot">%1</span>
-        _isr<span class="ot">%1:</span>
-                <span class="kw">cli</span>
-                <span class="kw">push</span> <span class="dt">byte</span> <span class="ot">%1</span>
-                <span class="kw">jmp</span> isr_common_stub
-<span class="ot">%endmacro</span>
-
-<span class="co">; Standard X86 interrupt service routines</span>
-ISR_NOERR <span class="dv">0</span>
-ISR_NOERR <span class="dv">1</span>
-ISR_NOERR <span class="dv">2</span>
-ISR_NOERR <span class="dv">3</span>
-ISR_NOERR <span class="dv">4</span>
-ISR_NOERR <span class="dv">5</span>
-ISR_NOERR <span class="dv">6</span>
-ISR_NOERR <span class="dv">7</span>
-ISR_ERR   <span class="dv">8</span>
-ISR_NOERR <span class="dv">9</span>
-ISR_ERR   <span class="dv">10</span>
-ISR_ERR   <span class="dv">11</span>
-ISR_ERR   <span class="dv">12</span>
-ISR_ERR   <span class="dv">13</span>
-ISR_ERR   <span class="dv">14</span>
-ISR_NOERR <span class="dv">15</span>
-ISR_NOERR <span class="dv">16</span>
-ISR_NOERR <span class="dv">17</span>
-ISR_NOERR <span class="dv">18</span>
-ISR_NOERR <span class="dv">19</span>
-ISR_NOERR <span class="dv">20</span>
-ISR_NOERR <span class="dv">21</span>
-ISR_NOERR <span class="dv">22</span>
-ISR_NOERR <span class="dv">23</span>
-ISR_NOERR <span class="dv">24</span>
-ISR_NOERR <span class="dv">25</span>
-ISR_NOERR <span class="dv">26</span>
-ISR_NOERR <span class="dv">27</span>
-ISR_NOERR <span class="dv">28</span>
-ISR_NOERR <span class="dv">29</span>
-ISR_NOERR <span class="dv">30</span>
-ISR_NOERR <span class="dv">31</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode nasm"><code class="sourceCode nasm"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">; Interrupt Service Routines</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="ot">%macro ISR_NOERR 1</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>        <span class="kw">global</span> _isr<span class="ot">%1</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>        _isr<span class="ot">%1:</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>                <span class="kw">cli</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>                <span class="kw">push</span> <span class="dt">byte</span> <span class="dv">0</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>                <span class="kw">push</span> <span class="dt">byte</span> <span class="ot">%1</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>                <span class="kw">jmp</span> isr_common_stub</span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="ot">%endmacro</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="ot">%macro ISR_ERR 1</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>        <span class="kw">global</span> _isr<span class="ot">%1</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>        _isr<span class="ot">%1:</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a>                <span class="kw">cli</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a>                <span class="kw">push</span> <span class="dt">byte</span> <span class="ot">%1</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a>                <span class="kw">jmp</span> isr_common_stub</span>
+<span id="cb2-17"><a href="#cb2-17"></a><span class="ot">%endmacro</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a></span>
+<span id="cb2-19"><a href="#cb2-19"></a><span class="co">; Standard X86 interrupt service routines</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a>ISR_NOERR <span class="dv">0</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a>ISR_NOERR <span class="dv">1</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a>ISR_NOERR <span class="dv">2</span></span>
+<span id="cb2-23"><a href="#cb2-23"></a>ISR_NOERR <span class="dv">3</span></span>
+<span id="cb2-24"><a href="#cb2-24"></a>ISR_NOERR <span class="dv">4</span></span>
+<span id="cb2-25"><a href="#cb2-25"></a>ISR_NOERR <span class="dv">5</span></span>
+<span id="cb2-26"><a href="#cb2-26"></a>ISR_NOERR <span class="dv">6</span></span>
+<span id="cb2-27"><a href="#cb2-27"></a>ISR_NOERR <span class="dv">7</span></span>
+<span id="cb2-28"><a href="#cb2-28"></a>ISR_ERR   <span class="dv">8</span></span>
+<span id="cb2-29"><a href="#cb2-29"></a>ISR_NOERR <span class="dv">9</span></span>
+<span id="cb2-30"><a href="#cb2-30"></a>ISR_ERR   <span class="dv">10</span></span>
+<span id="cb2-31"><a href="#cb2-31"></a>ISR_ERR   <span class="dv">11</span></span>
+<span id="cb2-32"><a href="#cb2-32"></a>ISR_ERR   <span class="dv">12</span></span>
+<span id="cb2-33"><a href="#cb2-33"></a>ISR_ERR   <span class="dv">13</span></span>
+<span id="cb2-34"><a href="#cb2-34"></a>ISR_ERR   <span class="dv">14</span></span>
+<span id="cb2-35"><a href="#cb2-35"></a>ISR_NOERR <span class="dv">15</span></span>
+<span id="cb2-36"><a href="#cb2-36"></a>ISR_NOERR <span class="dv">16</span></span>
+<span id="cb2-37"><a href="#cb2-37"></a>ISR_NOERR <span class="dv">17</span></span>
+<span id="cb2-38"><a href="#cb2-38"></a>ISR_NOERR <span class="dv">18</span></span>
+<span id="cb2-39"><a href="#cb2-39"></a>ISR_NOERR <span class="dv">19</span></span>
+<span id="cb2-40"><a href="#cb2-40"></a>ISR_NOERR <span class="dv">20</span></span>
+<span id="cb2-41"><a href="#cb2-41"></a>ISR_NOERR <span class="dv">21</span></span>
+<span id="cb2-42"><a href="#cb2-42"></a>ISR_NOERR <span class="dv">22</span></span>
+<span id="cb2-43"><a href="#cb2-43"></a>ISR_NOERR <span class="dv">23</span></span>
+<span id="cb2-44"><a href="#cb2-44"></a>ISR_NOERR <span class="dv">24</span></span>
+<span id="cb2-45"><a href="#cb2-45"></a>ISR_NOERR <span class="dv">25</span></span>
+<span id="cb2-46"><a href="#cb2-46"></a>ISR_NOERR <span class="dv">26</span></span>
+<span id="cb2-47"><a href="#cb2-47"></a>ISR_NOERR <span class="dv">27</span></span>
+<span id="cb2-48"><a href="#cb2-48"></a>ISR_NOERR <span class="dv">28</span></span>
+<span id="cb2-49"><a href="#cb2-49"></a>ISR_NOERR <span class="dv">29</span></span>
+<span id="cb2-50"><a href="#cb2-50"></a>ISR_NOERR <span class="dv">30</span></span>
+<span id="cb2-51"><a href="#cb2-51"></a>ISR_NOERR <span class="dv">31</span></span></code></pre></div>
 <h2 id="irq-1">IRQ</h2>
 <ul class="incremental">
 <li>install <code>[32,48)</code> ISR by default (in <code>irq_install</code>)</li>
@@ -214,152 +214,152 @@ ISR_NOERR <span class="dv">31</span></code></pre></div>
 <li>register with <code>irq_install_handler</code>, unregister with <code>irq_uninstall_handler</code></li>
 </ul>
 <h3 id="handler">handler</h3>
-<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">typedef</span> <span class="dt">void</span> (*irq_handler_t) (<span class="kw">struct</span> regs *);
-
-<span class="co">// irq_hander_t is the function pointer</span>
-<span class="dt">static</span> irq_handler_t irq_routines[<span class="dv">16</span>] = { NULL };
-
-<span class="dt">void</span>
-irq_handler(<span class="kw">struct</span> regs *r) {
-        <span class="co">// define a new funcion pointer handler</span>
-        <span class="dt">void</span> (*handler)(<span class="kw">struct</span> regs *r);
-
-        <span class="co">// the function pointer is the IRQ handler</span>
-        handler = irq_routines[r-&gt;int_no - <span class="dv">32</span>];
-
-        <span class="co">// skip if no handler was bound</span>
-        <span class="cf">if</span> (handler) {
-                handler(r);
-        }
-
-        <span class="co">// interrupt is trigger by PIC2, send EOI to PIC2 data</span>
-        <span class="cf">if</span> (r-&gt;int_no &gt;= <span class="dv">40</span>) {
-                outportb(<span class="bn">0xA0</span>, <span class="bn">0x20</span>);
-        }
-
-        <span class="co">// send EOI to PIC1 data</span>
-        outportb(<span class="bn">0x20</span>, <span class="bn">0x20</span>);
-}</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">typedef</span> <span class="dt">void</span> (*irq_handler_t) (<span class="kw">struct</span> regs *);</span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="co">// irq_hander_t is the function pointer</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="dt">static</span> irq_handler_t irq_routines[<span class="dv">16</span>] = { NULL };</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="dt">void</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>irq_handler(<span class="kw">struct</span> regs *r) {</span>
+<span id="cb3-8"><a href="#cb3-8"></a>        <span class="co">// define a new funcion pointer handler</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>        <span class="dt">void</span> (*handler)(<span class="kw">struct</span> regs *r);</span>
+<span id="cb3-10"><a href="#cb3-10"></a></span>
+<span id="cb3-11"><a href="#cb3-11"></a>        <span class="co">// the function pointer is the IRQ handler</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>        handler = irq_routines[r-&gt;int_no - <span class="dv">32</span>];</span>
+<span id="cb3-13"><a href="#cb3-13"></a></span>
+<span id="cb3-14"><a href="#cb3-14"></a>        <span class="co">// skip if no handler was bound</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a>        <span class="cf">if</span> (handler) {</span>
+<span id="cb3-16"><a href="#cb3-16"></a>                handler(r);</span>
+<span id="cb3-17"><a href="#cb3-17"></a>        }</span>
+<span id="cb3-18"><a href="#cb3-18"></a></span>
+<span id="cb3-19"><a href="#cb3-19"></a>        <span class="co">// interrupt is trigger by PIC2, send EOI to PIC2 data</span></span>
+<span id="cb3-20"><a href="#cb3-20"></a>        <span class="cf">if</span> (r-&gt;int_no &gt;= <span class="dv">40</span>) {</span>
+<span id="cb3-21"><a href="#cb3-21"></a>                outportb(<span class="bn">0xA0</span>, <span class="bn">0x20</span>);</span>
+<span id="cb3-22"><a href="#cb3-22"></a>        }</span>
+<span id="cb3-23"><a href="#cb3-23"></a></span>
+<span id="cb3-24"><a href="#cb3-24"></a>        <span class="co">// send EOI to PIC1 data</span></span>
+<span id="cb3-25"><a href="#cb3-25"></a>        outportb(<span class="bn">0x20</span>, <span class="bn">0x20</span>);</span>
+<span id="cb3-26"><a href="#cb3-26"></a>}</span></code></pre></div>
 <h3 id="initialise">initialise</h3>
 <ol class="incremental">
 <li><p>remap vector offset</p>
-<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span>
-irq_remap() {
-        <span class="co">// PIC1 initialization</span>
-        outportb(<span class="bn">0x20</span>, <span class="bn">0x11</span>);
-        <span class="co">// PIC2 initialization</span>
-        outportb(<span class="bn">0xA0</span>, <span class="bn">0x11</span>);
-        <span class="co">// PIC1 ICW2 vector offset 0x20</span>
-        outportb(<span class="bn">0x21</span>, <span class="bn">0x20</span>);
-        <span class="co">// PIC2 ICW2 vector offset 0x28</span>
-        outportb(<span class="bn">0xA1</span>, <span class="bn">0x28</span>);
-        <span class="co">// PIC1 ICW3 wired: 0b00000100, PIC2 output connects to PIC1 input #2</span>
-        outportb(<span class="bn">0x21</span>, <span class="bn">0x04</span>);
-        <span class="co">// PIC2 ICW3 identity: 0x02</span>
-        outportb(<span class="bn">0xA1</span>, <span class="bn">0x02</span>);
-        <span class="co">// PIC1 ICW4: 8086/88 (MCS-80/85) mode</span>
-        outportb(<span class="bn">0x21</span>, <span class="bn">0x01</span>);
-        <span class="co">// PIC2 ICW4: 8086/88 (MCS-80/85) mode</span>
-        outportb(<span class="bn">0xA1</span>, <span class="bn">0x01</span>);
-        <span class="co">// clear mask</span>
-        outportb(<span class="bn">0x21</span>, <span class="bn">0x0</span>);
-        outportb(<span class="bn">0xA1</span>, <span class="bn">0x0</span>);
-}</code></pre></div></li>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1"></a><span class="dt">void</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>irq_remap() {</span>
+<span id="cb4-3"><a href="#cb4-3"></a>        <span class="co">// PIC1 initialization</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>        outportb(<span class="bn">0x20</span>, <span class="bn">0x11</span>);</span>
+<span id="cb4-5"><a href="#cb4-5"></a>        <span class="co">// PIC2 initialization</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>        outportb(<span class="bn">0xA0</span>, <span class="bn">0x11</span>);</span>
+<span id="cb4-7"><a href="#cb4-7"></a>        <span class="co">// PIC1 ICW2 vector offset 0x20</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a>        outportb(<span class="bn">0x21</span>, <span class="bn">0x20</span>);</span>
+<span id="cb4-9"><a href="#cb4-9"></a>        <span class="co">// PIC2 ICW2 vector offset 0x28</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a>        outportb(<span class="bn">0xA1</span>, <span class="bn">0x28</span>);</span>
+<span id="cb4-11"><a href="#cb4-11"></a>        <span class="co">// PIC1 ICW3 wired: 0b00000100, PIC2 output connects to PIC1 input #2</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a>        outportb(<span class="bn">0x21</span>, <span class="bn">0x04</span>);</span>
+<span id="cb4-13"><a href="#cb4-13"></a>        <span class="co">// PIC2 ICW3 identity: 0x02</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a>        outportb(<span class="bn">0xA1</span>, <span class="bn">0x02</span>);</span>
+<span id="cb4-15"><a href="#cb4-15"></a>        <span class="co">// PIC1 ICW4: 8086/88 (MCS-80/85) mode</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a>        outportb(<span class="bn">0x21</span>, <span class="bn">0x01</span>);</span>
+<span id="cb4-17"><a href="#cb4-17"></a>        <span class="co">// PIC2 ICW4: 8086/88 (MCS-80/85) mode</span></span>
+<span id="cb4-18"><a href="#cb4-18"></a>        outportb(<span class="bn">0xA1</span>, <span class="bn">0x01</span>);</span>
+<span id="cb4-19"><a href="#cb4-19"></a>        <span class="co">// clear mask</span></span>
+<span id="cb4-20"><a href="#cb4-20"></a>        outportb(<span class="bn">0x21</span>, <span class="bn">0x0</span>);</span>
+<span id="cb4-21"><a href="#cb4-21"></a>        outportb(<span class="bn">0xA1</span>, <span class="bn">0x0</span>);</span>
+<span id="cb4-22"><a href="#cb4-22"></a>}</span></code></pre></div></li>
 <li><p>set irq handler</p>
-<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span>
-irq_install() {
-        irq_remap();
-        idt_set_gate(<span class="dv">32</span>, (<span class="dt">unsigned</span>)_irq0, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);
-        idt_set_gate(<span class="dv">33</span>, (<span class="dt">unsigned</span>)_irq1, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);
-        idt_set_gate(<span class="dv">34</span>, (<span class="dt">unsigned</span>)_irq2, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);
-        idt_set_gate(<span class="dv">35</span>, (<span class="dt">unsigned</span>)_irq3, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);
-        idt_set_gate(<span class="dv">36</span>, (<span class="dt">unsigned</span>)_irq4, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);
-        idt_set_gate(<span class="dv">37</span>, (<span class="dt">unsigned</span>)_irq5, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);
-        idt_set_gate(<span class="dv">38</span>, (<span class="dt">unsigned</span>)_irq6, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);
-        idt_set_gate(<span class="dv">39</span>, (<span class="dt">unsigned</span>)_irq7, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);
-        idt_set_gate(<span class="dv">40</span>, (<span class="dt">unsigned</span>)_irq8, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);
-        idt_set_gate(<span class="dv">41</span>, (<span class="dt">unsigned</span>)_irq9, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);
-        idt_set_gate(<span class="dv">42</span>, (<span class="dt">unsigned</span>)_irq10, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);
-        idt_set_gate(<span class="dv">43</span>, (<span class="dt">unsigned</span>)_irq11, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);
-        idt_set_gate(<span class="dv">44</span>, (<span class="dt">unsigned</span>)_irq12, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);
-        idt_set_gate(<span class="dv">45</span>, (<span class="dt">unsigned</span>)_irq13, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);
-        idt_set_gate(<span class="dv">46</span>, (<span class="dt">unsigned</span>)_irq14, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);
-        idt_set_gate(<span class="dv">47</span>, (<span class="dt">unsigned</span>)_irq15, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);
-        __asm__ __volatile__(<span class="st">&quot;sti&quot;</span>);
-}</code></pre></div></li>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1"></a><span class="dt">void</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>irq_install() {</span>
+<span id="cb5-3"><a href="#cb5-3"></a>        irq_remap();</span>
+<span id="cb5-4"><a href="#cb5-4"></a>        idt_set_gate(<span class="dv">32</span>, (<span class="dt">unsigned</span>)_irq0, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);</span>
+<span id="cb5-5"><a href="#cb5-5"></a>        idt_set_gate(<span class="dv">33</span>, (<span class="dt">unsigned</span>)_irq1, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);</span>
+<span id="cb5-6"><a href="#cb5-6"></a>        idt_set_gate(<span class="dv">34</span>, (<span class="dt">unsigned</span>)_irq2, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);</span>
+<span id="cb5-7"><a href="#cb5-7"></a>        idt_set_gate(<span class="dv">35</span>, (<span class="dt">unsigned</span>)_irq3, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);</span>
+<span id="cb5-8"><a href="#cb5-8"></a>        idt_set_gate(<span class="dv">36</span>, (<span class="dt">unsigned</span>)_irq4, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);</span>
+<span id="cb5-9"><a href="#cb5-9"></a>        idt_set_gate(<span class="dv">37</span>, (<span class="dt">unsigned</span>)_irq5, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);</span>
+<span id="cb5-10"><a href="#cb5-10"></a>        idt_set_gate(<span class="dv">38</span>, (<span class="dt">unsigned</span>)_irq6, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);</span>
+<span id="cb5-11"><a href="#cb5-11"></a>        idt_set_gate(<span class="dv">39</span>, (<span class="dt">unsigned</span>)_irq7, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);</span>
+<span id="cb5-12"><a href="#cb5-12"></a>        idt_set_gate(<span class="dv">40</span>, (<span class="dt">unsigned</span>)_irq8, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);</span>
+<span id="cb5-13"><a href="#cb5-13"></a>        idt_set_gate(<span class="dv">41</span>, (<span class="dt">unsigned</span>)_irq9, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);</span>
+<span id="cb5-14"><a href="#cb5-14"></a>        idt_set_gate(<span class="dv">42</span>, (<span class="dt">unsigned</span>)_irq10, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);</span>
+<span id="cb5-15"><a href="#cb5-15"></a>        idt_set_gate(<span class="dv">43</span>, (<span class="dt">unsigned</span>)_irq11, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);</span>
+<span id="cb5-16"><a href="#cb5-16"></a>        idt_set_gate(<span class="dv">44</span>, (<span class="dt">unsigned</span>)_irq12, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);</span>
+<span id="cb5-17"><a href="#cb5-17"></a>        idt_set_gate(<span class="dv">45</span>, (<span class="dt">unsigned</span>)_irq13, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);</span>
+<span id="cb5-18"><a href="#cb5-18"></a>        idt_set_gate(<span class="dv">46</span>, (<span class="dt">unsigned</span>)_irq14, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);</span>
+<span id="cb5-19"><a href="#cb5-19"></a>        idt_set_gate(<span class="dv">47</span>, (<span class="dt">unsigned</span>)_irq15, <span class="bn">0x08</span>, <span class="bn">0x8E</span>);</span>
+<span id="cb5-20"><a href="#cb5-20"></a>        __asm__ __volatile__(<span class="st">&quot;sti&quot;</span>);</span>
+<span id="cb5-21"><a href="#cb5-21"></a>}</span></code></pre></div></li>
 </ol>
 <h3 id="c-function-wrapper">C function wrapper</h3>
 <p>The <code>irq_handler</code> C function is wrappered by assemble codes</p>
 <ol class="incremental">
 <li><p><code>_irqN</code> definition</p>
-<div class="sourceCode"><pre class="sourceCode nasm"><code class="sourceCode nasm"><span class="ot">%macro IRQ_ENTRY 2</span>
-        <span class="kw">global</span> _irq<span class="ot">%1</span>
-        _irq<span class="ot">%1:</span>
-                <span class="kw">cli</span>
-                <span class="kw">push</span> <span class="dt">byte</span> <span class="dv">0</span>
-                <span class="kw">push</span> <span class="dt">byte</span> <span class="ot">%2</span>
-                <span class="kw">jmp</span> irq_common_stub
-<span class="ot">%endmacro</span>
-
-<span class="co">; Interrupt Requests</span>
-IRQ_ENTRY <span class="dv">0</span>, <span class="dv">32</span>
-IRQ_ENTRY <span class="dv">1</span>, <span class="dv">33</span>
-IRQ_ENTRY <span class="dv">2</span>, <span class="dv">34</span>
-IRQ_ENTRY <span class="dv">3</span>, <span class="dv">35</span>
-IRQ_ENTRY <span class="dv">4</span>, <span class="dv">36</span>
-IRQ_ENTRY <span class="dv">5</span>, <span class="dv">37</span>
-IRQ_ENTRY <span class="dv">6</span>, <span class="dv">38</span>
-IRQ_ENTRY <span class="dv">7</span>, <span class="dv">39</span>
-IRQ_ENTRY <span class="dv">8</span>, <span class="dv">40</span>
-IRQ_ENTRY <span class="dv">9</span>, <span class="dv">41</span>
-IRQ_ENTRY <span class="dv">10</span>, <span class="dv">42</span>
-IRQ_ENTRY <span class="dv">11</span>, <span class="dv">43</span>
-IRQ_ENTRY <span class="dv">12</span>, <span class="dv">44</span>
-IRQ_ENTRY <span class="dv">13</span>, <span class="dv">45</span>
-IRQ_ENTRY <span class="dv">14</span>, <span class="dv">46</span>
-IRQ_ENTRY <span class="dv">15</span>, <span class="dv">47</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode nasm"><code class="sourceCode nasm"><span id="cb6-1"><a href="#cb6-1"></a><span class="ot">%macro IRQ_ENTRY 2</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>        <span class="kw">global</span> _irq<span class="ot">%1</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>        _irq<span class="ot">%1:</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a>                <span class="kw">cli</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>                <span class="kw">push</span> <span class="dt">byte</span> <span class="dv">0</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>                <span class="kw">push</span> <span class="dt">byte</span> <span class="ot">%2</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a>                <span class="kw">jmp</span> irq_common_stub</span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="ot">%endmacro</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co">; Interrupt Requests</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a>IRQ_ENTRY <span class="dv">0</span>, <span class="dv">32</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a>IRQ_ENTRY <span class="dv">1</span>, <span class="dv">33</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a>IRQ_ENTRY <span class="dv">2</span>, <span class="dv">34</span></span>
+<span id="cb6-14"><a href="#cb6-14"></a>IRQ_ENTRY <span class="dv">3</span>, <span class="dv">35</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a>IRQ_ENTRY <span class="dv">4</span>, <span class="dv">36</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a>IRQ_ENTRY <span class="dv">5</span>, <span class="dv">37</span></span>
+<span id="cb6-17"><a href="#cb6-17"></a>IRQ_ENTRY <span class="dv">6</span>, <span class="dv">38</span></span>
+<span id="cb6-18"><a href="#cb6-18"></a>IRQ_ENTRY <span class="dv">7</span>, <span class="dv">39</span></span>
+<span id="cb6-19"><a href="#cb6-19"></a>IRQ_ENTRY <span class="dv">8</span>, <span class="dv">40</span></span>
+<span id="cb6-20"><a href="#cb6-20"></a>IRQ_ENTRY <span class="dv">9</span>, <span class="dv">41</span></span>
+<span id="cb6-21"><a href="#cb6-21"></a>IRQ_ENTRY <span class="dv">10</span>, <span class="dv">42</span></span>
+<span id="cb6-22"><a href="#cb6-22"></a>IRQ_ENTRY <span class="dv">11</span>, <span class="dv">43</span></span>
+<span id="cb6-23"><a href="#cb6-23"></a>IRQ_ENTRY <span class="dv">12</span>, <span class="dv">44</span></span>
+<span id="cb6-24"><a href="#cb6-24"></a>IRQ_ENTRY <span class="dv">13</span>, <span class="dv">45</span></span>
+<span id="cb6-25"><a href="#cb6-25"></a>IRQ_ENTRY <span class="dv">14</span>, <span class="dv">46</span></span>
+<span id="cb6-26"><a href="#cb6-26"></a>IRQ_ENTRY <span class="dv">15</span>, <span class="dv">47</span></span></code></pre></div>
 <p>Define a macro <code>IRQ_ENTRY</code> which accepts two parameter and expand to</p>
-<div class="sourceCode"><pre class="sourceCode nasm"><code class="sourceCode nasm"><span class="kw">global</span> _irq0
-<span class="fu">irq0:</span>
-   <span class="kw">cli</span>
-   <span class="kw">push</span> <span class="dt">byte</span> <span class="dv">0</span>    <span class="co">; PIC port</span>
-   <span class="kw">push</span> <span class="dt">byte</span> <span class="dv">32</span>   <span class="co">; IRQ ID</span>
-   <span class="kw">jmp</span> irq_common_stub
-...</code></pre></div></li>
+<div class="sourceCode" id="cb7"><pre class="sourceCode nasm"><code class="sourceCode nasm"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">global</span> _irq0</span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="fu">irq0:</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>   <span class="kw">cli</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a>   <span class="kw">push</span> <span class="dt">byte</span> <span class="dv">0</span>    <span class="co">; PIC port</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>   <span class="kw">push</span> <span class="dt">byte</span> <span class="dv">32</span>   <span class="co">; IRQ ID</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>   <span class="kw">jmp</span> irq_common_stub</span>
+<span id="cb7-7"><a href="#cb7-7"></a>...</span></code></pre></div></li>
 <li><p>wrapper</p>
 <p>Pass <code>struct *reg</code> parameter to C function <code>irq_handler</code></p>
-<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// kernel/include/system.h</span>
-<span class="co">/* Registers */</span>
-<span class="kw">struct</span> regs {
-        <span class="dt">unsigned</span> <span class="dt">int</span> gs, fs, es, ds;
-        <span class="dt">unsigned</span> <span class="dt">int</span> edi, esi, ebp, esp, ebx, edx, ecx, eax;
-        <span class="dt">unsigned</span> <span class="dt">int</span> int_no, err_code;
-        <span class="dt">unsigned</span> <span class="dt">int</span> eip, cs, eflags, useresp, ss;
-};      </code></pre></div>
-<div class="sourceCode"><pre class="sourceCode nasm"><code class="sourceCode nasm"><span class="fu">irq_common_stub:</span>
-        <span class="kw">pusha</span>     <span class="co">;; any other registers</span>
-        <span class="kw">push</span> <span class="kw">ds</span>   <span class="co">;; be care for the order</span>
-        <span class="kw">push</span> <span class="kw">es</span>
-        <span class="kw">push</span> <span class="kw">fs</span>
-        <span class="kw">push</span> <span class="kw">gs</span>
-        <span class="kw">mov</span> <span class="kw">ax</span><span class="bn">, 0x10   </span><span class="co">;; selector ??</span>
-        <span class="kw">mov</span> <span class="kw">ds</span>, <span class="kw">ax</span>
-        <span class="kw">mov</span> <span class="kw">es</span>, <span class="kw">ax</span>
-        <span class="kw">mov</span> <span class="kw">fs</span>, <span class="kw">ax</span>
-        <span class="kw">mov</span> <span class="kw">gs</span>, <span class="kw">ax</span>
-        <span class="kw">mov</span> <span class="kw">eax</span>, <span class="kw">esp</span>
-        <span class="kw">push</span> <span class="kw">eax</span>
-        <span class="co">; Call the C kernel hardware interrupt handler</span>
-        <span class="kw">mov</span> <span class="kw">eax</span>, irq_handler
-        <span class="kw">call</span> <span class="kw">eax</span>
-        <span class="kw">pop</span> <span class="kw">eax</span>
-        <span class="kw">pop</span> <span class="kw">gs</span>
-        <span class="kw">pop</span> <span class="kw">fs</span>
-        <span class="kw">pop</span> <span class="kw">es</span>
-        <span class="kw">pop</span> <span class="kw">ds</span>
-        <span class="kw">popa</span>
-        <span class="kw">add</span> <span class="kw">esp</span>, <span class="dv">8</span>
-        <span class="kw">iret</span></code></pre></div></li>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">// kernel/include/system.h</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="co">/* Registers */</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="kw">struct</span> regs {</span>
+<span id="cb8-4"><a href="#cb8-4"></a>        <span class="dt">unsigned</span> <span class="dt">int</span> gs, fs, es, ds;</span>
+<span id="cb8-5"><a href="#cb8-5"></a>        <span class="dt">unsigned</span> <span class="dt">int</span> edi, esi, ebp, esp, ebx, edx, ecx, eax;</span>
+<span id="cb8-6"><a href="#cb8-6"></a>        <span class="dt">unsigned</span> <span class="dt">int</span> int_no, err_code;</span>
+<span id="cb8-7"><a href="#cb8-7"></a>        <span class="dt">unsigned</span> <span class="dt">int</span> eip, cs, eflags, useresp, ss;</span>
+<span id="cb8-8"><a href="#cb8-8"></a>};      </span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode nasm"><code class="sourceCode nasm"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">irq_common_stub:</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>        <span class="kw">pusha</span>     <span class="co">;; any other registers</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>        <span class="kw">push</span> <span class="kw">ds</span>   <span class="co">;; be care for the order</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>        <span class="kw">push</span> <span class="kw">es</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>        <span class="kw">push</span> <span class="kw">fs</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a>        <span class="kw">push</span> <span class="kw">gs</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a>        <span class="kw">mov</span> <span class="kw">ax</span><span class="bn">, 0x10   </span><span class="co">;; selector ??</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a>        <span class="kw">mov</span> <span class="kw">ds</span>, <span class="kw">ax</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a>        <span class="kw">mov</span> <span class="kw">es</span>, <span class="kw">ax</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a>        <span class="kw">mov</span> <span class="kw">fs</span>, <span class="kw">ax</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a>        <span class="kw">mov</span> <span class="kw">gs</span>, <span class="kw">ax</span></span>
+<span id="cb9-12"><a href="#cb9-12"></a>        <span class="kw">mov</span> <span class="kw">eax</span>, <span class="kw">esp</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a>        <span class="kw">push</span> <span class="kw">eax</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a>        <span class="co">; Call the C kernel hardware interrupt handler</span></span>
+<span id="cb9-15"><a href="#cb9-15"></a>        <span class="kw">mov</span> <span class="kw">eax</span>, irq_handler</span>
+<span id="cb9-16"><a href="#cb9-16"></a>        <span class="kw">call</span> <span class="kw">eax</span></span>
+<span id="cb9-17"><a href="#cb9-17"></a>        <span class="kw">pop</span> <span class="kw">eax</span></span>
+<span id="cb9-18"><a href="#cb9-18"></a>        <span class="kw">pop</span> <span class="kw">gs</span></span>
+<span id="cb9-19"><a href="#cb9-19"></a>        <span class="kw">pop</span> <span class="kw">fs</span></span>
+<span id="cb9-20"><a href="#cb9-20"></a>        <span class="kw">pop</span> <span class="kw">es</span></span>
+<span id="cb9-21"><a href="#cb9-21"></a>        <span class="kw">pop</span> <span class="kw">ds</span></span>
+<span id="cb9-22"><a href="#cb9-22"></a>        <span class="kw">popa</span></span>
+<span id="cb9-23"><a href="#cb9-23"></a>        <span class="kw">add</span> <span class="kw">esp</span>, <span class="dv">8</span></span>
+<span id="cb9-24"><a href="#cb9-24"></a>        <span class="kw">iret</span></span></code></pre></div></li>
 </ol>
 <h1 id="reference">Reference</h1>
 <ul class="incremental">

@@ -50,7 +50,7 @@ Namespaces are one honking great idea -- let&#39;s do more of those!
 </ul>
 <h1 id="coding-style">Coding Style</h1>
 <blockquote>
-<p>Programms must be written for people to read, and only incidentally for machines to execute. -- SICP</p>
+<p>Programms must be written for people to read, and only incidentally for machines to execute. – SICP</p>
 </blockquote>
 <p>Python 推荐的编码风格参考 PEP08</p>
 <h2 id="whitespace">Whitespace</h2>
@@ -79,14 +79,14 @@ Namespaces are one honking great idea -- let&#39;s do more of those!
 </ul>
 <h2 id="long-strings">Long Strings</h2>
 <ul class="incremental">
-<li>多个字符串用在解释时被拼接，如 =print 'o' 'n' 'e'=</li>
-<li>字符串前缀以 'r' 表示 raw string, 其中的反斜转义失效，可以用于写正则式</li>
+<li><p>多个字符串用在解释时被拼接，如 <code>print 'o' 'n' 'e'</code></p></li>
+<li><p>字符串前缀以 'r' 表示 raw string, 其中的反斜转义失效，可以用于写正则式</p></li>
 <li><p>三引号内可以换行，但首行需要加反斜线来去掉空行，如</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="co">&#39;&#39;&#39;\</span>
-<span class="co">Triple</span>
-<span class="co">single</span>
-<span class="co">quotes\</span>
-<span class="co">&#39;&#39;&#39;</span></code></pre></div></li>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">&#39;&#39;&#39;\</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co">Triple</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co">single</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co">quotes\</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co">&#39;&#39;&#39;</span></span></code></pre></div></li>
 </ul>
 <h2 id="compound-statements">Compound Statements</h2>
 <ul class="incremental">
@@ -99,7 +99,7 @@ Namespaces are one honking great idea -- let&#39;s do more of those!
 <li>docstring 用于说明如何使用</li>
 <li>comments 用于解释为何和怎样实现的</li>
 <li>False comments &amp; docstrings are worse than none at all.</li>
-<li>参考 PEP257 &quot;Docstring Conventions&quot;</li>
+<li>参考 PEP257 "Docstring Conventions"</li>
 </ul>
 <h1 id="practicality-vs-purity">Practicality vs Purity</h1>
 <p>打破纯净的场景如</p>
@@ -110,7 +110,7 @@ Namespaces are one honking great idea -- let&#39;s do more of those!
 <h1 id="范式">范式</h1>
 <h2 id="swap-values">Swap Values</h2>
 <h3 id="例子">例子</h3>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">b, a <span class="op">=</span> a, b</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>b, a <span class="op">=</span> a, b</span></code></pre></div>
 <h3 id="说明-1">说明</h3>
 <ul class="incremental">
 <li>右侧为 Tuple 的构造形式</li>
@@ -119,14 +119,14 @@ Namespaces are one honking great idea -- let&#39;s do more of those!
 </ul>
 <h2 id="more-about-tuples">More About Tuples</h2>
 <ul class="incremental">
-<li><code>1,= 生成一个 Tuple =(1,)</code></li>
+<li><code>1,</code> 生成一个 Tuple <code>(1,)</code></li>
 <li>最好用括号显式表示: <code>(1,)</code></li>
 <li>如果忘记了逗号，则生成一个数字 <code>(1)</code></li>
 <li>空的 Tuple 使用 <code>()</code> 或 <code>tuple()</code> 来构造</li>
 </ul>
-<h2 id="interactive-_">Interactive &quot;_&quot;</h2>
+<h2 id="interactive-_">Interactive "_"</h2>
 <ul class="incremental">
-<li>交互解析时，&quot;_&quot; 保存上次计算的结果</li>
+<li>交互解析时，"_" 保存上次计算的结果</li>
 </ul>
 <h2 id="building-strings-from-substrings">Building Strings from Substrings</h2>
 <ul class="incremental">
@@ -142,32 +142,32 @@ Namespaces are one honking great idea -- let&#39;s do more of those!
 <h2 id="dictionary-get-method">Dictionary <code>get</code> Method</h2>
 <p>经常用有需要聚合统计，将结果保存在 dict 中。</p>
 <p>下面两种方法，第二种更好：</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="co"># naive</span>
-navs <span class="op">=</span> {}
-<span class="cf">for</span> (portfolio, equity, position) <span class="kw">in</span> data:
-    <span class="cf">if</span> portfolio <span class="kw">not</span> <span class="kw">in</span> navs:
-        navs[portfolio] <span class="op">=</span> <span class="dv">0</span>
-    navs[portfolio] <span class="op">+=</span> position <span class="op">*</span> prices[equity]
-
-
-<span class="co"># better</span>
-navs <span class="op">=</span> {}
-<span class="cf">for</span> (portfolio, equity, position) <span class="kw">in</span> data:
-    navs[portfolio] <span class="op">=</span> (navs.get(portfolio,<span class="dv">0</span>) <span class="op">+</span> position <span class="op">*</span> prices[equity])</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># naive</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>navs <span class="op">=</span> {}</span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="cf">for</span> (portfolio, equity, position) <span class="kw">in</span> data:</span>
+<span id="cb4-4"><a href="#cb4-4"></a>    <span class="cf">if</span> portfolio <span class="kw">not</span> <span class="kw">in</span> navs:</span>
+<span id="cb4-5"><a href="#cb4-5"></a>        navs[portfolio] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>    navs[portfolio] <span class="op">+=</span> position <span class="op">*</span> prices[equity]</span>
+<span id="cb4-7"><a href="#cb4-7"></a></span>
+<span id="cb4-8"><a href="#cb4-8"></a></span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="co"># better</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a>navs <span class="op">=</span> {}</span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="cf">for</span> (portfolio, equity, position) <span class="kw">in</span> data:</span>
+<span id="cb4-12"><a href="#cb4-12"></a>    navs[portfolio] <span class="op">=</span> (navs.get(portfolio,<span class="dv">0</span>) <span class="op">+</span> position <span class="op">*</span> prices[equity])</span></code></pre></div>
 <h2 id="dictionary-setdefault-method">Dictionary <code>setdefault</code> Method</h2>
 <p>会有需要将集合中的元素按关键字进行分组，牵扯到为相应的键生成一个空的 list</p>
 <h3 id="示例">示例</h3>
 <p>不好的方法是</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">equities <span class="op">=</span> {}
-<span class="cf">for</span> ( portfolio, equility ) <span class="kw">in</span> data:
-    <span class="cf">if</span> portfolio <span class="kw">in</span> equility:
-        equility[portfolio].append( equility )
-    <span class="cf">else</span>:
-        equility[portfolio] <span class="op">=</span> [equity]</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>equities <span class="op">=</span> {}</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="cf">for</span> ( portfolio, equility ) <span class="kw">in</span> data:</span>
+<span id="cb5-3"><a href="#cb5-3"></a>    <span class="cf">if</span> portfolio <span class="kw">in</span> equility:</span>
+<span id="cb5-4"><a href="#cb5-4"></a>        equility[portfolio].append( equility )</span>
+<span id="cb5-5"><a href="#cb5-5"></a>    <span class="cf">else</span>:</span>
+<span id="cb5-6"><a href="#cb5-6"></a>        equility[portfolio] <span class="op">=</span> [equity]</span></code></pre></div>
 <p>比较好的方式是使用 <code>dict.setdefault(key, default)</code> ，如下</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">equities <span class="op">=</span> {}
-<span class="cf">for</span> ( portfolio, equity ) <span class="kw">in</span> data:
-    equities.setdefault( portfolio, [] ).append( equity )</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>equities <span class="op">=</span> {}</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="cf">for</span> ( portfolio, equity ) <span class="kw">in</span> data:</span>
+<span id="cb6-3"><a href="#cb6-3"></a>    equities.setdefault( portfolio, [] ).append( equity )</span></code></pre></div>
 <h3 id="说明-2">说明</h3>
 <ul class="incremental">
 <li><code>setdefault( key, default )</code> 进行 get 或先 set 后 get</li>
@@ -183,15 +183,15 @@ navs <span class="op">=</span> {}
 <li>在对一个不存在的键作操作时，会调用 factory function 来进行初始化</li>
 </ul></li>
 <li><p>示例</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> collctions <span class="im">import</span> defaultdict
-
-equities <span class="op">=</span> defaultdict(<span class="bu">list</span>)
-<span class="cf">for</span> ( portfolio, equity ) <span class="kw">in</span> data:
-    equities[portfolio].append( equity )
-
-navs <span class="op">=</span> defaultdict(<span class="bu">int</span>)
-<span class="cf">for</span> ( portfolio, equity, position ) <span class="kw">in</span> data:
-    navs[portfolio] <span class="op">+=</span> position <span class="op">*</span> prices[equity]</code></pre></div></li>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="im">from</span> collctions <span class="im">import</span> defaultdict</span>
+<span id="cb7-2"><a href="#cb7-2"></a></span>
+<span id="cb7-3"><a href="#cb7-3"></a>equities <span class="op">=</span> defaultdict(<span class="bu">list</span>)</span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="cf">for</span> ( portfolio, equity ) <span class="kw">in</span> data:</span>
+<span id="cb7-5"><a href="#cb7-5"></a>    equities[portfolio].append( equity )</span>
+<span id="cb7-6"><a href="#cb7-6"></a></span>
+<span id="cb7-7"><a href="#cb7-7"></a>navs <span class="op">=</span> defaultdict(<span class="bu">int</span>)</span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="cf">for</span> ( portfolio, equity, position ) <span class="kw">in</span> data:</span>
+<span id="cb7-9"><a href="#cb7-9"></a>    navs[portfolio] <span class="op">+=</span> position <span class="op">*</span> prices[equity]</span></code></pre></div></li>
 </ol>
 <h2 id="building-splitting-dictionaries">Building &amp; Splitting Dictionaries</h2>
 <ul class="incremental">
@@ -208,7 +208,7 @@ navs <span class="op">=</span> defaultdict(<span class="bu">int</span>)
 <p>Python 中为 False 的值包括</p>
 <ul class="incremental">
 <li>False</li>
-<li>&quot;&quot;</li>
+<li>""</li>
 <li>0, 0.0</li>
 <li>[], (), {}, set()</li>
 <li>None</li>
@@ -225,46 +225,46 @@ navs <span class="op">=</span> defaultdict(<span class="bu">int</span>)
 <li>使用 enumerate 函数来迭代 list，同时获取 index 和 item</li>
 <li>enumerate 返回迭代器，会惰性求值，称为 generator</li>
 </ul>
-<h2 id="other-language-have-variables">Other language have &quot;variables&quot;</h2>
+<h2 id="other-language-have-variables">Other language have "variables"</h2>
 <ul class="incremental">
 <li>Python 的动态类型语言</li>
 <li>变量名称（atom）实际只是一个指针</li>
 <li>指向的对象（object）本身有类型</li>
 <li>当变量（object）没有被引用时，将在未来被回收内存</li>
-<li>In Python, &quot;variables&quot; are nametags for values, not labelled boxes.</li>
+<li>In Python, "variables" are nametags for values, not labelled boxes.</li>
 </ul>
 <h2 id="default-parameter-values">Default Parameter Values</h2>
 <h3 id="例子-1">例子</h3>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> bad_append( new_item, a_list<span class="op">=</span>[] ):
-    a_list.append( new_item )
-    <span class="cf">return</span> a_list
-
-<span class="bu">print</span> bad_append( <span class="st">&quot;one&quot;</span> )
-<span class="bu">print</span> bad_append( <span class="st">&quot;two&quot;</span> )</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">def</span> bad_append( new_item, a_list<span class="op">=</span>[] ):</span>
+<span id="cb8-2"><a href="#cb8-2"></a>    a_list.append( new_item )</span>
+<span id="cb8-3"><a href="#cb8-3"></a>    <span class="cf">return</span> a_list</span>
+<span id="cb8-4"><a href="#cb8-4"></a></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="bu">print</span> bad_append( <span class="st">&quot;one&quot;</span> )</span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="bu">print</span> bad_append( <span class="st">&quot;two&quot;</span> )</span></code></pre></div>
 <h3 id="说明-4">说明</h3>
 <ul class="incremental">
 <li>函数的参数的默认值在函数定义处被调用</li>
 <li>每次函数调用中使用的 <code>a_list</code> 都是同一个</li>
 </ul>
 <h3 id="修改方法">修改方法</h3>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> good_append( new_item, a_list<span class="op">=</span><span class="va">None</span> ):
-    <span class="cf">if</span> a_list <span class="kw">is</span> <span class="va">None</span>:
-        a_list <span class="op">=</span> []
-    a_list.append( new_item )
-    <span class="cf">return</span> a_list</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">def</span> good_append( new_item, a_list<span class="op">=</span><span class="va">None</span> ):</span>
+<span id="cb9-2"><a href="#cb9-2"></a>    <span class="cf">if</span> a_list <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb9-3"><a href="#cb9-3"></a>        a_list <span class="op">=</span> []</span>
+<span id="cb9-4"><a href="#cb9-4"></a>    a_list.append( new_item )</span>
+<span id="cb9-5"><a href="#cb9-5"></a>    <span class="cf">return</span> a_list</span></code></pre></div>
 <h2 id="string-formatting">String Formatting</h2>
 <ul class="incremental">
 <li>python 的 <code>%</code> 操作类似于 C 的 <code>sprintf</code></li>
-<li>参考 <em>Python Library Reference</em>, section 2.3.6.2 &quot;String Formatting Operations&quot;</li>
+<li>参考 <em>Python Library Reference</em>, section 2.3.6.2 "String Formatting Operations"</li>
 </ul>
 <h2 id="advanced-string-formatting">Advanced String Formatting</h2>
 <h3 id="interpolation">interpolation</h3>
 <p>可以使用 interpolation 机制来生成（注意安全）</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">values <span class="op">=</span> {<span class="st">&#39;name&#39;</span>: name, <span class="st">&#39;messages&#39;</span>: messages}
-<span class="bu">print</span> (<span class="st">&#39;Hello </span><span class="sc">%(name)s</span><span class="st">, you have </span><span class="sc">%(message)i</span><span class="st"> messages&#39;</span> <span class="op">%</span> values)
-
-<span class="co">## or </span>
-<span class="bu">print</span> (<span class="st">&#39;Hello </span><span class="sc">%(name)s</span><span class="st">, you have </span><span class="sc">%(message)i</span><span class="st"> messages&#39;</span> <span class="op">%</span> <span class="bu">locals</span>())</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>values <span class="op">=</span> {<span class="st">&#39;name&#39;</span>: name, <span class="st">&#39;messages&#39;</span>: messages}</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="bu">print</span> (<span class="st">&#39;Hello </span><span class="sc">%(name)s</span><span class="st">, you have </span><span class="sc">%(message)i</span><span class="st"> messages&#39;</span> <span class="op">%</span> values)</span>
+<span id="cb10-3"><a href="#cb10-3"></a></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="co">## or </span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="bu">print</span> (<span class="st">&#39;Hello </span><span class="sc">%(name)s</span><span class="st">, you have </span><span class="sc">%(message)i</span><span class="st"> messages&#39;</span> <span class="op">%</span> <span class="bu">locals</span>())</span></code></pre></div>
 <h3 id="objects-instances-attributes">object's instances attributes</h3>
 <ul class="incremental">
 <li>使用 <code>self.__dict__</code> 来将类对象的成员生成一个dict</li>
@@ -279,13 +279,13 @@ navs <span class="op">=</span> defaultdict(<span class="bu">int</span>)
 </ul>
 <h2 id="generator-expression">Generator Expression</h2>
 <h3 id="例子-2">例子</h3>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="bu">print</span> <span class="bu">sum</span>([num<span class="op">*</span>num <span class="cf">for</span> num <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">101</span>)])
-<span class="bu">print</span> <span class="bu">sum</span>( num<span class="op">*</span>num <span class="cf">for</span> num <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">101</span>))
-
-<span class="co"># more</span>
-month_codes <span class="op">=</span> <span class="bu">dict</span>((fn(i<span class="op">+</span><span class="dv">1</span>), code)
-  <span class="cf">for</span> i, code <span class="kw">in</span> <span class="bu">enumerate</span>( <span class="st">&#39;FGHJKMNQUVXZ&#39;</span> )
-  <span class="cf">for</span> fn <span class="kw">in</span> (<span class="bu">int</span>, <span class="bu">str</span>))</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a><span class="bu">print</span> <span class="bu">sum</span>([num<span class="op">*</span>num <span class="cf">for</span> num <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">101</span>)])</span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="bu">print</span> <span class="bu">sum</span>( num<span class="op">*</span>num <span class="cf">for</span> num <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">101</span>))</span>
+<span id="cb11-3"><a href="#cb11-3"></a></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="co"># more</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>month_codes <span class="op">=</span> <span class="bu">dict</span>((fn(i<span class="op">+</span><span class="dv">1</span>), code)</span>
+<span id="cb11-6"><a href="#cb11-6"></a>  <span class="cf">for</span> i, code <span class="kw">in</span> <span class="bu">enumerate</span>( <span class="st">&#39;FGHJKMNQUVXZ&#39;</span> )</span>
+<span id="cb11-7"><a href="#cb11-7"></a>  <span class="cf">for</span> fn <span class="kw">in</span> (<span class="bu">int</span>, <span class="bu">str</span>))</span></code></pre></div>
 <h3 id="说明-5">说明</h3>
 <ul class="incremental">
 <li>简称 genexps</li>
@@ -327,7 +327,7 @@ month_codes <span class="op">=</span> <span class="bu">dict</span>((fn(i<span cl
 <ul class="incremental">
 <li><code>if __name__ == '__main__':</code> 来保存可执行语句</li>
 <li>被导入时， <code>__name__</code> 被设置成模块的名称，因此不会执行</li>
-<li>当直接运行时， <code>__name__</code> 被设置成 =&quot;<strong><strong>main</strong></strong>&quot;=</li>
+<li>当直接运行时， <code>__name__</code> 被设置成 <code>"__main__"</code></li>
 </ul>
 <h2 id="module-structure">Module Structure</h2>
 <pre><code>&quot;&quot;&quot;module docstring&quot;&quot;&quot;
@@ -356,9 +356,9 @@ if __name__ == &quot;__main__&quot;:
         module2.py
 </code></pre>
 <h3 id="使用方式">使用方式</h3>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> package.module1
-<span class="im">from</span> package.subpackage <span class="im">import</span> module2
-<span class="im">from</span> package.subpackage.module2 <span class="im">import</span> name</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a><span class="im">import</span> package.module1</span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="im">from</span> package.subpackage <span class="im">import</span> module2</span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="im">from</span> package.subpackage.module2 <span class="im">import</span> name</span></code></pre></div>
 <h1 id="simple-is-better-than-complex">Simple is Better Than Complex</h1>
 <blockquote>
 <p>Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.</p>

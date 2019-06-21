@@ -58,10 +58,10 @@
 </ol>
 <h3 id="linked-list">Linked List</h3>
 <p>Java 中没有指针，用引用来实现链表</p>
-<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">class</span> <span class="bu">Node</span> {
-    Item item;
-    <span class="bu">Node</span> next;
-}</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">class</span> <span class="bu">Node</span> {</span>
+<span id="cb1-2"><a href="#cb1-2"></a>    Item item;</span>
+<span id="cb1-3"><a href="#cb1-3"></a>    <span class="bu">Node</span> next;</span>
+<span id="cb1-4"><a href="#cb1-4"></a>}</span></code></pre></div>
 <p>链表的基本操作</p>
 <ol class="incremental">
 <li>insert at the beginning</li>
@@ -95,13 +95,13 @@
 <li>单链表方式
 <ul class="incremental">
 <li><p>定义一个内部类</p>
-<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">private</span> <span class="kw">class</span> <span class="bu">Node</span> {
-Item item;
-<span class="bu">Node</span> next;
-}</code></pre></div></li>
-<li>维护一个到 Node 的引用（栈）</li>
-<li>插入数据相当于生成新的 Node，插入到列表头部</li>
-<li>删除数据相当于列表中摘取头部 Node</li>
+<div class="sourceCode" id="cb2"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">private</span> <span class="kw">class</span> <span class="bu">Node</span> {</span>
+<span id="cb2-2"><a href="#cb2-2"></a>Item item;</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="bu">Node</span> next;</span>
+<span id="cb2-4"><a href="#cb2-4"></a>}</span></code></pre></div></li>
+<li><p>维护一个到 Node 的引用（栈）</p></li>
+<li><p>插入数据相当于生成新的 Node，插入到列表头部</p></li>
+<li><p>删除数据相当于列表中摘取头部 Node</p></li>
 <li><p>空间占用与实际元素数量一致</p></li>
 </ul></li>
 </ol>
@@ -171,7 +171,7 @@ Item item;
 <ul class="incremental">
 <li>用一个单独的数组，记录每棵树的大小</li>
 <li>合并时将小树合并到大树上，避免树增长过快</li>
-<li>查找、检查联接、合并的时间复杂度不超过 <span class="math inline">lg(<em>N</em>)</span></li>
+<li>查找、检查联接、合并的时间复杂度不超过 <span class="math inline">lg (<em>N</em>)</span></li>
 </ul>
 <h2 id="weighted-quick-union-with-path-compression">Weighted Quick Union with Path Compression</h2>
 <ul class="incremental">
@@ -237,18 +237,18 @@ Item item;
 <li>运行时间与输入元素顺序无关</li>
 <li>交换次数最少！</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> <span class="dt">void</span> <span class="fu">sort</span>(<span class="bu">Comparable</span>[] a ) {
-    <span class="dt">int</span> N = a.<span class="fu">lenght</span>;
-    <span class="kw">for</span> ( <span class="dt">int</span> i = <span class="dv">0</span>; i &lt; N; i++ ) {
-    min = i
-    <span class="kw">for</span> ( <span class="dt">int</span> j = i+<span class="dv">1</span>; j &lt; N; j++ ) {
-        <span class="kw">if</span> ( <span class="fu">less</span>(a[j], a[min]) ) {
-        min = j;
-        }
-    }
-    <span class="fu">exch</span>(a, min, i );
-    }
-}</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">public</span> <span class="dt">void</span> <span class="fu">sort</span>(<span class="bu">Comparable</span>[] a ) {</span>
+<span id="cb3-2"><a href="#cb3-2"></a>    <span class="dt">int</span> N = a.<span class="fu">lenght</span>;</span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="kw">for</span> ( <span class="dt">int</span> i = <span class="dv">0</span>; i &lt; N; i++ ) {</span>
+<span id="cb3-4"><a href="#cb3-4"></a>    min = i</span>
+<span id="cb3-5"><a href="#cb3-5"></a>    <span class="kw">for</span> ( <span class="dt">int</span> j = i+<span class="dv">1</span>; j &lt; N; j++ ) {</span>
+<span id="cb3-6"><a href="#cb3-6"></a>        <span class="kw">if</span> ( <span class="fu">less</span>(a[j], a[min]) ) {</span>
+<span id="cb3-7"><a href="#cb3-7"></a>        min = j;</span>
+<span id="cb3-8"><a href="#cb3-8"></a>        }</span>
+<span id="cb3-9"><a href="#cb3-9"></a>    }</span>
+<span id="cb3-10"><a href="#cb3-10"></a>    <span class="fu">exch</span>(a, min, i );</span>
+<span id="cb3-11"><a href="#cb3-11"></a>    }</span>
+<span id="cb3-12"><a href="#cb3-12"></a>}</span></code></pre></div>
 <h3 id="insert-sort">Insert sort</h3>
 <p>将新的元素插入到已经排好序的子序列中，插入操作涉及到局部的后移</p>
 <p>平均需要 <span class="math inline"><em>N</em><sup>2</sup>/2</span> 次比较和 <span class="math inline"><em>N</em><sup>2</sup>/2</span> 次交换</p>
@@ -259,14 +259,14 @@ Item item;
 <li>The number of exchanges used by insertion sort is equal to the number of inversions in the array</li>
 <li>the number of compares is at least equal to the number of inversions and at most equal to the number of inversions plus the array size minus 1.</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> <span class="dt">void</span> <span class="fu">sort</span>(<span class="bu">Comparable</span>[] a) {
-    <span class="dt">int</span> N = a.<span class="fu">length</span>;
-    <span class="kw">for</span> ( <span class="dt">int</span> i = <span class="dv">1</span>; i &lt; N; i++ ) {
-    <span class="kw">for</span> ( <span class="dt">int</span> j = i; j &gt;= <span class="dv">0</span> &amp;&amp; <span class="fu">less</span>(a[j], a[j<span class="dv">-1</span>]); j-- ) {
-        <span class="fu">exch</span>( a, j, i<span class="dv">-1</span> );
-    }
-    }
-}</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">public</span> <span class="dt">void</span> <span class="fu">sort</span>(<span class="bu">Comparable</span>[] a) {</span>
+<span id="cb4-2"><a href="#cb4-2"></a>    <span class="dt">int</span> N = a.<span class="fu">length</span>;</span>
+<span id="cb4-3"><a href="#cb4-3"></a>    <span class="kw">for</span> ( <span class="dt">int</span> i = <span class="dv">1</span>; i &lt; N; i++ ) {</span>
+<span id="cb4-4"><a href="#cb4-4"></a>    <span class="kw">for</span> ( <span class="dt">int</span> j = i; j &gt;= <span class="dv">0</span> &amp;&amp; <span class="fu">less</span>(a[j], a[j-<span class="dv">1</span>]); j-- ) {</span>
+<span id="cb4-5"><a href="#cb4-5"></a>        <span class="fu">exch</span>( a, j, i-<span class="dv">1</span> );</span>
+<span id="cb4-6"><a href="#cb4-6"></a>    }</span>
+<span id="cb4-7"><a href="#cb4-7"></a>    }</span>
+<span id="cb4-8"><a href="#cb4-8"></a>}</span></code></pre></div>
 <h3 id="shell-sort">Shell sort</h3>
 <p>对 Insert Sort 的优化：由于 insert sort 比较仅针对前一个元素，如果数组逆序严重，则需要太多次的比较和交换</p>
 <p>Shell Sort 增大了比较的跨度，生成 partially sorted array，优化 insert sort 速度</p>
@@ -274,19 +274,19 @@ Item item;
 <p>书中给出的经验公式为 <span class="math inline">$h = \frac{1}{2} ( 3^k - 1 )$</span></p>
 <p>Shellsort gains efficiency by making a tradeoff between size and partial order in the subsequences.</p>
 <p>最差情况下，shell sort 的时间复杂度为 <span class="math inline">$N^\frac{3}{2}$</span></p>
-<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">sort</span>(<span class="bu">Comparable</span>[] a) {
-    <span class="dt">int</span> N = a.<span class="fu">length</span>;
-    <span class="dt">int</span> h = <span class="dv">1</span>;
-    <span class="kw">while</span>( h &lt; N/<span class="dv">3</span> ) h = <span class="dv">3</span>*h + <span class="dv">1</span>;
-    <span class="kw">while</span>( h &gt;= <span class="dv">1</span> ) {
-    <span class="kw">for</span> ( <span class="dt">int</span> i = h; i &lt; N; i++ ) {
-        <span class="kw">for</span> ( <span class="dt">int</span> j = i; j &gt;= <span class="dv">0</span> &amp;&amp; <span class="fu">less</span>(a[j], a[j-h]); j-=h ) {
-        <span class="fu">exch</span>(a, j, j-h);
-        }
-    }
-    h = h/<span class="dv">3</span>;
-    }
-}</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">sort</span>(<span class="bu">Comparable</span>[] a) {</span>
+<span id="cb5-2"><a href="#cb5-2"></a>    <span class="dt">int</span> N = a.<span class="fu">length</span>;</span>
+<span id="cb5-3"><a href="#cb5-3"></a>    <span class="dt">int</span> h = <span class="dv">1</span>;</span>
+<span id="cb5-4"><a href="#cb5-4"></a>    <span class="kw">while</span>( h &lt; N/<span class="dv">3</span> ) h = <span class="dv">3</span>*h + <span class="dv">1</span>;</span>
+<span id="cb5-5"><a href="#cb5-5"></a>    <span class="kw">while</span>( h &gt;= <span class="dv">1</span> ) {</span>
+<span id="cb5-6"><a href="#cb5-6"></a>    <span class="kw">for</span> ( <span class="dt">int</span> i = h; i &lt; N; i++ ) {</span>
+<span id="cb5-7"><a href="#cb5-7"></a>        <span class="kw">for</span> ( <span class="dt">int</span> j = i; j &gt;= <span class="dv">0</span> &amp;&amp; <span class="fu">less</span>(a[j], a[j-h]); j-=h ) {</span>
+<span id="cb5-8"><a href="#cb5-8"></a>        <span class="fu">exch</span>(a, j, j-h);</span>
+<span id="cb5-9"><a href="#cb5-9"></a>        }</span>
+<span id="cb5-10"><a href="#cb5-10"></a>    }</span>
+<span id="cb5-11"><a href="#cb5-11"></a>    h = h/<span class="dv">3</span>;</span>
+<span id="cb5-12"><a href="#cb5-12"></a>    }</span>
+<span id="cb5-13"><a href="#cb5-13"></a>}</span></code></pre></div>
 <h3 id="selectsort-vs-insertsort">SelectSort vs InsertSort</h3>
 <dl class="incremental">
 <dt>Property D.</dt>
@@ -295,7 +295,7 @@ Item item;
 </dl>
 <h2 id="merge-sort">Merge sort</h2>
 <p>分治的思路 (divide and conquer)，将数组分成两部分分别进行排序，将已经排序好的两个序列进行合并</p>
-<p>优势在于它的复杂度为 <span class="math inline"><em>N</em>log(<em>N</em>)</span> ，劣势在于需要额外的 N 的空间来进行合并</p>
+<p>优势在于它的复杂度为 <span class="math inline"><em>N</em>log (<em>N</em>)</span> ，劣势在于需要额外的 N 的空间来进行合并</p>
 <dl class="incremental">
 <dt>PropositionF.</dt>
 <dd>Top-down mergesort uses between 1⁄2NlgN and NlgN compares to sort any array of length N.
@@ -364,17 +364,17 @@ Item item;
 <h3 id="quick-find-1">Quick Find</h3>
 <p>其本思路是</p>
 <ol class="incremental">
-<li>初始化时，用不同的 id 来标识不同的组（数组的索引）</li>
+<li><p>初始化时，用不同的 id 来标识不同的组（数组的索引）</p></li>
 <li><p>进行 union 操作时，遍历数组，将符合 p 对应的组 id 修改为 q 的组 id</p>
-<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="dt">void</span> <span class="fu">union</span>(<span class="dt">int</span> p, <span class="dt">int</span> q) {
-<span class="dt">int</span> pid = A[p];
-<span class="dt">int</span> qid = A[q];
-<span class="kw">for</span>(<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; N; i++) {
-    <span class="kw">if</span>(A[i] == pid) {
-    A[i] = qid;
-    }
-}
-}</code></pre></div></li>
+<div class="sourceCode" id="cb6"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb6-1"><a href="#cb6-1"></a><span class="dt">void</span> <span class="fu">union</span>(<span class="dt">int</span> p, <span class="dt">int</span> q) {</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="dt">int</span> pid = A[p];</span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="dt">int</span> qid = A[q];</span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="kw">for</span>(<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; N; i++) {</span>
+<span id="cb6-5"><a href="#cb6-5"></a>    <span class="kw">if</span>(A[i] == pid) {</span>
+<span id="cb6-6"><a href="#cb6-6"></a>    A[i] = qid;</span>
+<span id="cb6-7"><a href="#cb6-7"></a>    }</span>
+<span id="cb6-8"><a href="#cb6-8"></a>}</span>
+<span id="cb6-9"><a href="#cb6-9"></a>}</span></code></pre></div></li>
 <li><p>随着连接变多，组渐变少</p></li>
 </ol>
 <p>本方法对应的算法复杂度如下所示</p>

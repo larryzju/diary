@@ -28,50 +28,50 @@
 <li>slf4j implementation</li>
 </ul>
 <h1 id="example">example</h1>
-<div class="sourceCode"><pre class="sourceCode scala"><code class="sourceCode scala"><span class="kw">import</span> scalikejdbc._
-
-<span class="co">// initialize JDBC driver &amp; connection pool</span>
-Class.<span class="fu">forName</span>(<span class="st">&quot;org.h2.Driver&quot;</span>)
-ConnectionPool.<span class="fu">singleton</span>(<span class="st">&quot;jdbc:h2:mem:hello&quot;</span>, <span class="st">&quot;user&quot;</span>, <span class="st">&quot;pass&quot;</span>)
-
-<span class="co">// ad-hoc session provider on the REPL</span>
-<span class="kw">implicit</span> <span class="kw">val</span> session = AutoSession
-
-<span class="co">// table creation, you can run DDL by using #execute as same as JDBC</span>
-sql<span class="st">&quot;&quot;&quot;</span>
-create table <span class="fu">members</span> (
-  id serial not <span class="kw">null</span> primary key,
-  name <span class="fu">varchar</span>(<span class="dv">64</span>),
-  created_at timestamp not <span class="kw">null</span>
-)
-<span class="st">&quot;&quot;&quot;.execute.apply()</span>
-
-<span class="co">// insert initial data</span>
-Seq(<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;Bob&quot;</span>, <span class="st">&quot;Chris&quot;</span>) foreach { name =&gt;
-  sql<span class="st">&quot;insert into members (name, created_at) values (${name}, current_timestamp)&quot;</span>.<span class="fu">update</span>.<span class="fu">apply</span>()
-}
-
-<span class="co">// for now, retrieves all data as Map value</span>
-<span class="kw">val</span> entities: List[Map[String, Any]] = sql<span class="st">&quot;select * from members&quot;</span>.<span class="fu">map</span>(_.<span class="fu">toMap</span>).<span class="fu">list</span>.<span class="fu">apply</span>()
-
-<span class="co">// defines entity object and extractor</span>
-<span class="kw">import</span> java.<span class="fu">time</span>._
-<span class="kw">case</span> <span class="kw">class</span> Member(id: Long, name: Option[String], createdAt: ZonedDateTime)
-<span class="kw">object</span> Member <span class="kw">extends</span> SQLSyntaxSupport[Member] {
-  <span class="kw">override</span> <span class="kw">val</span> tableName = <span class="st">&quot;members&quot;</span>
-  <span class="kw">def</span> <span class="fu">apply</span>(rs: WrappedResultSet) = <span class="kw">new</span> Member(
-    rs.<span class="fu">long</span>(<span class="st">&quot;id&quot;</span>), rs.<span class="fu">stringOpt</span>(<span class="st">&quot;name&quot;</span>), rs.<span class="fu">zonedDateTime</span>(<span class="st">&quot;created_at&quot;</span>))
-}
-
-<span class="co">// find all members</span>
-<span class="kw">val</span> members: List[Member] = sql<span class="st">&quot;select * from members&quot;</span>.<span class="fu">map</span>(rs =&gt; Member(rs)).<span class="fu">list</span>.<span class="fu">apply</span>()
-
-<span class="co">// use paste mode (:paste) on the Scala REPL</span>
-<span class="kw">val</span> m = Member.<span class="fu">syntax</span>(<span class="st">&quot;m&quot;</span>)
-<span class="kw">val</span> name = <span class="st">&quot;Alice&quot;</span>
-<span class="kw">val</span> alice: Option[Member] = withSQL {
-  select.<span class="fu">from</span>(Member as m).<span class="fu">where</span>.<span class="fu">eq</span>(m.<span class="fu">name</span>, name)
-}.<span class="fu">map</span>(rs =&gt; Member(rs)).<span class="fu">single</span>.<span class="fu">apply</span>()</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">import</span> scalikejdbc._</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co">// initialize JDBC driver &amp; connection pool</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>Class.<span class="fu">forName</span>(<span class="st">&quot;org.h2.Driver&quot;</span>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a>ConnectionPool.<span class="fu">singleton</span>(<span class="st">&quot;jdbc:h2:mem:hello&quot;</span>, <span class="st">&quot;user&quot;</span>, <span class="st">&quot;pass&quot;</span>)</span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co">// ad-hoc session provider on the REPL</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="kw">implicit</span> <span class="kw">val</span> session = AutoSession</span>
+<span id="cb1-9"><a href="#cb1-9"></a></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co">// table creation, you can run DDL by using #execute as same as JDBC</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>sql<span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>create table <span class="fu">members</span> (</span>
+<span id="cb1-13"><a href="#cb1-13"></a>  id serial not <span class="kw">null</span> primary key,</span>
+<span id="cb1-14"><a href="#cb1-14"></a>  name <span class="fu">varchar</span>(<span class="dv">64</span>),</span>
+<span id="cb1-15"><a href="#cb1-15"></a>  created_at timestamp not <span class="kw">null</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a>)</span>
+<span id="cb1-17"><a href="#cb1-17"></a><span class="st">&quot;&quot;&quot;.execute.apply()</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a></span>
+<span id="cb1-19"><a href="#cb1-19"></a><span class="co">// insert initial data</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a>Seq(<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;Bob&quot;</span>, <span class="st">&quot;Chris&quot;</span>) foreach { name =&gt;</span>
+<span id="cb1-21"><a href="#cb1-21"></a>  sql<span class="st">&quot;insert into members (name, created_at) values (${name}, current_timestamp)&quot;</span>.<span class="fu">update</span>.<span class="fu">apply</span>()</span>
+<span id="cb1-22"><a href="#cb1-22"></a>}</span>
+<span id="cb1-23"><a href="#cb1-23"></a></span>
+<span id="cb1-24"><a href="#cb1-24"></a><span class="co">// for now, retrieves all data as Map value</span></span>
+<span id="cb1-25"><a href="#cb1-25"></a><span class="kw">val</span> entities: List[Map[String, Any]] = sql<span class="st">&quot;select * from members&quot;</span>.<span class="fu">map</span>(_.<span class="fu">toMap</span>).<span class="fu">list</span>.<span class="fu">apply</span>()</span>
+<span id="cb1-26"><a href="#cb1-26"></a></span>
+<span id="cb1-27"><a href="#cb1-27"></a><span class="co">// defines entity object and extractor</span></span>
+<span id="cb1-28"><a href="#cb1-28"></a><span class="kw">import</span> java.<span class="fu">time</span>._</span>
+<span id="cb1-29"><a href="#cb1-29"></a><span class="kw">case</span> <span class="kw">class</span> Member(id: Long, name: Option[String], createdAt: ZonedDateTime)</span>
+<span id="cb1-30"><a href="#cb1-30"></a><span class="kw">object</span> Member <span class="kw">extends</span> SQLSyntaxSupport[Member] {</span>
+<span id="cb1-31"><a href="#cb1-31"></a>  <span class="kw">override</span> <span class="kw">val</span> tableName = <span class="st">&quot;members&quot;</span></span>
+<span id="cb1-32"><a href="#cb1-32"></a>  <span class="kw">def</span> <span class="fu">apply</span>(rs: WrappedResultSet) = <span class="kw">new</span> Member(</span>
+<span id="cb1-33"><a href="#cb1-33"></a>    rs.<span class="fu">long</span>(<span class="st">&quot;id&quot;</span>), rs.<span class="fu">stringOpt</span>(<span class="st">&quot;name&quot;</span>), rs.<span class="fu">zonedDateTime</span>(<span class="st">&quot;created_at&quot;</span>))</span>
+<span id="cb1-34"><a href="#cb1-34"></a>}</span>
+<span id="cb1-35"><a href="#cb1-35"></a></span>
+<span id="cb1-36"><a href="#cb1-36"></a><span class="co">// find all members</span></span>
+<span id="cb1-37"><a href="#cb1-37"></a><span class="kw">val</span> members: List[Member] = sql<span class="st">&quot;select * from members&quot;</span>.<span class="fu">map</span>(rs =&gt; Member(rs)).<span class="fu">list</span>.<span class="fu">apply</span>()</span>
+<span id="cb1-38"><a href="#cb1-38"></a></span>
+<span id="cb1-39"><a href="#cb1-39"></a><span class="co">// use paste mode (:paste) on the Scala REPL</span></span>
+<span id="cb1-40"><a href="#cb1-40"></a><span class="kw">val</span> m = Member.<span class="fu">syntax</span>(<span class="st">&quot;m&quot;</span>)</span>
+<span id="cb1-41"><a href="#cb1-41"></a><span class="kw">val</span> name = <span class="st">&quot;Alice&quot;</span></span>
+<span id="cb1-42"><a href="#cb1-42"></a><span class="kw">val</span> alice: Option[Member] = withSQL {</span>
+<span id="cb1-43"><a href="#cb1-43"></a>  select.<span class="fu">from</span>(Member as m).<span class="fu">where</span>.<span class="fu">eq</span>(m.<span class="fu">name</span>, name)</span>
+<span id="cb1-44"><a href="#cb1-44"></a>}.<span class="fu">map</span>(rs =&gt; Member(rs)).<span class="fu">single</span>.<span class="fu">apply</span>()</span></code></pre></div>
 <h1 id="流程">流程</h1>
 <ol class="incremental">
 <li>init jdbc driver</li>
@@ -90,10 +90,10 @@ Seq(<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;Bob&quot;<
 <li>纯 scala 语法</li>
 <li>transcation control
 <ul class="incremental">
-<li>DB autoCommit { implicit session =&gt; ...}</li>
-<li>DB localTx { implicit session =&gt; ...}</li>
-<li>DB withinTx { implicit session =&gt; ...}</li>
-<li>DB readOnly { implicit session =&gt; ...}</li>
+<li>DB autoCommit { implicit session =&gt; …}</li>
+<li>DB localTx { implicit session =&gt; …}</li>
+<li>DB withinTx { implicit session =&gt; …}</li>
+<li>DB readOnly { implicit session =&gt; …}</li>
 </ul></li>
 <li>Useful Query Inspections：显示 executed sql debug 信息</li>
 <li>testing support</li>
