@@ -599,8 +599,102 @@ fault* error)
 | READ     | read permission to the page                                   |
 | WRITE    | write permission to the page                                  |
 
-** TODO Address Translation
+** TODO [1/5] Address Translation
+*** DONE Overview
 
+The page size (P bytes) is same in virtual space and physical space.
+Virtual space may be smaller, or equal, or larger than physical
+address space.
+
+Address translation is a mapping between the element of an N-element
+virtual address space (VAS) and an M-element physical address space (PAS)
+$$ MAP: {VAS} \rightarrow  {PAS} \cup \o $$
+
+A /page fault/ exception will be triggered if the data at virtual addr
+is not present in physical memory.
+
+**** Terms of virtual address
+
+| symbol | description                 |
+|--------+-----------------------------|
+| VPO    | virtual page offset (bytes) |
+| VPN    | virtual page number         |
+| TLBI   | TLB index                   |
+| TLBT   | TLB tag                     |
+| TLB    | table base register         |
+
+**** Terms of physical address
+
+| symbol | description                    |
+|--------+--------------------------------|
+| PPO    | physical page offset (bytes)   |
+| PPN    | physical page number           |
+| CO     | byte offset within cache block |
+| CI     | cache index                    |
+| CT     | cache tag                      |
+
+**** Address Translation
+
+/page table base register/ (PTBR) in CPU points to current page table.
+
+An virtual address is constructed with two parts:
+1. /p/-bit /virtual page offset/ (VPO)
+2. /(n-p)/-bit /virtual page number/ (VPN)
+
+MMU use the VPN to select the appropriate PTE (pointed by PTBR) and
+get the /physical page number/ (PPN). Then calculate the real physical
+address by add the offset (VPO/PPO) to the physical base address.
+
+#+CAPTION: Address translation with a page table
+[[./img/address-translation.png]]
+
+
+**** page hit
+
+The page hit steps are
+1. CPU generate a VA and send it to the MMU
+2. MMU generate the PTE address and requests it from the cache/main memory
+3. The cache/main memory returns the PTE to the MMU
+4. The MMU constructs the physical address and sends it to the cache/main memory
+5. The cache/main memory returns the requested data word to the processor.
+
+#+CAPTION: Page hit
+[[./img/page-hit.png]]
+
+**** page fault
+
+The page fault is handled by operating system kernel
+1. CPU generate a VA and send it to the MMU
+2. MMU generate the PTE address and requests it from the cache/main memory
+3. MMU triggers an exception if the valid bit in the PTE is zero and
+   transfer control in the CPU to a page fault exception handler
+4. The fault handler identifies a victim page in physical memory, and
+   if that page has been modified, pages it out to disk.
+5. The fault handler pages in the new page and update the PTE in memory.
+6. The fault handler returns to the origin process, causing the
+   faulting instruction to be restarted.
+7. back to the page hit steps.
+
+#+CAPTION: Page fault
+[[./img/page-fault.png]]
+
+**** Practice Problem 9.3
+
+Given a 64-bit virtual address space and a 32-bit physical address,
+determine the number of bits in the VPN, VPO, PPN and PPO for each
+page size P:
+
+| P    | VPN | VPO | PPN | PPO |
+|------+-----+-----+-----+-----|
+| 1KB  |  54 |  10 |  22 |  10 |
+| 2KB  |  53 |  11 |  21 |  11 |
+| 4KB  |  52 |  12 |  20 |  12 |
+| 16KB |  50 |  14 |  18 |  14 |
+
+*** TODO Integrating Caches and VM
+*** TODO Speeding Up Address Translation with a TLB
+*** TODO Multi-Level Page Tables
+*** TODO Putting It Together: End-to-End Address Translation
 ** TODO Case Study: The Intel Core i7/Linux Memory System
 
 ** TODO Memory Mapping
