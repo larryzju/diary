@@ -164,14 +164,14 @@
 <li><code>id[i]</code> 指向父结点，子与父同属一个组</li>
 <li>检查是否通联，只需要检查两个结点是否有相同的 root 结点</li>
 <li>通过递归向上找父结点，直到 <code>id[i] == i</code> 时，该节点为 root</li>
-<li>虽然不用扫描全表，但最差情况找 root 仍为 <span class="math inline"><em>O</em>(<em>n</em>)</span></li>
+<li>虽然不用扫描全表，但最差情况找 root 仍为 <span class="math inline">\(O(n)\)</span></li>
 <li>合并时，将左树的 root 指向右树的 root</li>
 </ul>
 <h2 id="weighted-quick-union">Weighted Quick Union</h2>
 <ul class="incremental">
 <li>用一个单独的数组，记录每棵树的大小</li>
 <li>合并时将小树合并到大树上，避免树增长过快</li>
-<li>查找、检查联接、合并的时间复杂度不超过 <span class="math inline">lg (<em>N</em>)</span></li>
+<li>查找、检查联接、合并的时间复杂度不超过 <span class="math inline">\(\lg(N)\)</span></li>
 </ul>
 <h2 id="weighted-quick-union-with-path-compression">Weighted Quick Union with Path Compression</h2>
 <ul class="incremental">
@@ -231,7 +231,7 @@
 <h2 id="elementary-sorts">Elementary Sorts</h2>
 <h3 id="select-sort">Select sort</h3>
 <p>选中剩余数列中的最小一个，与开头的元素交换</p>
-<p>进行 <span class="math inline"><em>N</em><sup>2</sup>/2</span> 次比较，N 次交换</p>
+<p>进行 <span class="math inline">\(N^2/2\)</span> 次比较，N 次交换</p>
 <p>特点：</p>
 <ol class="incremental">
 <li>运行时间与输入元素顺序无关</li>
@@ -251,10 +251,10 @@
 <span id="cb3-12"><a href="#cb3-12"></a>}</span></code></pre></div>
 <h3 id="insert-sort">Insert sort</h3>
 <p>将新的元素插入到已经排好序的子序列中，插入操作涉及到局部的后移</p>
-<p>平均需要 <span class="math inline"><em>N</em><sup>2</sup>/2</span> 次比较和 <span class="math inline"><em>N</em><sup>2</sup>/2</span> 次交换</p>
+<p>平均需要 <span class="math inline">\(N^2/2\)</span> 次比较和 <span class="math inline">\(N^2/2\)</span> 次交换</p>
 <p>特点有：</p>
 <ol class="incremental">
-<li>对于已经有序的输入，其需要比较 <span class="math inline"><em>N</em> − 1</span> 次，不需要交换，性能大大优于选择排序</li>
+<li>对于已经有序的输入，其需要比较 <span class="math inline">\(N-1\)</span> 次，不需要交换，性能大大优于选择排序</li>
 <li>对于 partial sorted array，插入排序优势明显</li>
 <li>The number of exchanges used by insertion sort is equal to the number of inversions in the array</li>
 <li>the number of compares is at least equal to the number of inversions and at most equal to the number of inversions plus the array size minus 1.</li>
@@ -271,9 +271,9 @@
 <p>对 Insert Sort 的优化：由于 insert sort 比较仅针对前一个元素，如果数组逆序严重，则需要太多次的比较和交换</p>
 <p>Shell Sort 增大了比较的跨度，生成 partially sorted array，优化 insert sort 速度</p>
 <p>Shell Sort 选择一个合适的 h 值，h 从大到小减小到 1，每次排序后生成 h-sorted array</p>
-<p>书中给出的经验公式为 <span class="math inline">$h = \frac{1}{2} ( 3^k - 1 )$</span></p>
+<p>书中给出的经验公式为 <span class="math inline">\(h = \frac{1}{2} ( 3^k - 1 )\)</span></p>
 <p>Shellsort gains efficiency by making a tradeoff between size and partial order in the subsequences.</p>
-<p>最差情况下，shell sort 的时间复杂度为 <span class="math inline">$N^\frac{3}{2}$</span></p>
+<p>最差情况下，shell sort 的时间复杂度为 <span class="math inline">\(N^\frac{3}{2}\)</span></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">sort</span>(<span class="bu">Comparable</span>[] a) {</span>
 <span id="cb5-2"><a href="#cb5-2"></a>    <span class="dt">int</span> N = a.<span class="fu">length</span>;</span>
 <span id="cb5-3"><a href="#cb5-3"></a>    <span class="dt">int</span> h = <span class="dv">1</span>;</span>
@@ -295,7 +295,7 @@
 </dl>
 <h2 id="merge-sort">Merge sort</h2>
 <p>分治的思路 (divide and conquer)，将数组分成两部分分别进行排序，将已经排序好的两个序列进行合并</p>
-<p>优势在于它的复杂度为 <span class="math inline"><em>N</em>log (<em>N</em>)</span> ，劣势在于需要额外的 N 的空间来进行合并</p>
+<p>优势在于它的复杂度为 <span class="math inline">\(N \log(N)\)</span> ，劣势在于需要额外的 N 的空间来进行合并</p>
 <dl class="incremental">
 <dt>PropositionF.</dt>
 <dd>Top-down mergesort uses between 1⁄2NlgN and NlgN compares to sort any array of length N.
@@ -405,7 +405,7 @@
 <h3 id="weighted-quick-union-1">Weighted Quick Union</h3>
 <h3 id="weighted-quick-union-with-path-compression-1">Weighted Quick Union with Path Compression</h3>
 <h3 id="analysis-of-algorithm">Analysis of Algorithm</h3>
-<p>计算机发展中，处理性能和内存同时提升。而处理性能的提升与因为内存增大而造成的处理器的提升成线性比例。也就是说曾经处理性能为 P 时，处理 Q 量的数据；现在处理性能为 1000P 时可能要求处理 1000Q 的数据。对于算法复杂度为 <span class="math inline"><em>O</em>(<em>n</em><sup>2</sup>)</span> 的情况，实际上性能不升反降</p>
+<p>计算机发展中，处理性能和内存同时提升。而处理性能的提升与因为内存增大而造成的处理器的提升成线性比例。也就是说曾经处理性能为 P 时，处理 Q 量的数据；现在处理性能为 1000P 时可能要求处理 1000Q 的数据。对于算法复杂度为 <span class="math inline">\(O(n^2)\)</span> 的情况，实际上性能不升反降</p>
 <h3 id="performance-versus">Performance Versus</h3>
 <h2 id="其它">其它</h2>
 <h3 id="symbol-table"><span class="todo TODO">TODO</span> Symbol Table</h3>
