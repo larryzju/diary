@@ -4,18 +4,20 @@
 
 除了常见的插入、删除、查找外，还需要支持：最大、最小、前序、后序查找。如下所示
 
-#+INCLUDE: "./code/set/set.go" export go
+#+INCLUDE: "./code/set/set.go" src go
 
 ** Elementary Data Structure
 
-*** TODO Stack & Queues
+*** Stack
 
-两者的区别在于元素的取出顺序：
+Stack 与 Queue 两者的区别在于元素的取出顺序：
 - stack 为 LIFO
 - queue 为 FIFO
 
 Stack 的基本操作为 Push 和 Pop，如下所示
-#+INCLDUE: "./code/stack/stack.go" export go
+#+INCLUDE: "./code/stack/stack.go" src go
+
+**** 数组实现
 
 可以用数组来实现
 - 维护一个指针 top，指向栈顶
@@ -24,10 +26,54 @@ Stack 的基本操作为 Push 和 Pop，如下所示
 - 对满栈调用 Push 时，产生 overflow 错误
 
 Go 语言中，Slice 相当于一个可以动态扩容的 Array。为了与书上统一，我们使用固定长度的 Slice 来实现 Stack
-#+INCLUDE: "./code/stack/array.go" export go
+#+INCLUDE: "./code/stack/array.go" src go
 
-*** TODO Queue
+**** TODO 双栈
+
+Exercises 10.1-2. 通过一个数组 =A[1..n]= 来表示两个栈，只有当两者都满后才无法继续压栈
+
+待实现
+
+**** TODO 双队列实现
+
+待实现
+
+*** Queue
+
+Quene 的两个基本操作为 Enqueue 和 Dequque。维护了 *head* 和 *tail* 两个索引，分别指向第一个元素，下一个可以插入的位置。
+#+INCLUDE: "./code/queue/queue.go" src go
+
+对于底层长度为 N 的数组，最多可以保存 N-1 个元素（否则 tail 与 head 重合时无法判断是空还是满）
+#+INCLUDE: "./code/queue/array.go" src go
+
+**** TODO 双向队列
+
+可以分别对 head 和 tail 进行压栈和弹栈操作。这种数据结构称为双端队列 (deque)
+
+待实现
+
+**** 双栈实现法
+
+参考 https://www.geeksforgeeks.org/queue-using-stacks/
+#+INCLUDE: "./code/queue/bi-stack.go" src go
+
+假设 b 栈空间不小于 a 栈空间，且队列的可用空间与实际入队出队顺序有关
 
 *** TODO Linked List
+
+与数组不同，可以动态扩展。
+#+INCLUDE: "./code/list/list.go" src go
+
+双指针链表包含了 =prev= 与 =next= 两个指针。其中头结点 =head.prev= 为空，尾结点 =tail.next= 为空
+
+实际实现中可以改造为
+1. 单链表
+2. 排序链表
+3. 循环链表： ~head.prev == tail~ , ~tail.next == head~
+
+
+
+为了实现简单，可以为 List 中添加一个 dummy object (sentinel)
+#+INCLUDE: "./code/list/double-linked-list.go" src go
 
 *** TODO Rooted Tree
