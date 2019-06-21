@@ -449,11 +449,12 @@ different address space. (?)
 |      46 | 64T          | 64T-1                            |
 |      54 | 16P          | 16P-1                            |
 
-** TODO [1/6] VM as a Tool for Caching
+** TODO [2/6] VM as a Tool for Caching
 
 Cache the contiguous addressed disk space into virtual memory in unit of fix sized block:
-- /virtual pages/ (VPs) for virtual memory
-- /physical pages/ (PPs) for physical memory, also referered as /page frames/
+- /virtual pages/ (VPs) :: for virtual memory
+- /physical pages/ (PPs) :: for physical memory, also referered as /page frames/
+
 
 Virtual pages is partitioned into 3 disjoint subsets:
 - Unallocated :: pages have not yet been allocated by VM system (has no data associated with)
@@ -479,7 +480,50 @@ DRAM is important because of
 
 The bottom line is that the organization of the DRAM cache is driven entirely by the enormous cost of misses.
 
-*** TODO Page Tables
+*** DONE Page Tables
+
+Determine 
+- if a *virtual page* is cached
+- which *physical page* it is cached in
+- Or is stored on disk
+  + determine where it is stored
+  + select a victim page in physical memory
+  + copy the virtual page from disk to DRAM, replacing the victim page
+
+These capabilites are provided by
+1. *MMU* (hardware) for address translating: read the mapping rules from *page table*
+2. *page table*: OS maintain a data structure in physical memory that maps virtual pages to physical pages
+
+#+CAPTION: Page Table
+[[./img/page-table.png]]
+
+In the figure above:
+- PTE (/page table entries/): is the element type of page table, contains =valid= and =address= fields
+- each page in VA space has a PTE at a *fixed offset* in the page table
+
+| Valid | Address | Description                                                         |
+|-------+---------+---------------------------------------------------------------------|
+|     1 | addr    | virtual page is currently cached in physical address `addr` in DRAM |
+|     0 | null    | unallocated                                                         |
+|     0 | addr    | address points to the start of the virtual page on disk             | 
+
+
+**** Practice Problem 9.2
+
+determine the number of PTEs that are needed for the following
+combinations of virtual address size (n) and page size (P):
+
+#+BEGIN_SRC 
+nPTEs = (1<<n) / P
+#+END_SRC
+
+|  n | $P = 2^p$ | Number of PTEs |
+|----+-----------+----------------|
+| 12 | 1K        |              4 |
+| 16 | 16K       |              4 |
+| 24 | 2M        |              8 |
+| 36 | 1G        |             64 |
+
 
 *** TODO Page Hits
 
