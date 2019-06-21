@@ -376,7 +376,7 @@ platform. But it's a fault error in 64bit platform.
 ** Floating Point 
 
 
-* [4/13] Virtual Memory
+* [5/13] Virtual Memory
 
 ** DONE Overview
 
@@ -455,11 +455,12 @@ Cache the contiguous addressed disk space into virtual memory in unit of fix siz
 - /virtual pages/ (VPs) :: for virtual memory
 - /physical pages/ (PPs) :: for physical memory, also referered as /page frames/
 
-
 Virtual pages is partitioned into 3 disjoint subsets:
 - Unallocated :: pages have not yet been allocated by VM system (has no data associated with)
 - Cached :: cached in physical memory
 - UnCached :: allocated pages that are not cached in physical memory
+
+By the cache meachanism, system can provide larger virtual address space that the available physical address.
 
 #+CAPTION: VM as Cache
 [[./img/9.3.vp-pp-mapping.jpg]]
@@ -564,10 +565,28 @@ set/ or /resident set/.
 In Linux, we can use =getrusage= API to check the page faults. See
 =rusage.ru_majflt= field in =man 2 getrusage=.
 
-** TODO VM as a Tool for Memory Management
+** DONE VM as a Tool for Memory Management
+
+By using seperated page tables, OS can provide sepearte virtual address space for each process.
+Notice that multiple virtual pages can be mapped to the same shared physical page.
+#+CAPTION: VM for memory management
+[[./img/multiple-page-table.png]]
+
+The combination of demand paging and separate virtual address spaces
+has a profound impact on the way that memory is used and managed in a
+system:
+- simplifying linking :: each process can use the same basic format
+     (layout of segments) for its memory image
+- simplifying loading :: allocate virtual pages for code and data
+     segments, and marks them as uncached, and points their PET to the
+     location object files (load segment as needed). See also =mmap=
+- simplifying sharing :: map private virtual pages to disjoint
+     physical pages. And share common library, such as =printf=,
+     between different processes (share the same physical pages)
+- simplifying memory allocation :: the virtual memory allocated by
+     =malloc= can scatter randomly in physical memory
 
 ** TODO VM as a Tool for Memory Protection
-
 ** TODO Address Translation
 
 ** TODO Case Study: The Intel Core i7/Linux Memory System
