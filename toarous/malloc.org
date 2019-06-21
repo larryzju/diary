@@ -1,25 +1,45 @@
 * Overview
 
-** brk and sbrk
+** segment
 
 A process has several segments of memory[fn:1]:
 - Code (text) segmemnt, which contains the code to be executed
 - Data segment, which contains data the compiler knows about (globals and statics)
 - Stack segment, which contains (drumroll..) the stack
 
-The =brk()= system call is used to change th point where the data
-segment "breaks" (ends). And =sbrk(intptr_t increment)= increments the
-program's data space by =increment= bytes.
-
-
-
+** heap
 
 Heap is memory block with a contiguous series of addresses. Program
 can expand or contract and use as its own accord (system break).
 
+** system break
+
+The =brk()= system call is used to change the point where the data
+segment "breaks" (ends). And =sbrk(intptr_t increment)= increments the
+program's data space by =increment= bytes.
+
+Program don't need to call =brk= or =sbrk= typically, though calling
+=sbrk(0)= can be interesting because it tells you where your heap
+currently ends
+
 POSIX =sbrk= API is used to move the system break. But normally,
 program use a *memory allocation system* to handle chuncking up and
 keeping track of which memory is allocated and which is freed.
+
+Call =sbrk= to increase the size of the heap. For typical
+architectures the heap will grow upwards and the stack grows
+downwards.
+
+#+BEGIN_SRC c
+void *top_of_heap = sbrk(0);
+malloc(16384);
+void *top_of_heap2 = sbrk(0);
+printf("The top of heap went from %p to %p \n", top_of_heap,
+top_of_heap2);
+// Example output: The top of heap went from 0x4000 to 0xa000
+#+END_SRC
+
+** POSIX API
 
 C API for memory allocation
 - =malloc(size_t bytes)= :: reverse a contiguous block of memory
@@ -27,11 +47,142 @@ C API for memory allocation
 - =calloc(size_t nmemb, size_t size)= :: initialize memory contents to zero
 - =free(void *ptr)= :: make it available for use in the subsequent calls to the other allocation functions
 
-Call =sbrk= to increase the size of the heap. For typical
-architectures the heap will grow upwards and the stack grows
-downwards.
 
-** program break
+* Allocating
+
+** Naive version
+
+#+BEGIN_SRC c
+  void *malloc(size_t size) {
+    // sbrk increase heap size with `size` bytes and return the previous system break
+    // return -1 on failure
+    void *p = sbrk(size);
+    if(p == (void*)-1) return NULL;
+    return p;
+  }
+
+  void free() {
+    /* Do Nothing */
+  }
+#+END_SRC
+
+Drawbacks:
+- system calls are slow compared to library calls. (we should reversed
+  a large amount of memory and only occasionally ask for more from the
+  system)
+- No reuse of freed memory. Process would exhaust memory quickly.
+
+** Placement Strategies
+
+随着 =malloc= 的调用，heap 的空间被划分为大小不一的块。
+申请新空间时，有几种不同的策略：
+- perfect-fit strategy :: 找出符合要求的最小空闲块
+- worst-fit strategy :: 使用最大空间的空闲块
+- first-fit strategy :: 使用第一个空间足够的块
+- next-fit strategy :: first fit on the next fit block，添加了随机性
+
+以上方式都有可能会损失一部分的空间（多出来的空间既不会被 allocator 使用，也不会被分配给用户）
+
+实现 Heap Allocator 主要需要考虑到
+- 减少碎片化，提高内存使用率
+- 性能
+- 代码实现难度
+- 特定使用场景有关
+
+一些经验[fn:2]：
+- 如果每次都取最小空闲块，反而导致剩余空间过小无法被利用（可以考虑设置一个阈值）
+- first-fit 除了按地址顺序外，还可以按最近使用顺序、空闲时长等排序
+- 避免扫描全部块
+
+涉及到的数据结构：
+- max-heap
+- linked list
+- randomized skip-list in conjunction with singly linked list
+
+
+
+** Sample Implementation
+
+#+BEGIN_SRC go
+  type Block struct {
+          Metadata Metadata
+          Space    uintptr
+          BTag     BTag  // Boundary Tag
+  }
+#+END_SRC
+
+- Metadata 中记录了： Space 的大小，是否被使用
+- 下一个块的位置可以由 =p + sizeof(meta) + p->size + sizeof(BTag)= 计算
+
+*** first fit malloc
+
+基本思路
+- 从第一个块开始遍历，直到找到第一个未被使用，空间充足的块
+- 若没有合适的块，则调用 =sbrk()= 扩大 heap 空间
+- 使用前，劈成两块，使用前者，后者生成一个新的未使用空间
+
+#+BEGIN_SRC c
+  typedef struct {
+    size_t block_size;
+    int is_free;
+    char data[0];
+  } block;
+  block *p = sbrk(100);
+  p->size = 100 - sizeof(*p) - sizeof(boundary_tag);
+  // Other block allocations
+#+END_SRC
+
+[[images/malloc-split.png]]
+
+*** Alignment and rounding up considerations
+
+一般以 4 字节或 8 字节对齐内存以提高访问效率。
+
+#+BEGIN_SRC c
+int s = (requested_bytes + tag_overhead_bytes + 15) / 16
+#+END_SRC
+
+*** free
+
+基本思路：
+- 标记块状态为“未被使用”
+- 合并相邻的可用块（boundary tag 中包含了上一个块的位置信息）
+
+*** Performance
+
+- malloc 最差情况为线性
+- free 为常数次（最多与前后两个块合并）
+
+
+*** Explicit Free Lists Allocators
+
+维护一个双向链表，保存未使用的 block 信息
+- 减少分配时间
+- 调整分配顺序
+
+需要调整 Block Metadata 和 Boundary Tag 内容（回收时需要更新）
+#+BEGIN_SRC c
+  typedef struct {
+    size_t info;
+    struct block *next;
+    char data[0];
+  } block;
+#+END_SRC
+
+#+CAPTION: Free list
+[[./images/free-list.png]]
+
+** Segregated Allocator
+
+#+BEGIN_VERSE
+A segregated allocator is one that divides the heap into different areas that are handled by different sub-allocators
+dependent on the size of the allocation request.
+#+END_VERSE
+
+Buddy allocator
+- splits allocation into blocks of size $2^n$ (or Fibonacci split)
+- 如果 $2^n$ 没有空间，则去下一级内寻找，将之一分为二
+- 使用完成后合并并交还（合并时更快，因为是基于地址，而非 boundary tag）
 
 * TODO TODO
 
@@ -39,9 +190,12 @@ downwards.
 
 ** jemalloc
 
-
+** Knapsack problem  / NP hard
+** SLUB
+** Wikipedia's buddy memory allocation page
 
 * Footnotes
 
-- [fn:1] [[https://stackoverflow.com/questions/6338162/what-is-program-break-where-does-it-start-from-0x00][Stackoverflow: What is program break? Where does it start from, 0x00?]]
+[fn:1] [[https://stackoverflow.com/questions/6338162/what-is-program-break-where-does-it-start-from-0x00][Stackoverflow: What is program break? Where does it start from, 0x00?]]
+[fn:2] [[http://cs241.cs.illinois.edu/coursebook/Malloc#intro-to-allocating][Introduction to memory allocation]]
 
