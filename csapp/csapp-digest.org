@@ -386,7 +386,7 @@ platform. But it's a fault error in 64bit platform.
 
 Modern systems provide an abstraction of main memory known as /virtual memory/ (VM).
 
-Virtual memory is an elegant interaction to provide each process with a address space that
+Virtual memory is an elegant interaction to provide each process with a address space that is
 - large
 - uniform
 - private 
@@ -399,22 +399,22 @@ The aspects to interact with are
 - kernel software 
 
 Virtual memory provides 3 important capabilities:
-1. [swap] use main memory effciently by treating it as a cache for an
-   address space stored on disk, keeping only athe active areas in
-   main memory and transferring data back and forth between disk and
-   memory as needed
-2. [flat address] it simplifies memory management by providing each
-   process with a uniform address space
-3. [isolation] it protects the address space of each process from
-   corruption by other processes
+- swap :: use main memory effciently by treating it as a cache for an
+          address space stored on disk, keeping only the active areas
+          in main memory and transferring data back and forth between
+          disk and memory as needed
+- flat address :: it simplifies memory management by providing each
+                  process with a uniform address space
+- isolation :: it protects the address space of each process from
+               corruption by other processes
 
 *** Why would a programmer need to understand it?
 
-1. [central] pervades all levels of computer systems: hardware
-   exception, assemblers, linkers, loaders, shared objects, files and
-   processes
-2. [powerful] =malloc=, =mmap=, share memory with other processes
-3. [dangerous] segmentation fault or protection fault
+- central :: pervades all levels of computer systems: hardware
+             exception, assemblers, linkers, loaders, shared objects,
+             files and processes
+- powerful :: =malloc=, =mmap=, share memory with other processes
+- dangerous :: segmentation fault or protection fault
 
 *** Two angles to learn virtual memory
 
@@ -423,27 +423,23 @@ Virtual memory provides 3 important capabilities:
 
 ** DONE Physical and Virtual Addressing
 
-PA (physical address) is organized as an array of M contiguous
-byte-size cells.
-
-VA (virtual address) is converted to the appropriate physical address
-before being sent to main memory.
-
-Address translation is performed on the CPU chip called memory
-management unit (MMU), using a lookup table stored in main memory
-whose contents are managed by the operating system.
+- PA (physical address) :: is organized as an array of M contiguous
+     byte-size cells.
+- VA (virtual address) :: is converted to the appropriate physical
+     address before being sent to main memory.
+- MMU (Memory management unit) :: using a lookup table stored in main
+     memory, whose contents are managed by the operating system, to
+     perform the address transferring
 
 ** DONE Address Spaces
 
-/linear address space/: the address space that the addresses are consecutive.
-
-Represent with the number of bits that are needed to represent the largest address:
-- 32-bit
-- 64-bit
+/linear address space/: the address space that the addresses are
+consecutive. Represent with the number of bits (32-bit or 64-bit) that
+are needed to represent the largest address:
 
 Distinct data object (bytes) and their attributes (addresses). Each
 object can have multiple independent addresses, each chosen from a
-different address space.
+different address space. (?)
 
 | VA bits | Number of VA | Largest possible virtual address |
 |---------+--------------+----------------------------------|
@@ -453,7 +449,7 @@ different address space.
 |      46 | 64T          | 64T-1                            |
 |      54 | 16P          | 16P-1                            |
 
-** [1/6] TODO VM as a Tool for Caching
+** TODO [1/6] VM as a Tool for Caching
 
 Cache the contiguous addressed disk space into virtual memory in unit of fix sized block:
 - /virtual pages/ (VPs) for virtual memory
