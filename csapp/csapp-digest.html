@@ -406,7 +406,7 @@
 <h2 id="integer-representations">Integer Representations</h2>
 <h2 id="integer-arithmetic">Integer Arithmetic</h2>
 <h2 id="floating-point">Floating Point</h2>
-<h1 id="virtual-memory-1">[4/13] Virtual Memory</h1>
+<h1 id="virtual-memory-1">[6/13] Virtual Memory</h1>
 <h2 id="overview-1"><span class="done DONE">DONE</span> Overview</h2>
 <p>与 CPU 共享不同，CPU 共享最多因为进程数增大而变慢。内存共享可能会有其它问题</p>
 <ol class="incremental">
@@ -530,6 +530,7 @@
 <dd>allocated pages that are not cached in physical memory
 </dd>
 </dl>
+<p>By the cache meachanism, system can provide larger virtual address space that the available physical address.</p>
 <figure>
 <img src="./img/9.3.vp-pp-mapping.jpg" alt="" /><figcaption>VM as Cache</figcaption>
 </figure>
@@ -656,9 +657,203 @@
 <p>Virtual memory's performance is benefited by the <em>locality</em>. The principle of locality promises that at any point in time they will tend to work on a smaller set of <em>active pages</em> known as the <em>working set</em> or <em>resident set</em>.</p>
 <p><em>thrashing</em>: where pages are swapped in and out continuously.</p>
 <p>In Linux, we can use <code>getrusage</code> API to check the page faults. See <code>rusage.ru_majflt</code> field in <code>man 2 getrusage</code>.</p>
-<h2 id="vm-as-a-tool-for-memory-management"><span class="todo TODO">TODO</span> VM as a Tool for Memory Management</h2>
-<h2 id="vm-as-a-tool-for-memory-protection"><span class="todo TODO">TODO</span> VM as a Tool for Memory Protection</h2>
-<h2 id="address-translation"><span class="todo TODO">TODO</span> Address Translation</h2>
+<h2 id="vm-as-a-tool-for-memory-management"><span class="done DONE">DONE</span> VM as a Tool for Memory Management</h2>
+<p>By using seperated page tables, OS can provide sepearte virtual address space for each process. Notice that multiple virtual pages can be mapped to the same shared physical page.</p>
+<figure>
+<img src="./img/multiple-page-table.png" alt="" /><figcaption>VM for memory management</figcaption>
+</figure>
+<p>The combination of demand paging and separate virtual address spaces has a profound impact on the way that memory is used and managed in a system:</p>
+<dl class="incremental">
+<dt>simplifying linking</dt>
+<dd>each process can use the same basic format (layout of segments) for its memory image
+</dd>
+<dt>simplifying loading</dt>
+<dd>allocate virtual pages for code and data segments, and marks them as uncached, and points their PET to the location object files (load segment as needed). See also <code>mmap</code>
+</dd>
+<dt>simplifying sharing</dt>
+<dd>map private virtual pages to disjoint physical pages. And share common library, such as <code>printf</code>, between different processes (share the same physical pages)
+</dd>
+<dt>simplifying memory allocation</dt>
+<dd>the virtual memory allocated by <code>malloc</code> can scatter randomly in physical memory
+</dd>
+</dl>
+<h2 id="vm-as-a-tool-for-memory-protection"><span class="done DONE">DONE</span> VM as a Tool for Memory Protection</h2>
+<p>MMU provides access control by read the PTE's permission bits. Any violation will trigger a general <strong>protection fault</strong> and get a <code>SIGSEGV</code> signal in the offending process (the notorious <strong>segmentation fault</strong> error)</p>
+<table>
+<thead>
+<tr class="header">
+<th>Bit Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SUP</td>
+<td>Supervisor: must be running in kernel mode to access the page</td>
+</tr>
+<tr class="even">
+<td>READ</td>
+<td>read permission to the page</td>
+</tr>
+<tr class="odd">
+<td>WRITE</td>
+<td>write permission to the page</td>
+</tr>
+</tbody>
+</table>
+<h2 id="address-translation"><span class="todo TODO">TODO</span> [1/5] Address Translation</h2>
+<h3 id="overview-2"><span class="done DONE">DONE</span> Overview</h3>
+<p>The page size (P bytes) is same in virtual space and physical space. Virtual space may be smaller, or equal, or larger than physical address space.</p>
+<p>Address translation is a mapping between the element of an N-element virtual address space (VAS) and an M-element physical address space (PAS) <span class="math display">\[ MAP: {VAS} \rightarrow  {PAS} \cup \o \]</span></p>
+<p>A <em>page fault</em> exception will be triggered if the data at virtual addr is not present in physical memory.</p>
+<ol class="incremental">
+<li><p>Terms of virtual address</p>
+<table>
+<thead>
+<tr class="header">
+<th>symbol</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>VPO</td>
+<td>virtual page offset (bytes)</td>
+</tr>
+<tr class="even">
+<td>VPN</td>
+<td>virtual page number</td>
+</tr>
+<tr class="odd">
+<td>TLBI</td>
+<td>TLB index</td>
+</tr>
+<tr class="even">
+<td>TLBT</td>
+<td>TLB tag</td>
+</tr>
+<tr class="odd">
+<td>TLB</td>
+<td>table base register</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>Terms of physical address</p>
+<table>
+<thead>
+<tr class="header">
+<th>symbol</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>PPO</td>
+<td>physical page offset (bytes)</td>
+</tr>
+<tr class="even">
+<td>PPN</td>
+<td>physical page number</td>
+</tr>
+<tr class="odd">
+<td>CO</td>
+<td>byte offset within cache block</td>
+</tr>
+<tr class="even">
+<td>CI</td>
+<td>cache index</td>
+</tr>
+<tr class="odd">
+<td>CT</td>
+<td>cache tag</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>Address Translation</p>
+<p><em>page table base register</em> (PTBR) in CPU points to current page table.</p>
+<p>An virtual address is constructed with two parts:</p>
+<ol class="incremental">
+<li><em>p</em>-bit <em>virtual page offset</em> (VPO)</li>
+<li><em>(n-p)</em>-bit <em>virtual page number</em> (VPN)</li>
+</ol>
+<p>MMU use the VPN to select the appropriate PTE (pointed by PTBR) and get the <em>physical page number</em> (PPN). Then calculate the real physical address by add the offset (VPO/PPO) to the physical base address.</p>
+<figure>
+<img src="./img/address-translation.png" alt="" /><figcaption>Address translation with a page table</figcaption>
+</figure></li>
+<li><p>page hit</p>
+<p>The page hit steps are</p>
+<ol class="incremental">
+<li>CPU generate a VA and send it to the MMU</li>
+<li>MMU generate the PTE address and requests it from the cache/main memory</li>
+<li>The cache/main memory returns the PTE to the MMU</li>
+<li>The MMU constructs the physical address and sends it to the cache/main memory</li>
+<li>The cache/main memory returns the requested data word to the processor.</li>
+</ol>
+<figure>
+<img src="./img/page-hit.png" alt="" /><figcaption>Page hit</figcaption>
+</figure></li>
+<li><p>page fault</p>
+<p>The page fault is handled by operating system kernel</p>
+<ol class="incremental">
+<li>CPU generate a VA and send it to the MMU</li>
+<li>MMU generate the PTE address and requests it from the cache/main memory</li>
+<li>MMU triggers an exception if the valid bit in the PTE is zero and transfer control in the CPU to a page fault exception handler</li>
+<li>The fault handler identifies a victim page in physical memory, and if that page has been modified, pages it out to disk.</li>
+<li>The fault handler pages in the new page and update the PTE in memory.</li>
+<li>The fault handler returns to the origin process, causing the faulting instruction to be restarted.</li>
+<li>back to the page hit steps.</li>
+</ol>
+<figure>
+<img src="./img/page-fault.png" alt="" /><figcaption>Page fault</figcaption>
+</figure></li>
+<li><p>Practice Problem 9.3</p>
+<p>Given a 64-bit virtual address space and a 32-bit physical address, determine the number of bits in the VPN, VPO, PPN and PPO for each page size P:</p>
+<table>
+<thead>
+<tr class="header">
+<th>P</th>
+<th>VPN</th>
+<th>VPO</th>
+<th>PPN</th>
+<th>PPO</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1KB</td>
+<td>54</td>
+<td>10</td>
+<td>22</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>2KB</td>
+<td>53</td>
+<td>11</td>
+<td>21</td>
+<td>11</td>
+</tr>
+<tr class="odd">
+<td>4KB</td>
+<td>52</td>
+<td>12</td>
+<td>20</td>
+<td>12</td>
+</tr>
+<tr class="even">
+<td>16KB</td>
+<td>50</td>
+<td>14</td>
+<td>18</td>
+<td>14</td>
+</tr>
+</tbody>
+</table></li>
+</ol>
+<h3 id="integrating-caches-and-vm"><span class="todo TODO">TODO</span> Integrating Caches and VM</h3>
+<h3 id="speeding-up-address-translation-with-a-tlb"><span class="todo TODO">TODO</span> Speeding Up Address Translation with a TLB</h3>
+<h3 id="multi-level-page-tables"><span class="todo TODO">TODO</span> Multi-Level Page Tables</h3>
+<h3 id="putting-it-together-end-to-end-address-translation"><span class="todo TODO">TODO</span> Putting It Together: End-to-End Address Translation</h3>
 <h2 id="case-study-the-intel-core-i7linux-memory-system"><span class="todo TODO">TODO</span> Case Study: The Intel Core i7/Linux Memory System</h2>
 <h2 id="memory-mapping"><span class="todo TODO">TODO</span> Memory Mapping</h2>
 <h2 id="dynamic-memory-allocation"><span class="todo TODO">TODO</span> Dynamic Memory Allocation</h2>
