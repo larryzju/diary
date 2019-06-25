@@ -6,10 +6,12 @@
 
 * A Tour of Computer System
 
-A computer system consists of hardware and system software that work together
-to run application programs. Besides different among specific implements, the
-underlying concepts are the same. To be a "power programmer" we must understand
-the underlying computer system and its impact on your application programs.
+Computer system consists of
+1. hardward
+2. system software
+3. application programs
+
+The underlying concepts are the same event for different implements.
 
 常见的问题如数字格式、C 程序优化、链接、内存泄露、并行程序开发等。都将在后续展开。
 
@@ -21,9 +23,10 @@ the underlying computer system and its impact on your application programs.
 
 
 #+BEGIN_aside
-C 语言于 1969-1973 年在贝尔实验室被创造。由 ANSI C 和 ISO 进行标准，著名书籍是 K&R。C 语言有以下特点
+C 语言于 1969-1973 年在贝尔实验室被创造。由 ANSI C 和 ISO 标准化，著名书籍是 K&R。
 
-1. 与 UNIX 关联密切，可移植
+C program language has below features
+1. portable and associated with UNIX tightly
 2. small and simple
 3. paratical purpose
 #+END_aside
@@ -34,13 +37,15 @@ C 语言于 1969-1973 年在贝尔实验室被创造。由 ANSI C 和 ISO 进行
 
 通常的 C 源码需要经过 4 个步骤生成最终可执行文件，如下
 
+| STEPS             | DESCRIPTION                   |
+|-------------------+-------------------------------|
 | preprocessor(cpp) | 用于展开头文件(.i)            |
 | compiler(cc1)     | 翻译成汇编文件(.s)            |
 | assembler(as)     | 汇编生成 relocatable 文件(.o) |
 | linker(ld)        | 生成可执行文件                |
 
 #+BEGIN_aside
-GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 emacs, gcc, gdb, as, linker 以及各种工具。linux 亦是基于 GNU 提供的工具构建的。
+GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 emacs, gcc, gdb, as, linker 等 。linux 亦是基于 GNU 提供的工具构建的。
 #+END_aside
 
 
@@ -57,24 +62,16 @@ GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 
    - 算术顺序对性能的影响
    - I32 与 x86-64 的指令系统
    - 内存管理
-2. Understand link-time error：如以下问题：
+2. Understand link-time error，例如
    - 找不到引用
    - static 与 global 变量
    - global 变量重名
    - 静态库与动态库
    - 库的顺序对正确的影响
    - 运行时发生的错误
-3. Avoiding security holes：应限制从未知数据源获取数据，注意栈上的存储方式
-
-
-
-
-
-
-
-
-
-
+3. Avoiding security holes：
+   - 限制从未知数据源获取数据
+   - 注意栈上的存储方式可能造成信息泄漏
 
 ** Processors Read and Interrupt Instructions Stored in Memory
 
@@ -87,6 +84,7 @@ GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 
 
 其中涉及到计算机的硬件组成。如下图所示：
 
+#+CAPTION: Hardware organization
 [[./img/hardware-org.png]]
 
 硬件中包含几个核心部件，如 CPU，内存，IO 设备，总线等。
@@ -106,9 +104,10 @@ GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 
 
 ** Storage Devices From a Hierarchy
 
+#+CAPTION: Memory Hierarchy
 [[file:img/memory-hierarchy.png]]
 
-主流解决方案采用三级缓存，缓存使用 SRAM(static random access memory) 技术。
+主流解决方案采用三级缓存，CPU 缓存使用 SRAM(static random access memory) 技术。
 
 其中寄存器视为第 0 级缓存，自上向下速度越来越慢，而存储空间越来越大。
 
@@ -147,16 +146,16 @@ GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 
 
 *** Virtual Memory
 
-在每个进程看来，自己独占了整个内存，称为 virtual address space。
-
-实际上由操作系统在上下文切换时，通过硬件的转换机制伪造出相应的内存视图。可以看作用硬盘来保存进程的虚拟内存，而使用 main memory 作为缓存提高效率。
+在每个进程看来，自己独占了整个内存，称为 virtual address space。实际上
+由操作系统在上下文切换时，通过硬件的转换机制伪造出相应的内存视图。可以
+看作用硬盘来保存进程的虚拟内存，而使用 main memory 作为缓存提高效率。
 
 进程的内存分为多个区域，存储代码和数据，以及某些公共区域，如下图所示
 
+#+CAPTION: Virtual Memory
 [[file:img/virutal-memory.png]]
 
-其中：
-
+其中自下往上依次为：
 - code 在放在低地址的固定区域
 - C 中的全局变量存储
 - 堆区域，在运行时通过 malloc 和 free 来动态扩展
@@ -166,9 +165,8 @@ GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 
 
 *** Files
 
-文件是对 I/O 设备的一种抽象。其本质是一堆字节，并提供了读写操作。
-
-文件的作用是统一了 I/O 设备的视图，并提供不同设备、不同平台间的移植性。
+文件是对 I/O 设备的一种抽象。其本质是一堆字节，并提供了读写操作。文件
+的作用是统一了 I/O 设备的视图，并提供不同设备、不同平台间的移植性。
 
 Unix 中一切皆文件，因此也称作 Unix I/O
 
@@ -178,9 +176,7 @@ Unix 中一切皆文件，因此也称作 Unix I/O
 
 ** System Communicate with Other System Using Network
 
-计算机系统并不只是以单机运行的。越来越多的价值从互联之中发掘。
-
-计算机通过网络与其它计算机交换数据，网络也是一种 I/O 设备
+计算机系统并不只是以单机运行的。越来越多的价值从互联之中发掘。计算机通过网络与其它计算机交换数据，网络也是一种 I/O 设备
 
 ** Important Themes
 *** Concurrency and Parallelism
@@ -374,7 +370,6 @@ platform. But it's a fault error in 64bit platform.
 ** Integer Arithmetic
 
 ** Floating Point 
-
 
 * [6/13] Virtual Memory
 
@@ -706,7 +701,6 @@ page size P:
 ** TODO Common Memory-Related Bugs in C Programs
 
 ** TODO Summary
-
 
 
 * Footnotes

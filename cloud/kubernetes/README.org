@@ -231,3 +231,4 @@ the Terminating or Unknown state.
 #+END_VERSE
 
 Is node controller running on master node?
+** TODO ownerReference

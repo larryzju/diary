@@ -70,3 +70,12 @@ table {
     border-style: hidden;
     border-collapse: collapse;
 }
+
+.aside {
+    background-color: lightgray;
+    border: 1px solid black;
+    padding: 0 1em;
+    border-radius: 1rem;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
