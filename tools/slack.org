@@ -1,0 +1,6 @@
+* Incoming Webhooks
+
+Allow external app to post meesage into Slack.
+
+1. create an incoming Webhook and get a unique URL
+2. send a JSON payload to this URL
