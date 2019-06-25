@@ -27,6 +27,29 @@
 <li><code>kubernetes/fake</code> package provides <code>fake/ClientSet</code> type</li>
 <li>Build an empty <code>fake/ClientSet</code> object and call <code>.Fake.AddReactor</code> to mock the actions</li>
 </ul>
+<h1 id="sigs.k8s.iocontroller-runtime">sigs.k8s.io/controller-runtime</h1>
+<p>Help to construct kubernetes-style controllers that manipulate both</p>
+<ol class="incremental">
+<li>kubernetes CRDs</li>
+<li>aggregated/built-in Kubernetes APIs</li>
+</ol>
+<ul class="incremental">
+<li><strong>Controller</strong> enqueue a reconcile request for the object owner</li>
+<li><strong>Reconciler</strong> consume and try to reconcile the CR object statu</li>
+<li><strong>Manager</strong> is responsible for
+<ul class="incremental">
+<li>running controllers and webhooks</li>
+<li>manage caches and clients</li>
+<li>managing leader election</li>
+</ul></li>
+<li><strong>Client</strong> wrap the underlying API objects
+<ul class="incremental">
+<li><strong>read</strong> from a local shared cache</li>
+<li><strong>write</strong> directly to the PAI server</li>
+<li><strong>Cache</strong> can be disabled</li>
+</ul></li>
+<li><strong>Scheme</strong> helps to associate Go types to Kuberenets API Kinds (Group-Version-Kinds)</li>
+</ul>
 
 			</div>
 		</section>

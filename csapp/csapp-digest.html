@@ -16,15 +16,22 @@
 		<section class="main-article-area">
 			<div id='main'>
 				<h1 id="a-tour-of-computer-system">A Tour of Computer System</h1>
-<p>A computer system consists of hardware and system software that work together to run application programs. Besides different among specific implements, the underlying concepts are the same. To be a "power programmer" we must understand the underlying computer system and its impact on your application programs.</p>
+<p>Computer system consists of</p>
+<ol class="incremental">
+<li>hardward</li>
+<li>system software</li>
+<li>application programs</li>
+</ol>
+<p>The underlying concepts are the same event for different implements.</p>
 <p>常见的问题如数字格式、C 程序优化、链接、内存泄露、并行程序开发等。都将在后续展开。</p>
 <h2 id="infomation-is-bits-context">Infomation is Bits + Context</h2>
 <p>计算机中所有的信息都以一系列的位来表示。例如，源代码文件，以字节（8位）为单位保存在文件中。其编码由 ASCII 定义。</p>
 <p>不同的位表示不同的意思的本质在于上下文（Context）。</p>
 <div class="aside">
-<p>C 语言于 1969-1973 年在贝尔实验室被创造。由 ANSI C 和 ISO 进行标准，著名书籍是 K&amp;R。C 语言有以下特点</p>
+<p>C 语言于 1969-1973 年在贝尔实验室被创造。由 ANSI C 和 ISO 标准化，著名书籍是 K&amp;R。</p>
+<p>C program language has below features</p>
 <ol class="incremental">
-<li>与 UNIX 关联密切，可移植</li>
+<li>portable and associated with UNIX tightly</li>
 <li>small and simple</li>
 <li>paratical purpose</li>
 </ol>
@@ -33,6 +40,12 @@
 <p>程序以人类可读的程序语言写成（如 C 语言或汇编语言），需要将之翻译为机器可以识别的机器语言（二进制的可执行文件）。</p>
 <p>通常的 C 源码需要经过 4 个步骤生成最终可执行文件，如下</p>
 <table>
+<thead>
+<tr class="header">
+<th>STEPS</th>
+<th>DESCRIPTION</th>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>preprocessor(cpp)</td>
@@ -53,7 +66,7 @@
 </tbody>
 </table>
 <div class="aside">
-<p>GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 emacs, gcc, gdb, as, linker 以及各种工具。linux 亦是基于 GNU 提供的工具构建的。</p>
+<p>GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 emacs, gcc, gdb, as, linker 等 。linux 亦是基于 GNU 提供的工具构建的。</p>
 </div>
 <h2 id="it-pays-to-understand-how-compilation-system-work">It Pays to Understand How Compilation System Work</h2>
 <p>编译器作了太多的事情，为此我们需要了解其细节，以便在以下方面进行优化：</p>
@@ -69,7 +82,7 @@
 <li>I32 与 x86-64 的指令系统</li>
 <li>内存管理</li>
 </ul></li>
-<li>Understand link-time error：如以下问题：
+<li>Understand link-time error，例如
 <ul class="incremental">
 <li>找不到引用</li>
 <li>static 与 global 变量</li>
@@ -78,7 +91,11 @@
 <li>库的顺序对正确的影响</li>
 <li>运行时发生的错误</li>
 </ul></li>
-<li>Avoiding security holes：应限制从未知数据源获取数据，注意栈上的存储方式</li>
+<li>Avoiding security holes：
+<ul class="incremental">
+<li>限制从未知数据源获取数据</li>
+<li>注意栈上的存储方式可能造成信息泄漏</li>
+</ul></li>
 </ol>
 <h2 id="processors-read-and-interrupt-instructions-stored-in-memory">Processors Read and Interrupt Instructions Stored in Memory</h2>
 <p>正常执行程序时，通过 shell 调用可执行程序。实际在底层复杂无比，归纳起来过程如下：</p>
@@ -89,7 +106,9 @@
 <li>退出</li>
 </ol>
 <p>其中涉及到计算机的硬件组成。如下图所示：</p>
-<p><img src="./img/hardware-org.png" /></p>
+<figure>
+<img src="./img/hardware-org.png" alt="" /><figcaption>Hardware organization</figcaption>
+</figure>
 <p>硬件中包含几个核心部件，如 CPU，内存，IO 设备，总线等。</p>
 <dl class="incremental">
 <dt>总线</dt>
@@ -110,8 +129,10 @@
 <p>而存储的容量与读写的效率成反比，而且差距还在增大。所以需要考虑如何优化拷贝的效率。</p>
 <p>一个关键的问题称为 processor-memory gap：处理器性能与内存读取的鸿沟。通过添加 cache memory 来缓存近线数据来弥补数据的速度与容量的差距性。</p>
 <h2 id="storage-devices-from-a-hierarchy">Storage Devices From a Hierarchy</h2>
-<p><img src="img/memory-hierarchy.png" /></p>
-<p>主流解决方案采用三级缓存，缓存使用 SRAM(static random access memory) 技术。</p>
+<figure>
+<img src="img/memory-hierarchy.png" alt="" /><figcaption>Memory Hierarchy</figcaption>
+</figure>
+<p>主流解决方案采用三级缓存，CPU 缓存使用 SRAM(static random access memory) 技术。</p>
 <p>其中寄存器视为第 0 级缓存，自上向下速度越来越慢，而存储空间越来越大。</p>
 <h2 id="the-operating-system-manages-the-hardware">The Operating System Manages the Hardware</h2>
 <p>操作系统作为中间层，隔离了应用软件与硬件，其作用有两个：</p>
@@ -153,11 +174,12 @@
 <h3 id="threads">Threads</h3>
 <p>在一个进程中的上下文中可以有多个线程，线程共享代码和全局数据，因此更容易共享数据，效率较高</p>
 <h3 id="virtual-memory">Virtual Memory</h3>
-<p>在每个进程看来，自己独占了整个内存，称为 virtual address space。</p>
-<p>实际上由操作系统在上下文切换时，通过硬件的转换机制伪造出相应的内存视图。可以看作用硬盘来保存进程的虚拟内存，而使用 main memory 作为缓存提高效率。</p>
+<p>在每个进程看来，自己独占了整个内存，称为 virtual address space。实际上 由操作系统在上下文切换时，通过硬件的转换机制伪造出相应的内存视图。可以 看作用硬盘来保存进程的虚拟内存，而使用 main memory 作为缓存提高效率。</p>
 <p>进程的内存分为多个区域，存储代码和数据，以及某些公共区域，如下图所示</p>
-<p><img src="img/virutal-memory.png" /></p>
-<p>其中：</p>
+<figure>
+<img src="img/virutal-memory.png" alt="" /><figcaption>Virtual Memory</figcaption>
+</figure>
+<p>其中自下往上依次为：</p>
 <ul class="incremental">
 <li>code 在放在低地址的固定区域</li>
 <li>C 中的全局变量存储</li>
@@ -167,8 +189,7 @@
 <li>kernel virtual memory 位于高地址，程序不可用</li>
 </ul>
 <h3 id="files">Files</h3>
-<p>文件是对 I/O 设备的一种抽象。其本质是一堆字节，并提供了读写操作。</p>
-<p>文件的作用是统一了 I/O 设备的视图，并提供不同设备、不同平台间的移植性。</p>
+<p>文件是对 I/O 设备的一种抽象。其本质是一堆字节，并提供了读写操作。文件 的作用是统一了 I/O 设备的视图，并提供不同设备、不同平台间的移植性。</p>
 <p>Unix 中一切皆文件，因此也称作 Unix I/O</p>
 <div class="aside">
 <dl class="incremental">
@@ -178,8 +199,7 @@
 </dl>
 </div>
 <h2 id="system-communicate-with-other-system-using-network">System Communicate with Other System Using Network</h2>
-<p>计算机系统并不只是以单机运行的。越来越多的价值从互联之中发掘。</p>
-<p>计算机通过网络与其它计算机交换数据，网络也是一种 I/O 设备</p>
+<p>计算机系统并不只是以单机运行的。越来越多的价值从互联之中发掘。计算机通过网络与其它计算机交换数据，网络也是一种 I/O 设备</p>
 <h2 id="important-themes">Important Themes</h2>
 <h3 id="concurrency-and-parallelism">Concurrency and Parallelism</h3>
 <p>There are two simliar concepts about multiple execution implement ways</p>

@@ -92,6 +92,31 @@
 <li>Shared by multiple containers</li>
 <li>Has multiple implmenet, for example <code>hostPath</code></li>
 </ul>
+<h3 id="downward">Downward</h3>
+<p>A DownwardAPIVolumeFile can expose Pod fields and Container fields. (means the container wants to access part of the metadata of current pod or container itself).</p>
+<p>The API is useful for a Container to have information about itself, without being overly coupled to Kuberentes.</p>
+<p>There are two ways:</p>
+<ol class="incremental">
+<li>Environment variables</li>
+<li>DownwardAPIVolumeFiles</li>
+</ol>
+<p>Refer to <a href="https://kubernetes.io/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/">https://kubernetes.io/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/</a></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> podinfo</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="at">    </span><span class="fu">downwardAPI</span><span class="kw">:</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="at">      </span><span class="fu">items</span><span class="kw">:</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">path</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;labels&quot;</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="at">          </span><span class="fu">fieldRef</span><span class="kw">:</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="at">            </span><span class="fu">fieldPath</span><span class="kw">:</span><span class="at"> metadata.labels</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">path</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;annotations&quot;</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="at">          </span><span class="fu">fieldRef</span><span class="kw">:</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="at">            </span><span class="fu">fieldPath</span><span class="kw">:</span><span class="at"> metadata.annotations</span></span></code></pre></div>
+<p>The yaml code above expose two DownwardAPIVolumeFile:</p>
+<ol class="incremental">
+<li>expose <code>metadata.labels</code> fields as <code>lables</code> file</li>
+<li>expose <code>metadata.annotations</code> fields as <code>annotations</code> file</li>
+</ol>
+<p>The exposed field can be pod metadata, container resources limitations and parts of status. See the offical document for the details.</p>
 <h2 id="service">Service</h2>
 <ul class="incremental">
 <li>binding to selected endpoints (pods)</li>
@@ -162,6 +187,7 @@ it is confirmed that they have stopped running in the cluster. You can<br />
 see the pods that might be running on an unreachable node as being in<br />
 the Terminating or Unknown state.</div>
 <p>Is node controller running on master node?</p>
+<h2 id="ownerreference"><span class="todo TODO">TODO</span> ownerReference</h2>
 
 			</div>
 		</section>
