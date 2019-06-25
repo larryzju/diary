@@ -126,8 +126,7 @@
 </dl>
 <h2 id="caches-matters">Caches Matters</h2>
 <p>机器指令中的很大一部分工作都是在外部存储、内存、寄存器和外设之间移动数据。</p>
-<p>而存储的容量与读写的效率成反比，而且差距还在增大。所以需要考虑如何优化拷贝的效率。</p>
-<p>一个关键的问题称为 processor-memory gap：处理器性能与内存读取的鸿沟。通过添加 cache memory 来缓存近线数据来弥补数据的速度与容量的差距性。</p>
+<p>而存储的容量与读写的效率成反比，而且差距还在增大。所以需要考虑如何优化 拷贝的效率。一个关键的问题称为 processor-memory gap：处理器性能与内存 读取的鸿沟。通过添加 cache memory 来缓存近线数据来弥补数据的速度与容量 的差距性。</p>
 <h2 id="storage-devices-from-a-hierarchy">Storage Devices From a Hierarchy</h2>
 <figure>
 <img src="img/memory-hierarchy.png" alt="" /><figcaption>Memory Hierarchy</figcaption>
@@ -217,8 +216,7 @@
 <li>Instruction Level</li>
 <li>SIMD Level</li>
 </ol>
-<ol class="incremental">
-<li><p>Thread Parallelism</p>
+<h4 id="thread-parallelism">Thread Parallelism</h4>
 <p>Each Process can have multiple control flows. Operation System switch between threads (by backup and restore its context) rapidly in time shared manner to simulate parallel executions.</p>
 <p>The origin aims of multiple threads is for the benefits of :</p>
 <ul class="incremental">
@@ -239,17 +237,16 @@
 <ol class="incremental">
 <li>real multiple tasks</li>
 <li>need new methods to program that can dig out the advantages of multiprocessor</li>
-</ol></li>
-<li><p>Instruction Parallelism</p>
+</ol>
+<h4 id="instruction-parallelism">Instruction Parallelism</h4>
 <p>The most famous method is <strong>pipeline</strong> which execute instruction's setps in parrel and improve the performance faster than execute instruction for the whole cycles.</p>
-<p>The technology to execution rates if faster than one instruction per cycle is called <strong>superscalar</strong></p></li>
-<li><p>SIMD Parallelism</p>
+<p>The technology to execution rates if faster than one instruction per cycle is called <strong>superscalar</strong></p>
+<h4 id="simd-parallelism">SIMD Parallelism</h4>
 <ul class="incremental">
 <li>SIMD is short for Single Instruction Multiple Data.</li>
 <li>Mostly used to speed up image, sound, video procses.</li>
 <li>Need language (data type) and compiler supports.</li>
-</ul></li>
-</ol>
+</ul>
 <h3 id="the-importance-of-abstraction-of-computer-system">The Importance of Abstraction of Computer System</h3>
 <p><strong>Abstraction</strong> is one of the most important concept in Computer Science.</p>
 <p>The import abstractions are:</p>
@@ -426,6 +423,15 @@
 <h2 id="integer-representations">Integer Representations</h2>
 <h2 id="integer-arithmetic">Integer Arithmetic</h2>
 <h2 id="floating-point">Floating Point</h2>
+<h1 id="处理器体系结构"><span class="todo TODO">TODO</span> 处理器体系结构</h1>
+<ul class="incremental">
+<li>ISA，指处理器指令和指令处理的数据集</li>
+<li>作为在编译器与处理器之间中间层
+<ul class="incremental">
+<li>编译器只需要知道哪些指令可用</li>
+<li>处理器建造出执行这些指令的处理器</li>
+</ul></li>
+</ul>
 <h1 id="virtual-memory-1">[6/13] Virtual Memory</h1>
 <h2 id="overview-1"><span class="done DONE">DONE</span> Overview</h2>
 <p>与 CPU 共享不同，CPU 共享最多因为进程数增大而变慢。内存共享可能会有其它问题</p>
@@ -555,20 +561,18 @@
 <img src="./img/9.3.vp-pp-mapping.jpg" alt="" /><figcaption>VM as Cache</figcaption>
 </figure>
 <h3 id="dram-cache-organization">DRAM Cache Organization</h3>
-<ol class="incremental">
-<li><p>Term</p>
+<h4 id="term">Term</h4>
 <ul class="incremental">
 <li><strong>SRAM</strong> cache denotes the L1, L2, and L3 cache memories between the CPU and main memory.</li>
 <li><strong>DRAM</strong> cache to denote the VM system's cache that caches virtual pages in main memory.</li>
-</ul></li>
-<li><p>Compare</p>
+</ul>
+<h4 id="compare">Compare</h4>
 <p>DRAM is important because of</p>
 <ol class="incremental">
 <li>read from disk is too slow (about 100,000 slower than a DRAM)</li>
 <li>read the first byte from a disk sector is about 100,000 times slower than reading successive bytes in the sector</li>
 </ol>
-<p>The bottom line is that the organization of the DRAM cache is driven entirely by the enormous cost of misses.</p></li>
-</ol>
+<p>The bottom line is that the organization of the DRAM cache is driven entirely by the enormous cost of misses.</p>
 <h3 id="page-tables">Page Tables</h3>
 <p>Determine</p>
 <ul class="incremental">
@@ -620,8 +624,7 @@
 </tr>
 </tbody>
 </table>
-<ol class="incremental">
-<li><p>Practice Problem 9.2</p>
+<h4 id="practice-problem-9.2">Practice Problem 9.2</h4>
 <p>determine the number of PTEs that are needed for the following combinations of virtual address size (n) and page size (P):</p>
 <pre><code>nPTEs = (1&lt;&lt;n) / P
 </code></pre>
@@ -655,8 +658,7 @@
 <td>64</td>
 </tr>
 </tbody>
-</table></li>
-</ol>
+</table>
 <h3 id="page-hits">Page Hits</h3>
 <p>When visiting the cached virtual page, the MMU will translate the address to the real address in physical memory.</p>
 <h3 id="page-faults">Page Faults</h3>
@@ -726,8 +728,7 @@
 <p>The page size (P bytes) is same in virtual space and physical space. Virtual space may be smaller, or equal, or larger than physical address space.</p>
 <p>Address translation is a mapping between the element of an N-element virtual address space (VAS) and an M-element physical address space (PAS) <span class="math display">\[ MAP: {VAS} \rightarrow  {PAS} \cup \o \]</span></p>
 <p>A <em>page fault</em> exception will be triggered if the data at virtual addr is not present in physical memory.</p>
-<ol class="incremental">
-<li><p>Terms of virtual address</p>
+<h4 id="terms-of-virtual-address">Terms of virtual address</h4>
 <table>
 <thead>
 <tr class="header">
@@ -757,8 +758,8 @@
 <td>table base register</td>
 </tr>
 </tbody>
-</table></li>
-<li><p>Terms of physical address</p>
+</table>
+<h4 id="terms-of-physical-address">Terms of physical address</h4>
 <table>
 <thead>
 <tr class="header">
@@ -788,8 +789,8 @@
 <td>cache tag</td>
 </tr>
 </tbody>
-</table></li>
-<li><p>Address Translation</p>
+</table>
+<h4 id="address-translation-1">Address Translation</h4>
 <p><em>page table base register</em> (PTBR) in CPU points to current page table.</p>
 <p>An virtual address is constructed with two parts:</p>
 <ol class="incremental">
@@ -799,8 +800,8 @@
 <p>MMU use the VPN to select the appropriate PTE (pointed by PTBR) and get the <em>physical page number</em> (PPN). Then calculate the real physical address by add the offset (VPO/PPO) to the physical base address.</p>
 <figure>
 <img src="./img/address-translation.png" alt="" /><figcaption>Address translation with a page table</figcaption>
-</figure></li>
-<li><p>page hit</p>
+</figure>
+<h4 id="page-hit">page hit</h4>
 <p>The page hit steps are</p>
 <ol class="incremental">
 <li>CPU generate a VA and send it to the MMU</li>
@@ -811,8 +812,8 @@
 </ol>
 <figure>
 <img src="./img/page-hit.png" alt="" /><figcaption>Page hit</figcaption>
-</figure></li>
-<li><p>page fault</p>
+</figure>
+<h4 id="page-fault">page fault</h4>
 <p>The page fault is handled by operating system kernel</p>
 <ol class="incremental">
 <li>CPU generate a VA and send it to the MMU</li>
@@ -825,8 +826,8 @@
 </ol>
 <figure>
 <img src="./img/page-fault.png" alt="" /><figcaption>Page fault</figcaption>
-</figure></li>
-<li><p>Practice Problem 9.3</p>
+</figure>
+<h4 id="practice-problem-9.3">Practice Problem 9.3</h4>
 <p>Given a 64-bit virtual address space and a 32-bit physical address, determine the number of bits in the VPN, VPO, PPN and PPO for each page size P:</p>
 <table>
 <thead>
@@ -868,8 +869,7 @@
 <td>14</td>
 </tr>
 </tbody>
-</table></li>
-</ol>
+</table>
 <h3 id="integrating-caches-and-vm"><span class="todo TODO">TODO</span> Integrating Caches and VM</h3>
 <h3 id="speeding-up-address-translation-with-a-tlb"><span class="todo TODO">TODO</span> Speeding Up Address Translation with a TLB</h3>
 <h3 id="multi-level-page-tables"><span class="todo TODO">TODO</span> Multi-Level Page Tables</h3>
