@@ -11,3 +11,22 @@
 - =kubernetes/fake= package provides =fake/ClientSet= type
 - Build an empty =fake/ClientSet= object and call =.Fake.AddReactor= to mock the actions
 
+
+* sigs.k8s.io/controller-runtime
+
+Help to construct kubernetes-style controllers that manipulate both
+1. kubernetes CRDs
+2. aggregated/built-in Kubernetes APIs
+
+
+- *Controller* enqueue a reconcile request for the object owner
+- *Reconciler* consume and try to reconcile the CR object statu
+- *Manager* is responsible for 
+  + running controllers and webhooks
+  + manage caches and clients
+  + managing leader election
+- *Client* wrap the underlying API objects
+  + *read* from a local shared cache
+  + *write* directly to the PAI server
+  + *Cache* can be disabled
+- *Scheme* helps to associate Go types to Kuberenets API Kinds (Group-Version-Kinds)
