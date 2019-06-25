@@ -95,6 +95,42 @@ The access mode are:
 - Shared by multiple containers
 - Has multiple implmenet, for example =hostPath=
 
+
+*** Downward
+
+A DownwardAPIVolumeFile can expose Pod fields and Container
+fields. (means the container wants to access part of the metadata of
+current pod or container itself).
+
+The API is useful for a Container to have information about itself,
+without being overly coupled to Kuberentes.
+
+There are two ways:
+1. Environment variables
+2. DownwardAPIVolumeFiles
+
+Refer to https://kubernetes.io/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/
+
+#+BEGIN_SRC yaml
+  volumes:
+    - name: podinfo
+      downwardAPI:
+        items:
+          - path: "labels"
+            fieldRef:
+              fieldPath: metadata.labels
+          - path: "annotations"
+            fieldRef:
+              fieldPath: metadata.annotations
+#+END_SRC
+
+The yaml code above expose two DownwardAPIVolumeFile:
+1. expose =metadata.labels= fields as =lables= file
+2. expose =metadata.annotations= fields as =annotations= file
+
+The exposed field can be pod metadata, container resources limitations
+and parts of status. See the offical document for the details.
+
 ** Service
 
 - binding to selected endpoints (pods)
