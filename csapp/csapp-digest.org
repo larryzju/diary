@@ -1,7 +1,7 @@
 #+TITLE: CSAPP 摘要
 #+AUTHOR: Zhao WenBin
 #+STATUS: 55/1078
-#+OPTIONS: toc:2
+#+OPTIONS: toc:2 H:4
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="style.css">
 
 * A Tour of Computer System
@@ -98,9 +98,10 @@ GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 
 
 机器指令中的很大一部分工作都是在外部存储、内存、寄存器和外设之间移动数据。
 
-而存储的容量与读写的效率成反比，而且差距还在增大。所以需要考虑如何优化拷贝的效率。
-
-一个关键的问题称为 processor-memory gap：处理器性能与内存读取的鸿沟。通过添加 cache memory 来缓存近线数据来弥补数据的速度与容量的差距性。
+而存储的容量与读写的效率成反比，而且差距还在增大。所以需要考虑如何优化
+拷贝的效率。一个关键的问题称为 processor-memory gap：处理器性能与内存
+读取的鸿沟。通过添加 cache memory 来缓存近线数据来弥补数据的速度与容量
+的差距性。
 
 ** Storage Devices From a Hierarchy
 
@@ -370,6 +371,13 @@ platform. But it's a fault error in 64bit platform.
 ** Integer Arithmetic
 
 ** Floating Point 
+
+* TODO 处理器体系结构
+
+- ISA，指处理器指令和指令处理的数据集
+- 作为在编译器与处理器之间中间层
+  + 编译器只需要知道哪些指令可用
+  + 处理器建造出执行这些指令的处理器
 
 * [6/13] Virtual Memory
 
@@ -701,7 +709,6 @@ page size P:
 ** TODO Common Memory-Related Bugs in C Programs
 
 ** TODO Summary
-
 
 * Footnotes
 
