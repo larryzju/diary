@@ -600,7 +600,7 @@ fault* error)
 | READ     | read permission to the page                                   |
 | WRITE    | write permission to the page                                  |
 
-** TODO [1/5] Address Translation
+** TODO [2/5] Address Translation
 *** DONE Overview
 
 The page size (P bytes) is same in virtual space and physical space.
@@ -692,7 +692,21 @@ page size P:
 | 4KB  |  52 |  12 |  20 |  12 |
 | 16KB |  50 |  14 |  18 |  14 |
 
-*** TODO Integrating Caches and VM
+*** DONE Integrating Caches and VM
+
+SRAM caches DRAM which can be access via either virtual or physical
+addresses.
+
+Most systems opt for physical addressing
+- straightforward for multiple processes to have blocks in the cache at the same time
+- share blocks from the same virtual pages
+- doesn't have to deal with protection issues
+
+The main idea is that the address translation occurs before the cache lookup
+
+#+CAPTION: Integrating VM with a physically addressed cache
+[[./img/vm-with-pa-cache.png]]
+
 *** TODO Speeding Up Address Translation with a TLB
 *** TODO Multi-Level Page Tables
 *** TODO Putting It Together: End-to-End Address Translation
