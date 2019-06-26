@@ -722,7 +722,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="address-translation"><span class="todo TODO">TODO</span> [1/5] Address Translation</h2>
+<h2 id="address-translation"><span class="todo TODO">TODO</span> [2/5] Address Translation</h2>
 <h3 id="overview-2"><span class="done DONE">DONE</span> Overview</h3>
 <p>The page size (P bytes) is same in virtual space and physical space. Virtual space may be smaller, or equal, or larger than physical address space.</p>
 <p>Address translation is a mapping between the element of an N-element virtual address space (VAS) and an M-element physical address space (PAS) <span class="math display">\[ MAP: {VAS} \rightarrow  {PAS} \cup \emptyset \]</span></p>
@@ -869,7 +869,18 @@
 </tr>
 </tbody>
 </table>
-<h3 id="integrating-caches-and-vm"><span class="todo TODO">TODO</span> Integrating Caches and VM</h3>
+<h3 id="integrating-caches-and-vm"><span class="done DONE">DONE</span> Integrating Caches and VM</h3>
+<p>SRAM caches DRAM which can be access via either virtual or physical addresses.</p>
+<p>Most systems opt for physical addressing</p>
+<ul class="incremental">
+<li>straightforward for multiple processes to have blocks in the cache at the same time</li>
+<li>share blocks from the same virtual pages</li>
+<li>doesn't have to deal with protection issues</li>
+</ul>
+<p>The main idea is that the address translation occurs before the cache lookup</p>
+<figure>
+<img src="./img/vm-with-pa-cache.png" alt="" /><figcaption>Integrating VM with a physically addressed cache</figcaption>
+</figure>
 <h3 id="speeding-up-address-translation-with-a-tlb"><span class="todo TODO">TODO</span> Speeding Up Address Translation with a TLB</h3>
 <h3 id="multi-level-page-tables"><span class="todo TODO">TODO</span> Multi-Level Page Tables</h3>
 <h3 id="putting-it-together-end-to-end-address-translation"><span class="todo TODO">TODO</span> Putting It Together: End-to-End Address Translation</h3>
