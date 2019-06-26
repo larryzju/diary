@@ -436,13 +436,12 @@ Virtual memory provides 3 important capabilities:
 
 ** DONE Address Spaces
 
-/linear address space/: the address space that the addresses are
-consecutive. Represent with the number of bits (32-bit or 64-bit) that
-are needed to represent the largest address:
+/linear address space/ is the consecutive address space that is
+represented with the number of bits (32-bit or 64-bit).
 
-Distinct data object (bytes) and their attributes (addresses). Each
-object can have multiple independent addresses, each chosen from a
-different address space. (?)
+Each data object, represented with several bytes, has the address
+attribute. Each object can have multiple independent addresses, each
+chosen from a different address space. (?)
 
 | VA bits | Number of VA | Largest possible virtual address |
 |---------+--------------+----------------------------------|
@@ -461,7 +460,7 @@ Cache the contiguous addressed disk space into virtual memory in unit of fix siz
 Virtual pages is partitioned into 3 disjoint subsets:
 - Unallocated :: pages have not yet been allocated by VM system (has no data associated with)
 - Cached :: cached in physical memory
-- UnCached :: allocated pages that are not cached in physical memory
+- UnCached :: allocated pages that are not cached in physical memory (only in disk)
 
 By the cache meachanism, system can provide larger virtual address space that the available physical address.
 
@@ -486,9 +485,8 @@ The bottom line is that the organization of the DRAM cache is driven entirely by
 *** Page Tables
 
 Determine 
-- if a *virtual page* is cached
-- which *physical page* it is cached in
-- Or is stored on disk
+- which *physical page* it is cached in if a *virtual page* is cached
+- Or the data is stored on disk
   + determine where it is stored
   + select a victim page in physical memory
   + copy the virtual page from disk to DRAM, replacing the victim page
@@ -553,7 +551,7 @@ as /demand paging/.
 
 *** Allocating Page
 
-Swapped out VPE now points to a block located on disk.
+After previous PP being swapped out, its VPE now points to a block located on disk.
 
 *** Locality to the Rescue Again
 
@@ -562,10 +560,10 @@ principle of locality promises that at any point in time they will
 tend to work on a smaller set of /active pages/ known as the /working
 set/ or /resident set/.
 
-/thrashing/: where pages are swapped in and out continuously.
+Terms /thrashing/ means pages are swapped in and out continuously.
 
-
-In Linux, we can use =getrusage= API to check the page faults. See
+In Linux, we can use =getrusage= (get resource usgae) API to check the
+page faults ratio of a process (or process group). See
 =rusage.ru_majflt= field in =man 2 getrusage=.
 
 ** DONE VM as a Tool for Memory Management
@@ -611,7 +609,7 @@ address space.
 
 Address translation is a mapping between the element of an N-element
 virtual address space (VAS) and an M-element physical address space (PAS)
-$$ MAP: {VAS} \rightarrow  {PAS} \cup \o $$
+$$ MAP: {VAS} \rightarrow  {PAS} \cup \emptyset $$
 
 A /page fault/ exception will be triggered if the data at virtual addr
 is not present in physical memory.
