@@ -496,8 +496,8 @@
 </dd>
 </dl>
 <h2 id="address-spaces"><span class="done DONE">DONE</span> Address Spaces</h2>
-<p><em>linear address space</em>: the address space that the addresses are consecutive. Represent with the number of bits (32-bit or 64-bit) that are needed to represent the largest address:</p>
-<p>Distinct data object (bytes) and their attributes (addresses). Each object can have multiple independent addresses, each chosen from a different address space. (?)</p>
+<p><em>linear address space</em> is the consecutive address space that is represented with the number of bits (32-bit or 64-bit).</p>
+<p>Each data object, represented with several bytes, has the address attribute. Each object can have multiple independent addresses, each chosen from a different address space. (?)</p>
 <table>
 <thead>
 <tr class="header">
@@ -553,7 +553,7 @@
 <dd>cached in physical memory
 </dd>
 <dt>UnCached</dt>
-<dd>allocated pages that are not cached in physical memory
+<dd>allocated pages that are not cached in physical memory (only in disk)
 </dd>
 </dl>
 <p>By the cache meachanism, system can provide larger virtual address space that the available physical address.</p>
@@ -576,9 +576,8 @@
 <h3 id="page-tables">Page Tables</h3>
 <p>Determine</p>
 <ul class="incremental">
-<li>if a <strong>virtual page</strong> is cached</li>
-<li>which <strong>physical page</strong> it is cached in</li>
-<li>Or is stored on disk
+<li>which <strong>physical page</strong> it is cached in if a <strong>virtual page</strong> is cached</li>
+<li>Or the data is stored on disk
 <ul class="incremental">
 <li>determine where it is stored</li>
 <li>select a victim page in physical memory</li>
@@ -674,11 +673,11 @@
 </ul>
 <p>The virtual memory block is also known as <em>pages</em>. The activity of transferring a page between disk and memory is known as <em>swapping</em> or <em>paging</em>. Pages are <em>swapped in (paged in)</em> from disk to DRAM, and <em>swapped out (paged out)</em> from DRAM to disk. The strategy of waiting until the last moment to swap in a page, when a miss occurs, is known as <em>demand paging</em>.</p>
 <h3 id="allocating-page">Allocating Page</h3>
-<p>Swapped out VPE now points to a block located on disk.</p>
+<p>After previous PP being swapped out, its VPE now points to a block located on disk.</p>
 <h3 id="locality-to-the-rescue-again">Locality to the Rescue Again</h3>
 <p>Virtual memory's performance is benefited by the <em>locality</em>. The principle of locality promises that at any point in time they will tend to work on a smaller set of <em>active pages</em> known as the <em>working set</em> or <em>resident set</em>.</p>
-<p><em>thrashing</em>: where pages are swapped in and out continuously.</p>
-<p>In Linux, we can use <code>getrusage</code> API to check the page faults. See <code>rusage.ru_majflt</code> field in <code>man 2 getrusage</code>.</p>
+<p>Terms <em>thrashing</em> means pages are swapped in and out continuously.</p>
+<p>In Linux, we can use <code>getrusage</code> (get resource usgae) API to check the page faults ratio of a process (or process group). See <code>rusage.ru_majflt</code> field in <code>man 2 getrusage</code>.</p>
 <h2 id="vm-as-a-tool-for-memory-management"><span class="done DONE">DONE</span> VM as a Tool for Memory Management</h2>
 <p>By using seperated page tables, OS can provide sepearte virtual address space for each process. Notice that multiple virtual pages can be mapped to the same shared physical page.</p>
 <figure>
@@ -726,7 +725,7 @@
 <h2 id="address-translation"><span class="todo TODO">TODO</span> [1/5] Address Translation</h2>
 <h3 id="overview-2"><span class="done DONE">DONE</span> Overview</h3>
 <p>The page size (P bytes) is same in virtual space and physical space. Virtual space may be smaller, or equal, or larger than physical address space.</p>
-<p>Address translation is a mapping between the element of an N-element virtual address space (VAS) and an M-element physical address space (PAS) <span class="math display">\[ MAP: {VAS} \rightarrow  {PAS} \cup \o \]</span></p>
+<p>Address translation is a mapping between the element of an N-element virtual address space (VAS) and an M-element physical address space (PAS) <span class="math display">\[ MAP: {VAS} \rightarrow  {PAS} \cup \emptyset \]</span></p>
 <p>A <em>page fault</em> exception will be triggered if the data at virtual addr is not present in physical memory.</p>
 <h4 id="terms-of-virtual-address">Terms of virtual address</h4>
 <table>

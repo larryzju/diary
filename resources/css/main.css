@@ -79,3 +79,13 @@ table {
     margin-top: 1em;
     margin-bottom: 1em;
 }
+
+figcaption::before {
+    content: "Figure. ";
+}
+
+figcaption {
+    text-align: center;
+    font-weight: 800;
+    font-style: oblique;
+}
