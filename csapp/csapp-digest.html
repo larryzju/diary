@@ -432,7 +432,7 @@
 <li>处理器建造出执行这些指令的处理器</li>
 </ul></li>
 </ul>
-<h1 id="virtual-memory-1">[6/13] Virtual Memory</h1>
+<h1 id="virtual-memory-1">[7/13] Virtual Memory</h1>
 <h2 id="overview-1"><span class="done DONE">DONE</span> Overview</h2>
 <p>与 CPU 共享不同，CPU 共享最多因为进程数增大而变慢。内存共享可能会有其它问题</p>
 <ol class="incremental">
@@ -722,8 +722,8 @@
 </tr>
 </tbody>
 </table>
-<h2 id="address-translation"><span class="todo TODO">TODO</span> [2/5] Address Translation</h2>
-<h3 id="overview-2"><span class="done DONE">DONE</span> Overview</h3>
+<h2 id="address-translation"><span class="done DONE">DONE</span> Address Translation</h2>
+<h3 id="overview-2">Overview</h3>
 <p>The page size (P bytes) is same in virtual space and physical space. Virtual space may be smaller, or equal, or larger than physical address space.</p>
 <p>Address translation is a mapping between the element of an N-element virtual address space (VAS) and an M-element physical address space (PAS) <span class="math display">\[ MAP: {VAS} \rightarrow  {PAS} \cup \emptyset \]</span></p>
 <p>A <em>page fault</em> exception will be triggered if the data at virtual addr is not present in physical memory.</p>
@@ -869,7 +869,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="integrating-caches-and-vm"><span class="done DONE">DONE</span> Integrating Caches and VM</h3>
+<h3 id="integrating-caches-and-vm">Integrating Caches and VM</h3>
 <p>SRAM caches DRAM which can be access via either virtual or physical addresses.</p>
 <p>Most systems opt for physical addressing</p>
 <ul class="incremental">
@@ -881,9 +881,246 @@
 <figure>
 <img src="./img/vm-with-pa-cache.png" alt="" /><figcaption>Integrating VM with a physically addressed cache</figcaption>
 </figure>
-<h3 id="speeding-up-address-translation-with-a-tlb"><span class="todo TODO">TODO</span> Speeding Up Address Translation with a TLB</h3>
-<h3 id="multi-level-page-tables"><span class="todo TODO">TODO</span> Multi-Level Page Tables</h3>
-<h3 id="putting-it-together-end-to-end-address-translation"><span class="todo TODO">TODO</span> Putting It Together: End-to-End Address Translation</h3>
+<h3 id="speeding-up-address-translation-with-a-tlb">Speeding Up Address Translation with a TLB</h3>
+<p>PTE table is also placed in memory. In the worst case, MMU requires an additional fetch from memory, at a cost of tens to hundreds of cycles.</p>
+<p>Many systems include a small cache of PTEs in the MMU called a <em>translation lookaside buffer</em> (TLB).</p>
+<p>TBL is a small, virtually addressed cache where each line holds a block consisting of a single PTE.</p>
+<figure>
+<img src="./img/va-tlb.png" alt="" /><figcaption>Components of a VA to access the TLB</figcaption>
+</figure>
+<p>VPN is consist by <em>TLB index</em> and <em>TLB tag</em></p>
+<ul class="incremental">
+<li><em>TLB index</em> consists of the <em>t</em> least significant bits of the VPN 'cause TLB has <span class="math inline">\(T=2^t\)</span> sets</li>
+<li><em>TLB tag</em> consists of the remaining bits in the VPN.</li>
+</ul>
+<figure>
+<img src="./img/tlb-hit-and-miss.png" alt="" /><figcaption>Address Translation with a TLB</figcaption>
+</figure>
+<p>The steps of speeding up address access with TLB are</p>
+<ol class="incremental">
+<li>CPU generate VA</li>
+<li>MMU fetch the appropriate PTE from the TLB (or fetches from L1 cache if TLB is missing and caches it to TLB)</li>
+<li>MMU translate the VA to PA and send it to the cache/main memory</li>
+<li>The cache/main memory returns the requested data word to the CPU</li>
+</ol>
+<h3 id="multi-level-page-tables">Multi-Level Page Tables</h3>
+<p>For 32-bit address space, 4KB page and a 4-byte PTE</p>
+<ul class="incremental">
+<li>there will be <span class="math inline">\((1 &lt;&lt; 32) / (1 &lt;&lt; 12)= 1M\)</span> pages</li>
+<li>we need a 4 MB page table resident in memory at all times</li>
+</ul>
+<p>The common approach for compacting the page table is to use a <strong>hierarchy of page tables</strong> instead. For example, we can build a two-level page table hierarchy for VA space</p>
+<figure>
+<img src="./img/two-level-page-table-hierarchy.png" alt="" /><figcaption>Two-level page table hierarchy</figcaption>
+</figure>
+<p>split the 4 MB PTE into two level</p>
+<dl class="incremental">
+<dt>level 1 (contains 1K PTE)</dt>
+<dd>map to a page which contain 1K PTE
+</dd>
+<dt>level 2 (contains 1K PTE)</dt>
+<dd>map to a page of virtual memory
+</dd>
+</dl>
+<p>If the chunk <em>i</em> of level 2 is all unallocated, then level 1 PTE <em>i</em> is null.</p>
+<p>This scheme reduces memory requirements in two ways</p>
+<ol class="incremental">
+<li>if a PTE in level 1 table is null, then the corresponding level 2 page table does not even have to exist</li>
+<li>only level 1 table (4 KB) need to be in main memory at all times.</li>
+</ol>
+<p>Figure below summarizes address translation with a <em>k-level</em> page table hierarchy:</p>
+<figure>
+<img src="./img/address-translation-with-k-level-page-table.png" alt="" /><figcaption>Address translation with a k-level page table</figcaption>
+</figure>
+<ul class="incremental">
+<li>Virtual address is partitioned into <em>k</em> VPNs and a VPO</li>
+<li>each VPN i is an index into a page table at level <em>i</em></li>
+<li>each PTE in a level <em>j</em> table points to the base of some page table at level <span class="math inline">\(j + 1\)</span></li>
+<li>each PTE in a level <em>k</em> (at last VPN) table contains either the PPN of some physical page or the address of a disk block</li>
+<li>MMU must access <em>k</em> PTEs before it can determine the PPN</li>
+<li>PPO is identical to the VPO</li>
+</ul>
+<p>Accessing <em>k</em> PTEs may seem expensive and impractical at first glance. However, the TLB comes to the rescue here by caching PTEs from the page tables at the different levels. In practice, address translation with multi-level page tables is not significantly slower than with single-level page tables.</p>
+<h3 id="putting-it-together-end-to-end-address-translation">Putting It Together: End-to-End Address Translation</h3>
+<p>Concrete example of end-to-end address translation with a TLB and L1 d-cache.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Item</th>
+<th>Specification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>virtual address</td>
+<td>n = 14</td>
+</tr>
+<tr class="even">
+<td>physical address</td>
+<td>m = 12</td>
+</tr>
+<tr class="odd">
+<td>page size</td>
+<td>P = 64</td>
+</tr>
+<tr class="even">
+<td>TLB</td>
+<td>4-way set (2-bit TLBI) associative with 16 total entries<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></td>
+</tr>
+<tr class="odd">
+<td>L1 d-cache</td>
+<td>4-byte line size and 16 total sets</td>
+</tr>
+</tbody>
+</table>
+<p>Design of VPN/PPN/VPO/PPO:</p>
+<figure>
+<img src="./img/addressing-for-small-memory-system.png" alt="" /><figcaption>Addressing for small memory system</figcaption>
+</figure>
+<ul class="incremental">
+<li>the low-order 6 bits of the VA and PA serve as the VPO and PPO</li>
+<li>the high-order 8 bits of the virtual address serve as the VPN</li>
+<li>the high-order 6 bits of the physical address serve as the PPN</li>
+</ul>
+<p>Design of the TLB</p>
+<ul class="incremental">
+<li>the high-order 6 bits of the VPN serve as TLBT</li>
+<li>the low-order 2 bits of the VPN serve as TLBI</li>
+<li>TLB can cache 4 x 4 entries at most</li>
+</ul>
+<p>Desgin of the page table</p>
+<ul class="incremental">
+<li>256 page table entries</li>
+<li>these VPNs are not part of the page table and not stored in memory</li>
+</ul>
+<p>Desgin of the Cache</p>
+<ul class="incremental">
+<li>low-order 2 bits serve as offset (CO)</li>
+<li>next 4 bits serve as the set index (CI)</li>
+<li>remaining 6 bits serve as the tag (CT)</li>
+</ul>
+<p>If the resulting PTE is invalid, then there is a page fault and the kernel must page in the appropriate page and return the load instruction.</p>
+<h4 id="notes">Notes</h4>
+<p>14bit 的虚拟地址空间，寻址范围为 16KB；12 bit 物理地址空间，寻址范围为 4KB。页大小为 64B ($2<sup>6</sup>$），所以 VPO 和 PPO 均为 6 字节。VPN 为 8 字节， 对应于 256 个PTE。</p>
+<p>当不使用 TLB 和 L1-D 缓存时，MMU 在 PTE 中寻找第 i 个表顶， 找出对应的 PPN 地址。根据 $ (PPN &lt;&lt; 6) | PPO $ 得到最终的物理地址。</p>
+<p>TLB 中缓存的 16 个 TLE 条目。其中每种 TLBI 缓存四条，实际每种 TLBI 中有 64 条 TLBT。 MMU 首先查询是否在 TLB 中有对应在 (TLBI, TLBT) 缓存，如果存在，则直接得到 PPN 地址， 否则需要在 PTE 表中进行查询，并将结构写入 TLB 缓存中。</p>
+<p>物理地址长度为 12, L1-D 缓存中最多可以保存 16 个 4 字节的物理地址数据。 取物理地址的最低两位为偏移量(CO)，次四位为索引（CI）指向 L1-D 的十六个元素， 高 6 位内容作为比较内容。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">type</span> TLBEntry <span class="kw">struct</span> {</span>
+<span id="cb3-2"><a href="#cb3-2"></a>   Tag   bit6</span>
+<span id="cb3-3"><a href="#cb3-3"></a>   Valid <span class="dt">bool</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>   PPN   bit6</span>
+<span id="cb3-5"><a href="#cb3-5"></a>}</span>
+<span id="cb3-6"><a href="#cb3-6"></a></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="kw">type</span> L1CacheEntry <span class="kw">struct</span> {</span>
+<span id="cb3-8"><a href="#cb3-8"></a>   Tag   bit6</span>
+<span id="cb3-9"><a href="#cb3-9"></a>   Valid <span class="dt">bool</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>   Bytes [<span class="dv">4</span>]<span class="dt">byte</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>}</span>
+<span id="cb3-12"><a href="#cb3-12"></a></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="kw">var</span> L1Cache [<span class="dv">16</span>]L1CacheEntry</span>
+<span id="cb3-14"><a href="#cb3-14"></a><span class="kw">var</span> TLB [<span class="dv">4</span>]<span class="kw">map</span>[bit6]TLBEntry</span>
+<span id="cb3-15"><a href="#cb3-15"></a></span>
+<span id="cb3-16"><a href="#cb3-16"></a><span class="kw">func</span> AddressTranslateWithTLB(va bit14) (pa bit12) {</span>
+<span id="cb3-17"><a href="#cb3-17"></a>  VPO := va &amp; <span class="dv">0x3F</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a>  VPN := va &gt;&gt; <span class="dv">6</span></span>
+<span id="cb3-19"><a href="#cb3-19"></a>  TLBI := VPN &amp; <span class="dv">0x11</span></span>
+<span id="cb3-20"><a href="#cb3-20"></a>  TLBT := VPN &gt;&gt; <span class="dv">2</span></span>
+<span id="cb3-21"><a href="#cb3-21"></a>  <span class="co">// tlb hit</span></span>
+<span id="cb3-22"><a href="#cb3-22"></a>  <span class="kw">if</span> entry, ok := TLB[TLBI][TLBT]; ok {</span>
+<span id="cb3-23"><a href="#cb3-23"></a>    <span class="kw">return</span> (entry.PPN &lt;&lt; <span class="dv">6</span>) | VPO</span>
+<span id="cb3-24"><a href="#cb3-24"></a>  } <span class="kw">else</span> {</span>
+<span id="cb3-25"><a href="#cb3-25"></a>    pa := AddressTranslate(va)</span>
+<span id="cb3-26"><a href="#cb3-26"></a>    CacheInTLB(pa, va)</span>
+<span id="cb3-27"><a href="#cb3-27"></a>    <span class="kw">return</span> pa</span>
+<span id="cb3-28"><a href="#cb3-28"></a>  }</span>
+<span id="cb3-29"><a href="#cb3-29"></a>}</span>
+<span id="cb3-30"><a href="#cb3-30"></a></span>
+<span id="cb3-31"><a href="#cb3-31"></a><span class="kw">func</span> ReadPAByteWithCache(pa bit12) <span class="dt">byte</span>{</span>
+<span id="cb3-32"><a href="#cb3-32"></a>  CO := (pa &amp; <span class="dv">0x11</span>)</span>
+<span id="cb3-33"><a href="#cb3-33"></a>  CI := ((pa &gt;&gt; <span class="dv">2</span>) &amp; <span class="dv">0x0F</span>)</span>
+<span id="cb3-34"><a href="#cb3-34"></a>  CT := (pa &gt;&gt; <span class="dv">6</span>)</span>
+<span id="cb3-35"><a href="#cb3-35"></a>  entry := L1Cache[CI]</span>
+<span id="cb3-36"><a href="#cb3-36"></a>  <span class="co">// cache hit</span></span>
+<span id="cb3-37"><a href="#cb3-37"></a>  <span class="kw">if</span> entry.Valid &amp;&amp; entry.Tag == CT {</span>
+<span id="cb3-38"><a href="#cb3-38"></a>    <span class="kw">return</span> entry.Bytes[CO]</span>
+<span id="cb3-39"><a href="#cb3-39"></a>  } <span class="kw">else</span> {</span>
+<span id="cb3-40"><a href="#cb3-40"></a>    <span class="dt">byte</span> := ReadPAByte(pa)</span>
+<span id="cb3-41"><a href="#cb3-41"></a>    CacheInL1D(<span class="dt">byte</span>, pa)</span>
+<span id="cb3-42"><a href="#cb3-42"></a>    <span class="kw">return</span> <span class="dt">byte</span></span>
+<span id="cb3-43"><a href="#cb3-43"></a>  }</span>
+<span id="cb3-44"><a href="#cb3-44"></a>}</span></code></pre></div>
+<h4 id="practice-problem-9.4">Practice Problem 9.4</h4>
+<p>Address translation</p>
+<table>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>VPN</td>
+<td>0x0F</td>
+</tr>
+<tr class="even">
+<td>VPO/PPO</td>
+<td>0x27</td>
+</tr>
+<tr class="odd">
+<td>TLB index</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>TLB tag</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>TLB hit?</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td>PPN</td>
+<td>0x0D</td>
+</tr>
+<tr class="odd">
+<td>Page fault?</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>Physical address is <code>0x357</code></p>
+<p>Physical memory reference</p>
+<table>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Byte offset</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>Cache index</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td>Cache Tag</td>
+<td>0x0D</td>
+</tr>
+<tr class="even">
+<td>Cache hit?</td>
+<td>Yes</td>
+</tr>
+<tr class="odd">
+<td>Cache byte returned</td>
+<td>0x1D</td>
+</tr>
+</tbody>
+</table>
 <h2 id="case-study-the-intel-core-i7linux-memory-system"><span class="todo TODO">TODO</span> Case Study: The Intel Core i7/Linux Memory System</h2>
 <h2 id="memory-mapping"><span class="todo TODO">TODO</span> Memory Mapping</h2>
 <h2 id="dynamic-memory-allocation"><span class="todo TODO">TODO</span> Dynamic Memory Allocation</h2>
@@ -896,6 +1133,7 @@
 <ol>
 <li id="fn1" role="doc-endnote"><p>Controller 集成在设备或主板上，Adapater 是主板上的插槽的可插拔设备<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2" role="doc-endnote"><p>指令集( Instruction set artichecture ) 相当于对外的接口，CPU 具体实现可以不同，称为 microarchitecture<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p>为什么不像 D1-Cache 直接作成 16 个元素的一维表？<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
