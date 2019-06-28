@@ -379,7 +379,7 @@ platform. But it's a fault error in 64bit platform.
   + 编译器只需要知道哪些指令可用
   + 处理器建造出执行这些指令的处理器
 
-* [6/13] Virtual Memory
+* [7/13] Virtual Memory
 
 ** DONE Overview
 
@@ -600,8 +600,8 @@ fault* error)
 | READ     | read permission to the page                                   |
 | WRITE    | write permission to the page                                  |
 
-** TODO [2/5] Address Translation
-*** DONE Overview
+** DONE Address Translation
+*** Overview
 
 The page size (P bytes) is same in virtual space and physical space.
 Virtual space may be smaller, or equal, or larger than physical
@@ -692,7 +692,7 @@ page size P:
 | 4KB  |  52 |  12 |  20 |  12 |
 | 16KB |  50 |  14 |  18 |  14 |
 
-*** DONE Integrating Caches and VM
+*** Integrating Caches and VM
 
 SRAM caches DRAM which can be access via either virtual or physical
 addresses.
@@ -707,9 +707,199 @@ The main idea is that the address translation occurs before the cache lookup
 #+CAPTION: Integrating VM with a physically addressed cache
 [[./img/vm-with-pa-cache.png]]
 
-*** TODO Speeding Up Address Translation with a TLB
-*** TODO Multi-Level Page Tables
-*** TODO Putting It Together: End-to-End Address Translation
+*** Speeding Up Address Translation with a TLB
+
+PTE table is also placed in memory. In the worst case, MMU requires an
+additional fetch from memory, at a cost of tens to hundreds of cycles.
+
+Many systems include a small cache of PTEs in the MMU called a
+/translation lookaside buffer/ (TLB).
+
+TBL is a small, virtually addressed cache where each line holds a
+block consisting of a single PTE.
+
+#+CAPTION: Components of a VA to access the TLB
+[[./img/va-tlb.png]]
+
+VPN is consist by /TLB index/ and /TLB tag/
+- /TLB index/ consists of the /t/ least significant bits of the VPN 'cause TLB has $T=2^t$ sets
+- /TLB tag/ consists of the remaining bits in the VPN.
+
+#+CAPTION: Address Translation with a TLB
+[[./img/tlb-hit-and-miss.png]]
+
+The steps of speeding up address access with TLB are
+1. CPU generate VA
+2. MMU fetch the appropriate PTE from the TLB (or fetches from L1 cache if TLB is missing and caches it to TLB)
+3. MMU translate the VA to PA and send it to the cache/main memory
+4. The cache/main memory returns the requested data word to the CPU
+
+
+*** Multi-Level Page Tables
+
+For 32-bit address space, 4KB page and a 4-byte PTE
+- there will be $(1 << 32) / (1 << 12)= 1M$ pages
+- we need a 4 MB page table resident in memory at all times
+
+The common approach for compacting the page table is to use a
+*hierarchy of page tables* instead. For example, we can build 
+a two-level page table hierarchy for VA space
+
+#+CAPTION: Two-level page table hierarchy
+[[./img/two-level-page-table-hierarchy.png]]
+
+split the 4 MB PTE into two level
+- level 1 (contains 1K PTE) :: map to a page which contain 1K PTE
+- level 2 (contains 1K PTE) :: map to a page of virtual memory
+
+If the chunk /i/ of level 2 is all unallocated, then level 1 PTE /i/
+is null.
+
+This scheme reduces memory requirements in two ways
+1. if a PTE in level 1 table is null, then the corresponding level 2 page table does not even have to exist
+2. only level 1 table (4 KB) need to be in main memory at all times.
+
+Figure below summarizes address translation with a /k-level/ page table hierarchy:
+#+CAPTION: Address translation with a k-level page table
+[[./img/address-translation-with-k-level-page-table.png]]
+- Virtual address is partitioned into /k/ VPNs and a VPO
+- each VPN i is an index into a page table at level /i/
+- each PTE in a level /j/ table points to the base of some page table at level $j + 1$
+- each PTE in a level /k/ (at last VPN) table contains either the PPN of some physical page or the address of a disk block
+- MMU must access /k/ PTEs before it can determine the PPN
+- PPO is identical to the VPO
+
+Accessing /k/ PTEs may seem expensive and impractical at first glance. However,
+the TLB comes to the rescue here by caching PTEs from the page tables at the 
+different levels. In practice, address translation with multi-level page tables is 
+not significantly slower than with single-level page tables.
+
+*** Putting It Together: End-to-End Address Translation
+
+Concrete example of end-to-end address translation with a TLB and L1 d-cache.
+
+| Item             | Specification                                                  |
+|------------------+----------------------------------------------------------------|
+| virtual address  | n = 14                                                         |
+| physical address | m = 12                                                         |
+| page size        | P = 64                                                         |
+| TLB              | 4-way set (2-bit TLBI) associative with 16 total entries[fn:3] |
+| L1 d-cache       | 4-byte line size and 16 total sets                             |
+
+Design of VPN/PPN/VPO/PPO:
+#+CAPTION: Addressing for small memory system
+[[./img/addressing-for-small-memory-system.png]]
+- the low-order 6 bits of the VA and PA serve as the VPO and PPO
+- the high-order 8 bits of the virtual address serve as the VPN
+- the high-order 6 bits of the physical address serve as the PPN
+
+Design of the TLB
+- the high-order 6 bits of the VPN serve as TLBT
+- the low-order 2 bits of the VPN serve as TLBI
+- TLB can cache 4 x 4 entries at most
+
+Desgin of the page table
+- 256 page table entries
+- these VPNs are not part of the page table and not stored in memory
+
+Desgin of the Cache
+- low-order 2 bits serve as offset (CO)
+- next 4 bits serve as the set index (CI)
+- remaining 6 bits serve as the tag (CT)
+
+If the resulting PTE is invalid, then there is a page fault and the
+kernel must page in the appropriate page and return the load
+instruction.
+
+**** Notes
+
+14bit 的虚拟地址空间，寻址范围为 16KB；12 bit 物理地址空间，寻址范围为
+4KB。页大小为 64B ($2^6$），所以 VPO 和 PPO 均为 6 字节。VPN 为 8 字节，
+对应于 256 个PTE。
+
+当不使用 TLB 和 L1-D 缓存时，MMU 在 PTE 中寻找第 i 个表顶，
+找出对应的 PPN 地址。根据 $ (PPN << 6) | PPO $ 得到最终的物理地址。
+
+TLB 中缓存的 16 个 TLE 条目。其中每种 TLBI 缓存四条，实际每种 TLBI 中有 64 条 TLBT。
+MMU 首先查询是否在 TLB 中有对应在 (TLBI, TLBT) 缓存，如果存在，则直接得到 PPN 地址，
+否则需要在 PTE 表中进行查询，并将结构写入 TLB 缓存中。
+
+物理地址长度为 12, L1-D 缓存中最多可以保存 16 个 4 字节的物理地址数据。
+取物理地址的最低两位为偏移量(CO)，次四位为索引（CI）指向 L1-D 的十六个元素，
+高 6 位内容作为比较内容。
+
+#+BEGIN_SRC go
+type TLBEntry struct {
+   Tag   bit6
+   Valid bool
+   PPN   bit6
+}
+
+type L1CacheEntry struct {
+   Tag   bit6
+   Valid bool
+   Bytes [4]byte
+}
+
+var L1Cache [16]L1CacheEntry
+var TLB [4]map[bit6]TLBEntry
+
+func AddressTranslateWithTLB(va bit14) (pa bit12) {
+  VPO := va & 0x3F
+  VPN := va >> 6
+  TLBI := VPN & 0x11
+  TLBT := VPN >> 2
+  // tlb hit
+  if entry, ok := TLB[TLBI][TLBT]; ok {
+    return (entry.PPN << 6) | VPO
+  } else {
+    pa := AddressTranslate(va)
+    CacheInTLB(pa, va)
+    return pa
+  }
+}
+
+func ReadPAByteWithCache(pa bit12) byte{
+  CO := (pa & 0x11)
+  CI := ((pa >> 2) & 0x0F)
+  CT := (pa >> 6)
+  entry := L1Cache[CI]
+  // cache hit
+  if entry.Valid && entry.Tag == CT {
+    return entry.Bytes[CO]
+  } else {
+    byte := ReadPAByte(pa)
+    CacheInL1D(byte, pa)
+    return byte
+  }
+}
+#+END_SRC
+
+
+**** Practice Problem 9.4
+
+Address translation
+| Parameter   | Value |
+|-------------+-------|
+| VPN         |  0x0F |
+| VPO/PPO     |  0x27 |
+| TLB index   |     3 |
+| TLB tag     |     3 |
+| TLB hit?    |   Yes |
+| PPN         |  0x0D |
+| Page fault? |    No |
+
+Physical address is =0x357=
+
+Physical memory reference
+| Parameter           | Value |
+|---------------------+-------|
+| Byte offset         |     3 |
+| Cache index         |     5 |
+| Cache Tag           |  0x0D |
+| Cache hit?          |   Yes |
+| Cache byte returned |  0x1D |
+
 ** TODO Case Study: The Intel Core i7/Linux Memory System
 
 ** TODO Memory Mapping
@@ -726,5 +916,6 @@ The main idea is that the address translation occurs before the cache lookup
 
 [fn:1] Controller 集成在设备或主板上，Adapater 是主板上的插槽的可插拔设备
 [fn:2] 指令集( Instruction set artichecture ) 相当于对外的接口，CPU 具体实现可以不同，称为 microarchitecture
+[fn:3] 为什么不像 D1-Cache 直接作成 16 个元素的一维表？
 
 
