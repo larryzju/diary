@@ -1,3 +1,12 @@
+* EC2
+
+Elastic Compute Cloud is the service we can use to create and run VM
+in the cloud.
+
+** Term
+
+- AMI :: Amazon Machine Image, pre-configured server templates to launch an instance
+
 * VPC
 
 Virtual Private Cloud is a virtual networking layer for Amazon EC2
@@ -15,6 +24,14 @@ Feature of EC2-VPC:
 - egress/ingress filtering
 - ACL
 - run your instance on single-tenant hardware (?)
+
+VPC information
+- subnet
+- internet gateway
+- route table
+  + main route table (by default)
+  + custom route table
+
 
 ** Key Concept
 
@@ -72,6 +89,90 @@ For the scenario that to allow outbound traffic only by
 **** TODO PrivateLink
 
 ** Different from traditional network
+** TODO VPC Endpoints
+** TODO DNS
+** TODO Hardware tenancy
+** TODO Security Group
+
+Acts as a virtual firewall to control the traffic for its associated instances.
+
+Rules contains:
+- inbound rules
+- outbound rules
+
+Associate a security group with an instance when launching the instance.
+
+There's a default security group
+
+*** inbound rules
+
+IP + Protocol + Port Range + Comments
+
+- public IPv4 address range of your home network
+
+
+- Type
+  - Protocol
+  - Port Range
+- Source
+  - Custom
+  - Anywhere
+  - My IP
+- Description
+
+*** outbound rules
+
+
+** How to
+
+*** check the internet gateway info of VPC
+
+*** display the main route table rules 
+
+*** get the custom route table info of VPC
+
+- local route, allow instances to communicate with each other
+- outside flow
+
+*** check the default security group
+
+*** get the subnet info of VPC
+
+*** describe VPCs
+
+#+BEGIN_SRC bash
+aws ec2 describe-vpcs
+#+END_SRC
+
+Return list of VPC configurations
+- CIDR block
+- DHCP options set
+- Tenancy: if allow tenancy of instances launched into the VPC
+- is default
+- Owner ID: Aws account
+
+*** expose service inside a non-default VPC
+
+1. create a VPC (specify CIDR)
+2. attach an internet gateway
+3. create subnet (specify subnet's CIDR)
+4. create a custom route table and associate it with the subnet
+
+*** launch an instance
+*** assign an elastic IP address to your instance
+
+- specify the subnet
+
+**** TODO AMI
 ** Reference
 
-- https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html
+- [[https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html][What is Amazon VPC]]
+- [[https://docs.aws.amazon.com/vpc/latest/userguide/getting-started-ipv4.html][getting started with IPv4]]
+
+* ECS
+
+Elastic Container Service is the service to run Docker application on a scalable cluster.
+
+* Landscape
+** TODO Region and Zone
+
