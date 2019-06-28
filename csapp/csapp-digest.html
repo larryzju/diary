@@ -432,7 +432,7 @@
 <li>处理器建造出执行这些指令的处理器</li>
 </ul></li>
 </ul>
-<h1 id="virtual-memory-1">[7/13] Virtual Memory</h1>
+<h1 id="virtual-memory-1">[8/13] Virtual Memory</h1>
 <h2 id="overview-1"><span class="done DONE">DONE</span> Overview</h2>
 <p>与 CPU 共享不同，CPU 共享最多因为进程数增大而变慢。内存共享可能会有其它问题</p>
 <ol class="incremental">
@@ -1121,7 +1121,134 @@
 </tr>
 </tbody>
 </table>
-<h2 id="case-study-the-intel-core-i7linux-memory-system"><span class="todo TODO">TODO</span> Case Study: The Intel Core i7/Linux Memory System</h2>
+<h2 id="case-study-the-intel-core-i7linux-memory-system"><span class="done DONE">DONE</span> Case Study: The Intel Core i7/Linux Memory System</h2>
+<figure>
+<img src="./img/core-i7-memory-system.png" alt="" /><figcaption>The Core i7 memory system</figcaption>
+</figure>
+<p><em>processor package</em> (chip) includes</p>
+<ul class="incremental">
+<li>four cores</li>
+<li>L3 cache shared by all of the cores</li>
+<li>DDR3 memory controller</li>
+</ul>
+<p>Each core contains</p>
+<ul class="incremental">
+<li>a hierarchy of TLBs</li>
+<li>a hierarchy of data and instruction caches</li>
+<li>a set of fast point-to-point links, based on the QuickPath technology, to communicate directly with other cores</li>
+</ul>
+<p>The TLBs are virtually addressed, and 4-way set associative. The L1, L2, and L3 caches are physically addressed, with a block size of 64 bytes.</p>
+<h3 id="physical-addressed-vs-virtual-addressed"><span class="todo TODO">TODO</span> physical addressed vs virtual addressed</h3>
+<h3 id="n-way-set-associative"><span class="todo TODO">TODO</span> N-way set associative</h3>
+<p>Associate Array? Fix sized hash table?</p>
+<h3 id="core-i7-address-translation">Core i7 Address Translation</h3>
+<p><a href="./img/core-i7-address-translation-summary.img">./img/core-i7-address-translation-summary.img</a></p>
+<p>Use a four-level page table hierarchy and each process has its own private page table hierarchy.</p>
+<p>The <em>CR3</em> control register contains the physical address of the beginning of the level 1 (L1) page table. The value of CR3 is part of each process context, and is stored during each context switch.</p>
+<figure>
+<img src="./img/format-of-level-1-to-3-page-table-entries.png" alt="" /><figcaption>Format of level 1, level 2, and level 3 page table entries</figcaption>
+</figure>
+<p>For level 1 to 3 page table, when <span class="math inline">\(P=1\)</span> (linux case), the address field contains a 40-bit physical page number (PPN) that points to the beginning of the appropriate page table.</p>
+<p><img src="./img/format-of-level-4-page-table-entries.png" /> For level 4 page table, when <span class="math inline">\(P=1\)</span>, the address field contains a 40-bit PPN that points to the base of some page in physical memory.</p>
+<p>PTE has 3 permission bits that control access to the page</p>
+<dl class="incremental">
+<dt>R/W bit</dt>
+<dd>read/write or read only
+</dd>
+<dt>U/S bit</dt>
+<dd>user mode, or kernel mode
+</dd>
+<dt>XD bit</dt>
+<dd>disable instruction fetches from individual memory pages
+</dd>
+</dl>
+<p>As the MMU translates each virtual address, it also updates two other bits that can be used by the kernel's page fault handler</p>
+<dl class="incremental">
+<dt>A bit</dt>
+<dd>reference bit, set for each time a page is accessed, help to implement its page replacement algorithm
+</dd>
+<dt>D bit</dt>
+<dd>dirty bit, set when page is written to, tell kernel whether to write back a victim page before it copies in a replacement page
+</dd>
+</dl>
+<figure>
+<img src="./img/core-i7-page-table-translation.png" alt="" /><figcaption>Core i7 page table translation</figcaption>
+</figure>
+<p>Core i7 MMU uses the four levels of page tables to translate a virtual address to a physical address.</p>
+<ul class="incremental">
+<li>36 bit VPN is split into four 9-bit chunks</li>
+<li>CR3 register contains the physical address of the L1 page table</li>
+<li><span class="math inline">\({PTE}_i\)</span> contains the base address of the <span class="math inline">\(L_{i+1}\)</span> page table</li>
+</ul>
+<h3 id="linux-virtual-memory-system">Linux Virtual Memory System</h3>
+<p>Linux's virtual memory are organized as a collection of <em>areas</em> (<em>segments</em>)</p>
+<ul class="incremental">
+<li>code segment</li>
+<li>data segment</li>
+<li>heap</li>
+<li>shared library segment</li>
+<li>user stack</li>
+</ul>
+<h4 id="linux-virtual-memory-areas">Linux Virtual Memory Areas</h4>
+<figure>
+<img src="./img/how-linux-organizes-virtual-memory.png" alt="" /><figcaption>How Linux organizes virtual memory</figcaption>
+</figure>
+<p>Each process associates with <code>task_struct</code> object which has a field named <code>mm_struct</code> that characterizes the current state of the virtual memory</p>
+<dl class="incremental">
+<dt><code>pgd</code></dt>
+<dd>points to the base of the level 1 table (the page global directory), CR3 control register
+</dd>
+<dt><code>mmap</code></dt>
+<dd>points to a list of <code>vm_area_structs</code> (area structs)
+</dd>
+</dl>
+<p>Each segment is represented by <code>vm_area_struct</code></p>
+<table>
+<thead>
+<tr class="header">
+<th>field</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>vm_start</code></td>
+<td>begin of the area</td>
+</tr>
+<tr class="even">
+<td><code>vm_end</code></td>
+<td>end of the area</td>
+</tr>
+<tr class="odd">
+<td><code>vm_prot</code></td>
+<td>r/w permission for all of the pages contained in the area</td>
+</tr>
+<tr class="even">
+<td><code>vm_flags</code></td>
+<td>permission, accessable, shareable flags</td>
+</tr>
+<tr class="odd">
+<td><code>vm_next</code></td>
+<td>points to the next area struct in the list</td>
+</tr>
+</tbody>
+</table>
+<h4 id="linux-page-fault-exception-handling">Linux Page Fault Exception Handling</h4>
+<figure>
+<img src="./img/linux-page-fault-handling.png" alt="" /><figcaption>Linux page fault handling</figcaption>
+</figure>
+<p>MMU triggers a page fault while trying to translate some virtual address A. The exception results in a tranfer of control to the kernel's page fault handler, which then performs the following steps:</p>
+<dl class="incremental">
+<dt>Is VA <code>A</code> legal?</dt>
+<dd>search the list of area structus, or trigger a segmentation fault and terminates the process
+</dd>
+<dt>Is the access legal?</dt>
+<dd>does the process have permission to read, write, or execute the pages in this area? or trigger a protection exception, which terminates the process
+</dd>
+<dt>handle the page fault</dt>
+<dd>select a victim page, swapping out the victim page if it is dirty, swapping in the new page, and updating the page table. And restart the faulting instruction after the page fault handler return
+</dd>
+</dl>
 <h2 id="memory-mapping"><span class="todo TODO">TODO</span> Memory Mapping</h2>
 <h2 id="dynamic-memory-allocation"><span class="todo TODO">TODO</span> Dynamic Memory Allocation</h2>
 <h2 id="garbage-collection"><span class="todo TODO">TODO</span> Garbage Collection</h2>
