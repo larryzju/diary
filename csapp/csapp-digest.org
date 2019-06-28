@@ -379,7 +379,7 @@ platform. But it's a fault error in 64bit platform.
   + 编译器只需要知道哪些指令可用
   + 处理器建造出执行这些指令的处理器
 
-* [7/13] Virtual Memory
+* [8/13] Virtual Memory
 
 ** DONE Overview
 
@@ -900,7 +900,120 @@ Physical memory reference
 | Cache hit?          |   Yes |
 | Cache byte returned |  0x1D |
 
-** TODO Case Study: The Intel Core i7/Linux Memory System
+** DONE Case Study: The Intel Core i7/Linux Memory System
+
+#+CAPTION: The Core i7 memory system
+[[./img/core-i7-memory-system.png]]
+
+/processor package/ (chip) includes 
+- four cores
+- L3 cache shared by all of the cores
+- DDR3 memory controller
+
+Each core contains 
+- a hierarchy of TLBs
+- a hierarchy of data and instruction caches
+- a set of fast point-to-point links, based on the QuickPath technology, to communicate directly with other cores
+
+The TLBs are virtually addressed, and 4-way set associative.
+The L1, L2, and L3 caches are physically addressed, with a block
+size of 64 bytes.
+
+*** TODO physical addressed vs virtual addressed
+*** TODO N-way set associative
+
+Associate Array? Fix sized hash table?
+
+*** Core i7 Address Translation
+
+#+CAPTION: Summary of Core i7 address translation
+[[./img/core-i7-address-translation-summary.img]]
+
+Use a four-level page table hierarchy and each process has its own
+private page table hierarchy.
+
+The /CR3/ control register contains the physical address of the
+beginning of the level 1 (L1) page table. The value of CR3 is part of
+each process context, and is stored during each context switch.
+
+#+CAPTION: Format of level 1, level 2, and level 3 page table entries
+[[./img/format-of-level-1-to-3-page-table-entries.png]]
+
+For level 1 to 3 page table, when $P=1$ (linux case), the address
+field contains a 40-bit physical page number (PPN) that points to the
+beginning of the appropriate page table.
+
+#+CAPTION: Format of level 4 page table entries
+[[./img/format-of-level-4-page-table-entries.png]]
+For level 4 page table, when $P=1$, the address field contains a
+40-bit PPN that points to the base of some page in physical memory.
+
+
+PTE has 3 permission bits that control access to the page
+- R/W bit :: read/write or read only
+- U/S bit :: user mode, or kernel mode
+- XD bit :: disable instruction fetches from individual memory pages
+
+As the MMU translates each virtual address, it also updates two other
+bits that can be used by the kernel's page fault handler
+- A bit :: reference bit, set for each time a page is accessed, help to implement its page replacement algorithm
+- D bit :: dirty bit, set when page is written to, tell kernel whether to write back a victim page before it copies in a replacement page
+
+#+CAPTION: Core i7 page table translation
+[[./img/core-i7-page-table-translation.png]]
+
+Core i7 MMU uses the four levels of page tables to translate a virtual
+address to a physical address.
+- 36 bit VPN is split into four 9-bit chunks
+- CR3 register contains the physical address of the L1 page table
+- ${PTE}_i$ contains the base address of the $L_{i+1}$ page table
+
+*** Linux Virtual Memory System
+
+Linux's virtual memory are organized as a collection of /areas/ (/segments/)
+- code segment
+- data segment
+- heap
+- shared library segment
+- user stack
+
+**** Linux Virtual Memory Areas
+
+#+CAPTION: How Linux organizes virtual memory
+[[./img/how-linux-organizes-virtual-memory.png]]
+
+Each process associates with =task_struct= object which has a field
+named =mm_struct= that characterizes the current state of the virtual
+memory
+- =pgd= :: points to the base of the level 1 table (the page global directory), CR3 control register
+- =mmap= :: points to a list of =vm_area_structs= (area structs)
+
+Each segment is represented by =vm_area_struct=
+| field      | description                                               |
+|------------+-----------------------------------------------------------|
+| =vm_start= | begin of the area                                         |
+| =vm_end=   | end of the area                                           |
+| =vm_prot=  | r/w permission for all of the pages contained in the area |
+| =vm_flags= | permission, accessable, shareable flags                   |
+| =vm_next=  | points to the next area struct in the list                |
+
+**** Linux Page Fault Exception Handling
+
+#+CAPTION: Linux page fault handling
+[[./img/linux-page-fault-handling.png]]
+
+MMU triggers a page fault while trying to translate some virtual
+address A.  The exception results in a tranfer of control to the
+kernel's page fault handler, which then performs the following steps:
+- Is VA =A= legal? :: search the list of area structus, or trigger a
+     segmentation fault and terminates the process
+- Is the access legal? :: does the process have permission to read,
+     write, or execute the pages in this area? or trigger a protection
+     exception, which terminates the process
+- handle the page fault :: select a victim page, swapping out the
+     victim page if it is dirty, swapping in the new page, and
+     updating the page table. And restart the faulting instruction
+     after the page fault handler return
 
 ** TODO Memory Mapping
 
