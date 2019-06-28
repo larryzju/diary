@@ -1,0 +1,77 @@
+* VPC
+
+Virtual Private Cloud is a virtual networking layer for Amazon EC2
+that enable you to launch AWS resources into a virtual network.
+
+By default, there's already a default VPC for your instances. And we
+can create our own VPC and subnets.
+
+Feature of EC2-VPC:
+- static and persisted private IPv4 addresses to instance
+- optionally associated an IPv6 CIDE block to VPC
+- optionally assign IPv6 address to instance
+- define multiple network interfaces to your instance
+- manage security group membership
+- egress/ingress filtering
+- ACL
+- run your instance on single-tenant hardware (?)
+
+** Key Concept
+
+- isolate from other virtual network
+  - IP address range
+  - subnets
+    + public subnet that can connect to the internet
+    + private subnet for resources that won't be connected to the internet
+  - security groups
+  - configure route tables
+
+** Architecture
+
+*** Default VPC
+
+#+CAPTION
+[[./images/default-vpc-diagram.png]]
+VPC may span multiple zones and there's a separated subnet in each zone.
+
+Each instance that launch into a default subnet has
+- a private IPv4 address
+- a public IPv4 address
+
+These instances can communicate with the internet through the internet gateway.
+
+*** Nondefault VPC
+
+#+CAPTION: Nondefault VPC Diagram
+[[./images/nondefault-vpc-diagram.png]]
+
+- Only private IPv4 addresses are assigned
+- instances can communicate with each other (even across the subnets)
+- there's no internet gateway been attached to this VPC
+
+**** Enable internet access
+
+#+CAPTION: Internet gateway Diagram
+[[./images/internet-gateway-diagram.png]]
+
+1. Attach an internet gateway to this VPC
+2. associate an Elastic IP to the instance
+
+
+**** NAT
+
+For the scenario that to allow outbound traffic only by 
+- create a NAT device (has an Elastic IP address and connects to the internet through an internet gateway)
+- and map multiple private IPv4 addresses to single IPv4 address
+
+
+**** TODO IPv6
+
+**** TODO VPN
+
+**** TODO PrivateLink
+
+** Different from traditional network
+** Reference
+
+- https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html
