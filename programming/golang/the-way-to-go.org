@@ -1,10 +1,11 @@
 * Origins, Context and Popularity of Go
 
+** Origin and evolution
+
 Three designers:
 - Robert Griesemer :: known for his work at the Java HotSpot Virtual Machine
 - Rob Pike :: Bell Labs, Plan 9 and Inferno OS, Limbo programming Language
 - Ken Thompson :: father of C, Unix and Plan 9 operating system, co-developed UTF-8 with Rob Pike
-
 
 Millstones
 1. Sep 2007, initial design
@@ -14,4 +15,119 @@ Millstones
 5. Nov 2009, First BSD-style license release
 6. Jan 2010, "language of the year 2009" by Tiobe
 7. May 2010, Use in production at Google
+
+** Main characterstics, context and reasons for developing a new language
+
+*** Languages that influenced Go
+- syntax: c (concise and clean)
+- interface: java
+- Package definition: Java, C#
+- Inheritance: javascript, ruby
+- and also the Pascal, Modula, Oberon family
+- concurrency mechanism comes from Limbo and Newsqueak[fn:1]
+- dynamic language: python and ruby
+
+*** Why a new language
+
+- need for a new system language (like C or C++)
+- low-level language, but equipped with higher concept
+- efficient and thus fast compilation, fast execution, ease of programming
+
+
+*** Targets of the language
+
+Main targets
+- easy to learn, easy to use
+- strongly and statically compiled language
+- dynamic language[fn:3]
+- type safe: static typing
+- memory safe[fn:2]
+- concurrency and parallelization support (goroutine, channel and growing stacks[fn:4])
+- building speed (no header files, package model)
+- execution speed
+- runtime with an efficient and fast /garbage collection/
+- builtin /reflection/ capability
+- /support for legacy software/, cgo
+- easy deployment system: =go install=
+- self documenting
+
+
+*** Guiding design principles
+
+- minimal amount of keywords
+- clean, regular and concise syntax
+- orthogonal (正交)
+- explicit specification
+- LALR[fn:5]
+
+
+*** Characteristics of the language
+
+- imperative language
+- built concurrency in mind
+- interface
+- type-system
+- statically typed
+- strongly typed: implicit type conversions are not allowed
+- dynamically typed language (through the =var= keyword)
+- cross-compilation
+
+
+*** Missing features
+
+- operator overloading
+- implicit conversions
+- classes and type inheritance (but another approach to object-oriented design)
+- variant types (use interface instead)
+- dynamic code loading
+- dynamic libraries
+- generic
+- exceptions
+- assertions
+- immutable variables
+
+*** Programming in Go
+
+Go is built on a different model. Be careful not writing non-idiomatic
+code but thinking in Go.
+
+* Installation and Runtime Environment
+
+** Environment variables
+
+| Env        | Description                                                             |
+|------------+-------------------------------------------------------------------------|
+| GOROOT     | root of the go tree                                                     |
+| GOARCH     | processor-architecture of the target machine: 386, amd64, arm           |
+| GOOS       | operating system of the target machine: linux, freebsd, windows, darwin |
+| GOBIN      | ${GOROOT}/bin                                                           |
+| GOHOSTOS   | host operating system                                                   |
+| GOHOSTARCH | host compilation architecture                                           |
+| GOPATH     | ${HOME}/go by default                                                   |
+| GOMAXPROCS | the number of cores or processors your application uses                 | 
+
+** Runtime
+
+Like a VM that is reponsible for handling memory allocation and
+garbage collection, stack handling, goroutines, channels, slices,
+maps, reflections, and more.
+
+Runtime is the "top level" package that is linked into every Go package. 
+(can be found in =${GOROOT}/src/pkg/runtime/=)
+
+* Editors, IDE's and Other tools
+
+** go fmt, gofmt
+* TODO TODO
+* Footnotes
+
+[fn:1] which themselves were inspired by Tony Hoare's Communicating Sequential Process
+
+[fn:2] Pointers are used in Go, but pointer-arithmetic is not possible
+
+[fn:3] Why is go a dynamic language?
+
+[fn:4] growing stacks?
+
+[fn:5] http://en.wikipedia.org/wiki/LALR_parser
 
