@@ -1,0 +1,17 @@
+* Origins, Context and Popularity of Go
+
+Three designers:
+- Robert Griesemer :: known for his work at the Java HotSpot Virtual Machine
+- Rob Pike :: Bell Labs, Plan 9 and Inferno OS, Limbo programming Language
+- Ken Thompson :: father of C, Unix and Plan 9 operating system, co-developed UTF-8 with Rob Pike
+
+
+Millstones
+1. Sep 2007, initial design
+2. Jan 2008, compiler translate produced C as output
+3. May 2008, build a gcc-frontend
+4. Oct 2009, Rob Pike gave the first talke on Go
+5. Nov 2009, First BSD-style license release
+6. Jan 2010, "language of the year 2009" by Tiobe
+7. May 2010, Use in production at Google
+
