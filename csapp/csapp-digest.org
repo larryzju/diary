@@ -818,7 +818,7 @@ instruction.
 对应于 256 个PTE。
 
 当不使用 TLB 和 L1-D 缓存时，MMU 在 PTE 中寻找第 i 个表顶，
-找出对应的 PPN 地址。根据 $ (PPN << 6) | PPO $ 得到最终的物理地址。
+找出对应的 PPN 地址。根据 $(PPN << 6) | PPO$ 得到最终的物理地址。
 
 TLB 中缓存的 16 个 TLE 条目。其中每种 TLBI 缓存四条，实际每种 TLBI 中有 64 条 TLBT。
 MMU 首先查询是否在 TLB 中有对应在 (TLBI, TLBT) 缓存，如果存在，则直接得到 PPN 地址，
@@ -945,6 +945,7 @@ beginning of the appropriate page table.
 
 #+CAPTION: Format of level 4 page table entries
 [[./img/format-of-level-4-page-table-entries.png]]
+
 For level 4 page table, when $P=1$, the address field contains a
 40-bit PPN that points to the base of some page in physical memory.
 
