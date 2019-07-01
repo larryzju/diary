@@ -1,0 +1,59 @@
+* Command Line
+
+** Types
+
+- colon command (:)
+- search (/ or ?)
+- filter command (!)
+
+** features
+
+- abbrevations :: both for command and option names
+- context sensitive completion :: /<Tab>/ or /CTRL-P/
+- list matches :: press /CTRL-D/ to show all matched items
+- complete to the longest unambiguous string :: /CTRL-L/
+
+** abbreviations
+
+There is *no* logic behind which one will be used if they have the
+same prefix. Just remember it. And Always use the full name in the
+script as you can.
+
+| abbr | command                    |
+|------+----------------------------|
+| s    | substitute                 |
+| fun  | function                   |
+| w    | write                      |
+| r    | read                       |
+| end  | endif/endwhile/endfunction |
+
+
+Many options also have a short name, such as =ai= is short for =autoindent=
+
+** history
+
+- Press /<Up>/ to show the previous matched command
+- Press <Down> to take you go back to the newer commands
+- =:history= show the matched history
+- =CTRL-P= go to the previous command and doesn't match what you already typed
+
+** command line window
+
+Open the command line window with =q:= command with Normal
+mode. Modify the buffer and press =<Enter>= to execute current line's
+command.
+
+** Shortcut
+
+| key press              | description                                |
+|------------------------+--------------------------------------------|
+| <S-Left> or <C-Left>   | one word left                              |
+| <S-Right> or <C-Right> | one word right                             |
+| CTRL-B                 | begin of command line                      |
+| CTRL-E                 | end of command line                        |
+| CTRL-W                 | delete a whole word before                 |
+| CTRL-U                 | remove all text                            |
+| <Esc> or CTRL-C        | Cancelling                                 |
+| CTRL-L                 | complete to the longest unambiguous string |
+| CTRL-P                 | previous command                           |
+| CTRL-N                 | next command                               |
