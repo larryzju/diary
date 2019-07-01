@@ -59,9 +59,26 @@
 <span id="cb2-10"><a href="#cb2-10"></a>    __asm__ __volatile__ (<span class="st">&quot;outb %1, %0&quot;</span> : : <span class="st">&quot;dN&quot;</span> (_port), <span class="st">&quot;a&quot;</span> (_data));</span>
 <span id="cb2-11"><a href="#cb2-11"></a>}</span></code></pre></div>
 <p>Write the value of C variable <code>_data</code> (map in EAX register) to the port specificed in <code>_port</code> variable (map to EDX register and limit in [0-255] range)</p>
+<h2 id="example-3">example 3</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1"></a><span class="dt">void</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>switch_page_directory(</span>
+<span id="cb3-3"><a href="#cb3-3"></a>                page_directory_t * dir</span>
+<span id="cb3-4"><a href="#cb3-4"></a>                ) {</span>
+<span id="cb3-5"><a href="#cb3-5"></a>        current_directory = dir;</span>
+<span id="cb3-6"><a href="#cb3-6"></a>        __asm__ __volatile__ (<span class="st">&quot;mov %0, %%cr3&quot;</span>:: <span class="st">&quot;r&quot;</span>(&amp;dir-&gt;physical_tables));</span>
+<span id="cb3-7"><a href="#cb3-7"></a>        <span class="dt">uint32_t</span> cr0;</span>
+<span id="cb3-8"><a href="#cb3-8"></a>        __asm__ __volatile__ (<span class="st">&quot;mov %%cr0, %0&quot;</span>: <span class="st">&quot;=r&quot;</span>(cr0));</span>
+<span id="cb3-9"><a href="#cb3-9"></a>        cr0 |= <span class="bn">0x80000000</span>;</span>
+<span id="cb3-10"><a href="#cb3-10"></a>        __asm__ __volatile__ (<span class="st">&quot;mov %0, %%cr0&quot;</span>:: <span class="st">&quot;r&quot;</span>(cr0));</span>
+<span id="cb3-11"><a href="#cb3-11"></a>}</span></code></pre></div>
+<ul class="incremental">
+<li>'r' constraint means a register operand is allowed provided that it is in a general register</li>
+<li>The '=' in output operand constrain means there will be a variable overwriting an existing value (another symbol is '+'</li>
+</ul>
 <h1 id="reference">Reference</h1>
 <ul class="incremental">
 <li><a href="https://wiki.osdev.org/Inline_Assembly">Inline Assembly</a></li>
+<li><a href="https://gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html#InputOperands">https://gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html#InputOperands</a></li>
 </ul>
 
 			</div>

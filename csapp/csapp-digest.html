@@ -1002,7 +1002,7 @@
 <p>If the resulting PTE is invalid, then there is a page fault and the kernel must page in the appropriate page and return the load instruction.</p>
 <h4 id="notes">Notes</h4>
 <p>14bit 的虚拟地址空间，寻址范围为 16KB；12 bit 物理地址空间，寻址范围为 4KB。页大小为 64B ($2<sup>6</sup>$），所以 VPO 和 PPO 均为 6 字节。VPN 为 8 字节， 对应于 256 个PTE。</p>
-<p>当不使用 TLB 和 L1-D 缓存时，MMU 在 PTE 中寻找第 i 个表顶， 找出对应的 PPN 地址。根据 $ (PPN &lt;&lt; 6) | PPO $ 得到最终的物理地址。</p>
+<p>当不使用 TLB 和 L1-D 缓存时，MMU 在 PTE 中寻找第 i 个表顶， 找出对应的 PPN 地址。根据 <span class="math inline">\((PPN &lt;&lt; 6) | PPO\)</span> 得到最终的物理地址。</p>
 <p>TLB 中缓存的 16 个 TLE 条目。其中每种 TLBI 缓存四条，实际每种 TLBI 中有 64 条 TLBT。 MMU 首先查询是否在 TLB 中有对应在 (TLBI, TLBT) 缓存，如果存在，则直接得到 PPN 地址， 否则需要在 PTE 表中进行查询，并将结构写入 TLB 缓存中。</p>
 <p>物理地址长度为 12, L1-D 缓存中最多可以保存 16 个 4 字节的物理地址数据。 取物理地址的最低两位为偏移量(CO)，次四位为索引（CI）指向 L1-D 的十六个元素， 高 6 位内容作为比较内容。</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">type</span> TLBEntry <span class="kw">struct</span> {</span>
@@ -1149,7 +1149,10 @@
 <img src="./img/format-of-level-1-to-3-page-table-entries.png" alt="" /><figcaption>Format of level 1, level 2, and level 3 page table entries</figcaption>
 </figure>
 <p>For level 1 to 3 page table, when <span class="math inline">\(P=1\)</span> (linux case), the address field contains a 40-bit physical page number (PPN) that points to the beginning of the appropriate page table.</p>
-<p><img src="./img/format-of-level-4-page-table-entries.png" /> For level 4 page table, when <span class="math inline">\(P=1\)</span>, the address field contains a 40-bit PPN that points to the base of some page in physical memory.</p>
+<figure>
+<img src="./img/format-of-level-4-page-table-entries.png" alt="" /><figcaption>Format of level 4 page table entries</figcaption>
+</figure>
+<p>For level 4 page table, when <span class="math inline">\(P=1\)</span>, the address field contains a 40-bit PPN that points to the base of some page in physical memory.</p>
 <p>PTE has 3 permission bits that control access to the page</p>
 <dl class="incremental">
 <dt>R/W bit</dt>
