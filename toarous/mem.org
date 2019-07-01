@@ -1,0 +1,14 @@
+* Overview
+
+Page (页) 是一个 32 bit 数据结构，包括 20 bit 的 frame 字段，表示 VPO (virtual page offset)。
+
+Page Table （页表）中包含了 1024 个 Page； Page Directory 中包含 1024 个指向 Page Table 的指针，以及对应的物理地址
+
+
+* steps
+
+1. allocate array of frames ($nframes/32$)
+2. allocate a *system page directory table* in virtual memory address
+
+* page directory
+

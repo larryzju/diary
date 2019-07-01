@@ -1,0 +1,275 @@
+* Coding Analysis
+
+=kernel/core/mem.c=
+
+** switch page directory
+
+#+BEGIN_SRC c
+void
+switch_page_directory(
+                page_directory_t * dir
+                ) {
+        current_directory = dir;
+        __asm__ __volatile__ ("mov %0, %%cr3":: "r"(&dir->physical_tables));
+        uint32_t cr0;
+        __asm__ __volatile__ ("mov %%cr0, %0": "=r"(cr0));
+        cr0 |= 0x80000000;
+        __asm__ __volatile__ ("mov %0, %%cr0":: "r"(cr0));
+}
+#+END_SRC
+
+Enable page directory by
+- load CR3 with the address of the page directory (=dir->physical_tables=)
+- set the PG bit (bit 31) of CR0 to enable paging
+- (optional) set the PE bit (bit 1) of CR0 to enable protect mode
+
+#+BEGIN_SRC asm
+mov eax, physical_tables
+mov cr3, eax
+
+mov eax, cr0
+or  eax, 0x8000_0000
+mov cr0, eax
+#+END_SRC
+
+
+** physical frame
+
+#+BEGIN_SRC c
+void
+alloc_frame(
+                page_t *page,
+                int is_kernel,
+                int is_writeable
+                ) {
+        if (page->frame) {
+                return;
+        } else {
+                uint32_t index = first_frame();
+                if (index == (uint32_t)-1) {
+                        // never happens?
+                        HALT_AND_CATCH_FIRE("Failed to allocate a frame: out of frames");
+                }
+                set_frame(index * 0x1000); 
+                page->present = 1;
+                page->rw      = (is_writeable) ? 1 : 0;
+                page->user    = (is_kernel)    ? 0 : 1;
+                page->frame   = index;
+        }
+}
+
+void
+free_frame(
+                page_t *page
+                ) {
+        uint32_t frame;
+        if (!(frame = page->frame)) {
+                return;
+        } else {
+                clear_frame(frame);
+                page->frame = 0x0;
+        }
+}
+#+END_SRC
+
+
+Page caches physical frame in =page->frame= pointer.
+
+Allocate a frame for a page in below steps
+1. find the first unused frame
+2. make sure the frame not over $4GiB / 4KiB$ (the code =uint32_t - 1= would never happened?)
+3. mark this frame 
+   + is been used (whose address is =index * 0x1000=)
+   + is present
+   + read/write flag
+   + kernel/user flag
+4. mark its frame as the index (so the PA will be equal to VA?)
+
+Free a frame is quiet easy: clear the bitmap and set the =frame= as zero.
+
+
+** frame bitmap
+
+#+BEGIN_SRC c
+uint32_t *frames;
+uint32_t nframes;
+
+#define INDEX_FROM_BIT(b) (b / 0x20)
+#define OFFSET_FROM_BIT(b) (b % 0x20)
+
+static void
+set_frame(
+                uintptr_t frame_addr
+                ) {
+        uint32_t frame  = frame_addr / 0x1000;
+        uint32_t index  = INDEX_FROM_BIT(frame);
+        uint32_t offset = OFFSET_FROM_BIT(frame);
+        frames[index] |= (0x1 << offset);
+}
+
+static void
+clear_frame(
+                uintptr_t frame_addr
+                ) {
+        uint32_t frame  = frame_addr / 0x1000;
+        uint32_t index  = INDEX_FROM_BIT(frame);
+        uint32_t offset = OFFSET_FROM_BIT(frame);
+        frames[index] &= ~(0x1 << offset);
+}
+
+static uint32_t
+test_frame(
+                uintptr_t frame_addr
+                ) {
+        uint32_t frame  = frame_addr / 0x1000;
+        uint32_t index  = INDEX_FROM_BIT(frame);
+        uint32_t offset = OFFSET_FROM_BIT(frame);
+        return (frames[index] & (0x1 << offset));
+}
+
+static uint32_t first_frame() {
+        uint32_t i, j;
+        for (i = 0; i < INDEX_FROM_BIT(nframes); ++i) {
+                if (frames[i] != 0xFFFFFFFF) {
+                        for (j = 0; j < 32; ++j) {
+                                uint32_t test_frame = 0x1 << j;
+                                if (!(frames[i] & test_frame)) {
+                                        return i * 0x20 + j;
+                                }
+                        }
+                }
+        }       
+        return -1;
+}
+#+END_SRC
+
+Frame is a 4 KiB continuous addressed block.
+
+| variable  | description                                                                   |
+|-----------+-------------------------------------------------------------------------------|
+| =nframes= | the count of frames                                                           |
+| =frames=  | a bitmap consist by multiple 32-bit bytes to represent if the frame is cached |
+
+
+| expression            | description                                                    |
+|-----------------------+----------------------------------------------------------------|
+| =frame_addr / 0x1000= | equals to the frame bitmap index                               |
+| =INDEX_FROM_BIT()=    | macro to calculate the bitmap byte index                       |
+| =OFFSET_FROM_BIT()=   | macro to calculate the bitmap bit offset                       |
+| =set_frame(addr)=     | set the bitmap bit                                             |
+| =clear_frame(addr)=   | clear the bitmap bit                                           |
+| =test_frame(addr)=    | check the bitmap to see if the frame is used                   |
+| =first_frame()=       | loops over the bitmap and finds the first uncached frame index |
+
+* Paging
+
+作用：
+- 实现虚拟地址空间
+- 并提供页保护机制 (page-level protection)
+- memory-mapped IO
+- paging sout to disk (缓存硬盘存储）
+
+对 x86 处理器
+- x86-32 支持 32 位虚拟地址空间
+- x86-64 处理器支持 48-bit 虚拟地址空间（256 TiB）
+
+64 位平台下已经用 page-level protection 替换了 segmentation protection。
+32 位中两者被同时使用。
+
+** Architecture
+
+#+CAPTION: Paging architecture
+[[./images/paging-architecture.png]]
+
+以二级表方式进行内存映射。
+
+MMU 读取一系列的表（paging directory 和 paging table）来进行内存映射。
+
+CR3 register point to the page directory
+
+Paging directory 和 Paging table 分别包括 1024 个 4 字节的表项
+- paging directory 的表项指向一个 paging table
+- paging table 的每个表项指向一个物理地址
+- 物理地址加上相关 offset 就得到最终地址
+
+#+BEGIN_SRC go
+  type PageDirectory struct {
+          PageTableAddress uintptr:20   // 4-KiB aligned
+          Avail    uintptr:3            // not used by the processor
+          Gbit     uintptr:1
+          PageSize uintptr:1            // 1 for 4MiB, 0 for 4 KiB
+          Padbit   uintptr:1
+          Accessed uintptr:1            // set if it has been read or write to
+          CacheDisable uintptr:1
+          WriteThrough uintptr:1        // switch for write-through cache
+          Supervisor   uintptr:1        // 1 for all
+          ReadWrite    uintptr:1        // enable to read/write
+          Present      uintptr:1        // whether in physical memory
+  }
+
+  func (pd *PageDirectory) AddressBasis() uintptr {
+          if pd.PageSize == 1 {
+                  return (pd.PageTableAddress >> 10) * MBytes * 4
+          } else {
+                  return pd.PageTableAddress * KBytes * 4
+          }
+  }
+
+  // PageTable is similar to page directory entries
+  type PageTable struct {
+          PhysicalPageAddress uintptr:20 // 4-KiB aligned
+          Avail    uintptr:3            // not used by the processor
+          Global   uintptr:1            
+          Padbit   uintptr:1
+          Dirty    uintptr:1            // page has been written to
+          Accessed uintptr:1
+          CacheDisable uintptr:1
+          WriteThrough uintptr:1        // switch for write-through cache
+          Supervisor   uintptr:1        // 1 for all
+          ReadWrite    uintptr:1        // enable to read/write
+          Present      uintptr:1        // whether in physical memory
+  }
+#+END_SRC
+
+
+** Page Directory
+
+** Page Table
+
+** MMU
+
+Handles
+- memory translation
+- memory protection
+- ...
+
+*** Translation
+
+Convert/map virtual addresses to physical address
+
+*** Protection
+
+Process can only see memory that it has, it cannot modify or copy any
+other application's memory.
+
+** Higher Half Kernel
+
+The kernel is loaded at location x, but when paging is initialized the
+MMU is told to map location x to 0xC0000000.
+
+Linux's kernel reside at virtual addresses 0xC0000000 - 0xFFFFFFFF of
+every address space. Leaving the range 0x00000000 - 0xBFFFFFFF for
+user code, data, stacks, libraries, etc.
+
+*** why
+
+- to set up VM86 processes since the region below 1MB is userrspace
+- user applications are not dependent on how much memory is kernel space
+- ..
+
+* Reference
+
+- https://wiki.osdev.org/Page_directory#Page_Directory
+- https://wiki.osdev.org/MMU
+- https://wiki.osdev.org/Higher_Half_Kernel
+

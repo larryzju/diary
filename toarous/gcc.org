@@ -50,6 +50,27 @@ outportb(
 
 Write the value of C variable =_data= (map in EAX register) to the port specificed in =_port= variable (map to EDX register and limit in [0-255] range)
 
+
+** example 3
+
+#+BEGIN_SRC c
+void
+switch_page_directory(
+                page_directory_t * dir
+                ) {
+        current_directory = dir;
+        __asm__ __volatile__ ("mov %0, %%cr3":: "r"(&dir->physical_tables));
+        uint32_t cr0;
+        __asm__ __volatile__ ("mov %%cr0, %0": "=r"(cr0));
+        cr0 |= 0x80000000;
+        __asm__ __volatile__ ("mov %0, %%cr0":: "r"(cr0));
+}
+#+END_SRC
+
+- 'r' constraint means a register operand is allowed provided that it is in a general register
+- The '=' in output operand constrain means there will be a variable overwriting an existing value (another symbol is '+'
+
 * Reference
 
 - [[https://wiki.osdev.org/Inline_Assembly][Inline Assembly]]
+- https://gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html#InputOperands
