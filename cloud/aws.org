@@ -193,7 +193,15 @@ and specifications for how they should run, networking, and storage.
 data across a distributed cluster of machines. K8s's control plane
 data is stored in =etcd=.
 
-** What is control plane?
+** TODO What is 
+
+*** control plane
+
+*** node group
+
+*** IAM identity mapping
+
+*** security group
 
 ** Steps to deploy
 
@@ -256,7 +264,6 @@ eksctl create cluster \
 kubectl get svc
 #+END_SRC
 
-
 ** create cluster with AWS Management Console
 
 *** Prerequisites
@@ -309,289 +316,6 @@ The VPC that worker nodes run on
 ***** SubnetIds
 
 The subnets that your worker nodes are launched into.
-
-
-***** S3 URL template
-
-#+BEGIN_SRC yam
-AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Amazon EKS Sample VPC - Private and Public subnets'
-
-Parameters:
-
-  VpcBlock:
-    Type: String
-    Default: 192.168.0.0/16
-    Description: The CIDR range for the VPC. This should be a valid private (RFC 1918) CIDR range.
-
-  PublicSubnet01Block:
-    Type: String
-    Default: 192.168.0.0/18
-    Description: CidrBlock for public subnet 01 within the VPC
-
-  PublicSubnet02Block:
-    Type: String
-    Default: 192.168.64.0/18
-    Description: CidrBlock for public subnet 02 within the VPC
-
-  PrivateSubnet01Block:
-    Type: String
-    Default: 192.168.128.0/18
-    Description: CidrBlock for private subnet 01 within the VPC
-
-  PrivateSubnet02Block:
-    Type: String
-    Default: 192.168.192.0/18
-    Description: CidrBlock for private subnet 02 within the VPC
-
-Metadata:
-  AWS::CloudFormation::Interface:
-    ParameterGroups:
-      -
-        Label:
-          default: "Worker Network Configuration"
-        Parameters:
-          - VpcBlock
-          - PublicSubnet01Block
-          - PublicSubnet02Block
-          - PrivateSubnet01Block
-          - PrivateSubnet02Block
-
-Resources:
-  VPC:
-    Type: AWS::EC2::VPC
-    Properties:
-      CidrBlock:  !Ref VpcBlock
-      EnableDnsSupport: true
-      EnableDnsHostnames: true
-      Tags:
-      - Key: Name
-        Value: !Sub '${AWS::StackName}-VPC'
-
-  InternetGateway:
-    Type: "AWS::EC2::InternetGateway"
-
-  VPCGatewayAttachment:
-    Type: "AWS::EC2::VPCGatewayAttachment"
-    Properties:
-      InternetGatewayId: !Ref InternetGateway
-      VpcId: !Ref VPC
-
-  PublicRouteTable:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId: !Ref VPC
-      Tags:
-      - Key: Name
-        Value: Public Subnets
-      - Key: Network
-        Value: Public
-
-  PrivateRouteTable01:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId: !Ref VPC
-      Tags:
-      - Key: Name
-        Value: Private Subnet AZ1
-      - Key: Network
-        Value: Private01
-
-  PrivateRouteTable02:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId: !Ref VPC
-      Tags:
-      - Key: Name
-        Value: Private Subnet AZ2
-      - Key: Network
-        Value: Private02
-
-  PublicRoute:
-    DependsOn: VPCGatewayAttachment
-    Type: AWS::EC2::Route
-    Properties:
-      RouteTableId: !Ref PublicRouteTable
-      DestinationCidrBlock: 0.0.0.0/0
-      GatewayId: !Ref InternetGateway
-
-  PrivateRoute01:
-    DependsOn:
-    - VPCGatewayAttachment
-    - NatGateway01
-    Type: AWS::EC2::Route
-    Properties:
-      RouteTableId: !Ref PrivateRouteTable01
-      DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId: !Ref NatGateway01
-
-  PrivateRoute02:
-    DependsOn:
-    - VPCGatewayAttachment
-    - NatGateway02
-    Type: AWS::EC2::Route
-    Properties:
-      RouteTableId: !Ref PrivateRouteTable02
-      DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId: !Ref NatGateway02
-
-  NatGateway01:
-    DependsOn:
-    - NatGatewayEIP1
-    - PublicSubnet01
-    - VPCGatewayAttachment
-    Type: AWS::EC2::NatGateway
-    Properties:
-      AllocationId: !GetAtt 'NatGatewayEIP1.AllocationId'
-      SubnetId: !Ref PublicSubnet01
-      Tags:
-      - Key: Name
-        Value: !Sub '${AWS::StackName}-NatGatewayAZ1'
-
-  NatGateway02:
-    DependsOn:
-    - NatGatewayEIP2
-    - PublicSubnet02
-    - VPCGatewayAttachment
-    Type: AWS::EC2::NatGateway
-    Properties:
-      AllocationId: !GetAtt 'NatGatewayEIP2.AllocationId'
-      SubnetId: !Ref PublicSubnet02
-      Tags:
-      - Key: Name
-        Value: !Sub '${AWS::StackName}-NatGatewayAZ2'
-
-  NatGatewayEIP1:
-    DependsOn:
-    - VPCGatewayAttachment
-    Type: 'AWS::EC2::EIP'
-    Properties:
-      Domain: vpc
-
-  NatGatewayEIP2:
-    DependsOn:
-    - VPCGatewayAttachment
-    Type: 'AWS::EC2::EIP'
-    Properties:
-      Domain: vpc
-
-  PublicSubnet01:
-    Type: AWS::EC2::Subnet
-    Metadata:
-      Comment: Subnet 01
-    Properties:
-      AvailabilityZone:
-        Fn::Select:
-        - '0'
-        - Fn::GetAZs:
-            Ref: AWS::Region
-      CidrBlock:
-        Ref: PublicSubnet01Block
-      VpcId:
-        Ref: VPC
-      Tags:
-      - Key: Name
-        Value: !Sub "${AWS::StackName}-PublicSubnet01"
-
-  PublicSubnet02:
-    Type: AWS::EC2::Subnet
-    Metadata:
-      Comment: Subnet 02
-    Properties:
-      AvailabilityZone:
-        Fn::Select:
-        - '1'
-        - Fn::GetAZs:
-            Ref: AWS::Region
-      CidrBlock:
-        Ref: PublicSubnet02Block
-      VpcId:
-        Ref: VPC
-      Tags:
-      - Key: Name
-        Value: !Sub "${AWS::StackName}-PublicSubnet02"
-
-  PrivateSubnet01:
-    Type: AWS::EC2::Subnet
-    Metadata:
-      Comment: Subnet 03
-    Properties:
-      AvailabilityZone:
-        Fn::Select:
-        - '0'
-        - Fn::GetAZs:
-            Ref: AWS::Region
-      CidrBlock:
-        Ref: PrivateSubnet01Block
-      VpcId:
-        Ref: VPC
-      Tags:
-      - Key: Name
-        Value: !Sub "${AWS::StackName}-PrivateSubnet01"
-
-  PrivateSubnet02:
-    Type: AWS::EC2::Subnet
-    Metadata:
-      Comment: Private Subnet 02
-    Properties:
-      AvailabilityZone:
-        Fn::Select:
-        - '1'
-        - Fn::GetAZs:
-            Ref: AWS::Region
-      CidrBlock:
-        Ref: PrivateSubnet02Block
-      VpcId:
-        Ref: VPC
-      Tags:
-      - Key: Name
-        Value: !Sub "${AWS::StackName}-PrivateSubnet02"
-
-  PublicSubnet01RouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      SubnetId: !Ref PublicSubnet01
-      RouteTableId: !Ref PublicRouteTable
-
-  PublicSubnet02RouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      SubnetId: !Ref PublicSubnet02
-      RouteTableId: !Ref PublicRouteTable
-
-  PrivateSubnet01RouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      SubnetId: !Ref PrivateSubnet01
-      RouteTableId: !Ref PrivateRouteTable01
-
-  PrivateSubnet02RouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      SubnetId: !Ref PrivateSubnet02
-      RouteTableId: !Ref PrivateRouteTable02
-
-  ControlPlaneSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Cluster communication with worker nodes
-      VpcId: !Ref VPC
-
-Outputs:
-
-  SubnetIds:
-    Description: Subnets IDs in the VPC
-    Value: !Join [ ",", [ !Ref PublicSubnet01, !Ref PublicSubnet02, !Ref PrivateSubnet01, !Ref PrivateSubnet02 ] ]
-
-  SecurityGroups:
-    Description: Security group for the cluster control plane communication with worker nodes
-    Value: !Join [ ",", [ !Ref ControlPlaneSecurityGroup ] ]
-
-  VpcId:
-    Description: The VPC Id
-    Value: !Ref VPC
-#+END_SRC
-
 
 **** install kubectl
 
@@ -656,6 +380,34 @@ Verify by running =kubectl get svc=
 4. apply the configuration
 5. check the nodes with =kubectl get nodes=
 
+** delete cluster
+
+*** remove all service with external IP
+
+#+BEGIN_SRC bash
+kubectl get svc --all-namespaces
+kubectl delete svc <service-name>
+#+END_SRC
+
+*** delete the worker node AWS CloudFormation stack
+
+#+BEGIN_SRC bash
+aws cloudformation list-stacks --query StackSummaries[].StackName
+aws cloudformation delete-stack --stack-name <worker-node-stack>
+#+END_SRC
+
+*** delete the EKS cluster
+
+#+BEGIN_SRC bash
+aws eks delete-cluster --name <my-cluster>
+#+END_SRC
+
+*** delete the VPC AWS CloudFormation stack
+
+#+BEGIN_SRC bash
+aws cloudformation list-stacks --query StackSummaries[].StackName
+aws cloudformation delete-stack --stack-name <my-vpc-stack>
+#+END_SRC
 
 ** Command line
 
@@ -666,22 +418,74 @@ Verify by running =kubectl get svc=
 | aws eks list-clusters                                                       | list all clusters      |
 | aws eks describe-cluster --name <cluster-name>                              | describe cluster       |
 | aws eks update-kubeconfig --kubeconfig ~/.kube/output --name <cluster-name> | create kubeconfig file |
-
+| aws eks delete-cluster --name <cluster-name>                                | delete eks cluster     |
 
 *** eksctl
 
 =eksctl= is a =kubectl= style like command line tool.
 
-| command                              | description  |
-|--------------------------------------+--------------|
-| eksctl get cluster                   | get clusters |
-| eksctl get cluster -n <cluster-name> | show cluster details |
+| command                                 | description          |
+|-----------------------------------------+----------------------|
+| eksctl get cluster                      | get clusters         |
+| eksctl get cluster -n <cluster-name>    | show cluster details |
+| eksctl delete cluster -n <cluster-name> | delete a cluster     |
+
+** How To
+*** Get the EC2 instance of the cluster
+
+Filter the EC2 instance with VPCId
+
+**** get the EKS clusters's metadata
+
+Describe the cluster and record the VPCId.
+
+#+BEGIN_SRC bash
+   aws eks list-clusters
+   aws eks describe-cluster --name <cluster-name>
+#+END_SRC
+
+**** filter the EC2 instance with VPC id
+
+#+BEGIN_SRC bash
+aws ec2 describe-instances --filter Name=network-interface.vpc-id,Values=${VPCID}
+#+END_SRC
 
 * Landscape
 ** TODO Region and Zone
 
+* CloudFormation
+
+Declare all of your resoruces and dependencies in a template file to
+create and manage AWS infrastructure deployments predictably and
+repeatedly.
+
+It can be used to leverage AWS products
+- EC2
+- Elastic Block Store
+- Simple Notification Service
+- Elastic Load Balancing
+
+** What is
+
+*** TODO Stack
+
+** How to
+
+*** get stack template
+
+- Use command =aws cloudformation get-template --stack-name <stack-name>=
+- Or check it in cloudformation, stack, template tab page.
+
+** Commands
+
+| command                                                      | description          |
+|--------------------------------------------------------------+----------------------|
+| aws cloudformation list-stacks                               | list stacks          |
+| aws cloudformation describe-stacks --stack-name <stack-name> | describe stack       |
+| aws cloudformation get-template --stack-name <stack-name>    | get stack's template |
+| aws cloudformation delete-stack --stack-name <stack-name>    | delete a stack       |
+
+
 * TODO TODO
 
-** AWS CloudFormation Consoles
-
-*** What is Stack?
+** awscli command parameters
