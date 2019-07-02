@@ -173,6 +173,515 @@ Return list of VPC configurations
 
 Elastic Container Service is the service to run Docker application on a scalable cluster.
 
+* EKS
+
+EKS is short for Elastic Kubernetes Service which is a logical
+grouping of EC2 compute instances that run your containers. EKS works
+as a managed service that makes it easy for you to use Kubernetes on
+AWS without needing to install and operate the Kubernetes control plane.
+
+A cluster consists of the _control plane_ and the _data plane_.
+
+There're two types of instances:
+- master ::  host the Kubernetes API server and control how, when, and where your container run
+- worker :: compute instance where your containers actually run and process data
+
+Pod is the basic component of the Kubernetes which includes containers
+and specifications for how they should run, networking, and storage.
+
+=etcd= is a distributed key value store that lets you store and share
+data across a distributed cluster of machines. K8s's control plane
+data is stored in =etcd=.
+
+** What is control plane?
+
+** Steps to deploy
+
+1. Provision and EKS cluster
+2. Amazon EC2
+3. Connect to EKS
+
+** create cluster with eksctl
+
+Refer to https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html
+
+*** prerequisites
+
+**** install awscli
+
+#+BEGIN_SRC bash
+pip install awscli --upgrade --user
+#+END_SRC
+
+**** configure awscli credential
+
+Login with access key, secret access key, AWS region, and output
+format. This information is stored in a profile named /default/.
+
+#+BEGIN_SRC bash
+aws configure
+#+END_SRC
+
+**** install eksctl
+
+#+BEGIN_SRC bash
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+mv /tmp/eksctl ~/.local/bin
+eksctl version
+#+END_SRC
+
+**** install kubectl
+skip
+
+
+*** create EKS cluster and worker nodes
+
+**** create
+
+#+BEGIN_SRC bash
+eksctl create cluster \
+  --name larry-testing \
+  --version 1.13 \
+  --nodegroup-name standard-workers \
+  --node-type t3.medium \
+  --nodes 2 \
+  --nodes-min 1 \
+  --nodes-max 3 \
+  --node-ami auto
+#+END_SRC
+
+**** verify
+
+#+BEGIN_SRC bash
+kubectl get svc
+#+END_SRC
+
+
+** create cluster with AWS Management Console
+
+*** Prerequisites
+
+Prerequisites contain
+- create an IAM role that k8s can assume to create AWS resources, such as Elastic Load balancing
+- create a VPC and security group
+
+**** create EKS service role in the IAM console
+
+1. select AWS service, EKS use case
+2. skip permission step, choose *Next: Tags*
+3. (optional) add metadata to the role by attaching tags
+4. review and assign a unique name for your role
+5. create role
+
+**** create EKS Cluster VPC
+
+1. goto [[https://console.aws.amazon.com/cloudformation][CloudFormation console]]
+2. select region and create stack
+3. use the Amazon S3 URL template source
+4. fill in URL =https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-02-11/amazon-eks-vpc-private-subnets.yaml=
+5. fill out the parameters
+   + Stack name: unique name
+   + VpcBlock: CIDR range for your VPC
+   + PublicSubnet01Block: CIDR range for public subnet1
+   + PublicSubnet02Block: CIDR range for public subnet2
+   + PrivateSubnet01Block: CIDR range for private subnet1
+   + PrivateSubnet02Block: CIDR range for private subnet2
+6. (optional) tag your stack resources
+7. review and create
+8. select the stack that is created and record the *SecurityGroups* value in the *Outputs*
+9. record *VpcId* for the VPC that was created
+10. record the *SubnetIds* for the subnets that were created
+11. Tag your private subnets so the k8s knows that it can use them for internal load balancers
+    1. goto [[https://console.aws.amazon.com/vpc/][VPC console]] and choose *Subnets*
+    2. select the two private subnets and create new tag =kubernetes.io/role/inernal-elb= with value =1=
+
+
+***** SecurityGroups
+
+Apply to the cross-account elastic network interfaces that are created
+in your subnets that allow the Amazon EKS control plane to communicate
+with your worker nodes.
+
+***** VpcID
+
+The VPC that worker nodes run on
+
+***** SubnetIds
+
+The subnets that your worker nodes are launched into.
+
+
+***** S3 URL template
+
+#+BEGIN_SRC yam
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Amazon EKS Sample VPC - Private and Public subnets'
+
+Parameters:
+
+  VpcBlock:
+    Type: String
+    Default: 192.168.0.0/16
+    Description: The CIDR range for the VPC. This should be a valid private (RFC 1918) CIDR range.
+
+  PublicSubnet01Block:
+    Type: String
+    Default: 192.168.0.0/18
+    Description: CidrBlock for public subnet 01 within the VPC
+
+  PublicSubnet02Block:
+    Type: String
+    Default: 192.168.64.0/18
+    Description: CidrBlock for public subnet 02 within the VPC
+
+  PrivateSubnet01Block:
+    Type: String
+    Default: 192.168.128.0/18
+    Description: CidrBlock for private subnet 01 within the VPC
+
+  PrivateSubnet02Block:
+    Type: String
+    Default: 192.168.192.0/18
+    Description: CidrBlock for private subnet 02 within the VPC
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      -
+        Label:
+          default: "Worker Network Configuration"
+        Parameters:
+          - VpcBlock
+          - PublicSubnet01Block
+          - PublicSubnet02Block
+          - PrivateSubnet01Block
+          - PrivateSubnet02Block
+
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock:  !Ref VpcBlock
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+      - Key: Name
+        Value: !Sub '${AWS::StackName}-VPC'
+
+  InternetGateway:
+    Type: "AWS::EC2::InternetGateway"
+
+  VPCGatewayAttachment:
+    Type: "AWS::EC2::VPCGatewayAttachment"
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref VPC
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+      - Key: Name
+        Value: Public Subnets
+      - Key: Network
+        Value: Public
+
+  PrivateRouteTable01:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+      - Key: Name
+        Value: Private Subnet AZ1
+      - Key: Network
+        Value: Private01
+
+  PrivateRouteTable02:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+      - Key: Name
+        Value: Private Subnet AZ2
+      - Key: Network
+        Value: Private02
+
+  PublicRoute:
+    DependsOn: VPCGatewayAttachment
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PrivateRoute01:
+    DependsOn:
+    - VPCGatewayAttachment
+    - NatGateway01
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable01
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NatGateway01
+
+  PrivateRoute02:
+    DependsOn:
+    - VPCGatewayAttachment
+    - NatGateway02
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable02
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NatGateway02
+
+  NatGateway01:
+    DependsOn:
+    - NatGatewayEIP1
+    - PublicSubnet01
+    - VPCGatewayAttachment
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt 'NatGatewayEIP1.AllocationId'
+      SubnetId: !Ref PublicSubnet01
+      Tags:
+      - Key: Name
+        Value: !Sub '${AWS::StackName}-NatGatewayAZ1'
+
+  NatGateway02:
+    DependsOn:
+    - NatGatewayEIP2
+    - PublicSubnet02
+    - VPCGatewayAttachment
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt 'NatGatewayEIP2.AllocationId'
+      SubnetId: !Ref PublicSubnet02
+      Tags:
+      - Key: Name
+        Value: !Sub '${AWS::StackName}-NatGatewayAZ2'
+
+  NatGatewayEIP1:
+    DependsOn:
+    - VPCGatewayAttachment
+    Type: 'AWS::EC2::EIP'
+    Properties:
+      Domain: vpc
+
+  NatGatewayEIP2:
+    DependsOn:
+    - VPCGatewayAttachment
+    Type: 'AWS::EC2::EIP'
+    Properties:
+      Domain: vpc
+
+  PublicSubnet01:
+    Type: AWS::EC2::Subnet
+    Metadata:
+      Comment: Subnet 01
+    Properties:
+      AvailabilityZone:
+        Fn::Select:
+        - '0'
+        - Fn::GetAZs:
+            Ref: AWS::Region
+      CidrBlock:
+        Ref: PublicSubnet01Block
+      VpcId:
+        Ref: VPC
+      Tags:
+      - Key: Name
+        Value: !Sub "${AWS::StackName}-PublicSubnet01"
+
+  PublicSubnet02:
+    Type: AWS::EC2::Subnet
+    Metadata:
+      Comment: Subnet 02
+    Properties:
+      AvailabilityZone:
+        Fn::Select:
+        - '1'
+        - Fn::GetAZs:
+            Ref: AWS::Region
+      CidrBlock:
+        Ref: PublicSubnet02Block
+      VpcId:
+        Ref: VPC
+      Tags:
+      - Key: Name
+        Value: !Sub "${AWS::StackName}-PublicSubnet02"
+
+  PrivateSubnet01:
+    Type: AWS::EC2::Subnet
+    Metadata:
+      Comment: Subnet 03
+    Properties:
+      AvailabilityZone:
+        Fn::Select:
+        - '0'
+        - Fn::GetAZs:
+            Ref: AWS::Region
+      CidrBlock:
+        Ref: PrivateSubnet01Block
+      VpcId:
+        Ref: VPC
+      Tags:
+      - Key: Name
+        Value: !Sub "${AWS::StackName}-PrivateSubnet01"
+
+  PrivateSubnet02:
+    Type: AWS::EC2::Subnet
+    Metadata:
+      Comment: Private Subnet 02
+    Properties:
+      AvailabilityZone:
+        Fn::Select:
+        - '1'
+        - Fn::GetAZs:
+            Ref: AWS::Region
+      CidrBlock:
+        Ref: PrivateSubnet02Block
+      VpcId:
+        Ref: VPC
+      Tags:
+      - Key: Name
+        Value: !Sub "${AWS::StackName}-PrivateSubnet02"
+
+  PublicSubnet01RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet01
+      RouteTableId: !Ref PublicRouteTable
+
+  PublicSubnet02RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet02
+      RouteTableId: !Ref PublicRouteTable
+
+  PrivateSubnet01RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet01
+      RouteTableId: !Ref PrivateRouteTable01
+
+  PrivateSubnet02RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet02
+      RouteTableId: !Ref PrivateRouteTable02
+
+  ControlPlaneSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Cluster communication with worker nodes
+      VpcId: !Ref VPC
+
+Outputs:
+
+  SubnetIds:
+    Description: Subnets IDs in the VPC
+    Value: !Join [ ",", [ !Ref PublicSubnet01, !Ref PublicSubnet02, !Ref PrivateSubnet01, !Ref PrivateSubnet02 ] ]
+
+  SecurityGroups:
+    Description: Security group for the cluster control plane communication with worker nodes
+    Value: !Join [ ",", [ !Ref ControlPlaneSecurityGroup ] ]
+
+  VpcId:
+    Description: The VPC Id
+    Value: !Ref VPC
+#+END_SRC
+
+
+**** install kubectl
+
+skip
+
+**** install awscli
+
+skip
+
+
+*** create EKS cluster
+
+1. goto [[https://console.aws.amazon.com/eks/home#/clusters][EKS console]]
+2. Choose *Create cluster*
+3. fill in fields
+   + cluster name: uniqune name for your cluster
+   + kubernetes version: the version of kubernetes to use for your cluster
+   + Role ARN: the IAM role created before
+   + VPC
+   + Subnets: choose all private/public subnets created before
+   + Security groups
+   + API server endpoint access: private false
+   + Logging
+4. choose a cluster name and create
+
+
+*** create a kubeconfig file
+
+#+BEGIN_SRC bash
+aws eks --region <region> update-kubeconfig --name <cluster-name> --kubeconfig <kubeconfig-path>
+#+END_SRC
+
+Verify by running =kubectl get svc=
+
+
+*** launch and configure EKS worker nodes
+
+**** launch worker nodes
+
+1. wait for your cluster status to show as =ACTIVE=
+2. go to [[https://console.aws.amazon.com/cloudformation/][CloudFormation console]]
+3. create work nodes stack
+4. use Amazon S3 template URL and fill the URL =https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-02-11/amazon-eks-nodegroup.yaml=
+5. specify details
+   - ClusterName must exactly match the name we used for EKS cluster
+   - NodeImageId is the AMI ID, for example =ami-07ebcae043cf995aa=
+   - KeyName is the EC2 Key Pair Name
+   - BootstrapArguments are the extra =kubelet= arguments
+6. add tag to the stack resources
+7. review and create
+8. waiting for the creating has finished
+9. select the stack and record *NodeInstanceRole* in the output tab
+
+**** enable worker nodes to join your cluster
+
+1. get the kubeconfig via =awk eks update-kubeconfig= command
+2. download configure map yaml configuration
+   #+BEGIN_SRC bash
+   curl -o aws-auth-cm.yaml https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-02-11/aws-auth-cm.yaml
+   #+END_SRC
+3. update the configure map and replace the =ARN of instance role= with the *NodeInstanceRole*
+4. apply the configuration
+5. check the nodes with =kubectl get nodes=
+
+
+** Command line
+
+*** aws eks
+
+| command                                                                     | description            |
+|-----------------------------------------------------------------------------+------------------------|
+| aws eks list-clusters                                                       | list all clusters      |
+| aws eks describe-cluster --name <cluster-name>                              | describe cluster       |
+| aws eks update-kubeconfig --kubeconfig ~/.kube/output --name <cluster-name> | create kubeconfig file |
+
+
+*** eksctl
+
+=eksctl= is a =kubectl= style like command line tool.
+
+| command                              | description  |
+|--------------------------------------+--------------|
+| eksctl get cluster                   | get clusters |
+| eksctl get cluster -n <cluster-name> | show cluster details |
+
 * Landscape
 ** TODO Region and Zone
 
+* TODO TODO
+
+** AWS CloudFormation Consoles
+
+*** What is Stack?
