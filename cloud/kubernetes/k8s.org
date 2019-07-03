@@ -70,6 +70,13 @@ Objects informations can be split into two groups
 - spec :: desired state
 - status :: actual state, and is supplied and updated by the kubernete system
 
+** Why use Kubernetes?
+
+- open source and be maintained by a large community of volunteers
+- run applications at scale
+- seamlessly move applications from local to production deployment
+- run anywhere
+
 * Pods
 
 ** What is?
@@ -81,6 +88,7 @@ Objects informations can be split into two groups
   - with specification for how to run the containers
   - containers share an *IP address and port space*, can communicate with each-other via *localhost*
   - volume provides shared filesystem and data persistent
+  - with a single DNS name
 + Some notes about underlying
   + supports more container runtimes (beyond Docker)
   + undergroupd is a set of Linux namespaces, cgroups, and potentially other facets of isolation
