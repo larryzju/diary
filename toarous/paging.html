@@ -15,67 +15,344 @@
 		</nav>
 		<section class="main-article-area">
 			<div id='main'>
-				<h1 id="coding-analysis">Coding Analysis</h1>
-<p><code>kernel/core/mem.c</code></p>
+				<h1 id="overview">Overview</h1>
+<h2 id="functionality">Functionality</h2>
+<ul class="incremental">
+<li>memory protection: processes cannot trample other processes' data or code</li>
+<li>virtual memory: unique address space for processes</li>
+</ul>
+<h2 id="virtual-address-and-physical-address">virtual address and physical address</h2>
+<p>Parts of the virtual address space are mapped to physical memory, and parts are unmapped. If you try to access an unmapped part, the processor raises a <em>page fault</em>.</p>
+<h2 id="mmu">MMU</h2>
+<p>MMU is short for memory management unit. It is a hardware that handles all memory mappings due to segmentation and paging, forming a layer between CPU and memory.</p>
+<p>It read the page directory and page tables set by OS to perform the address translating.</p>
+<p>Process can only see memory that it has, it cannot modify or copy any other application's memory.</p>
+<h2 id="segment">Segment</h2>
+<p>Segmentation can also provides virtual memory. It is becoming obsolete.</p>
+<h2 id="feature">feature</h2>
+<ul class="incremental">
+<li>memory-mapped IO</li>
+<li>paging out to disk (缓存硬盘存储）</li>
+</ul>
+<h2 id="intel-cpu">Intel CPU</h2>
+<ul class="incremental">
+<li>x86-32 支持 32 位虚拟地址空间</li>
+<li>x86-64 处理器支持 48-bit 虚拟地址空间（256 TiB）</li>
+</ul>
+<p>64 位平台下已经用 page-level protection 替换了 segmentation protection。 32 位中两者被同时使用。</p>
+<h1 id="virtual-address-mapping">Virtual Address Mapping</h1>
+<p>Virtual address space is split into blocks called <em>pages</em>, which are usually 4KB in size. Pages can be mapped on to <em>frames</em> - equally sized blocks of physical memory</p>
+<p>Each process normally has a different set of page mappings. Each page has a corresponding descriptor word - <em>page table entry</em> or just <code>PTE</code>.</p>
+<p>To represent 4GB memory, we need 1M PTE (4MB space) which is too expensive. So Intel use a 2-tier system:</p>
+<dl class="incremental">
+<dt>page directory</dt>
+<dd>a 4KB large table, each entry of which points to a <em>page table</em>
+</dd>
+<dt>page table</dt>
+<dd>a 4KB large table and each entry is a <em>page table entry</em>
+</dd>
+</dl>
+<p>So if a page table has no entries, it can be freed and it's <code>present</code> flag unset in the page directory.</p>
+<figure>
+<img src="./images/page_directory.png" alt="" /><figcaption>Page 2-tier layout</figcaption>
+</figure>
+<p>CR3 register point to the page directory.</p>
+<p>A virtual address can be split into 3 parts</p>
+<ul class="incremental">
+<li>page directory index : select the page table</li>
+<li>page table index : select the page table entry and get the physical frame index</li>
+<li>VPO (virtual page offset): is equal to the physical frame offset</li>
+</ul>
+<figure>
+<img src="./images/paging-architecture.png" alt="" /><figcaption>Paging architecture</figcaption>
+</figure>
+<h2 id="code-illustration">Code Illustration</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">type</span> PageDirectoryEntry <span class="kw">struct</span> {</span>
+<span id="cb1-2"><a href="#cb1-2"></a>        PageTableAddress <span class="dt">uintptr</span>:<span class="dv">20</span>   <span class="co">// 4-KiB aligned</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>        Avail    <span class="dt">uintptr</span>:<span class="dv">3</span>            <span class="co">// not used by the processor</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>        Gbit     <span class="dt">uintptr</span>:<span class="dv">1</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>        PageSize <span class="dt">uintptr</span>:<span class="dv">1</span>            <span class="co">// 1 for 4MiB, 0 for 4 KiB</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>        Padbit   <span class="dt">uintptr</span>:<span class="dv">1</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>        Accessed <span class="dt">uintptr</span>:<span class="dv">1</span>            <span class="co">// set if it has been read or write to</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>        CacheDisable <span class="dt">uintptr</span>:<span class="dv">1</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a>        WriteThrough <span class="dt">uintptr</span>:<span class="dv">1</span>        <span class="co">// switch for write-through cache</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>        Supervisor   <span class="dt">uintptr</span>:<span class="dv">1</span>        <span class="co">// 1 for all</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>        ReadWrite    <span class="dt">uintptr</span>:<span class="dv">1</span>        <span class="co">// enable to read/write</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>        Present      <span class="dt">uintptr</span>:<span class="dv">1</span>        <span class="co">// whether in physical memory</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a>}</span>
+<span id="cb1-14"><a href="#cb1-14"></a></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="kw">func</span> (pd *PageDirectoryEntry) AddressBasis() <span class="dt">uintptr</span> {</span>
+<span id="cb1-16"><a href="#cb1-16"></a>        <span class="kw">if</span> pd.PageSize == <span class="dv">1</span> {</span>
+<span id="cb1-17"><a href="#cb1-17"></a>                <span class="kw">return</span> (pd.PageTableAddress &gt;&gt; <span class="dv">10</span>) * MBytes * <span class="dv">4</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a>        } <span class="kw">else</span> {</span>
+<span id="cb1-19"><a href="#cb1-19"></a>                <span class="kw">return</span> pd.PageTableAddress * KBytes * <span class="dv">4</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a>        }</span>
+<span id="cb1-21"><a href="#cb1-21"></a>}</span>
+<span id="cb1-22"><a href="#cb1-22"></a></span>
+<span id="cb1-23"><a href="#cb1-23"></a><span class="co">// PageTableEntry is similar to page directory entries</span></span>
+<span id="cb1-24"><a href="#cb1-24"></a><span class="kw">type</span> PageTableEntry <span class="kw">struct</span> {</span>
+<span id="cb1-25"><a href="#cb1-25"></a>        PhysicalPageAddress <span class="dt">uintptr</span>:<span class="dv">20</span> <span class="co">// 4-KiB aligned</span></span>
+<span id="cb1-26"><a href="#cb1-26"></a>        Avail    <span class="dt">uintptr</span>:<span class="dv">3</span>            <span class="co">// not used by the processor</span></span>
+<span id="cb1-27"><a href="#cb1-27"></a>        Global   <span class="dt">uintptr</span>:<span class="dv">1</span>            </span>
+<span id="cb1-28"><a href="#cb1-28"></a>        Padbit   <span class="dt">uintptr</span>:<span class="dv">1</span></span>
+<span id="cb1-29"><a href="#cb1-29"></a>        Dirty    <span class="dt">uintptr</span>:<span class="dv">1</span>            <span class="co">// page has been written to</span></span>
+<span id="cb1-30"><a href="#cb1-30"></a>        Accessed <span class="dt">uintptr</span>:<span class="dv">1</span></span>
+<span id="cb1-31"><a href="#cb1-31"></a>        CacheDisable <span class="dt">uintptr</span>:<span class="dv">1</span></span>
+<span id="cb1-32"><a href="#cb1-32"></a>        WriteThrough <span class="dt">uintptr</span>:<span class="dv">1</span>        <span class="co">// switch for write-through cache</span></span>
+<span id="cb1-33"><a href="#cb1-33"></a>        Supervisor   <span class="dt">uintptr</span>:<span class="dv">1</span>        <span class="co">// 1 for all</span></span>
+<span id="cb1-34"><a href="#cb1-34"></a>        ReadWrite    <span class="dt">uintptr</span>:<span class="dv">1</span>        <span class="co">// enable to read/write</span></span>
+<span id="cb1-35"><a href="#cb1-35"></a>        Present      <span class="dt">uintptr</span>:<span class="dv">1</span>        <span class="co">// whether in physical memory</span></span>
+<span id="cb1-36"><a href="#cb1-36"></a>}</span></code></pre></div>
+<h2 id="higher-half-kernel">Higher Half Kernel</h2>
+<p>The kernel is loaded at location x, but when paging is initialized the MMU is told to map location x to 0xC0000000.</p>
+<p>Linux's kernel reside at virtual addresses 0xC0000000 - 0xFFFFFFFF of every address space. Leaving the range 0x00000000 - 0xBFFFFFFF for user code, data, stacks, libraries, etc.</p>
+<h3 id="why">why</h3>
+<ul class="incremental">
+<li>to set up VM86 processes since the region below 1MB is userrspace</li>
+<li>user applications are not dependent on how much memory is kernel space</li>
+<li>..</li>
+</ul>
+<h2 id="pte">PTE</h2>
+<figure>
+<img src="./images/paging_pte.png" alt="" /><figcaption>Page Table Entry</figcaption>
+</figure>
+<table>
+<thead>
+<tr class="header">
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>P</td>
+<td>page is present in memory</td>
+</tr>
+<tr class="even">
+<td>R/W</td>
+<td>writable</td>
+</tr>
+<tr class="odd">
+<td>U/S</td>
+<td>user-mode or supervisor-mode</td>
+</tr>
+<tr class="even">
+<td>Reversed</td>
+<td>must not be trampled</td>
+</tr>
+<tr class="odd">
+<td>A</td>
+<td>page has been accessed</td>
+</tr>
+<tr class="even">
+<td>D</td>
+<td>page has been written to (dirty)</td>
+</tr>
+<tr class="odd">
+<td>AVAIL</td>
+<td>available for kernel-use</td>
+</tr>
+<tr class="even">
+<td>Frame Address</td>
+<td>20 bits of the frame address in physical memory, 4-KiB aligned</td>
+</tr>
+</tbody>
+</table>
+<h2 id="enable-paging">Enable Paging</h2>
+<ol class="incremental">
+<li>Copy the location (physical address) of your page directory into the CR3 register</li>
+<li>Set the <code>PG</code> bit in the CR0 register</li>
+</ol>
+<h1 id="page-faults">Page faults</h1>
+<p>MMU will throw a page fault interrupt if the page is not cached in below cases or violate the protection rules</p>
+<ul class="incremental">
+<li>access memory that is not mapped (page entry/table's present flag is not set)</li>
+<li>write to a read-only page in user-mode</li>
+<li>write to a kernel-only page in user-mode</li>
+<li>PTE is corrupted - the reversed bits have been overwritten</li>
+</ul>
+<p>Page fault interrupt is number 14, there's an extra error code about what happened.</p>
+<dl class="incremental">
+<dt>Bit 0</dt>
+<dd>If unset, the page wasn't present
+</dd>
+<dt>Bit 1</dt>
+<dd>If set, the operation that caused the fault was a write
+</dd>
+<dt>Bit 2</dt>
+<dd>If set, the processor was running in user-mode when it was interrupt
+</dd>
+<dt>Bit 3</dt>
+<dd>If set, the fault was caused by reversed bits being overwritten
+</dd>
+<dt>Bit 4</dt>
+<dd>If set, the fault occurred during an instruction fetch
+</dd>
+</dl>
+<p>CR2 register save the address that causes the fault.</p>
+<h1 id="code-analysis">Code Analysis</h1>
+<p>Paging related code is placed in <code>kernel/core/mem.c</code></p>
+<h2 id="data-structure">data structure</h2>
+<p>See <code>kernel/include/system.h</code> header file</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> page {</span>
+<span id="cb2-2"><a href="#cb2-2"></a>    <span class="dt">uint32_t</span> present:<span class="dv">1</span>;</span>
+<span id="cb2-3"><a href="#cb2-3"></a>    <span class="dt">uint32_t</span> rw:<span class="dv">1</span>;</span>
+<span id="cb2-4"><a href="#cb2-4"></a>    <span class="dt">uint32_t</span> user:<span class="dv">1</span>;</span>
+<span id="cb2-5"><a href="#cb2-5"></a>    <span class="dt">uint32_t</span> accessed:<span class="dv">1</span>;</span>
+<span id="cb2-6"><a href="#cb2-6"></a>    <span class="dt">uint32_t</span> dirty:<span class="dv">1</span>;</span>
+<span id="cb2-7"><a href="#cb2-7"></a>    <span class="dt">uint32_t</span> unused:<span class="dv">7</span>;</span>
+<span id="cb2-8"><a href="#cb2-8"></a>    <span class="dt">uint32_t</span> frame:<span class="dv">20</span>;</span>
+<span id="cb2-9"><a href="#cb2-9"></a>} page_t;</span>
+<span id="cb2-10"><a href="#cb2-10"></a></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="kw">typedef</span> <span class="kw">struct</span> page_table {</span>
+<span id="cb2-12"><a href="#cb2-12"></a>    page_t pages[<span class="dv">1024</span>];</span>
+<span id="cb2-13"><a href="#cb2-13"></a>} page_table_t;</span>
+<span id="cb2-14"><a href="#cb2-14"></a></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="kw">typedef</span> <span class="kw">struct</span> page_directory {</span>
+<span id="cb2-16"><a href="#cb2-16"></a>    page_table_t *tables[<span class="dv">1024</span>]; <span class="co">/* 1024 pointers to page tables... */</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a>    <span class="dt">uintptr_t</span> physical_tables[<span class="dv">1024</span>];    <span class="co">/* Physical addresses of the tables */</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a>    <span class="dt">uintptr_t</span> physical_address; <span class="co">/* The physical address of physical_tables */</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a>} page_directory_t;</span>
+<span id="cb2-20"><a href="#cb2-20"></a></span>
+<span id="cb2-21"><a href="#cb2-21"></a>page_directory_t *kernel_directory;</span>
+<span id="cb2-22"><a href="#cb2-22"></a>page_directory_t *current_directory;</span></code></pre></div>
+<p>MMU always access physical address (both page directory and page tables). But OS can only read or write the page table by virtual address if paging is enable.</p>
+<p><code>physical_address</code> is used when we clone the page directories. Because after the paging is enabled, the new page directory will have an address in virtual memory that is not the same as physical memory. We must feed CR3 with the physical address of the page directory.</p>
+<p><code>page_directory.tables</code> save the virtual address for OS so that we can read/write to them, and the <code>.physical_tables</code> array is the real page directory feed to CPU.</p>
+<h2 id="kmalloc-before-enable-paging">kmalloc before enable paging</h2>
+<p>Kernel heap is placed in virtual memory. Before the heap is active we need a simple alternative to allocate memory.</p>
+<p>Use the flat physical address and the memory allocated by <code>kmalloc_real</code> will never need to be "free".</p>
+<p><code>uintrptr_t placement_pointer</code> point to the current available heap address and will increase when ask for some more memory.</p>
+<p>Page table and page directory must be page-aligned (4KB, 0x1000)</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">extern</span> <span class="dt">uintptr_t</span> end;</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="dt">uintptr_t</span> placement_pointer = (<span class="dt">uintptr_t</span>)&amp;end;</span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="dt">void</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>kmalloc_startat(</span>
+<span id="cb3-6"><a href="#cb3-6"></a>        <span class="dt">uintptr_t</span> address</span>
+<span id="cb3-7"><a href="#cb3-7"></a>        ) {</span>
+<span id="cb3-8"><a href="#cb3-8"></a>    placement_pointer = address;</span>
+<span id="cb3-9"><a href="#cb3-9"></a>}</span>
+<span id="cb3-10"><a href="#cb3-10"></a></span>
+<span id="cb3-11"><a href="#cb3-11"></a><span class="co">/*</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="co"> * kmalloc() is the kernel&#39;s dumb placement allocator</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="co"> */</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a><span class="dt">uintptr_t</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a>kmalloc_real(</span>
+<span id="cb3-16"><a href="#cb3-16"></a>        <span class="dt">size_t</span> size,</span>
+<span id="cb3-17"><a href="#cb3-17"></a>        <span class="dt">int</span> align,</span>
+<span id="cb3-18"><a href="#cb3-18"></a>        <span class="dt">uintptr_t</span> * phys</span>
+<span id="cb3-19"><a href="#cb3-19"></a>        ) {</span>
+<span id="cb3-20"><a href="#cb3-20"></a>    <span class="cf">if</span> (align &amp;&amp; (placement_pointer &amp; <span class="bn">0xFFFFF000</span>)) {</span>
+<span id="cb3-21"><a href="#cb3-21"></a>        placement_pointer &amp;= <span class="bn">0xFFFFF000</span>;</span>
+<span id="cb3-22"><a href="#cb3-22"></a>    }</span>
+<span id="cb3-23"><a href="#cb3-23"></a>    <span class="cf">if</span> (phys) {</span>
+<span id="cb3-24"><a href="#cb3-24"></a>        *phys = placement_pointer;</span>
+<span id="cb3-25"><a href="#cb3-25"></a>    }</span>
+<span id="cb3-26"><a href="#cb3-26"></a>    <span class="dt">uintptr_t</span> address = placement_pointer;</span>
+<span id="cb3-27"><a href="#cb3-27"></a>    placement_pointer += size;</span>
+<span id="cb3-28"><a href="#cb3-28"></a>    <span class="cf">return</span> address;</span>
+<span id="cb3-29"><a href="#cb3-29"></a>}</span></code></pre></div>
+<h3 id="where-is-the-end-variable-defined"><span class="todo TODO">TODO</span> where is the "end" variable defined</h3>
+<h2 id="kmalloc-wrapper">kmalloc wrapper</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">/*</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co"> * Normal</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co"> */</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="dt">uintptr_t</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>kmalloc(</span>
+<span id="cb4-6"><a href="#cb4-6"></a>        <span class="dt">size_t</span> size</span>
+<span id="cb4-7"><a href="#cb4-7"></a>        ) {</span>
+<span id="cb4-8"><a href="#cb4-8"></a>    <span class="cf">return</span> kmalloc_real(size, <span class="dv">0</span>, NULL);</span>
+<span id="cb4-9"><a href="#cb4-9"></a>}</span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="co">/*</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="co"> * Aligned</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="co"> */</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="dt">uintptr_t</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a>kvmalloc(</span>
+<span id="cb4-15"><a href="#cb4-15"></a>        <span class="dt">size_t</span> size</span>
+<span id="cb4-16"><a href="#cb4-16"></a>        ) {</span>
+<span id="cb4-17"><a href="#cb4-17"></a>    <span class="cf">return</span> kmalloc_real(size, <span class="dv">1</span>, NULL);</span>
+<span id="cb4-18"><a href="#cb4-18"></a>}</span>
+<span id="cb4-19"><a href="#cb4-19"></a><span class="co">/*</span></span>
+<span id="cb4-20"><a href="#cb4-20"></a><span class="co"> * With a physical address</span></span>
+<span id="cb4-21"><a href="#cb4-21"></a><span class="co"> */</span></span>
+<span id="cb4-22"><a href="#cb4-22"></a><span class="dt">uintptr_t</span></span>
+<span id="cb4-23"><a href="#cb4-23"></a>kmalloc_p(</span>
+<span id="cb4-24"><a href="#cb4-24"></a>        <span class="dt">size_t</span> size,</span>
+<span id="cb4-25"><a href="#cb4-25"></a>        <span class="dt">uintptr_t</span> *phys</span>
+<span id="cb4-26"><a href="#cb4-26"></a>        ) {</span>
+<span id="cb4-27"><a href="#cb4-27"></a>    <span class="cf">return</span> kmalloc_real(size, <span class="dv">0</span>, phys);</span>
+<span id="cb4-28"><a href="#cb4-28"></a>}</span>
+<span id="cb4-29"><a href="#cb4-29"></a><span class="co">/*</span></span>
+<span id="cb4-30"><a href="#cb4-30"></a><span class="co"> * Aligned, with a physical address</span></span>
+<span id="cb4-31"><a href="#cb4-31"></a><span class="co"> */</span></span>
+<span id="cb4-32"><a href="#cb4-32"></a><span class="dt">uintptr_t</span></span>
+<span id="cb4-33"><a href="#cb4-33"></a>kvmalloc_p(</span>
+<span id="cb4-34"><a href="#cb4-34"></a>        <span class="dt">size_t</span> size,</span>
+<span id="cb4-35"><a href="#cb4-35"></a>        <span class="dt">uintptr_t</span> *phys</span>
+<span id="cb4-36"><a href="#cb4-36"></a>        ) {</span>
+<span id="cb4-37"><a href="#cb4-37"></a>    <span class="cf">return</span> kmalloc_real(size, <span class="dv">1</span>, phys);</span>
+<span id="cb4-38"><a href="#cb4-38"></a>}</span></code></pre></div>
+<p>According to James tutorial, the <code>kvmalloc_p</code> is used when we clone a page directory because we will need the physical address at the same time with virtual address.</p>
 <h2 id="switch-page-directory">switch page directory</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1"></a><span class="dt">void</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a>switch_page_directory(</span>
-<span id="cb1-3"><a href="#cb1-3"></a>                page_directory_t * dir</span>
-<span id="cb1-4"><a href="#cb1-4"></a>                ) {</span>
-<span id="cb1-5"><a href="#cb1-5"></a>        current_directory = dir;</span>
-<span id="cb1-6"><a href="#cb1-6"></a>        __asm__ __volatile__ (<span class="st">&quot;mov %0, %%cr3&quot;</span>:: <span class="st">&quot;r&quot;</span>(&amp;dir-&gt;physical_tables));</span>
-<span id="cb1-7"><a href="#cb1-7"></a>        <span class="dt">uint32_t</span> cr0;</span>
-<span id="cb1-8"><a href="#cb1-8"></a>        __asm__ __volatile__ (<span class="st">&quot;mov %%cr0, %0&quot;</span>: <span class="st">&quot;=r&quot;</span>(cr0));</span>
-<span id="cb1-9"><a href="#cb1-9"></a>        cr0 |= <span class="bn">0x80000000</span>;</span>
-<span id="cb1-10"><a href="#cb1-10"></a>        __asm__ __volatile__ (<span class="st">&quot;mov %0, %%cr0&quot;</span>:: <span class="st">&quot;r&quot;</span>(cr0));</span>
-<span id="cb1-11"><a href="#cb1-11"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1"></a><span class="dt">void</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>switch_page_directory(</span>
+<span id="cb5-3"><a href="#cb5-3"></a>                page_directory_t * dir</span>
+<span id="cb5-4"><a href="#cb5-4"></a>                ) {</span>
+<span id="cb5-5"><a href="#cb5-5"></a>        current_directory = dir;</span>
+<span id="cb5-6"><a href="#cb5-6"></a>        __asm__ __volatile__ (<span class="st">&quot;mov %0, %%cr3&quot;</span>:: <span class="st">&quot;r&quot;</span>(&amp;dir-&gt;physical_tables));</span>
+<span id="cb5-7"><a href="#cb5-7"></a>        <span class="dt">uint32_t</span> cr0;</span>
+<span id="cb5-8"><a href="#cb5-8"></a>        __asm__ __volatile__ (<span class="st">&quot;mov %%cr0, %0&quot;</span>: <span class="st">&quot;=r&quot;</span>(cr0));</span>
+<span id="cb5-9"><a href="#cb5-9"></a>        cr0 |= <span class="bn">0x80000000</span>;</span>
+<span id="cb5-10"><a href="#cb5-10"></a>        __asm__ __volatile__ (<span class="st">&quot;mov %0, %%cr0&quot;</span>:: <span class="st">&quot;r&quot;</span>(cr0));</span>
+<span id="cb5-11"><a href="#cb5-11"></a>}</span></code></pre></div>
 <p>Enable page directory by</p>
 <ul class="incremental">
 <li>load CR3 with the address of the page directory (<code>dir-&gt;physical_tables</code>)</li>
 <li>set the PG bit (bit 31) of CR0 to enable paging</li>
 <li>(optional) set the PE bit (bit 1) of CR0 to enable protect mode</li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb2-1"><a href="#cb2-1"></a><span class="bu">mov</span> <span class="kw">eax</span>, physical_tables</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="bu">mov</span> <span class="kw">cr3</span>, <span class="kw">eax</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="bu">mov</span> <span class="kw">eax</span>, <span class="kw">cr0</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="bu">or</span>  <span class="kw">eax</span>, <span class="bn">0x8000</span>_<span class="dv">0000</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="bu">mov</span> <span class="kw">cr0</span>, <span class="kw">eax</span></span></code></pre></div>
-<h2 id="physical-frame">physical frame</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1"></a><span class="dt">void</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>alloc_frame(</span>
-<span id="cb3-3"><a href="#cb3-3"></a>                page_t *page,</span>
-<span id="cb3-4"><a href="#cb3-4"></a>                <span class="dt">int</span> is_kernel,</span>
-<span id="cb3-5"><a href="#cb3-5"></a>                <span class="dt">int</span> is_writeable</span>
-<span id="cb3-6"><a href="#cb3-6"></a>                ) {</span>
-<span id="cb3-7"><a href="#cb3-7"></a>        <span class="cf">if</span> (page-&gt;frame) {</span>
-<span id="cb3-8"><a href="#cb3-8"></a>                <span class="cf">return</span>;</span>
-<span id="cb3-9"><a href="#cb3-9"></a>        } <span class="cf">else</span> {</span>
-<span id="cb3-10"><a href="#cb3-10"></a>                <span class="dt">uint32_t</span> index = first_frame();</span>
-<span id="cb3-11"><a href="#cb3-11"></a>                <span class="cf">if</span> (index == (<span class="dt">uint32_t</span>)-<span class="dv">1</span>) {</span>
-<span id="cb3-12"><a href="#cb3-12"></a>                        <span class="co">// never happens?</span></span>
-<span id="cb3-13"><a href="#cb3-13"></a>                        HALT_AND_CATCH_FIRE(<span class="st">&quot;Failed to allocate a frame: out of frames&quot;</span>);</span>
-<span id="cb3-14"><a href="#cb3-14"></a>                }</span>
-<span id="cb3-15"><a href="#cb3-15"></a>                set_frame(index * <span class="bn">0x1000</span>); </span>
-<span id="cb3-16"><a href="#cb3-16"></a>                page-&gt;present = <span class="dv">1</span>;</span>
-<span id="cb3-17"><a href="#cb3-17"></a>                page-&gt;rw      = (is_writeable) ? <span class="dv">1</span> : <span class="dv">0</span>;</span>
-<span id="cb3-18"><a href="#cb3-18"></a>                page-&gt;user    = (is_kernel)    ? <span class="dv">0</span> : <span class="dv">1</span>;</span>
-<span id="cb3-19"><a href="#cb3-19"></a>                page-&gt;frame   = index;</span>
-<span id="cb3-20"><a href="#cb3-20"></a>        }</span>
-<span id="cb3-21"><a href="#cb3-21"></a>}</span>
-<span id="cb3-22"><a href="#cb3-22"></a></span>
-<span id="cb3-23"><a href="#cb3-23"></a><span class="dt">void</span></span>
-<span id="cb3-24"><a href="#cb3-24"></a>free_frame(</span>
-<span id="cb3-25"><a href="#cb3-25"></a>                page_t *page</span>
-<span id="cb3-26"><a href="#cb3-26"></a>                ) {</span>
-<span id="cb3-27"><a href="#cb3-27"></a>        <span class="dt">uint32_t</span> frame;</span>
-<span id="cb3-28"><a href="#cb3-28"></a>        <span class="cf">if</span> (!(frame = page-&gt;frame)) {</span>
-<span id="cb3-29"><a href="#cb3-29"></a>                <span class="cf">return</span>;</span>
-<span id="cb3-30"><a href="#cb3-30"></a>        } <span class="cf">else</span> {</span>
-<span id="cb3-31"><a href="#cb3-31"></a>                clear_frame(frame);</span>
-<span id="cb3-32"><a href="#cb3-32"></a>                page-&gt;frame = <span class="bn">0x0</span>;</span>
-<span id="cb3-33"><a href="#cb3-33"></a>        }</span>
-<span id="cb3-34"><a href="#cb3-34"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode asm"><code class="sourceCode fasm"><span id="cb6-1"><a href="#cb6-1"></a><span class="bu">mov</span> <span class="kw">eax</span>, physical_tables</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="bu">mov</span> <span class="kw">cr3</span>, <span class="kw">eax</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="bu">mov</span> <span class="kw">eax</span>, <span class="kw">cr0</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="bu">or</span>  <span class="kw">eax</span>, <span class="bn">0x8000</span>_<span class="dv">0000</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="bu">mov</span> <span class="kw">cr0</span>, <span class="kw">eax</span></span></code></pre></div>
+<h2 id="allocate-frames">allocate frames</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1"></a><span class="dt">void</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>alloc_frame(</span>
+<span id="cb7-3"><a href="#cb7-3"></a>                page_t *page,</span>
+<span id="cb7-4"><a href="#cb7-4"></a>                <span class="dt">int</span> is_kernel,</span>
+<span id="cb7-5"><a href="#cb7-5"></a>                <span class="dt">int</span> is_writeable</span>
+<span id="cb7-6"><a href="#cb7-6"></a>                ) {</span>
+<span id="cb7-7"><a href="#cb7-7"></a>        <span class="cf">if</span> (page-&gt;frame) {</span>
+<span id="cb7-8"><a href="#cb7-8"></a>                <span class="cf">return</span>;</span>
+<span id="cb7-9"><a href="#cb7-9"></a>        } <span class="cf">else</span> {</span>
+<span id="cb7-10"><a href="#cb7-10"></a>                <span class="dt">uint32_t</span> index = first_frame();</span>
+<span id="cb7-11"><a href="#cb7-11"></a>                <span class="cf">if</span> (index == (<span class="dt">uint32_t</span>)-<span class="dv">1</span>) {</span>
+<span id="cb7-12"><a href="#cb7-12"></a>                        <span class="co">// never happens?</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a>                        HALT_AND_CATCH_FIRE(<span class="st">&quot;Failed to allocate a frame: out of frames&quot;</span>);</span>
+<span id="cb7-14"><a href="#cb7-14"></a>                }</span>
+<span id="cb7-15"><a href="#cb7-15"></a>                set_frame(index * <span class="bn">0x1000</span>); </span>
+<span id="cb7-16"><a href="#cb7-16"></a>                page-&gt;present = <span class="dv">1</span>;</span>
+<span id="cb7-17"><a href="#cb7-17"></a>                page-&gt;rw      = (is_writeable) ? <span class="dv">1</span> : <span class="dv">0</span>;</span>
+<span id="cb7-18"><a href="#cb7-18"></a>                page-&gt;user    = (is_kernel)    ? <span class="dv">0</span> : <span class="dv">1</span>;</span>
+<span id="cb7-19"><a href="#cb7-19"></a>                page-&gt;frame   = index;</span>
+<span id="cb7-20"><a href="#cb7-20"></a>        }</span>
+<span id="cb7-21"><a href="#cb7-21"></a>}</span>
+<span id="cb7-22"><a href="#cb7-22"></a></span>
+<span id="cb7-23"><a href="#cb7-23"></a><span class="dt">void</span></span>
+<span id="cb7-24"><a href="#cb7-24"></a>free_frame(</span>
+<span id="cb7-25"><a href="#cb7-25"></a>                page_t *page</span>
+<span id="cb7-26"><a href="#cb7-26"></a>                ) {</span>
+<span id="cb7-27"><a href="#cb7-27"></a>        <span class="dt">uint32_t</span> frame;</span>
+<span id="cb7-28"><a href="#cb7-28"></a>        <span class="cf">if</span> (!(frame = page-&gt;frame)) {</span>
+<span id="cb7-29"><a href="#cb7-29"></a>                <span class="cf">return</span>;</span>
+<span id="cb7-30"><a href="#cb7-30"></a>        } <span class="cf">else</span> {</span>
+<span id="cb7-31"><a href="#cb7-31"></a>                clear_frame(frame);</span>
+<span id="cb7-32"><a href="#cb7-32"></a>                page-&gt;frame = <span class="bn">0x0</span>;</span>
+<span id="cb7-33"><a href="#cb7-33"></a>        }</span>
+<span id="cb7-34"><a href="#cb7-34"></a>}</span></code></pre></div>
 <p>Page caches physical frame in <code>page-&gt;frame</code> pointer.</p>
 <p>Allocate a frame for a page in below steps</p>
 <ol class="incremental">
@@ -92,56 +369,56 @@
 </ol>
 <p>Free a frame is quiet easy: clear the bitmap and set the <code>frame</code> as zero.</p>
 <h2 id="frame-bitmap">frame bitmap</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1"></a><span class="dt">uint32_t</span> *frames;</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="dt">uint32_t</span> nframes;</span>
-<span id="cb4-3"><a href="#cb4-3"></a></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="pp">#define INDEX_FROM_BIT(b) (b / 0x20)</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="pp">#define OFFSET_FROM_BIT(b) (b % 0x20)</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a></span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="dt">static</span> <span class="dt">void</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a>set_frame(</span>
-<span id="cb4-9"><a href="#cb4-9"></a>                <span class="dt">uintptr_t</span> frame_addr</span>
-<span id="cb4-10"><a href="#cb4-10"></a>                ) {</span>
-<span id="cb4-11"><a href="#cb4-11"></a>        <span class="dt">uint32_t</span> frame  = frame_addr / <span class="bn">0x1000</span>;</span>
-<span id="cb4-12"><a href="#cb4-12"></a>        <span class="dt">uint32_t</span> index  = INDEX_FROM_BIT(frame);</span>
-<span id="cb4-13"><a href="#cb4-13"></a>        <span class="dt">uint32_t</span> offset = OFFSET_FROM_BIT(frame);</span>
-<span id="cb4-14"><a href="#cb4-14"></a>        frames[index] |= (<span class="bn">0x1</span> &lt;&lt; offset);</span>
-<span id="cb4-15"><a href="#cb4-15"></a>}</span>
-<span id="cb4-16"><a href="#cb4-16"></a></span>
-<span id="cb4-17"><a href="#cb4-17"></a><span class="dt">static</span> <span class="dt">void</span></span>
-<span id="cb4-18"><a href="#cb4-18"></a>clear_frame(</span>
-<span id="cb4-19"><a href="#cb4-19"></a>                <span class="dt">uintptr_t</span> frame_addr</span>
-<span id="cb4-20"><a href="#cb4-20"></a>                ) {</span>
-<span id="cb4-21"><a href="#cb4-21"></a>        <span class="dt">uint32_t</span> frame  = frame_addr / <span class="bn">0x1000</span>;</span>
-<span id="cb4-22"><a href="#cb4-22"></a>        <span class="dt">uint32_t</span> index  = INDEX_FROM_BIT(frame);</span>
-<span id="cb4-23"><a href="#cb4-23"></a>        <span class="dt">uint32_t</span> offset = OFFSET_FROM_BIT(frame);</span>
-<span id="cb4-24"><a href="#cb4-24"></a>        frames[index] &amp;= ~(<span class="bn">0x1</span> &lt;&lt; offset);</span>
-<span id="cb4-25"><a href="#cb4-25"></a>}</span>
-<span id="cb4-26"><a href="#cb4-26"></a></span>
-<span id="cb4-27"><a href="#cb4-27"></a><span class="dt">static</span> <span class="dt">uint32_t</span></span>
-<span id="cb4-28"><a href="#cb4-28"></a>test_frame(</span>
-<span id="cb4-29"><a href="#cb4-29"></a>                <span class="dt">uintptr_t</span> frame_addr</span>
-<span id="cb4-30"><a href="#cb4-30"></a>                ) {</span>
-<span id="cb4-31"><a href="#cb4-31"></a>        <span class="dt">uint32_t</span> frame  = frame_addr / <span class="bn">0x1000</span>;</span>
-<span id="cb4-32"><a href="#cb4-32"></a>        <span class="dt">uint32_t</span> index  = INDEX_FROM_BIT(frame);</span>
-<span id="cb4-33"><a href="#cb4-33"></a>        <span class="dt">uint32_t</span> offset = OFFSET_FROM_BIT(frame);</span>
-<span id="cb4-34"><a href="#cb4-34"></a>        <span class="cf">return</span> (frames[index] &amp; (<span class="bn">0x1</span> &lt;&lt; offset));</span>
-<span id="cb4-35"><a href="#cb4-35"></a>}</span>
-<span id="cb4-36"><a href="#cb4-36"></a></span>
-<span id="cb4-37"><a href="#cb4-37"></a><span class="dt">static</span> <span class="dt">uint32_t</span> first_frame() {</span>
-<span id="cb4-38"><a href="#cb4-38"></a>        <span class="dt">uint32_t</span> i, j;</span>
-<span id="cb4-39"><a href="#cb4-39"></a>        <span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; INDEX_FROM_BIT(nframes); ++i) {</span>
-<span id="cb4-40"><a href="#cb4-40"></a>                <span class="cf">if</span> (frames[i] != <span class="bn">0xFFFFFFFF</span>) {</span>
-<span id="cb4-41"><a href="#cb4-41"></a>                        <span class="cf">for</span> (j = <span class="dv">0</span>; j &lt; <span class="dv">32</span>; ++j) {</span>
-<span id="cb4-42"><a href="#cb4-42"></a>                                <span class="dt">uint32_t</span> test_frame = <span class="bn">0x1</span> &lt;&lt; j;</span>
-<span id="cb4-43"><a href="#cb4-43"></a>                                <span class="cf">if</span> (!(frames[i] &amp; test_frame)) {</span>
-<span id="cb4-44"><a href="#cb4-44"></a>                                        <span class="cf">return</span> i * <span class="bn">0x20</span> + j;</span>
-<span id="cb4-45"><a href="#cb4-45"></a>                                }</span>
-<span id="cb4-46"><a href="#cb4-46"></a>                        }</span>
-<span id="cb4-47"><a href="#cb4-47"></a>                }</span>
-<span id="cb4-48"><a href="#cb4-48"></a>        }       </span>
-<span id="cb4-49"><a href="#cb4-49"></a>        <span class="cf">return</span> -<span class="dv">1</span>;</span>
-<span id="cb4-50"><a href="#cb4-50"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1"></a><span class="dt">uint32_t</span> *frames;</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="dt">uint32_t</span> nframes;</span>
+<span id="cb8-3"><a href="#cb8-3"></a></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="pp">#define INDEX_FROM_BIT(b) (b / 0x20)</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="pp">#define OFFSET_FROM_BIT(b) (b % 0x20)</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a></span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="dt">static</span> <span class="dt">void</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a>set_frame(</span>
+<span id="cb8-9"><a href="#cb8-9"></a>                <span class="dt">uintptr_t</span> frame_addr</span>
+<span id="cb8-10"><a href="#cb8-10"></a>                ) {</span>
+<span id="cb8-11"><a href="#cb8-11"></a>        <span class="dt">uint32_t</span> frame  = frame_addr / <span class="bn">0x1000</span>;</span>
+<span id="cb8-12"><a href="#cb8-12"></a>        <span class="dt">uint32_t</span> index  = INDEX_FROM_BIT(frame);</span>
+<span id="cb8-13"><a href="#cb8-13"></a>        <span class="dt">uint32_t</span> offset = OFFSET_FROM_BIT(frame);</span>
+<span id="cb8-14"><a href="#cb8-14"></a>        frames[index] |= (<span class="bn">0x1</span> &lt;&lt; offset);</span>
+<span id="cb8-15"><a href="#cb8-15"></a>}</span>
+<span id="cb8-16"><a href="#cb8-16"></a></span>
+<span id="cb8-17"><a href="#cb8-17"></a><span class="dt">static</span> <span class="dt">void</span></span>
+<span id="cb8-18"><a href="#cb8-18"></a>clear_frame(</span>
+<span id="cb8-19"><a href="#cb8-19"></a>                <span class="dt">uintptr_t</span> frame_addr</span>
+<span id="cb8-20"><a href="#cb8-20"></a>                ) {</span>
+<span id="cb8-21"><a href="#cb8-21"></a>        <span class="dt">uint32_t</span> frame  = frame_addr / <span class="bn">0x1000</span>;</span>
+<span id="cb8-22"><a href="#cb8-22"></a>        <span class="dt">uint32_t</span> index  = INDEX_FROM_BIT(frame);</span>
+<span id="cb8-23"><a href="#cb8-23"></a>        <span class="dt">uint32_t</span> offset = OFFSET_FROM_BIT(frame);</span>
+<span id="cb8-24"><a href="#cb8-24"></a>        frames[index] &amp;= ~(<span class="bn">0x1</span> &lt;&lt; offset);</span>
+<span id="cb8-25"><a href="#cb8-25"></a>}</span>
+<span id="cb8-26"><a href="#cb8-26"></a></span>
+<span id="cb8-27"><a href="#cb8-27"></a><span class="dt">static</span> <span class="dt">uint32_t</span></span>
+<span id="cb8-28"><a href="#cb8-28"></a>test_frame(</span>
+<span id="cb8-29"><a href="#cb8-29"></a>                <span class="dt">uintptr_t</span> frame_addr</span>
+<span id="cb8-30"><a href="#cb8-30"></a>                ) {</span>
+<span id="cb8-31"><a href="#cb8-31"></a>        <span class="dt">uint32_t</span> frame  = frame_addr / <span class="bn">0x1000</span>;</span>
+<span id="cb8-32"><a href="#cb8-32"></a>        <span class="dt">uint32_t</span> index  = INDEX_FROM_BIT(frame);</span>
+<span id="cb8-33"><a href="#cb8-33"></a>        <span class="dt">uint32_t</span> offset = OFFSET_FROM_BIT(frame);</span>
+<span id="cb8-34"><a href="#cb8-34"></a>        <span class="cf">return</span> (frames[index] &amp; (<span class="bn">0x1</span> &lt;&lt; offset));</span>
+<span id="cb8-35"><a href="#cb8-35"></a>}</span>
+<span id="cb8-36"><a href="#cb8-36"></a></span>
+<span id="cb8-37"><a href="#cb8-37"></a><span class="dt">static</span> <span class="dt">uint32_t</span> first_frame() {</span>
+<span id="cb8-38"><a href="#cb8-38"></a>        <span class="dt">uint32_t</span> i, j;</span>
+<span id="cb8-39"><a href="#cb8-39"></a>        <span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; INDEX_FROM_BIT(nframes); ++i) {</span>
+<span id="cb8-40"><a href="#cb8-40"></a>                <span class="cf">if</span> (frames[i] != <span class="bn">0xFFFFFFFF</span>) {</span>
+<span id="cb8-41"><a href="#cb8-41"></a>                        <span class="cf">for</span> (j = <span class="dv">0</span>; j &lt; <span class="dv">32</span>; ++j) {</span>
+<span id="cb8-42"><a href="#cb8-42"></a>                                <span class="dt">uint32_t</span> test_frame = <span class="bn">0x1</span> &lt;&lt; j;</span>
+<span id="cb8-43"><a href="#cb8-43"></a>                                <span class="cf">if</span> (!(frames[i] &amp; test_frame)) {</span>
+<span id="cb8-44"><a href="#cb8-44"></a>                                        <span class="cf">return</span> i * <span class="bn">0x20</span> + j;</span>
+<span id="cb8-45"><a href="#cb8-45"></a>                                }</span>
+<span id="cb8-46"><a href="#cb8-46"></a>                        }</span>
+<span id="cb8-47"><a href="#cb8-47"></a>                }</span>
+<span id="cb8-48"><a href="#cb8-48"></a>        }       </span>
+<span id="cb8-49"><a href="#cb8-49"></a>        <span class="cf">return</span> -<span class="dv">1</span>;</span>
+<span id="cb8-50"><a href="#cb8-50"></a>}</span></code></pre></div>
 <p>Frame is a 4 KiB continuous addressed block.</p>
 <table>
 <thead>
@@ -199,96 +476,12 @@
 </tr>
 </tbody>
 </table>
-<h1 id="paging">Paging</h1>
-<p>作用：</p>
-<ul class="incremental">
-<li>实现虚拟地址空间</li>
-<li>并提供页保护机制 (page-level protection)</li>
-<li>memory-mapped IO</li>
-<li>paging sout to disk (缓存硬盘存储）</li>
-</ul>
-<p>对 x86 处理器</p>
-<ul class="incremental">
-<li>x86-32 支持 32 位虚拟地址空间</li>
-<li>x86-64 处理器支持 48-bit 虚拟地址空间（256 TiB）</li>
-</ul>
-<p>64 位平台下已经用 page-level protection 替换了 segmentation protection。 32 位中两者被同时使用。</p>
-<h2 id="architecture">Architecture</h2>
-<figure>
-<img src="./images/paging-architecture.png" alt="" /><figcaption>Paging architecture</figcaption>
-</figure>
-<p>以二级表方式进行内存映射。</p>
-<p>MMU 读取一系列的表（paging directory 和 paging table）来进行内存映射。</p>
-<p>CR3 register point to the page directory</p>
-<p>Paging directory 和 Paging table 分别包括 1024 个 4 字节的表项</p>
-<ul class="incremental">
-<li>paging directory 的表项指向一个 paging table</li>
-<li>paging table 的每个表项指向一个物理地址</li>
-<li>物理地址加上相关 offset 就得到最终地址</li>
-</ul>
-<div class="sourceCode" id="cb5"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">type</span> PageDirectory <span class="kw">struct</span> {</span>
-<span id="cb5-2"><a href="#cb5-2"></a>        PageTableAddress <span class="dt">uintptr</span>:<span class="dv">20</span>   <span class="co">// 4-KiB aligned</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a>        Avail    <span class="dt">uintptr</span>:<span class="dv">3</span>            <span class="co">// not used by the processor</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a>        Gbit     <span class="dt">uintptr</span>:<span class="dv">1</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a>        PageSize <span class="dt">uintptr</span>:<span class="dv">1</span>            <span class="co">// 1 for 4MiB, 0 for 4 KiB</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a>        Padbit   <span class="dt">uintptr</span>:<span class="dv">1</span></span>
-<span id="cb5-7"><a href="#cb5-7"></a>        Accessed <span class="dt">uintptr</span>:<span class="dv">1</span>            <span class="co">// set if it has been read or write to</span></span>
-<span id="cb5-8"><a href="#cb5-8"></a>        CacheDisable <span class="dt">uintptr</span>:<span class="dv">1</span></span>
-<span id="cb5-9"><a href="#cb5-9"></a>        WriteThrough <span class="dt">uintptr</span>:<span class="dv">1</span>        <span class="co">// switch for write-through cache</span></span>
-<span id="cb5-10"><a href="#cb5-10"></a>        Supervisor   <span class="dt">uintptr</span>:<span class="dv">1</span>        <span class="co">// 1 for all</span></span>
-<span id="cb5-11"><a href="#cb5-11"></a>        ReadWrite    <span class="dt">uintptr</span>:<span class="dv">1</span>        <span class="co">// enable to read/write</span></span>
-<span id="cb5-12"><a href="#cb5-12"></a>        Present      <span class="dt">uintptr</span>:<span class="dv">1</span>        <span class="co">// whether in physical memory</span></span>
-<span id="cb5-13"><a href="#cb5-13"></a>}</span>
-<span id="cb5-14"><a href="#cb5-14"></a></span>
-<span id="cb5-15"><a href="#cb5-15"></a><span class="kw">func</span> (pd *PageDirectory) AddressBasis() <span class="dt">uintptr</span> {</span>
-<span id="cb5-16"><a href="#cb5-16"></a>        <span class="kw">if</span> pd.PageSize == <span class="dv">1</span> {</span>
-<span id="cb5-17"><a href="#cb5-17"></a>                <span class="kw">return</span> (pd.PageTableAddress &gt;&gt; <span class="dv">10</span>) * MBytes * <span class="dv">4</span></span>
-<span id="cb5-18"><a href="#cb5-18"></a>        } <span class="kw">else</span> {</span>
-<span id="cb5-19"><a href="#cb5-19"></a>                <span class="kw">return</span> pd.PageTableAddress * KBytes * <span class="dv">4</span></span>
-<span id="cb5-20"><a href="#cb5-20"></a>        }</span>
-<span id="cb5-21"><a href="#cb5-21"></a>}</span>
-<span id="cb5-22"><a href="#cb5-22"></a></span>
-<span id="cb5-23"><a href="#cb5-23"></a><span class="co">// PageTable is similar to page directory entries</span></span>
-<span id="cb5-24"><a href="#cb5-24"></a><span class="kw">type</span> PageTable <span class="kw">struct</span> {</span>
-<span id="cb5-25"><a href="#cb5-25"></a>        PhysicalPageAddress <span class="dt">uintptr</span>:<span class="dv">20</span> <span class="co">// 4-KiB aligned</span></span>
-<span id="cb5-26"><a href="#cb5-26"></a>        Avail    <span class="dt">uintptr</span>:<span class="dv">3</span>            <span class="co">// not used by the processor</span></span>
-<span id="cb5-27"><a href="#cb5-27"></a>        Global   <span class="dt">uintptr</span>:<span class="dv">1</span>            </span>
-<span id="cb5-28"><a href="#cb5-28"></a>        Padbit   <span class="dt">uintptr</span>:<span class="dv">1</span></span>
-<span id="cb5-29"><a href="#cb5-29"></a>        Dirty    <span class="dt">uintptr</span>:<span class="dv">1</span>            <span class="co">// page has been written to</span></span>
-<span id="cb5-30"><a href="#cb5-30"></a>        Accessed <span class="dt">uintptr</span>:<span class="dv">1</span></span>
-<span id="cb5-31"><a href="#cb5-31"></a>        CacheDisable <span class="dt">uintptr</span>:<span class="dv">1</span></span>
-<span id="cb5-32"><a href="#cb5-32"></a>        WriteThrough <span class="dt">uintptr</span>:<span class="dv">1</span>        <span class="co">// switch for write-through cache</span></span>
-<span id="cb5-33"><a href="#cb5-33"></a>        Supervisor   <span class="dt">uintptr</span>:<span class="dv">1</span>        <span class="co">// 1 for all</span></span>
-<span id="cb5-34"><a href="#cb5-34"></a>        ReadWrite    <span class="dt">uintptr</span>:<span class="dv">1</span>        <span class="co">// enable to read/write</span></span>
-<span id="cb5-35"><a href="#cb5-35"></a>        Present      <span class="dt">uintptr</span>:<span class="dv">1</span>        <span class="co">// whether in physical memory</span></span>
-<span id="cb5-36"><a href="#cb5-36"></a>}</span></code></pre></div>
-<h2 id="page-directory">Page Directory</h2>
-<h2 id="page-table">Page Table</h2>
-<h2 id="mmu">MMU</h2>
-<p>Handles</p>
-<ul class="incremental">
-<li>memory translation</li>
-<li>memory protection</li>
-<li>…</li>
-</ul>
-<h3 id="translation">Translation</h3>
-<p>Convert/map virtual addresses to physical address</p>
-<h3 id="protection">Protection</h3>
-<p>Process can only see memory that it has, it cannot modify or copy any other application's memory.</p>
-<h2 id="higher-half-kernel">Higher Half Kernel</h2>
-<p>The kernel is loaded at location x, but when paging is initialized the MMU is told to map location x to 0xC0000000.</p>
-<p>Linux's kernel reside at virtual addresses 0xC0000000 - 0xFFFFFFFF of every address space. Leaving the range 0x00000000 - 0xBFFFFFFF for user code, data, stacks, libraries, etc.</p>
-<h3 id="why">why</h3>
-<ul class="incremental">
-<li>to set up VM86 processes since the region below 1MB is userrspace</li>
-<li>user applications are not dependent on how much memory is kernel space</li>
-<li>..</li>
-</ul>
 <h1 id="reference">Reference</h1>
 <ul class="incremental">
 <li><a href="https://wiki.osdev.org/Page_directory#Page_Directory">https://wiki.osdev.org/Page_directory#Page_Directory</a></li>
 <li><a href="https://wiki.osdev.org/MMU">https://wiki.osdev.org/MMU</a></li>
 <li><a href="https://wiki.osdev.org/Higher_Half_Kernel">https://wiki.osdev.org/Higher_Half_Kernel</a></li>
+<li><a href="http://www.jamesmolloy.co.uk/tutorial_html/6.-Paging.html">http://www.jamesmolloy.co.uk/tutorial_html/6.-Paging.html</a></li>
 </ul>
 
 			</div>
