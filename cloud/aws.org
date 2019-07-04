@@ -1,3 +1,87 @@
+* S3
+
+S3 is short for Amazon Simple Storage Service. It is storage for the
+internet which stores data as *objects* within *buckets*.
+
+** Object
+
+An *object* consists of a file and optionally any metadata that
+describes that file. (like inode with data)
+
+** Bucket 
+
+*Buckets* are the containers for objects are placed as a whole object
+- control access
+- view access logs for it and its objects
+- choose the geographical region where S3 will store the bucket and its contents
+
+*** Permission
+
+** basic usage steps
+
+1. sign up for S3
+2. create a bucket: specify unique name and region
+3. add an object to bucket
+4. you can view information about the object and download the object to local computer
+5. create a folder and copy the object into the new folder
+6. delete object, or empty bucket - delete all objects in the bucket, or delete a bucket
+
+** Command Line
+
+Refer to =aws s3 help= page
+
+*** Pattern Match
+
+No support for UNIX style wildcards in path arguments. Use =--exclude=
+or =--include= paramters instead.
+
+The order is important
+| command                           | description                                         |
+|-----------------------------------+-----------------------------------------------------|
+| ~--exclude "*" --include "*.txt"~ | exclude all files except for files ending with .txt |
+| ~--include "*.txt" --exclude "*"~ | exclude all files                                   |
+
+If the source target is a file, then the source directory will be used for pattern match
+
+*** TODO Prefix
+
+*** Path Type
+
+- LocalPath :: absolute path or relative path
+- S3Uri :: location of a S3 object, prefix, or bucket. For example =s3://mybucket/mykey=
+
+*** Commands
+
+| command | description                                                                             |
+|---------+-----------------------------------------------------------------------------------------|
+| ls      | =aws s3 ls s3://mybucket=                                                               |
+| cp      | =aws s3 cp ~/cities.csv s3://mybucket=                                                  |
+| mv      | =aws s3 mv s3://mybucket/cities.csv s3://mybucket/cities2.csv=                          |
+| rm      | =aws s3 rm s3://mybucket/cities2.csv=                                                   |
+| sync    | recursively copies new and updated files from src to dst                                |
+| mb      | make bucket                                                                             |
+| rb      | remove bucket                                                                           |
+| website | generate a static website, =aws s3 website s3://my-bucket/ --index-document index.html= |
+| presign | Generate a pre-signed URL for S3 object                                                 |
+
+*** TODO ACL
+
+** Issue
+
+*** OptionsRequestDenied
+
+Refer to https://aws.amazon.com/premiumsupport/knowledge-center/s3-optionsrequestdenied-error/
+
+It seems a client-side error
+- blocked by the web browser extension
+- blocked by proxies or firewalls
+- intermittent network connection problem 
+
+Try uploading files using AWS CLI command instead.
+
+** How To
+*** Get the website URL
+
 * EC2
 
 Elastic Compute Cloud is the service we can use to create and run VM
