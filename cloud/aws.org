@@ -581,3 +581,13 @@ It can be used to leverage AWS products
 #+BEGIN_SRC bash
 aws configure --profile default get region
 #+END_SRC
+
+** get access key
+
+#+BEGIN_SRC bash
+aws configure get aws_access_key_id
+#+END_SRC
+
+Or you can get the credential by check files =~/.aws/config= and ~/.aws/credential~
+
+
