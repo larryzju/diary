@@ -573,3 +573,11 @@ It can be used to leverage AWS products
 * TODO TODO
 
 ** awscli command parameters
+
+* HOWTO
+
+** get current region
+
+#+BEGIN_SRC bash
+aws configure --profile default get region
+#+END_SRC
