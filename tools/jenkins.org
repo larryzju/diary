@@ -1,0 +1,298 @@
+* Overview
+
+Automation server for automate all sorts of tasks related to building,
+testing, and delivering/deploying software.
+
+User defines *pipeline* by specify 
+- agent
+- steps
+- environment variables
+
+Jenkins will 
+- start executor and run the steps
+- record and aggregate test results (=post.always.junit()=)
+- archive artifacts
+- cleaning up at the end of Pipeline's execution
+- notification
+
+** execution environment
+
+=agent= directive tells jenkins where and how to execute the Pipeline
+
+** blue ocean
+
+** plugins
+
+** Jenkinsfile
+
+* Terms
+
+- pipeline :: make up of multiple steps to build, test and deploy applications
+- agent :: where and how to execute the Pipeline
+- executor :: execute step if itself is available
+- workspace :: contain source files as well as any additional working files for the Pipeline
+- artifacts :: files generated during the execution of the Pipeline
+
+
+* Agent
+
+Several ways to define agents for use in Pipeline
+- docker container
+
+** Docker container
+#+BEGIN_SRC groovy
+agent {
+    docker { image 'node:7-alpine' }
+}
+#+END_SRC
+
+* Notification
+
+| method  | key word   | description             |
+|---------+------------+-------------------------|
+| Email   | mail to    | to, body, subject       |
+| Hipchat | hpchatSend | message, color          |
+| Slack   | slackSend  | message, color, channel |
+
+* Pipeline
+
+** syntax
+Two type of syntax
+1. declarative
+2. scripted
+
+** basic
+
+Levels
+1. pipeline
+2. stages
+3. stage: Build, Deploy, Test, etc
+4. steps
+
+#+BEGIN_SRC groovy
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh 'echo "Hello World"'
+                sh '''
+                    echo "Multiline shell steps works too"
+                    ls -lah
+                '''
+            }
+        }
+    }
+}
+#+END_SRC
+
+** environment
+
+1. to configure the build or tests differently to run them inside of Jenkins
+2. set or override "dummy" credentials in build or test scripts
+
+#+BEGIN_SRC groovy
+pipeline {
+    agent any
+
+    environment {
+        DISABLE_AUTH = 'true'
+        DB_ENGINE    = 'sqlite'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                sh 'printenv'
+            }
+        }
+    }
+}
+#+END_SRC
+** wrapper
+
+1. timeout
+2. retry
+
+#+BEGIN_SRC groovy
+pipeline {
+    agent any
+    stages {
+        stage('Deploy') {
+            steps {
+                retry(3) {
+                    sh './flakey-deploy.sh'
+                }
+
+                timeout(time: 3, unit: 'MINUTES') {
+                    sh './health-check.sh'
+                }
+            }
+        }
+    }
+}
+#+END_SRC
+
+** finishing up
+
+Define clean-up steps in =pipeline.post= (similar to =swtich= expression)
+
+#+BEGIN_SRC groovy
+pipeline {
+    agent any
+    stages {
+        stage('Test') {
+            steps {
+                sh 'echo "Fail!"; exit 1'
+            }
+        }
+    }
+    post {
+        always {
+            echo 'This will always run'
+        }
+        success {
+            echo 'This will run only if successful'
+        }
+        failure {
+            echo 'This will run only if failed'
+        }
+        unstable {
+            echo 'This will run only if the run was marked as unstable'
+        }
+        changed {
+            echo 'This will run only if the state of the Pipeline has changed'
+            echo 'For example, if the Pipeline was previously failing but is now successful'
+        }
+    }
+}
+#+END_SRC
+
+** recording tests and artifacts
+
+#+BEGIN_SRC groovy
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh './gradlew build'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh './gradlew check'
+            }
+        }
+    }
+
+    post {
+        always {
+            archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
+            junit 'build/reports/**/*.xml'
+        }
+    }
+}
+#+END_SRC
+
+** options
+
+#+BEGIN_SRC groovy
+pipeline {
+    agent any
+    options {
+        skipStagesAfterUnstable()
+    }
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying'
+            }
+        }
+    }
+}
+#+END_SRC
+
+** interactive
+
+#+BEGIN_SRC groovy
+pipeline {
+    agent any
+    stages {
+        /* "Build" and "Test" stages omitted */
+
+        stage('Deploy - Staging') {
+            steps {
+                sh './deploy staging'
+                sh './run-smoke-tests'
+            }
+        }
+
+        stage('Sanity check') {
+            steps {
+                input "Does the staging environment look ok?"
+            }
+        }
+
+        stage('Deploy - Production') {
+            steps {
+                sh './deploy production'
+            }
+        }
+    }
+}
+#+END_SRC
+
+* How To
+
+** Define a Simple Pipeline
+
+#+BEGIN_SRC groovy
+pipeline {
+    agent any
+    stages {
+        stage('No-op') {
+            steps {
+                sh 'ls'
+            }
+        }
+    }
+    post {
+        always {
+            echo 'One way or another, I have finished'
+            deleteDir() /* clean up our workspace */
+        }
+        success {
+            echo 'I succeeeded!'
+        }
+        unstable {
+            echo 'I am unstable :/'
+        }
+        failure {
+            echo 'I failed :('
+        }
+        changed {
+            echo 'Things were different before...'
+        }
+    }
+}
+#+END_SRC
+
+** Export Jenkinsfile
+
+** Parallel steps
+
+
+* Misc
+
+** groovy
