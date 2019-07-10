@@ -27,12 +27,14 @@ Jenkins will
 
 * Terms
 
-- pipeline :: make up of multiple steps to build, test and deploy applications
-- agent :: where and how to execute the Pipeline
-- executor :: execute step if itself is available
-- workspace :: contain source files as well as any additional working files for the Pipeline
-- artifacts :: files generated during the execution of the Pipeline
-
++ pipeline :: make up of multiple steps to build, test and deploy applications
+  + node :: machine to execute a Pipeline
+  + stage :: a block defines a conceptually distinct subset of tasks of entrie Pipeline
+  + step :: A single task
++ agent :: where and how to execute the Pipeline
++ executor :: execute step if itself is available
++ workspace :: contain source files as well as any additional working files for the Pipeline
++ artifacts :: files generated during the execution of the Pipeline
 
 * Agent
 
@@ -56,37 +58,85 @@ agent {
 
 * Pipeline
 
+** Basic
+
+Pipeline provides an extensible set of tools for modeling
+simple-to-complex delivery pipelines "as code" via the SDL syntax.
+
+- Stage
+- Steps
+- Directive
+
+** Pipeline as Code
+
+Pipeline-as-code (=Jenkinsfile=) provides a number of immediate benefits
+- Automatically creates a Pipeline build process for all branches and pull requests
+- Code review/iteration on the Pipeline
+- Audit trail for the Pipeline
+- Single source of truth for the Pipeline
+
+** Why Pipeline?
+
+The reasons to use Pipeline are
+- Code: Implemented in code and mamanged with VCS
+- Durable: is regardless the Jenkins master restarts
+- Pausable: can optionally stop and wait for human inputor approval
+- Versatile: features like: fork/join, loop, parallel
+- Extensible: custom extensions and custom options
+
+** Way to create Pipeline
+
+- Blue Ocean :: Blue Ocean Wizard helps to generate =Jenkinsfile=
+- Classic UI :: by UI
+- SCM :: write and save =Jenkinsfile= in VCS repo
+
+** Note
+
+- Need to install *Pipeline Plugin* before using the Pipeline
+
+** Problem
+
+- every pipeline can be expressed with Pipeline script?
+
 ** syntax
-Two type of syntax
+
+There're two types of syntax
 1. declarative
 2. scripted
 
-** basic
+Declarative Pipeline is a more recent feature which
+- provides richer syntactical features over Scripted Pipeline syntax
+- is deisgned to make writing and reading Pipeline code easier.
 
-Levels
-1. pipeline
-2. stages
-3. stage: Build, Deploy, Test, etc
-4. steps
+*** basic
 
 #+BEGIN_SRC groovy
 pipeline {
-    agent any
+    agent any 
     stages {
-        stage('Build') {
+        stage('Build') { 
             steps {
-                sh 'echo "Hello World"'
-                sh '''
-                    echo "Multiline shell steps works too"
-                    ls -lah
-                '''
+                // 
+            }
+        }
+        stage('Test') { 
+            steps {
+                // 
+            }
+        }
+        stage('Deploy') { 
+            steps {
+                // 
             }
         }
     }
 }
 #+END_SRC
 
-** environment
+1. Execute this Pipeline on "any" available agent
+2. Three stages "Build", "Test" and "Deploy" will be executed one by one
+
+*** environment
 
 1. to configure the build or tests differently to run them inside of Jenkins
 2. set or override "dummy" credentials in build or test scripts
@@ -109,7 +159,7 @@ pipeline {
     }
 }
 #+END_SRC
-** wrapper
+*** wrapper
 
 1. timeout
 2. retry
@@ -133,7 +183,7 @@ pipeline {
 }
 #+END_SRC
 
-** finishing up
+*** finishing up
 
 Define clean-up steps in =pipeline.post= (similar to =swtich= expression)
 
@@ -168,7 +218,7 @@ pipeline {
 }
 #+END_SRC
 
-** recording tests and artifacts
+*** recording tests and artifacts
 
 #+BEGIN_SRC groovy
 pipeline {
@@ -195,7 +245,7 @@ pipeline {
 }
 #+END_SRC
 
-** options
+*** options
 
 #+BEGIN_SRC groovy
 pipeline {
@@ -223,7 +273,7 @@ pipeline {
 }
 #+END_SRC
 
-** interactive
+*** interactive
 
 #+BEGIN_SRC groovy
 pipeline {
@@ -253,46 +303,51 @@ pipeline {
 }
 #+END_SRC
 
-* How To
+** Global Variable Reference
+
+- env :: for example: =env.PATH= or =env.BUILD_ID=
+- params :: for example: =params.MY_PARAM_NAME=
+- currentBuild :: for example =currentBuild.result=
+
+* How to
 
 ** Define a Simple Pipeline
+1. install Pipeline plugin
+2. new Item with Pipeline type
+3. fill the Pipeline script and save
+4. click "Build Now" and run the pipeline
+5. Click job #id and go to "Console Output" to see the full output from the Pipeline run
 
-#+BEGIN_SRC groovy
-pipeline {
-    agent any
-    stages {
-        stage('No-op') {
-            steps {
-                sh 'ls'
-            }
-        }
-    }
-    post {
-        always {
-            echo 'One way or another, I have finished'
-            deleteDir() /* clean up our workspace */
-        }
-        success {
-            echo 'I succeeeded!'
-        }
-        unstable {
-            echo 'I am unstable :/'
-        }
-        failure {
-            echo 'I failed :('
-        }
-        changed {
-            echo 'Things were different before...'
-        }
-    }
-}
-#+END_SRC
+** Define a SCM based Pipeline
 
-** Export Jenkinsfile
+1. Install Pipeline Plugin
+2. new Item with Pipeline type
+3. define pipeline script from SCM
+4. choose the type of source control system of the repo contain your =Jenkinsfile=
 
-** Parallel steps
+** Generator Snippet
 
+1. visit *Pipeline Sytnax* page at https://jenkines-host:8080/pipeline-syntax
+2. select the desired step in the *Sample step* dropdown menu
+3. use the dynamically populated area below the *Sample Step* dropdown to configure the selected step
+4. click *Generate Pipeline Script* to create a snippet of Pipeline and copy the snippet into a pipeline
 
-* Misc
+** TODO Export Jenkinsfile
+
+** TODO Parallel steps
+
+** TODO Custom SCM polling trigger
+
+* What is
 
 ** groovy
+
+** Pipeline vs Project vs Job
+** Smoke Test
+** End-to-End Test
+** Single source of truth
+
+* Reference
+
+- [[https://jenkins.io/doc/book/pipeline/][Pipeline (User Handbook)]]
+- [[https://jenkins.io/doc/book/pipeline/getting-started/][Getting Started with Pipeline]]
