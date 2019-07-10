@@ -15,7 +15,122 @@
 		</nav>
 		<section class="main-article-area">
 			<div id='main'>
-				<h1 id="ec2">EC2</h1>
+				<h1 id="s3">S3</h1>
+<p>S3 is short for Amazon Simple Storage Service. It is storage for the internet which stores data as <strong>objects</strong> within <strong>buckets</strong>.</p>
+<h2 id="object">Object</h2>
+<p>An <strong>object</strong> consists of a file and optionally any metadata that describes that file. (like inode with data)</p>
+<h2 id="bucket">Bucket</h2>
+<p><strong>Buckets</strong> are the containers for objects are placed as a whole object</p>
+<ul class="incremental">
+<li>control access</li>
+<li>view access logs for it and its objects</li>
+<li>choose the geographical region where S3 will store the bucket and its contents</li>
+</ul>
+<h3 id="permission">Permission</h3>
+<h2 id="basic-usage-steps">basic usage steps</h2>
+<ol class="incremental">
+<li>sign up for S3</li>
+<li>create a bucket: specify unique name and region</li>
+<li>add an object to bucket</li>
+<li>you can view information about the object and download the object to local computer</li>
+<li>create a folder and copy the object into the new folder</li>
+<li>delete object, or empty bucket - delete all objects in the bucket, or delete a bucket</li>
+</ol>
+<h2 id="command-line">Command Line</h2>
+<p>Refer to <code>aws s3 help</code> page</p>
+<h3 id="pattern-match">Pattern Match</h3>
+<p>No support for UNIX style wildcards in path arguments. Use <code>--exclude</code> or <code>--include</code> paramters instead.</p>
+<p>The order is important</p>
+<table>
+<thead>
+<tr class="header">
+<th>command</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>--exclude "*" --include "*.txt"</code></td>
+<td>exclude all files except for files ending with .txt</td>
+</tr>
+<tr class="even">
+<td><code>--include "*.txt" --exclude "*"</code></td>
+<td>exclude all files</td>
+</tr>
+</tbody>
+</table>
+<p>If the source target is a file, then the source directory will be used for pattern match</p>
+<h3 id="prefix"><span class="todo TODO">TODO</span> Prefix</h3>
+<h3 id="path-type">Path Type</h3>
+<dl class="incremental">
+<dt>LocalPath</dt>
+<dd>absolute path or relative path
+</dd>
+<dt>S3Uri</dt>
+<dd>location of a S3 object, prefix, or bucket. For example <code>s3://mybucket/mykey</code>
+</dd>
+</dl>
+<h3 id="commands">Commands</h3>
+<table>
+<thead>
+<tr class="header">
+<th>command</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ls</td>
+<td><code>aws s3 ls s3://mybucket</code></td>
+</tr>
+<tr class="even">
+<td>cp</td>
+<td><code>aws s3 cp ~/cities.csv s3://mybucket</code></td>
+</tr>
+<tr class="odd">
+<td>mv</td>
+<td><code>aws s3 mv s3://mybucket/cities.csv s3://mybucket/cities2.csv</code></td>
+</tr>
+<tr class="even">
+<td>rm</td>
+<td><code>aws s3 rm s3://mybucket/cities2.csv</code></td>
+</tr>
+<tr class="odd">
+<td>sync</td>
+<td>recursively copies new and updated files from src to dst</td>
+</tr>
+<tr class="even">
+<td>mb</td>
+<td>make bucket</td>
+</tr>
+<tr class="odd">
+<td>rb</td>
+<td>remove bucket</td>
+</tr>
+<tr class="even">
+<td>website</td>
+<td>generate a static website, <code>aws s3 website s3://my-bucket/ --index-document index.html</code></td>
+</tr>
+<tr class="odd">
+<td>presign</td>
+<td>Generate a pre-signed URL for S3 object</td>
+</tr>
+</tbody>
+</table>
+<h3 id="acl"><span class="todo TODO">TODO</span> ACL</h3>
+<h2 id="issue">Issue</h2>
+<h3 id="optionsrequestdenied">OptionsRequestDenied</h3>
+<p>Refer to <a href="https://aws.amazon.com/premiumsupport/knowledge-center/s3-optionsrequestdenied-error/">https://aws.amazon.com/premiumsupport/knowledge-center/s3-optionsrequestdenied-error/</a></p>
+<p>It seems a client-side error</p>
+<ul class="incremental">
+<li>blocked by the web browser extension</li>
+<li>blocked by proxies or firewalls</li>
+<li>intermittent network connection problem</li>
+</ul>
+<p>Try uploading files using AWS CLI command instead.</p>
+<h2 id="how-to">How To</h2>
+<h3 id="get-the-website-url">Get the website URL</h3>
+<h1 id="ec2">EC2</h1>
 <p>Elastic Compute Cloud is the service we can use to create and run VM in the cloud.</p>
 <h2 id="term">Term</h2>
 <dl class="incremental">
@@ -131,7 +246,7 @@
 <li>Description</li>
 </ul>
 <h3 id="outbound-rules">outbound rules</h3>
-<h2 id="how-to">How to</h2>
+<h2 id="how-to-1">How to</h2>
 <h3 id="check-the-internet-gateway-info-of-vpc">check the internet gateway info of VPC</h3>
 <h3 id="display-the-main-route-table-rules">display the main route table rules</h3>
 <h3 id="get-the-custom-route-table-info-of-vpc">get the custom route table info of VPC</h3>
@@ -346,7 +461,7 @@
 <h3 id="delete-the-vpc-aws-cloudformation-stack">delete the VPC AWS CloudFormation stack</h3>
 <div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1"></a><span class="ex">aws</span> cloudformation list-stacks --query StackSummaries[].StackName</span>
 <span id="cb12-2"><a href="#cb12-2"></a><span class="ex">aws</span> cloudformation delete-stack --stack-name <span class="op">&lt;</span>my-vpc-stack<span class="op">&gt;</span></span></code></pre></div>
-<h2 id="command-line">Command line</h2>
+<h2 id="command-line-1">Command line</h2>
 <h3 id="aws-eks">aws eks</h3>
 <table>
 <thead>
@@ -398,7 +513,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="how-to-1">How To</h2>
+<h2 id="how-to-2">How To</h2>
 <h3 id="get-the-ec2-instance-of-the-cluster">Get the EC2 instance of the cluster</h3>
 <p>Filter the EC2 instance with VPCId</p>
 <ol class="incremental">
@@ -422,13 +537,13 @@
 </ul>
 <h2 id="what-is-1">What is</h2>
 <h3 id="stack"><span class="todo TODO">TODO</span> Stack</h3>
-<h2 id="how-to-2">How to</h2>
+<h2 id="how-to-3">How to</h2>
 <h3 id="get-stack-template">get stack template</h3>
 <ul class="incremental">
 <li>Use command <code>aws cloudformation get-template --stack-name &lt;stack-name&gt;</code></li>
 <li>Or check it in cloudformation, stack, template tab page.</li>
 </ul>
-<h2 id="commands">Commands</h2>
+<h2 id="commands-1">Commands</h2>
 <table>
 <thead>
 <tr class="header">
@@ -457,6 +572,12 @@
 </table>
 <h1 id="todo"><span class="todo TODO">TODO</span> TODO</h1>
 <h2 id="awscli-command-parameters">awscli command parameters</h2>
+<h1 id="howto">HOWTO</h1>
+<h2 id="get-current-region">get current region</h2>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1"></a><span class="ex">aws</span> configure --profile default get region</span></code></pre></div>
+<h2 id="get-access-key">get access key</h2>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1"></a><span class="ex">aws</span> configure get aws_access_key_id</span></code></pre></div>
+<p>Or you can get the credential by check files <code>~/.aws/config</code> and <code>/.aws/credential</code></p>
 
 			</div>
 		</section>
