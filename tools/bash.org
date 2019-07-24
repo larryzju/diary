@@ -3,7 +3,6 @@
 - =-r= :: readable
 - =-f= :: regular file test
 
-
 * Sed
 
 - =basename= :: =echo $0 | sed -e 's:^.*/::'=
@@ -37,3 +36,34 @@ Two ways to check variables:
 1. =set=: list shell variables
 2. =env=: list environment variables (only variables been exported)
 
+* directory stack buildtin command
+
+Refer to https://agilesysadmin.net/understanding-pushd-and-popd/
+
+** dirs 
+
+display the stack of currently remembered directories
+- =dirs -l -v= shows stacks with index one per line
+- =dirs -0= show bottom of the stack
+- =dirs +0= show top of the stack
+- =dirs -c= clear the stack
+
+** pushd 
+
+change dir and push the olddir onto the stack (the current working directory is *always* the top of the stack)
+
+- =pushd -n= push target to stack but not change current directory (insert target after the top of the stack)
+- =pushd +N= rotate left N elements
+
+#+BEGIN_SRC bash
+dirs +3   # check the 4th dir in stack
+pushd +3  # rotate to the 4th dir
+#+END_SRC
+
+** popd
+
+removing items from the stack and change to the next directory of the stack
+
+- =popd +N= remove the N directory and *do not* change directory to it
+- =popd -n= pop but do not change directory
+- =popd -0= remove the last entry
