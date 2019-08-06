@@ -1,0 +1,64 @@
+* 简介
+
+** 为什么 Kubernetes
+
+解决软件开发的痛点
+1. 由宏应用向微服务演进
+2. 统一开发与生产环境
+3. DevOps 思潮
+
+*** Micro Service
+
+传统的宏应用复杂度过高，对硬件配置要求高，且只能做垂直扩展（水平扩展需要对代码实现进行修改）。
+而微服务则可以通过副本机制进行快速迭代、局部扩容、负载均衡、水平扩展、利用单机的多核。
+
+但微服务不是万能的。
+- 当数量增大后，管理难度也在增长，相互之间的依赖关系也越来越复杂
+- debug 和 trace 更加困难（可以借助 zipkin 工具）
+- 不同服务的动态链接冲突问题
+
+*** Providing a consistent environment to applications
+
+一致环境包括
+- 生产与开发环境
+- 不同的生产环境
+- 同一生产环境的不同时间段
+
+环境包括
+- 操作系统
+- 库
+- 系统配置
+- 网络环境
+
+*** Moving to continuous delivery: DevOps and NoOps
+
+DevOps 使开发者更加了解用户需求、了解运维痛点
+
+通过对 infrastructure 的抽象，避免陷入细节之中
+
+
+** 容器技术
+
+Docker 和 rkt
+
+*** 什么是容器
+
+与 VM 不同，不需要虚拟硬件，不需要系统进程，轻量级，可以让每个应用运行在独立的容器中。
+
+资源的隔离有两种机制
+1. Linux Namespace
+2. Linux Control Group
+
+Linux Namespace 隔离不同对象
+- PID
+- Net
+- UTS (hostname and domain)
+- UserID
+- Mount
+- IPC
+
+Linux Control Group 控制不同组的资源使用
+- Memory
+- CPU
+- Bandwidth
+
