@@ -1,0 +1,72 @@
+* atexit
+
+来自于标准库，手册见 https://docs.python.org/3/library/atexit.html， 类似于 Linux =atexit()= 函数
+
+以与注册相反的顺序被调用
+
+#+BEGIN_SRC python :results output
+  import atexit
+
+  atexit.register(print, "call 1")
+  atexit.register(print, "call 2")
+  atexit.register(print, "call 3")
+#+END_SRC
+
+#+RESULTS:
+: call 3
+: call 2
+: call 1
+
+
+* f-string
+
+3.6 时引入，同类的还有 "r", "b", "u" (python3 中 "u" 是默认的)。在生成 bytecode 时被解析，执行速度更快
+
+#+BEGIN_SRC python :results output
+  world = "世界"
+  print("你好，{}".format(world))
+  print(f"你好，{world}")
+  print(f"你好, {'world'.upper()}")
+#+END_SRC
+
+#+RESULTS:
+: 你好，世界
+: 你好，世界
+: 你好, WORLD
+
+其它方式还有
+- "%" operator
+- =.format()= 方法
+- =strings.Template()= 函数
+
+
+* timeit
+
+#+BEGIN_SRC python :results output
+  import timeit
+
+  setup = '''
+  def fib(n):
+      if n < 3:
+          return 1
+      else:
+          return fib(n-1) + fib(n-2)
+
+  def fib2(n):
+      s, b = 1, 1
+      for _ in range(n-1):
+          s, b = b, s+b
+      return s
+  '''
+
+  print("recur", timeit.timeit(stmt="fib(20)", setup=setup, number=1000))
+  print("loop ", timeit.timeit(stmt="fib2(20)", setup=setup, number=1000))
+
+  # exec(setup)
+  # print(fib(20), fib2(20))
+#+END_SRC
+
+#+RESULTS:
+: recur 1.2633693999960087
+: loop  0.0016962999943643808
+
