@@ -1,0 +1,24 @@
+* TODO CHANGELOG
+
+http://keepachangelog.com/en/0.3.0/
+
+* SemVer
+
+http://semver.org/
+
+* Conventional Commit
+
+Refer to https://www.conventionalcommits.org/en/v1.0.0-beta.2/
+
+1. Prefix the commit title with a type (=feat=, =fix=, etc)
+   1. =feat= for adding a new feature
+   2. =fix= for a bug fix
+2. An optional scope after the type and enclosed in parenthesis (=fix(parser)=)
+3. A description follow the type/scope prefix, e.g. =fix: array parsing issue when multiple spaces were contained in string.=
+4. An optional longer commit body, begin one blank line after the description
+5. An optional footer after the body, contains additional issue references about the code changes
+6. Breaking changes should be marked by prefixing =BREAKING CHANGE= at the begining of the footer or body section of a commit
+
+
+
+
