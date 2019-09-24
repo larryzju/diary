@@ -1,0 +1,265 @@
+#+TITLE: Python 作用域小记
+#+AUTHOR: Larry Zhao
+#+OPTIONS: TOC:1
+
+* 前言
+
+Python 作为动态语言，不需要在使用前申明对象类型，使用很方便。
+灵活的代价是容易混淆作用域与 Block。
+
+本文对 Python 的作用域和 Block 定义作一个简单的归纳
+1. 作用域
+2. Block
+3. name binding
+4. try...except...finally 最佳实践
+
+* 作用域
+
+作用域定义了 name 与 variable 的关联以及可见性。
+分为 global 和 local 两种，前者对应于整个模块，后者对应于 class 或者 function 范围
+
+** 子作用域可以访问父作用域的绑定（除非被覆盖）
+
+#+BEGIN_SRC python :results output :exports both
+  def foo():
+      a = 10
+      def bar():
+          print(a)
+      bar()
+  foo()
+#+END_SRC
+
+#+RESULTS:
+: 10
+
+** 本地作用域绑定的 name 在外部不可见
+
+#+BEGIN_SRC python :python :python3 :results output
+  def foo():
+      bar = "bar"
+
+  print(foo)
+  # print(bar)                      # not visible outside the function local scope
+#+END_SRC
+
+#+RESULTS:
+: <function foo at 0x7fedcc951e18>
+
+** 访问未绑定的 name 将报错
+
+全局作用域中异常为 NameError: name 'a' is not defined
+#+BEGIN_SRC python 
+print(a)
+#+END_SRC
+
+#+RESULTS:
+
+local 作用域的未绑定异常为 UnboundLocalError: local variable 'a' referenced before assignment
+#+BEGIN_SRC python
+def foo():
+    print(a)    # 还未绑定
+    a = 10      # <- 声明并绑定 a，默认为 local scope binding
+foo()
+#+END_SRC
+
+#+RESULTS:
+
+* Python 作用域
+
+Python 是一种词法作用域 (lexical scoping) 的语言。
+与之相对的是 dynamic scope（例如 emacs lisp）
+
+两者区别在于，词法作用域的变量是取自绑定时的上下文，而动态作用域变量取自调用时的上下文。
+
+下例演示了词法作用域的典型用法（闭包）
+
+#+BEGIN_SRC python :results output :exports both
+def foo(n):
+    masks = (1 << n)-1
+    print(bin(masks))
+    return lambda x: x & masks
+
+masks = 3
+bar = foo(6)
+masks = 2
+print(f"{hex(bar(0xFF))}")
+print(f"{hex(bar(0x0F))}")
+#+END_SRC
+
+#+RESULTS:
+: 0b111111
+: 0x3f
+: 0xf
+
+* Block
+
+** global block
+
+整个 module 构成一个 global block
+
+** local block
+
+类或函数定义有独立的 Block
+
+#+BEGIN_SRC python :python python3 :results output
+def foo():
+    a = 10
+    return lambda x: x + a
+
+# print(a)
+bar = foo()
+print(bar(20))
+#+END_SRC
+
+#+RESULTS:
+: 30
+
+** 其它语句并没有定义块
+
+for 没有定义一个块，因此 i 和 a 在循环之外仍然可见
+
+#+BEGIN_SRC python :python python3 :results output
+for i in range(10):
+    a = i
+print(a)
+print(i)
+#+END_SRC
+
+#+RESULTS:
+: 9
+: 9
+
+同样道理， =with= 语句并没有定义新的 block，所以我们不需要在 =with= block 块外申明变量
+
+#+BEGIN_SRC python :python :python3 :results output
+  # content = ''
+  with open('/etc/os-release') as fd:
+      content = fd.read()
+  print(content)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+NAME="Ubuntu"
+VERSION="18.04.1 LTS (Bionic Beaver)"
+ID=ubuntu
+ID_LIKE=debian
+PRETTY_NAME="Ubuntu 18.04.1 LTS"
+VERSION_ID="18.04"
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+VERSION_CODENAME=bionic
+UBUNTU_CODENAME=bionic
+
+#+end_example
+
+* Name Binding
+
+** name, object, variable and value
+
+在 C 或者其它语言中，变量（variable）指向具体的变量值（value）。
+变量可以被重新赋值，令其指向其它变量值。也可以通过变量修改它所指向的变量值（除非有常量保护）
+
+根据 Python [[https://docs.python.org/3.7/reference/executionmodel.html#naming-and-binding][官方文档]]： Name 是对 Object 的引用
+#+BEGIN_QUOTE
+_Names_ refer to objects. Names are introduced by name binding operations.
+#+END_QUOTE
+
+Name 之与 Object，就相当于 Varaible 之与 Value。
+Python 中的 Object 也分可变 (mutable) 和不可变 (immutable) 两种
+
+** declare and initial
+
+在 C 中，我们通常会在使用前申明变量。也可以在申明变量的时候进行初始化。
+
+#+BEGIN_SRC c
+int i, sum=0, max=100;
+for(i = 0; i < max; i++) {
+    sum += i;
+}
+return sum;
+#+END_SRC
+
+但在 Python 中，我们并不需要申明变量
+
+#+BEGIN_SRC python :python python3 :results output
+  max = 100
+  sum = 0
+  for i in range(100):
+      sum += i
+  print(sum)
+#+END_SRC
+
+#+RESULTS:
+: 4950
+
+对比 C 代码，C 的实现中，sum 指向寄存器（或者栈）上的某个值， ~sum += i~ 计算结果并覆盖该值。
+由于不需要生成新的对象，没有 GC。通过处理器有 ADD 指令，执行会非常快。
+
+而在 Python 代码中，我们将 Object 100 绑定到 max，将 object 0 绑定到 sum 名称上。
+~sum += i~ 会重新生成新的对象，并绑定到 sum 名称，替换之前的绑定对象 (对象会在后来由 GC 清理)
+
+** global name binding
+
+变量默认被绑定在 block 本地，可以显式地要求绑定在 global block（模块上）
+
+#+BEGIN_SRC python :python python3 :results output
+  def fn(n):
+      v = 10
+      global w
+      return v + w + n
+  w = 10                          # w 可以在函数定义后再绑定
+  print(fn(3))
+#+END_SRC
+
+#+RESULTS:
+: 23
+
+** nonlocal name binding
+
+非本地的第一个可用父作用域绑定
+
+#+BEGIN_SRC python :results output :python python3
+  def foo():
+      a = 10
+      def bar():
+          nonlocal a              # <-- important
+          print("bar, before change", a)
+          a = 20
+          print("bar, before change", a)
+      print("before call bar", a)
+      bar()
+      print("after call bar", a)
+
+  foo()
+#+END_SRC
+
+在 bar 中可以读取并修改 foo 中的变量
+
+#+BEGIN_SRC 
+: before call bar 10
+: bar, before change 10
+: bar, before change 20
+: after call bar 20
+#+END_SRC
+
+注意，在 bar 中我们需要声明 a 为非本地的绑定，
+否则， ~a = 20~ 将被认为是在 bar 函数作用域中的本地绑定，
+在此之前的第一句打印将会无法找到变量 a 的值:
+
+#+BEGIN_SRC 
+Traceback (most recent call last):
+  File "<stdin>", line 12, in <module>
+  File "<stdin>", line 9, in foo
+  File "<stdin>", line 5, in bar
+UnboundLocalError: local variable 'a' referenced before assignment
+#+END_SRC
+** block 中的 name binding 不可修改
+
+#+BEGIN_SRC python
+
+#+END_SRC
+
+* Reference
