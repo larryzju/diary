@@ -1,0 +1,117 @@
+* Overview
+
+LRU stands  for /least  recently used/.  LRUCache is  a fixed-capacity
+key-value store  that will evict  oldest items  when full and  set new
+keys.
+
+When read item from LRUCache, the key is moved to the front of the
+underlying list to the most recently used item.
+
+* Implement
+
+Refer the source code of https://github.com/golang/groupcache/blob/master/lru/lru.go
+
+LRUCache is consist up by
+1. hash map
+2. double linked list (order by the timestamp of used, both write and read)
+3. capacity setting
+
+Add element and value
+1. check if the element has been added into hash map. If yes, bring the item to the front of the linked list
+2. else add element to hash map and create new item to the front of the linked list
+
+Get element by key
+1. if the key is exist in hash map, bring the item to the front of the linked list, and then return the value
+
+* Code
+
+Solution of [[https://leetcode.com/problems/lru-cache/][Leetcode 146]]
+
+#+BEGIN_SRC go :results output 
+  import "container/list"
+
+  type LRUCache struct {
+          Capacity int
+          cache map[int]*list.Element
+          ll *list.List
+  }
+
+  type entry struct {
+          key int
+          value int
+  }
+
+  func Constructor(capacity int) LRUCache {
+          return LRUCache{
+                  Capacity: capacity,
+                  cache: make(map[int]*list.Element),
+                  ll: list.New(),
+          }
+  }
+
+  func (this *LRUCache) Get(key int) int {
+          if e, ok := this.cache[key]; ok {
+                  this.ll.MoveToFront(e)
+                  return e.Value.(*entry).value
+
+          }
+          return -1
+  }
+
+
+  func (this *LRUCache) Put(key int, value int)  {
+          if e, ok := this.cache[key]; ok {
+                  e.Value.(*entry).value = value
+                  this.ll.MoveToFront(e)
+                  return
+          }
+
+          e := this.ll.PushFront(&entry{key, value})
+          this.cache[key] = e     
+
+          if this.ll.Len() > this.Capacity {
+                  leastRecent := this.ll.Back()
+                  delete(this.cache, leastRecent.Value.(*entry).key)
+                  this.ll.Remove(leastRecent)
+          }
+          return
+  }
+
+
+  func main() {
+          lru := Constructor(2)
+          lru.Put(1,1)
+          lru.Put(2,2)
+          if lru.Get(1) != 1 {
+                  panic("must be 1")
+          }
+          
+          lru.Put(3,3)
+          if lru.Get(2) != -1 {
+                  panic("must be -1")
+          }
+
+          lru.Put(4,4)
+          if lru.Get(1) != -1 {
+                  panic("must be -1")
+          }
+
+          if lru.Get(3) != 3 {
+                  panic("must be 3")
+          }
+
+          if lru.Get(4) != 4 {
+                  panic("must be 4")
+          }
+  }
+
+#+END_SRC
+
+#+RESULTS:
+
+
+* Reference
+
+- [[https://yomguithereal.github.io/mnemonist/lru-cache.html][Mnemonist -- LRU Cache]]
+- [[https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU)][Least recently used -- wikipedia]]
+- https://github.com/golang/groupcache/blob/master/lru/lru.go
