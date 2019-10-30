@@ -1,0 +1,23 @@
+* NO package level variable
+
+Life each of the dependencies into the signature as parameters
+
+from https://peter.bourgon.org/blog/2017/06/09/theory-of-modern-go.html
+
+#+BEGIN_SRC go
+// RowQueryer models part of a database/sql.DB.
+type RowQueryer interface {
+	QueryRow(string, ...interface{}) *sql.Row
+}
+
+// Requestor models the requesting side of a resource.Pool.
+type Requestor interface {
+	Request(n int) (*resource.Value, error)
+}
+
+func NewObject(q RowQueryer, r Requestor, n int, logger log.Logger) (*Object, error) {
+	// ...
+}
+#+END_SRC
+
+* NO func init
