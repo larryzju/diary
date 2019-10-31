@@ -1,0 +1,23 @@
+* for ... of
+
+#+BEGIN_SRC javascript
+for (let a of [1,2,3]) {
+    console.log(a)
+}
+#+END_SRC
+
+与 =for ... in= 不同，后者会获取 object 中所有 index
+
+#+BEGIN_SRC javascript
+  Object.prototype.name = function(){};
+  foo = [1,2,3];
+  foo.bar = "bar";
+
+  for (let k in foo) {
+      console.log(k);
+  }
+
+  for (let k of foo) {
+      console.log(k);
+  }
+#+END_SRC
