@@ -67,3 +67,28 @@ removing items from the stack and change to the next directory of the stack
 - =popd +N= remove the N directory and *do not* change directory to it
 - =popd -n= pop but do not change directory
 - =popd -0= remove the last entry
+* scope
+
+** local
+
+local variable is only within the function block
+
+http://tldp.org/LDP/abs/html/localvar.html
+* pattern match
+
+与正则表达式不同
+
+1. =**= 匹配 0-N 级目录
+2. =[:class:]= 语法
+
+#+BEGIN_SRC sh
+a=abcd123
+echo ${a##*[[:lower:]]} -> 123
+#+END_SRC
+
+#+BEGIN_SRC sh
+b="foo=bar"
+echo ${b#*=} -> bar
+#+END_SRC
+
+=##= 表示最大匹配， =#= 为最小长度匹配
