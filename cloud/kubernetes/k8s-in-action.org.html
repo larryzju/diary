@@ -36,7 +36,7 @@
       
       <div id='main'>
 	<h1 id="简介">简介</h1>
-<h2 id="为什么-kubernetes">为什么 Kubernetes</h2>
+<h2 id="为什么用-kubernetes">为什么用 Kubernetes</h2>
 <p>解决软件开发的痛点</p>
 <ol class="incremental">
 <li>由宏应用向微服务演进</li>
@@ -45,11 +45,11 @@
 </ol>
 <h3 id="micro-service">Micro Service</h3>
 <p>传统的宏应用复杂度过高，对硬件配置要求高，且只能做垂直扩展（水平扩展需要对代码实现进行修改）。 而微服务则可以通过副本机制进行快速迭代、局部扩容、负载均衡、水平扩展、利用单机的多核。</p>
-<p>但微服务不是万能的。</p>
+<p>但微服务不是万能的</p>
 <ul class="incremental">
 <li>当数量增大后，管理难度也在增长，相互之间的依赖关系也越来越复杂</li>
 <li>debug 和 trace 更加困难（可以借助 zipkin 工具）</li>
-<li>不同服务的动态链接冲突问题</li>
+<li>不同服务相互依赖问题</li>
 </ul>
 <h3 id="providing-a-consistent-environment-to-applications">Providing a consistent environment to applications</h3>
 <p>一致环境包括</p>
@@ -92,6 +92,103 @@
 <li>CPU</li>
 <li>Bandwidth</li>
 </ul>
+<h1 id="first-step-with-docker-and-kubernetes">First Step with Docker and Kubernetes</h1>
+<h2 id="container-image">Container &amp; Image</h2>
+<h3 id="基本步骤">基本步骤</h3>
+<div class="sourceCode" id="cb1" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">docker</span> run busybox echo <span class="st">&quot;Hello World&quot;</span></span></code></pre></div>
+<ol class="incremental">
+<li>拉取镜像</li>
+<li>创建容器，在其内运行镜像</li>
+<li>在镜像内执行命令</li>
+</ol>
+<h3 id="基本的-dockerfile-语法">基本的 Dockerfile 语法</h3>
+<dl class="incremental">
+<dt>FROM</dt>
+<dd>基础镜像
+</dd>
+<dt>ADD</dt>
+<dd>添加文件
+</dd>
+<dt>ENTRYPOINT</dt>
+<dd>入口
+</dd>
+</dl>
+<h3 id="编译-docker-image">编译 Docker image</h3>
+<div class="sourceCode" id="cb2" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="ex">docker</span> build -t <span class="op">&lt;</span>image-name:tag<span class="op">&gt;</span></span></code></pre></div>
+<ul class="incremental">
+<li>Tag 做为版本号，默认为 "latest"</li>
+<li>编译过程在 docker daemon 进行，而非 client</li>
+<li>编译过程是分层的，分层有利于复用，各层可以被独立下载</li>
+<li>Dockerfile 中的每句指令都生成一个新的 layer</li>
+</ul>
+<h3 id="docker-常用命令">Docker 常用命令</h3>
+<ul class="incremental">
+<li><code>docker run --name &lt;container-name&gt; -p 8080:8080 -d &lt;image&gt;</code>
+<ul class="incremental">
+<li>-d: detach，在后台运行</li>
+<li>-p: 端口映射</li>
+</ul></li>
+<li><code>docker ps</code>: 列出 containers</li>
+<li><code>docker inspect</code>: 显示 container 详情</li>
+<li><code>docker exec -it &lt;container-name&gt; bash</code>
+<ul class="incremental">
+<li>-i: make the STDIN to open</li>
+<li>-t: allocate a pseudo terminal (TTY)</li>
+</ul></li>
+<li><code>docker stop &lt;container-name&gt;</code>: 停止后容器任存在，环境被保留，但没有进程在运行</li>
+<li><code>docker rm &lt;container-name&gt;</code>: 删除容器环境</li>
+<li><code>docker push &lt;image&gt;</code>: 需要提前 retag image，添加 registry 地址</li>
+</ul>
+<h2 id="setting-up-a-kubernetes-cluster">Setting up a kubernetes cluster</h2>
+<h3 id="常用方式">常用方式</h3>
+<ul class="incremental">
+<li>本地单节点</li>
+<li>GKE</li>
+<li>Kubeadm</li>
+<li>AWS + kops</li>
+</ul>
+<h3 id="本地-minikube-模式">本地 minikube 模式</h3>
+<ul class="incremental">
+<li><code>minikube start</code> 启动</li>
+<li>依赖于 KVM 或者 virtualbox</li>
+</ul>
+<h3 id="gke">GKE</h3>
+<pre><code>gcloud container clusters create kubia &lt;options&gt;
+</code></pre>
+<h2 id="running-your-first-app-on-kubernetes">Running your first app on Kubernetes</h2>
+<h3 id="example">example</h3>
+<pre><code>kubectl run &lt;pod-name&gt; --image=&lt;image-name&gt; --port=8080 --generator=run/v1
+kubectl expose rc kubia --type=LoadBalancer --name kubia-http
+kubectl scale rc kubia --replica=3
+</code></pre>
+<ul class="incremental">
+<li>generator <a href="https://kubernetes.io/docs/reference/kubectl/conventions/#generators">指定 resources 类型</a>，这里用 ReplicationController 而非默认的 Deployment</li>
+<li>pod 为一组密切联系的 container，运行在同一 Node，在相同的 Namespace 下，是 k8s 中的最小单位</li>
+<li>pod 有内部的 IP 地址和 hostname，为内部 container 共享</li>
+<li>ReplicateController 生成并维护多 Pod</li>
+<li>外部访问 pod 需要创建 service (Load Balancer 模式）</li>
+<li>service 代理请求到 pod，避免因 pod 重启而导致服务无法访问</li>
+</ul>
+<h3 id="基本过程">基本过程</h3>
+<ul class="incremental">
+<li>kubectl 通过 REST API 请求 API server，创建 RC 实例</li>
+<li>k8s scheduler 选择 worker node</li>
+<li>kubelet 指挥 Docker 拉取镜像并运行容器</li>
+</ul>
+<h1 id="问题">问题</h1>
+<h2 id="entrypoint-和-command-是怎样被表示和存放在-docker-image-layer-中的"><span class="todo TODO">TODO</span> ENTRYPOINT 和 COMMAND 是怎样被表示和存放在 docker image layer 中的？</h2>
+<h2 id="如何检查-docker-container-的-volumn-使用情况"><span class="todo TODO">TODO</span> 如何检查 docker container 的 volumn 使用情况</h2>
+<h2 id="replicationcontroller-deployment-replicaset-的关系"><span class="todo TODO">TODO</span> ReplicationController, Deployment, ReplicaSet 的关系</h2>
+<h2 id="linux-如何查看-namespace"><span class="todo TODO">TODO</span> linux 如何查看 Namespace</h2>
+<h2 id="load-balancer-service-只能针对-http-协议"><span class="todo TODO">TODO</span> Load balancer service 只能针对 HTTP 协议？</h2>
+<h2 id="如何安装-k8s-dashboard"><span class="todo TODO">TODO</span> 如何安装 k8s dashboard</h2>
+<h1 id="k8s-常用命令">K8S 常用命令</h1>
+<h2 id="info">info</h2>
+<ul class="incremental">
+<li><code>kubectl cluster-info</code></li>
+</ul>
+<h2 id="auto-completion">auto completion</h2>
+<div class="sourceCode" id="cb5" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="bu">source</span> <span class="op">&lt;(</span><span class="ex">kubectl</span> completion bash <span class="kw">|</span> <span class="fu">sed</span> s/kubectl/kc/g<span class="op">)</span></span></code></pre></div>
 
       </div>
     </section>
