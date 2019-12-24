@@ -1,6 +1,6 @@
 * 简介
 
-** 为什么 Kubernetes
+** 为什么用 Kubernetes
 
 解决软件开发的痛点
 1. 由宏应用向微服务演进
@@ -12,10 +12,11 @@
 传统的宏应用复杂度过高，对硬件配置要求高，且只能做垂直扩展（水平扩展需要对代码实现进行修改）。
 而微服务则可以通过副本机制进行快速迭代、局部扩容、负载均衡、水平扩展、利用单机的多核。
 
-但微服务不是万能的。
+但微服务不是万能的
+
 - 当数量增大后，管理难度也在增长，相互之间的依赖关系也越来越复杂
 - debug 和 trace 更加困难（可以借助 zipkin 工具）
-- 不同服务的动态链接冲突问题
+- 不同服务相互依赖问题
 
 *** Providing a consistent environment to applications
 
@@ -62,3 +63,123 @@ Linux Control Group 控制不同组的资源使用
 - CPU
 - Bandwidth
 
+
+
+* First Step with Docker and Kubernetes
+
+** Container & Image
+
+*** 基本步骤
+
+#+BEGIN_SRC sh
+docker run busybox echo "Hello World"
+#+END_SRC
+
+1. 拉取镜像
+2. 创建容器，在其内运行镜像
+3. 在镜像内执行命令
+
+
+*** 基本的 Dockerfile 语法
+
+- FROM :: 基础镜像
+- ADD :: 添加文件
+- ENTRYPOINT :: 入口
+
+
+*** 编译 Docker image
+
+#+BEGIN_SRC sh
+docker build -t <image-name:tag>
+#+END_SRC
+
+- Tag 做为版本号，默认为 "latest"
+- 编译过程在 docker daemon 进行，而非 client
+- 编译过程是分层的，分层有利于复用，各层可以被独立下载
+- Dockerfile 中的每句指令都生成一个新的 layer
+
+*** Docker 常用命令
+
+- =docker run --name <container-name> -p 8080:8080 -d <image>=
+  + -d: detach，在后台运行
+  + -p: 端口映射
+- =docker ps=: 列出 containers
+- =docker inspect=: 显示 container 详情
+- =docker exec -it <container-name> bash=
+  + -i: make the STDIN to open
+  + -t: allocate a pseudo terminal (TTY)
+- =docker stop <container-name>=: 停止后容器任存在，环境被保留，但没有进程在运行
+- =docker rm <container-name>=: 删除容器环境
+- =docker push <image>=: 需要提前 retag image，添加 registry 地址
+
+** Setting up a kubernetes cluster
+
+*** 常用方式
+
+- 本地单节点
+- GKE
+- Kubeadm
+- AWS + kops
+
+*** 本地 minikube 模式
+
+- =minikube start= 启动
+- 依赖于 KVM 或者 virtualbox
+
+
+*** GKE
+
+#+BEGIN_SRC 
+gcloud container clusters create kubia <options>
+#+END_SRC
+
+** Running your first app on Kubernetes
+
+*** example
+
+#+BEGIN_SRC 
+kubectl run <pod-name> --image=<image-name> --port=8080 --generator=run/v1
+kubectl expose rc kubia --type=LoadBalancer --name kubia-http
+kubectl scale rc kubia --replica=3
+#+END_SRC
+
+- generator [[https://kubernetes.io/docs/reference/kubectl/conventions/#generators][指定 resources 类型]]，这里用 ReplicationController 而非默认的 Deployment
+- pod 为一组密切联系的 container，运行在同一 Node，在相同的 Namespace 下，是 k8s 中的最小单位
+- pod 有内部的 IP 地址和 hostname，为内部 container 共享
+- ReplicateController 生成并维护多 Pod
+- 外部访问 pod 需要创建 service (Load Balancer 模式）
+- service 代理请求到 pod，避免因 pod 重启而导致服务无法访问
+
+
+*** 基本过程
+
+- kubectl 通过 REST API 请求 API server，创建 RC 实例
+- k8s scheduler 选择 worker node
+- kubelet 指挥 Docker 拉取镜像并运行容器
+
+
+* 问题
+
+** TODO ENTRYPOINT 和 COMMAND 是怎样被表示和存放在 docker image layer 中的？
+
+** TODO 如何检查 docker container 的 volumn 使用情况
+
+** TODO ReplicationController, Deployment, ReplicaSet 的关系 
+
+** TODO linux 如何查看 Namespace
+
+** TODO Load balancer service 只能针对 HTTP 协议？
+
+** TODO 如何安装 k8s dashboard
+
+* K8S 常用命令
+
+** info
+
+- =kubectl cluster-info=
+
+** auto completion
+
+#+BEGIN_SRC sh
+source <(kubectl completion bash | sed s/kubectl/kc/g)
+#+END_SRC
