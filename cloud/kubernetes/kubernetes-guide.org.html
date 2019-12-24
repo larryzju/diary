@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>kubernetes-guide.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	  <a href="/diary/cloud/kubernetes/kubeadm.org.html">Prev: kubeadm.org</a>
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/cloud/kubernetes">Up: kubernetes</a>
+	  	
+	</span>
+
+	<span id="next">
+	  
+	  <a href="/diary/cloud/kubernetes/operator.org.html">Next: operator.org</a>
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="kubernetes-入门">Kubernetes 入门</h1>
+<h2 id="kubernetes-是什么"><span class="todo TODO">TODO</span> Kubernetes 是什么</h2>
+<h2 id="为什么要用-kubernetes">为什么要用 Kubernetes</h2>
+<ol class="incremental">
+<li>集成形成复杂系统，节约运维成本</li>
+<li>微服务，内置负载均衡</li>
+<li>屏弊底层平台和硬件，可迁移往公有云</li>
+<li>水平扩展</li>
+</ol>
+<h2 id="从一个不简单的-hello-world-例子说起">从一个不简单的 Hello World 例子说起</h2>
+<h3 id="基本架构">基本架构</h3>
+<ol class="incremental">
+<li>fronted (replica x 3)，由 PHP 读 redis-slave 和 写 redis-master 功能</li>
+<li>redis-master，写入页面提交</li>
+<li>redis-slave (replica x 2)，同步 redis-master，提供读写分离功能</li>
+</ol>
+<h3 id="kubernetes-组件">kubernetes 组件</h3>
+<ol class="incremental">
+<li>3 种 RC (ReplicationController)</li>
+<li>3 种 Service</li>
+<li>3 + 1 + 2 个 Pod 实例</li>
+</ol>
+<h3 id="补充">补充</h3>
+<ul class="incremental">
+<li>ReplicationController 指定副本数</li>
+<li>Service 通过 LabelSelector 选中相应的 pods</li>
+<li>Redis-master 的 Service 为后续 Redis-slave Pods 设置了相应的环境变量（redis 主节点地址信息）</li>
+</ul>
+<h2 id="kubernetes-基本概念和术语">Kubernetes 基本概念和术语</h2>
+<h3 id="node">Node</h3>
+<ul class="incremental">
+<li>也称作 Minion</li>
+<li>由　Master 的 Node Controller 进行管理</li>
+<li>运行有 kubelet, kube-proxy, docker-daemon</li>
+<li>主动注册到 kubernetes 集群</li>
+<li>也可有 Master 手动注册</li>
+</ul>
+<h3 id="pod豆荚">Pod（豆荚）</h3>
+<ul class="incremental">
+<li>一组容器的集合，作为 Logical Host</li>
+<li>封装了 Docker 等容器功能，因为 Docker 的通信方式复杂（Link）</li>
+<li>Pod 中的容器共享了 PID, Net, IPC, UTS(主机名), Volume</li>
+<li>Pod 中的容器可以直接用 localhost 相互访问（像同一台机器）</li>
+<li>Pod 只能运行在单一 Node 上</li>
+<li>Pod 有生命周期，由 ReplicationController 管理</li>
+</ul>
+<h3 id="label">Label</h3>
+<ul class="incremental">
+<li>Attach key/value pairs to Objects</li>
+<li>可以由 LabelSelector 语法来选取（equality 或 set 比较）</li>
+<li>RC 和 Service 使用 LabelSelector 来选中副本的 Pods</li>
+</ul>
+<h3 id="rc-replicationcontroller">RC (ReplicationController)</h3>
+<ul class="incremental">
+<li>类似于 Yarn ApplicationManager</li>
+<li>可以动态修改 Pod 副本数量 <code>kubectl scale rc redis-slave --replicas=3</code></li>
+<li>删除 RC 不会自动删除相应的 Pods！</li>
+</ul>
+<h3 id="service">Service</h3>
+<ul class="incremental">
+<li>选中一组 Pod，并 Expose 服务</li>
+<li>与 Pod 建立 Endpoints 连接？</li>
+<li>有多种方式，如 NodePort, LoadBalancer</li>
+<li>生成一个稳定的虚拟 IP (相对 Pods 临时地址)</li>
+<li>可以映射多端口</li>
+</ul>
+<h3 id="volume">Volume</h3>
+<ul class="incremental">
+<li>与 Pod 有相同的生命周期</li>
+<li>为 Pod 中的全部 Container 提供服务</li>
+<li>有多种实现，常用的有
+<ul class="incremental">
+<li>emptyDir (临时)</li>
+<li>hostPath (不一致)</li>
+<li>gccPersistDisk, aws…</li>
+<li>nfs</li>
+<li>iSCSI</li>
+<li>gitRepo</li>
+</ul></li>
+</ul>
+<h3 id="namespace">Namespace</h3>
+<ul class="incremental">
+<li>将对象逻辑分组</li>
+<li>用于多租户管理</li>
+</ul>
+<h3 id="annotation">Annotation</h3>
+<ul class="incremental">
+<li>类似于 label</li>
+<li>没有 labelSelector 功能</li>
+<li>可以存储关联任何格式的数据</li>
+</ul>
+<h2 id="kubernetes-总体架构">Kubernetes 总体架构</h2>
+<p>kubernetes 由三部分构成</p>
+<ul class="incremental">
+<li>工具集 kubectl</li>
+<li>Master
+<ul class="incremental">
+<li>etcd: Key/value 数据库</li>
+<li>Core
+<ul class="incremental">
+<li>API Server: Restful 服务，提供全量查询和变化监听功能，为 kubectl, controller manager, scheduler, proxy 所用</li>
+<li>Controller Manager: 集群管理控制中心，故障检测与自动恢复机制</li>
+<li>Scheduler: Pod 到 Node 的调度/Binding</li>
+</ul></li>
+</ul></li>
+<li>Node
+<ul class="incremental">
+<li>kubelet: 负责 Pod 的创建、维护等生命管理</li>
+<li>proxy: Service 代理，起负载均衡作用</li>
+</ul></li>
+</ul>
+<h2 id="kubernetes-安装与配置">Kubernetes 安装与配置</h2>
+<ul class="incremental">
+<li>描述从二进制文件安装 kubernetes 的方法</li>
+<li>分 master 和 node 分别安装和配置</li>
+<li>用 systemd 来管理服务的依赖关系</li>
+<li>各种服务均需要指定 master api server 地址</li>
+<li>提到了在内网搭建私有云？</li>
+<li>提到了 Supervisor 在前台执行命令</li>
+</ul>
+<h1 id="kubernetes-核心原理">Kubernetes 核心原理</h1>
+<h2 id="kubernetes-api-server-分析">Kubernetes API Server 分析</h2>
+<h3 id="基本功能">基本功能</h3>
+<ol class="incremental">
+<li>提供 API Interface</li>
+<li>各组件的枢纽，etcd 对外接口</li>
+<li>安全机制</li>
+</ol>
+<h3 id="对外端口">对外端口</h3>
+<ol class="incremental">
+<li>HTTP 8080</li>
+<li>SecurePort HTTPs 6443</li>
+</ol>
+<h3 id="与-api-server-的交互方式">与 API SERVER 的交互方式</h3>
+<ol class="incremental">
+<li>API (Restful)，路径如 <code>/api/v1/proxy/nodes/{name}/pods</code></li>
+<li>Proxy 反向代理 API SERVER</li>
+<li>Lanaguage Client Library 封装</li>
+<li>kubectl command line （类比于 beeline 之于 hive server2）</li>
+</ol>
+<h3 id="细节补充">细节补充</h3>
+<ul class="incremental">
+<li>各模块缓存机制以减少对 apiserver 的压力</li>
+<li>node 定时向 apiserver 汇总状态</li>
+</ul>
+<h2 id="调度控制原理"><span class="todo TODO">TODO</span> 调度控制原理</h2>
+<h2 id="kubelet-运行机制分析"><span class="todo TODO">TODO</span> Kubelet 运行机制分析</h2>
+<h2 id="安全机制的原理"><span class="todo TODO">TODO</span> 安全机制的原理</h2>
+<h2 id="网络原理"><span class="todo TODO">TODO</span> 网络原理</h2>
+<h1 id="kubernetes-开发指南"><span class="todo TODO">TODO</span> Kubernetes 开发指南</h1>
+<h1 id="kubernetes-运维指南"><span class="todo TODO">TODO</span> Kubernetes 运维指南</h1>
+<h1 id="kubernetes-高级案例进阶"><span class="todo TODO">TODO</span> Kubernetes 高级案例进阶</h1>
+<h1 id="kubernetes-源码导读"><span class="todo TODO">TODO</span> Kubernetes 源码导读</h1>
+<h1 id="问题">问题</h1>
+<h2 id="etcd-与-k8s-的关系">etcd 与 k8s 的关系</h2>
+<p>etcd 在 Master 节点运行，是一个键值对数据库，保存 k8s 运行对象配置数据</p>
+<h2 id="kube-apiserver-kube-controller-manager-kube-scheduler-kubelet-kube-proxy-的关系"><span class="todo TODO">TODO</span> <code>kube-apiserver</code>, <code>kube-controller-manager</code>, <code>kube-scheduler</code>, <code>kubelet</code>, <code>kube-proxy</code> 的关系</h2>
+<h2 id="service-nodeport"><span class="todo TODO">TODO</span> Service Nodeport</h2>
+<h2 id="service-loadbalancer"><span class="todo TODO">TODO</span> Service LoadBalancer</h2>
+<h1 id="杂项">杂项</h1>
+<ul class="incremental">
+<li>etcd 是 kubernetes 运行时需要的数据库</li>
+</ul>
+
+      </div>
+    </section>
+  </body>
+</html>

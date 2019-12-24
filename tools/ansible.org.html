@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>ansible.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/tools">Up: tools</a>
+	  	
+	</span>
+
+	<span id="next">
+	  
+	  <a href="/diary/tools/bash.org.html">Next: bash.org</a>
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="overview">Overview</h1>
+<p>Run <code>playbook</code> (in YAML format) on multiple remote hosts (defined by <code>Inventory</code>) without deploy clients on hosts.</p>
+<p>Ansible provides rich sets of <code>Modules</code> which can hide the detail of underlying platform or system (kubernete, linux, windows, docker…)</p>
+<p>The word <code>Ansible</code> has different means:</p>
+<ol class="incremental">
+<li>language specification for playbook</li>
+<li>execute engine: <code>ansible-playbook</code></li>
+<li>Ansible Tower: Enterprise API server with UI</li>
+</ol>
+<h2 id="usage"><span class="todo TODO">TODO</span> Usage</h2>
+<ul class="incremental">
+<li>Config Management</li>
+<li>App deployment</li>
+<li>Provision?</li>
+<li>Continuous delivery?</li>
+<li>Security &amp; Compliance?</li>
+<li>Orchestration?</li>
+</ul>
+<h2 id="architecture">Architecture</h2>
+<h2 id="terms">Terms</h2>
+<dl class="incremental">
+<dt>Inventory</dt>
+<dd>hosts group
+</dd>
+<dt>Playbook</dt>
+<dd>collections of <code>plays</code> which contains <code>tasks</code>
+</dd>
+<dt>Tasks</dt>
+<dd>task run sequentially and calls <strong>Modules</strong>
+</dd>
+<dt>Modules</dt>
+<dd>underlying implement in python
+</dd>
+<dt>Variable</dt>
+<dd>substitute in runtime
+</dd>
+<dt>Discovered variables (facts)</dt>
+<dd>runtime parameters of hosts
+</dd>
+<dt>Handlers</dt>
+<dd>Triggered by Tasks's <strong>Notify</strong>
+</dd>
+<dt>Roles</dt>
+<dd>kind of Playbook that is fully self-contained with task, variables, configurations templates
+</dd>
+</dl>
+<h2 id="how-to-use">How to use</h2>
+<ol class="incremental">
+<li>ad-hoc command line: <code>ansible inventory -m</code></li>
+<li><code>ansible-playbook</code> command line</li>
+<li>Ansible Tower (UI)</li>
+</ol>
+<h2 id="notes">Notes</h2>
+<p>核心功能是： <strong>登录到一组主机，执行一套命令</strong></p>
+<ul class="incremental">
+<li>主机组由 Inventory 定义，主机组配置灵活</li>
+<li>执行的这组命令称为 Task List</li>
+<li>Task List 中的命令以一定的顺序执行</li>
+<li>每个 Task 调用系统功能，称为 Module</li>
+<li>Module 以 Python 实现，最常见的如 shell 和 file 操作</li>
+<li>远程机器的方式可以有 ssh 或 docker，在 module 上实现了操作的统一</li>
+<li>无需在各 node 上部署客户端 (Agentless)</li>
+<li>通过 Jinja2 语法提供模板替换</li>
+</ul>
+<h1 id="ad-hoc">Ad-Hoc</h1>
+<p><code>ansible</code> command provide ansible ad-hoc cli interface which can do quick things that you might not necessarily want to write a full playbook for.</p>
+<p>For example, to get ip list for all hosts defined in inventory-file</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">ansible</span> -i inventory-file all -m shell -a <span class="st">&#39;ip addr list&#39;</span></span></code></pre></div>
+<p>By default, ansible use <code>command</code> module. Option <code>-a</code> will pass the arguments (in key-value pairs) to module.</p>
+<h1 id="variable">Variable</h1>
+<p>See <em>Inventory</em></p>
+<dl class="incremental">
+<dt><code>register</code></dt>
+<dd>?
+</dd>
+</dl>
+<h1 id="inventory">Inventory</h1>
+<h2 id="basic">Basic</h2>
+<ul class="incremental">
+<li>Default configure file is located at <code>/etc/ansible/hosts</code></li>
+<li>Group hosts to <strong>group</strong> ( with the section name in <code>ini</code> file )</li>
+<li>Group variables can be defined at section <code>group_name:vars</code></li>
+<li>Two default groups: <code>all</code> and <code>ungrouped</code></li>
+<li>Coupled with variable definition</li>
+<li>Recommend to <em>split variable definition to seperated files</em></li>
+</ul>
+<h2 id="feature">Feature</h2>
+<dl class="incremental">
+<dt>Jumper</dt>
+<dd>Alias for host ( <code>ansible_host</code> or <code>ansible_port</code> )
+</dd>
+<dt>Connection Type</dt>
+<dd>Set <code>ansible_connection</code> to <code>smart</code>, or <code>ssh</code>, or <code>paramiko</code>, or <code>docker</code>
+</dd>
+<dt>Range pattern</dt>
+<dd>Such as <code>www[01:50].example.com</code>
+</dd>
+</dl>
+<h2 id="splitting-out-host-and-group-specific-data">Splitting Out Host and Group Specific Data</h2>
+<ul class="incremental">
+<li>Split varaible definition to seperated files</li>
+<li>Files will be placed at <code>/etc/ansible/{group_vars, host_vars}/name/</code></li>
+<li>Let group to manage the logical host sets</li>
+<li>Attach variable defintions to logical host set</li>
+</ul>
+<h2 id="how-variables-are-merged">How Variables Are Merged</h2>
+<p>The order/precedence is (from lowest to highest):</p>
+<ol class="incremental">
+<li>all group</li>
+<li>parent group</li>
+<li>child group</li>
+<li>host</li>
+</ol>
+<p>Merge order can be changed by <code>ansible_group_priority</code> setting</p>
+<h1 id="playbook">Playbook</h1>
+<h2 id="basic-1">Basic</h2>
+<ul class="incremental">
+<li>Playbook defines lists of <strong>plays</strong></li>
+<li>Play maps a group of <strong>hosts</strong> to some well defined <strong>roles</strong>, represented by things ansible calls <strong>tasks</strong></li>
+<li>Task calls to an ansible <strong>module</strong></li>
+</ul>
+<h2 id="order-of-players-in-playbook"><span class="todo TODO">TODO</span> Order of players (in Playbook)</h2>
+<h2 id="order-of-tasks-in-play"><span class="todo TODO">TODO</span> Order of tasks (in Play)</h2>
+<h2 id="notes-1">Notes</h2>
+<ul class="incremental">
+<li>通过 yaml 语法进行配置</li>
+<li><code>ansible-playbook</code> 最佳实践
+<ol class="incremental">
+<li><code>--syntax-check</code> 检查语法</li>
+<li><code>-C</code> 试运行 (dry-run)</li>
+</ol></li>
+</ul>
+<h2 id="blocks">Blocks</h2>
+<h3 id="what-is-block">What is block</h3>
+<p>Blocks allow for logical grouping of tasks and in play error handling</p>
+<h3 id="example">Example</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">tasks</span><span class="kw">:</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install Apache</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="at">    </span><span class="fu">block</span><span class="kw">:</span><span class="co">                     # become, when, become_user will be applied to this block</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">yum</span><span class="kw">:</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="at">          </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item }}&quot;</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="at">          </span><span class="fu">state</span><span class="kw">:</span><span class="at"> installed</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="at">        </span><span class="fu">with_items</span><span class="kw">:</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="at">          </span><span class="kw">-</span><span class="at"> httpd</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="at">          </span><span class="kw">-</span><span class="at"> memcached</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">template</span><span class="kw">:</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="at">          </span><span class="fu">src</span><span class="kw">:</span><span class="at"> templates/src.j2</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="at">          </span><span class="fu">dest</span><span class="kw">:</span><span class="at"> /etc/foo.conf</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">service</span><span class="kw">:</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="at">          </span><span class="fu">name</span><span class="kw">:</span><span class="at"> bar</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="at">          </span><span class="fu">state</span><span class="kw">:</span><span class="at"> started</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a><span class="at">          </span><span class="fu">enabled</span><span class="kw">:</span><span class="at"> </span><span class="ch">True</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a><span class="at">    </span><span class="fu">when</span><span class="kw">:</span><span class="at"> ansible_distribution == &#39;CentOS&#39;</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a><span class="at">    </span><span class="fu">become</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a><span class="at">    </span><span class="fu">become_user</span><span class="kw">:</span><span class="at"> root</span></span></code></pre></div>
+<h3 id="error-handling">Error Handling</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">tasks</span><span class="kw">:</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Attempt and graceful roll back demo</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="at">  </span><span class="fu">block</span><span class="kw">:</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="at">        </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;I execute normally&#39;</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">command</span><span class="kw">:</span><span class="at"> /bin/false</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="at">        </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;I never execute, due to the above task failing&#39;</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="at">  </span><span class="fu">rescue</span><span class="kw">:</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a><span class="at">        </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;I caught an error&#39;</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">command</span><span class="kw">:</span><span class="at"> /bin/false</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a><span class="at">        </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;I also never execute :-(&#39;</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a><span class="at">  </span><span class="fu">always</span><span class="kw">:</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a><span class="at">        </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;This always executes&quot;</span></span></code></pre></div>
+<ul class="incremental">
+<li>Similar to python <code>try...except...finally</code> logical</li>
+</ul>
+<h3 id="variable-1">Variable</h3>
+<dl class="incremental">
+<dt><code>ansible_failed_task</code></dt>
+<dd>The task object that returned ‘failed’ and triggered the rescue
+</dd>
+<dt><code>ansible_failed_result</code></dt>
+<dd>The captured return result of the failed task that triggered the rescue
+</dd>
+</dl>
+<h2 id="notify---handlers">notify - handlers</h2>
+<ul class="incremental">
+<li>'Notify' actions are triggered at the end of each block of tasks in a play, only be triggered only once</li>
+<li>'Handlers' are lists of tasks that are referenced by a globally unique name</li>
+<li>Regardless of how many tasks notify a handler, the handler will run only once</li>
+<li>'Handlers' can listen to spefic named notify (match with handler's name in classic way)</li>
+</ul>
+<h2 id="tags">Tags</h2>
+<h3 id="usage-1">Usage</h3>
+<p>For <code>ansible-playbook</code> command line to filter with tags:</p>
+<ul class="incremental">
+<li><code>--tags</code>: match tags</li>
+<li><code>--skip-tags</code>: skip tags</li>
+</ul>
+<h3 id="scope">Scope</h3>
+<p>Can be applied to multiple levels:</p>
+<ol class="incremental">
+<li>task</li>
+<li>play</li>
+<li>role</li>
+<li>import file</li>
+</ol>
+<p>Note: Not works at <code>include_tasks</code>, for its dynamic include feature</p>
+<h3 id="misc">Misc</h3>
+<ul class="incremental">
+<li>Use <code>--list-tags</code> in <code>ansible-playbook</code> command line to check all tags</li>
+<li>Special tags <code>always</code> and <code>never</code> can be used in mark</li>
+<li>Can filter with special tags named <code>tagged</code>, <code>untagged</code>, <code>all</code></li>
+</ul>
+<h2 id="varibles"><span class="todo TODO">TODO</span> varibles</h2>
+<h2 id="templates"><span class="todo TODO">TODO</span> templates</h2>
+<h2 id="conditional">Conditional</h2>
+<h3 id="why">Why?</h3>
+<p>Often the result of a play may depend on</p>
+<ol class="incremental">
+<li>the value of variable</li>
+<li>fact (something learned about the remote system)</li>
+<li>previous task result</li>
+</ol>
+<h3 id="when-statement"><code>when</code> statement</h3>
+<ul class="incremental">
+<li><p>without double curly braces</p></li>
+<li><p>can use parathese to group condition (with logical likes <code>or</code>)</p></li>
+<li><p>Multiple conditions as a list means logical <code>and</code></p></li>
+<li><p><code>register</code> result can be compared with <code>{failed,successed,skipped}</code></p></li>
+<li><p>Boolean check</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">vars</span><span class="kw">:</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="at">  </span><span class="fu">epic</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="co">## true</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="fu">tasks</span><span class="kw">:</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">shell</span><span class="kw">:</span><span class="at"> echo &quot;This certainly is epic!&quot;</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="at">      </span><span class="fu">when</span><span class="kw">:</span><span class="at"> epic</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="co">## or false:</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="fu">tasks</span><span class="kw">:</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">shell</span><span class="kw">:</span><span class="at"> echo &quot;This certainly isn&#39;t epic!&quot;</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="at">      </span><span class="fu">when</span><span class="kw">:</span><span class="at"> not epic</span></span></code></pre></div></li>
+<li><p>Defined check</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">tasks</span><span class="kw">:</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">shell</span><span class="kw">:</span><span class="at"> echo &quot;I&#39;ve got &#39;{{ foo }}&#39; and am not afraid to use it!&quot;</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="at">      </span><span class="fu">when</span><span class="kw">:</span><span class="at"> foo is defined</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">fail</span><span class="kw">:</span><span class="at"> msg=&quot;Bailing out. this play requires &#39;bar&#39;&quot;</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="at">      </span><span class="fu">when</span><span class="kw">:</span><span class="at"> bar is undefined</span></span></code></pre></div></li>
+</ul>
+<h3 id="loops-and-conditionals">Loops and Conditionals</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">tasks</span><span class="kw">:</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">command</span><span class="kw">:</span><span class="at"> echo {{ item }}</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="at">      </span><span class="fu">loop</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at"> </span><span class="dv">0</span><span class="kw">,</span><span class="at"> </span><span class="dv">2</span><span class="kw">,</span><span class="at"> </span><span class="dv">4</span><span class="kw">,</span><span class="at"> </span><span class="dv">6</span><span class="kw">,</span><span class="at"> </span><span class="dv">8</span><span class="kw">,</span><span class="at"> </span><span class="dv">10</span><span class="at"> </span><span class="kw">]</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="at">      </span><span class="fu">when</span><span class="kw">:</span><span class="at"> item &gt; 5</span></span></code></pre></div>
+<p>Withing <code>lookup</code> plugin's <code>dict</code> command</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">vars</span><span class="kw">:</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="at">  </span><span class="fu">persons</span><span class="kw">:</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="at">    </span><span class="fu">Lily</span><span class="kw">:</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="at">      </span><span class="fu">sex</span><span class="kw">:</span><span class="at"> female</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="at">      </span><span class="fu">age</span><span class="kw">:</span><span class="at"> </span><span class="dv">29</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="at">    </span><span class="fu">Lucy</span><span class="kw">:</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="at">      </span><span class="fu">sex</span><span class="kw">:</span><span class="at"> female</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="at">      </span><span class="fu">age</span><span class="kw">:</span><span class="at"> </span><span class="dv">29</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="at">    </span><span class="fu">LiLei</span><span class="kw">:</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="at">      </span><span class="fu">sex</span><span class="kw">:</span><span class="at"> male</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="at">      </span><span class="fu">age</span><span class="kw">:</span><span class="at"> </span><span class="dv">30</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a></span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="fu">tasks</span><span class="kw">:</span></span>
+<span id="cb7-14"><a href="#cb7-14"></a></span>
+<span id="cb7-15"><a href="#cb7-15"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> show male&#39;s list</span></span>
+<span id="cb7-16"><a href="#cb7-16"></a><span class="at">    </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb7-17"><a href="#cb7-17"></a><span class="at">      </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> Mr.{{item.key}}&#39;s age is {{item.value.age}}</span></span>
+<span id="cb7-18"><a href="#cb7-18"></a><span class="at">    </span><span class="fu">loop</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ query(&#39;dict&#39;, persons) }}&quot;</span></span>
+<span id="cb7-19"><a href="#cb7-19"></a><span class="at">    </span><span class="fu">when</span><span class="kw">:</span><span class="at"> item.value.sex == &#39;male&#39;</span></span>
+<span id="cb7-20"><a href="#cb7-20"></a></span>
+<span id="cb7-21"><a href="#cb7-21"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> show female&#39;s list</span></span>
+<span id="cb7-22"><a href="#cb7-22"></a><span class="at">    </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb7-23"><a href="#cb7-23"></a><span class="at">      </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> Miss.{{item.key}}&#39;s age is {{item.value.age}}</span></span>
+<span id="cb7-24"><a href="#cb7-24"></a><span class="at">    </span><span class="fu">loop</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ query(&#39;dict&#39;, persons) }}&quot;</span></span>
+<span id="cb7-25"><a href="#cb7-25"></a><span class="at">    </span><span class="fu">when</span><span class="kw">:</span><span class="at"> item.value.sex == &#39;female&#39;</span></span></code></pre></div>
+<h3 id="loading-in-custom-facts"><span class="todo TODO">TODO</span> Loading in Custom Facts</h3>
+<h3 id="applying-when-to-roles-imports-and-includes">Applying ‘when’ to roles, imports, and includes</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> webservers</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="at">  </span><span class="fu">roles</span><span class="kw">:</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="at">     </span><span class="kw">-</span><span class="at"> </span><span class="fu">role</span><span class="kw">:</span><span class="at"> debian_stock_config</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="at">       </span><span class="fu">when</span><span class="kw">:</span><span class="at"> ansible_os_family == &#39;Debian&#39;</span></span></code></pre></div>
+<h3 id="register-variables">Register variables</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> test play</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="at">  </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> all</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="at">  </span><span class="fu">tasks</span><span class="kw">:</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">shell</span><span class="kw">:</span><span class="at"> cat /etc/motd</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="at">        </span><span class="fu">register</span><span class="kw">:</span><span class="at"> motd_contents</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">shell</span><span class="kw">:</span><span class="at"> echo &quot;motd contains the word hi&quot;</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="at">        </span><span class="fu">when</span><span class="kw">:</span><span class="at"> motd_contents.stdout.find(&#39;hi&#39;) != -1</span></span></code></pre></div>
+<h3 id="conditional-imports"><span class="todo TODO">TODO</span> conditional Imports</h3>
+<h3 id="selecting-files-and-templates-based-on-variables"><span class="todo TODO">TODO</span> Selecting Files and Templates based on variables</h3>
+<h2 id="loops">Loops</h2>
+<h3 id="scenes">scenes</h3>
+<ul class="incremental">
+<li>Create multiple user</li>
+<li>Install multiple software package</li>
+<li>Polling for finished</li>
+</ul>
+<h3 id="standard-loops">Standard Loops</h3>
+<ul class="incremental">
+<li><p>Iterator variable named <code>item</code></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> add several users</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="at">  </span><span class="fu">user</span><span class="kw">:</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item }}&quot;</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="at">    </span><span class="fu">state</span><span class="kw">:</span><span class="at"> present</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="at">    </span><span class="fu">groups</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;wheel&quot;</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="at">     </span><span class="kw">-</span><span class="at"> testuser1</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="at">     </span><span class="kw">-</span><span class="at"> testuser2</span></span></code></pre></div></li>
+<li><p>Can loop over list value</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> non optimal yum, not only slower but might cause issues with interdependencies</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="at">  </span><span class="fu">yum</span><span class="kw">:</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{item}}&quot;</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="at">    </span><span class="fu">state</span><span class="kw">:</span><span class="at"> present</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{list_of_packages}}&quot;</span></span></code></pre></div></li>
+<li><p>Iterate over list of objects</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> add several users</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="at">  </span><span class="fu">user</span><span class="kw">:</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item.name }}&quot;</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="at">    </span><span class="fu">state</span><span class="kw">:</span><span class="at"> present</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="at">    </span><span class="fu">groups</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item.groups }}&quot;</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="kw">{</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;testuser1&#39;</span><span class="kw">,</span><span class="at"> </span><span class="fu">groups</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;wheel&#39;</span><span class="at"> </span><span class="kw">}</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="kw">{</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;testuser2&#39;</span><span class="kw">,</span><span class="at"> </span><span class="fu">groups</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;root&#39;</span><span class="at"> </span><span class="kw">}</span></span></code></pre></div></li>
+<li><p>Iterator over dict with <code>dict2items</code> filter</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> create a tag dictionary of non-empty tags</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="at">  </span><span class="fu">set_fact</span><span class="kw">:</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="at">    </span><span class="fu">tags_dict</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ (tags_dict|default({}))|combine({item.key: item.value}) }}&quot;</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ tags|dict2items }}&quot;</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="at">  </span><span class="fu">vars</span><span class="kw">:</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="at">    </span><span class="fu">tags</span><span class="kw">:</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="at">      </span><span class="fu">Environment</span><span class="kw">:</span><span class="at"> dev</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a><span class="at">      </span><span class="fu">Application</span><span class="kw">:</span><span class="at"> payment</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a><span class="at">      </span><span class="fu">Another</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ doesnotexist|default() }}&quot;</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a><span class="at">  </span><span class="fu">when</span><span class="kw">:</span><span class="at"> item.value != &quot;&quot;</span></span></code></pre></div></li>
+</ul>
+<h3 id="complex-loops">Complex Loops</h3>
+<p>Can use Jinja2 expressions to create complex lists, for example</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> give users access to multiple databases</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="at">  </span><span class="fu">mysql_user</span><span class="kw">:</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item[0] }}&quot;</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="at">    </span><span class="fu">priv</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item[1] }}.*:ALL&quot;</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="at">    </span><span class="fu">append_privs</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a><span class="at">    </span><span class="fu">password</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;foo&quot;</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ [&#39;alice&#39;, &#39;bob&#39;] |product([&#39;clientdb&#39;, &#39;employeedb&#39;, &#39;providerdb&#39;])|list }}&quot;</span></span></code></pre></div>
+<h3 id="querylookup">query/lookup</h3>
+<p>See <code>ansible-doc -t lookup inventory_hostnames</code></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">loop</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ query(&#39;inventory_hostnames&#39;, &#39;all&#39;) }}&quot;</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="fu">loop</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ lookup(&#39;inventory_hostnames&#39;, &#39;all&#39;, wantlist=True) }}&quot;</span></span></code></pre></div>
+<h3 id="do-until-loops-polling">Do-Until Loops (polling)</h3>
+<div class="sourceCode" id="cb16"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">shell</span><span class="kw">:</span><span class="at"> /usr/bin/foo</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="at">  </span><span class="fu">register</span><span class="kw">:</span><span class="at"> result</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="at">  </span><span class="fu">until</span><span class="kw">:</span><span class="at"> result.stdout.find(&quot;all systems go&quot;) != -1</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="at">  </span><span class="fu">retries</span><span class="kw">:</span><span class="at"> </span><span class="dv">5</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a><span class="at">  </span><span class="fu">delay</span><span class="kw">:</span><span class="at"> </span><span class="dv">10</span></span></code></pre></div>
+<h3 id="register-in-loop">Register in loop</h3>
+<ul class="incremental">
+<li><p>can register variable in loop</p></li>
+<li><p>variable has <code>results</code> fields which is a list for each result</p></li>
+<li><p>During iteration, the result of the current item will be placed in the variable</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">shell</span><span class="kw">:</span><span class="at"> echo &quot;{{ item }}&quot;</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="at">    </span><span class="kw">-</span><span class="at"> one</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="at">    </span><span class="kw">-</span><span class="at"> two</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="at">  </span><span class="fu">register</span><span class="kw">:</span><span class="at"> echo</span></span>
+<span id="cb17-6"><a href="#cb17-6"></a><span class="at">  </span><span class="fu">changed_when</span><span class="kw">:</span><span class="at"> echo.stdout != &quot;one&quot;</span></span></code></pre></div></li>
+</ul>
+<h3 id="loop-over-the-inventory">Loop over the inventory</h3>
+<ul class="incremental">
+<li><p>Use <code>ansible_play_batch</code> or <code>groups</code> variables</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb18-1"><a href="#cb18-1"></a><span class="co"># show all the hosts in the inventory</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="kw">-</span><span class="at"> </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item }}&quot;</span></span>
+<span id="cb18-4"><a href="#cb18-4"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ groups[&#39;all&#39;] }}&quot;</span></span>
+<span id="cb18-5"><a href="#cb18-5"></a></span>
+<span id="cb18-6"><a href="#cb18-6"></a><span class="co"># show all the hosts in the current play</span></span>
+<span id="cb18-7"><a href="#cb18-7"></a><span class="kw">-</span><span class="at"> </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb18-8"><a href="#cb18-8"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item }}&quot;</span></span>
+<span id="cb18-9"><a href="#cb18-9"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ ansible_play_batch }}&quot;</span></span></code></pre></div></li>
+<li><p>with lookup plugin <code>inventory_hostnames</code></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># show all the hosts in the inventory</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="kw">-</span><span class="at"> </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item }}&quot;</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ query(&#39;inventory_hostnames&#39;, &#39;all&#39;) }}&quot;</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a></span>
+<span id="cb19-6"><a href="#cb19-6"></a><span class="co"># show all the hosts matching the pattern, ie all but the group www</span></span>
+<span id="cb19-7"><a href="#cb19-7"></a><span class="kw">-</span><span class="at"> </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb19-8"><a href="#cb19-8"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item }}&quot;</span></span>
+<span id="cb19-9"><a href="#cb19-9"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ query(&#39;inventory_hostnames&#39;, &#39;all!www&#39;) }}&quot;</span></span></code></pre></div></li>
+</ul>
+<h3 id="loop-control">Loop Control</h3>
+<ul class="incremental">
+<li><p>Change the iterator name <code>item</code> with <code>loop_control.loop_var</code></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb20-1"><a href="#cb20-1"></a><span class="co"># main.yml</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a><span class="kw">-</span><span class="at"> </span><span class="fu">include_tasks</span><span class="kw">:</span><span class="at"> inner.yml</span></span>
+<span id="cb20-3"><a href="#cb20-3"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span></span>
+<span id="cb20-4"><a href="#cb20-4"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="dv">1</span></span>
+<span id="cb20-5"><a href="#cb20-5"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="dv">2</span></span>
+<span id="cb20-6"><a href="#cb20-6"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="dv">3</span></span>
+<span id="cb20-7"><a href="#cb20-7"></a><span class="at">  </span><span class="fu">loop_control</span><span class="kw">:</span></span>
+<span id="cb20-8"><a href="#cb20-8"></a><span class="at">    </span><span class="fu">loop_var</span><span class="kw">:</span><span class="at"> outer_item</span></span>
+<span id="cb20-9"><a href="#cb20-9"></a></span>
+<span id="cb20-10"><a href="#cb20-10"></a><span class="co"># inner.yml</span></span>
+<span id="cb20-11"><a href="#cb20-11"></a><span class="kw">-</span><span class="at"> </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb20-12"><a href="#cb20-12"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;outer item={{ outer_item }} inner item={{ item }}&quot;</span></span>
+<span id="cb20-13"><a href="#cb20-13"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span></span>
+<span id="cb20-14"><a href="#cb20-14"></a><span class="at">    </span><span class="kw">-</span><span class="at"> a</span></span>
+<span id="cb20-15"><a href="#cb20-15"></a><span class="at">    </span><span class="kw">-</span><span class="at"> b</span></span>
+<span id="cb20-16"><a href="#cb20-16"></a><span class="at">    </span><span class="kw">-</span><span class="at"> c</span></span></code></pre></div></li>
+<li><p>Reduce result structure with <code>loop_control.label</code></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb21-1"><a href="#cb21-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> create servers</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="at">  </span><span class="fu">digital_ocean</span><span class="kw">:</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item.name }}&quot;</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a><span class="at">    </span><span class="fu">state</span><span class="kw">:</span><span class="at"> present</span></span>
+<span id="cb21-5"><a href="#cb21-5"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span></span>
+<span id="cb21-6"><a href="#cb21-6"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> server1</span></span>
+<span id="cb21-7"><a href="#cb21-7"></a><span class="at">      </span><span class="fu">disks</span><span class="kw">:</span><span class="at"> 3gb</span></span>
+<span id="cb21-8"><a href="#cb21-8"></a><span class="at">      </span><span class="fu">ram</span><span class="kw">:</span><span class="at"> 15Gb</span></span>
+<span id="cb21-9"><a href="#cb21-9"></a><span class="at">      </span><span class="fu">network</span><span class="kw">:</span></span>
+<span id="cb21-10"><a href="#cb21-10"></a><span class="at">        </span><span class="fu">nic01</span><span class="kw">:</span><span class="at"> 100Gb</span></span>
+<span id="cb21-11"><a href="#cb21-11"></a><span class="at">        </span><span class="fu">nic02</span><span class="kw">:</span><span class="at"> 10Gb</span></span>
+<span id="cb21-12"><a href="#cb21-12"></a><span class="at">        ...</span></span>
+<span id="cb21-13"><a href="#cb21-13"></a><span class="at">  </span><span class="fu">loop_control</span><span class="kw">:</span></span>
+<span id="cb21-14"><a href="#cb21-14"></a><span class="at">    </span><span class="fu">label</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item.name }}&quot;</span></span></code></pre></div></li>
+<li><p>Pause for specific seconds between execution of items in a task loop</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># main.yml</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> create servers, pause 3s before creating next</span></span>
+<span id="cb22-3"><a href="#cb22-3"></a><span class="at">  </span><span class="fu">digital_ocean</span><span class="kw">:</span></span>
+<span id="cb22-4"><a href="#cb22-4"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item }}&quot;</span></span>
+<span id="cb22-5"><a href="#cb22-5"></a><span class="at">    </span><span class="fu">state</span><span class="kw">:</span><span class="at"> present</span></span>
+<span id="cb22-6"><a href="#cb22-6"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span></span>
+<span id="cb22-7"><a href="#cb22-7"></a><span class="at">    </span><span class="kw">-</span><span class="at"> server1</span></span>
+<span id="cb22-8"><a href="#cb22-8"></a><span class="at">    </span><span class="kw">-</span><span class="at"> server2</span></span>
+<span id="cb22-9"><a href="#cb22-9"></a><span class="at">  </span><span class="fu">loop_control</span><span class="kw">:</span></span>
+<span id="cb22-10"><a href="#cb22-10"></a><span class="at">    </span><span class="fu">pause</span><span class="kw">:</span><span class="at"> </span><span class="dv">3</span></span></code></pre></div></li>
+<li><p>Loop with index</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb23-1"><a href="#cb23-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> count our fruit</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="at">  </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb23-3"><a href="#cb23-3"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item }} with index {{ my_idx }}&quot;</span></span>
+<span id="cb23-4"><a href="#cb23-4"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span></span>
+<span id="cb23-5"><a href="#cb23-5"></a><span class="at">    </span><span class="kw">-</span><span class="at"> apple</span></span>
+<span id="cb23-6"><a href="#cb23-6"></a><span class="at">    </span><span class="kw">-</span><span class="at"> banana</span></span>
+<span id="cb23-7"><a href="#cb23-7"></a><span class="at">    </span><span class="kw">-</span><span class="at"> pear</span></span>
+<span id="cb23-8"><a href="#cb23-8"></a><span class="at">  </span><span class="fu">loop_control</span><span class="kw">:</span></span>
+<span id="cb23-9"><a href="#cb23-9"></a><span class="at">    </span><span class="fu">index_var</span><span class="kw">:</span><span class="at"> my_idx</span></span></code></pre></div></li>
+</ul>
+<h3 id="old-fashion-with_x-methods">Old fashion <code>with_X</code> methods</h3>
+<ul class="incremental">
+<li><p><code>with_list</code></p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb24-1"><a href="#cb24-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> with_list</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a><span class="at">  </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb24-3"><a href="#cb24-3"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item }}&quot;</span></span>
+<span id="cb24-4"><a href="#cb24-4"></a><span class="at">  </span><span class="fu">with_list</span><span class="kw">:</span></span>
+<span id="cb24-5"><a href="#cb24-5"></a><span class="at">    </span><span class="kw">-</span><span class="at"> one</span></span>
+<span id="cb24-6"><a href="#cb24-6"></a><span class="at">    </span><span class="kw">-</span><span class="at"> two</span></span>
+<span id="cb24-7"><a href="#cb24-7"></a></span>
+<span id="cb24-8"><a href="#cb24-8"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> with_list -&gt; loop</span></span>
+<span id="cb24-9"><a href="#cb24-9"></a><span class="at">  </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb24-10"><a href="#cb24-10"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item }}&quot;</span></span>
+<span id="cb24-11"><a href="#cb24-11"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span></span>
+<span id="cb24-12"><a href="#cb24-12"></a><span class="at">    </span><span class="kw">-</span><span class="at"> one</span></span>
+<span id="cb24-13"><a href="#cb24-13"></a><span class="at">    </span><span class="kw">-</span><span class="at"> two</span></span></code></pre></div></li>
+<li><p><code>with_items</code></p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb25-1"><a href="#cb25-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> with_items</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a><span class="at">  </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb25-3"><a href="#cb25-3"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item }}&quot;</span></span>
+<span id="cb25-4"><a href="#cb25-4"></a><span class="at">  </span><span class="fu">with_items</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ items }}&quot;</span></span>
+<span id="cb25-5"><a href="#cb25-5"></a></span>
+<span id="cb25-6"><a href="#cb25-6"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> with_items -&gt; loop</span></span>
+<span id="cb25-7"><a href="#cb25-7"></a><span class="at">  </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb25-8"><a href="#cb25-8"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item }}&quot;</span></span>
+<span id="cb25-9"><a href="#cb25-9"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ items|flatten(levels=1) }}&quot;</span></span></code></pre></div></li>
+<li><p><code>with_indexed_items</code></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb26-1"><a href="#cb26-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> with_indexed_items</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a><span class="at">  </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb26-3"><a href="#cb26-3"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item.0 }} - {{ item.1 }}&quot;</span></span>
+<span id="cb26-4"><a href="#cb26-4"></a><span class="at">  </span><span class="fu">with_indexed_items</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ items }}&quot;</span></span>
+<span id="cb26-5"><a href="#cb26-5"></a></span>
+<span id="cb26-6"><a href="#cb26-6"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> with_indexed_items -&gt; loop</span></span>
+<span id="cb26-7"><a href="#cb26-7"></a><span class="at">  </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb26-8"><a href="#cb26-8"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ index }} - {{ item }}&quot;</span></span>
+<span id="cb26-9"><a href="#cb26-9"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ items|flatten(levels=1) }}&quot;</span></span>
+<span id="cb26-10"><a href="#cb26-10"></a><span class="at">  </span><span class="fu">loop_control</span><span class="kw">:</span></span>
+<span id="cb26-11"><a href="#cb26-11"></a><span class="at">    </span><span class="fu">index_var</span><span class="kw">:</span><span class="at"> index</span></span></code></pre></div></li>
+<li><p><code>with_flattened</code></p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb27-1"><a href="#cb27-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> with_flattened</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a><span class="at">  </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb27-3"><a href="#cb27-3"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item }}&quot;</span></span>
+<span id="cb27-4"><a href="#cb27-4"></a><span class="at">  </span><span class="fu">with_flattened</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ items }}&quot;</span></span>
+<span id="cb27-5"><a href="#cb27-5"></a></span>
+<span id="cb27-6"><a href="#cb27-6"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> with_flattened -&gt; loop</span></span>
+<span id="cb27-7"><a href="#cb27-7"></a><span class="at">  </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb27-8"><a href="#cb27-8"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item }}&quot;</span></span>
+<span id="cb27-9"><a href="#cb27-9"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ items|flatten }}&quot;</span></span></code></pre></div></li>
+<li><p><code>with_together</code></p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb28-1"><a href="#cb28-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> with_together</span></span>
+<span id="cb28-2"><a href="#cb28-2"></a><span class="at">  </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb28-3"><a href="#cb28-3"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item.0 }} - {{ item.1 }}&quot;</span></span>
+<span id="cb28-4"><a href="#cb28-4"></a><span class="at">  </span><span class="fu">with_together</span><span class="kw">:</span></span>
+<span id="cb28-5"><a href="#cb28-5"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="st">&quot;{{ list_one }}&quot;</span></span>
+<span id="cb28-6"><a href="#cb28-6"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="st">&quot;{{ list_two }}&quot;</span></span>
+<span id="cb28-7"><a href="#cb28-7"></a></span>
+<span id="cb28-8"><a href="#cb28-8"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> with_together -&gt; loop</span></span>
+<span id="cb28-9"><a href="#cb28-9"></a><span class="at">  </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb28-10"><a href="#cb28-10"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item.0 }} - {{ item.1 }}&quot;</span></span>
+<span id="cb28-11"><a href="#cb28-11"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ list_one|zip(list_two)|list }}&quot;</span></span></code></pre></div></li>
+<li><p><code>with_dict</code></p>
+<p>#+BEGIN<sub>SRC</sub> yaml</p>
+<ul class="incremental">
+<li>name: with<sub>dict</sub></li>
+</ul>
+<p>debug: msg: "{{ item.key }} - {{ item.value }}" with<sub>dict</sub>: "{{ dictionary }}"</p></li>
+<li><p>name: with<sub>dict</sub> -&gt; loop (option 1) debug: msg: "{{ item.key }} - {{ item.value }}" loop: "{{ dictionary|dict2items }}"</p></li>
+<li><p>name: with<sub>dict</sub> -&gt; loop (option 2) debug: msg: "{{ item.0 }} - {{ item.1 }}" loop: "{{ dictionary|dictsort }}"</p>
+<p>#+END<sub>SRC</sub></p></li>
+<li><p><code>with_sequence</code></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb29-1"><a href="#cb29-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> with_sequence</span></span>
+<span id="cb29-2"><a href="#cb29-2"></a><span class="at">  </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb29-3"><a href="#cb29-3"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item }}&quot;</span></span>
+<span id="cb29-4"><a href="#cb29-4"></a><span class="at">  </span><span class="fu">with_sequence</span><span class="kw">:</span><span class="at"> start=0 end=4 stride=2 format=testuser%02x</span></span>
+<span id="cb29-5"><a href="#cb29-5"></a></span>
+<span id="cb29-6"><a href="#cb29-6"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> with_sequence -&gt; loop</span></span>
+<span id="cb29-7"><a href="#cb29-7"></a><span class="at">  </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb29-8"><a href="#cb29-8"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ &#39;testuser%02x&#39; | format(item) }}&quot;</span></span>
+<span id="cb29-9"><a href="#cb29-9"></a><span class="co">  # range is exclusive of the end point</span></span>
+<span id="cb29-10"><a href="#cb29-10"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ range(0, 4 + 1, 2)|list }}&quot;</span></span></code></pre></div></li>
+<li><p><code>with_subelements</code></p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb30-1"><a href="#cb30-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> with_subelements</span></span>
+<span id="cb30-2"><a href="#cb30-2"></a><span class="at">  </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb30-3"><a href="#cb30-3"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item.0.name }} - {{ item.1 }}&quot;</span></span>
+<span id="cb30-4"><a href="#cb30-4"></a><span class="at">  </span><span class="fu">with_subelements</span><span class="kw">:</span></span>
+<span id="cb30-5"><a href="#cb30-5"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="st">&quot;{{ users }}&quot;</span></span>
+<span id="cb30-6"><a href="#cb30-6"></a><span class="at">    </span><span class="kw">-</span><span class="at"> mysql.hosts</span></span>
+<span id="cb30-7"><a href="#cb30-7"></a></span>
+<span id="cb30-8"><a href="#cb30-8"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> with_subelements -&gt; loop</span></span>
+<span id="cb30-9"><a href="#cb30-9"></a><span class="at">  </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb30-10"><a href="#cb30-10"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item.0.name }} - {{ item.1 }}&quot;</span></span>
+<span id="cb30-11"><a href="#cb30-11"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ users|subelements(&#39;mysql.hosts&#39;) }}&quot;</span></span></code></pre></div></li>
+<li><p><code>with_nested/with_cartesian</code></p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb31-1"><a href="#cb31-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> with_nested</span></span>
+<span id="cb31-2"><a href="#cb31-2"></a><span class="at">  </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb31-3"><a href="#cb31-3"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item.0 }} - {{ item.1 }}&quot;</span></span>
+<span id="cb31-4"><a href="#cb31-4"></a><span class="at">  </span><span class="fu">with_nested</span><span class="kw">:</span></span>
+<span id="cb31-5"><a href="#cb31-5"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="st">&quot;{{ list_one }}&quot;</span></span>
+<span id="cb31-6"><a href="#cb31-6"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="st">&quot;{{ list_two }}&quot;</span></span>
+<span id="cb31-7"><a href="#cb31-7"></a></span>
+<span id="cb31-8"><a href="#cb31-8"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> with_nested -&gt; loop</span></span>
+<span id="cb31-9"><a href="#cb31-9"></a><span class="at">  </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb31-10"><a href="#cb31-10"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item.0 }} - {{ item.1 }}&quot;</span></span>
+<span id="cb31-11"><a href="#cb31-11"></a><span class="at">  </span><span class="fu">loop</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ list_one|product(list_two)|list }}&quot;</span></span></code></pre></div></li>
+<li><p><code>with_random_choice</code></p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb32-1"><a href="#cb32-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> with_random_choice</span></span>
+<span id="cb32-2"><a href="#cb32-2"></a><span class="at">  </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb32-3"><a href="#cb32-3"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ item }}&quot;</span></span>
+<span id="cb32-4"><a href="#cb32-4"></a><span class="at">  </span><span class="fu">with_random_choice</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ my_list }}&quot;</span></span>
+<span id="cb32-5"><a href="#cb32-5"></a></span>
+<span id="cb32-6"><a href="#cb32-6"></a><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> with_random_choice -&gt; loop (No loop is needed here)</span></span>
+<span id="cb32-7"><a href="#cb32-7"></a><span class="at">  </span><span class="fu">debug</span><span class="kw">:</span></span>
+<span id="cb32-8"><a href="#cb32-8"></a><span class="at">    </span><span class="fu">msg</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;{{ my_list|random }}&quot;</span></span>
+<span id="cb32-9"><a href="#cb32-9"></a><span class="at">  </span><span class="fu">tags</span><span class="kw">:</span><span class="at"> random</span></span></code></pre></div></li>
+</ul>
+<h2 id="playbook-roles"><span class="todo TODO">TODO</span> Playbook &amp; Roles</h2>
+<h2 id="resuable">Resuable</h2>
+<h3 id="ways">Ways</h3>
+<p>3 ways to split large playbook into seperate files</p>
+<ol class="incremental">
+<li><code>include</code></li>
+<li><code>imports</code></li>
+<li><code>roles</code></li>
+</ol>
+<h3 id="comparision">comparision</h3>
+<ul class="incremental">
+<li><code>roles</code> can package variable, handler, module, plugins</li>
+<li><code>import</code>: static including which process during parsing time</li>
+<li><code>include</code>: dynamic including which happen during runtime</li>
+</ul>
+<h2 id="error-handling-1">Error Handling</h2>
+<ul class="incremental">
+<li>Playbook will fail fast at return error as default behavior</li>
+<li>use <code>ignore_errors: yes</code> to ignore errors of task</li>
+<li>reactivate unreachable hosts with <code>meta: clear_host_errors</code></li>
+<li>force to trigger handdle even errors happen by set <code>force_handler: True</code></li>
+<li>use <code>failed_when: &lt;clause&gt;</code> to program which state means failed
+<ul class="incremental">
+<li>output with "FAILED": <code>failed_when: "'FAILED' in command_result.stderr"</code></li>
+<li>based on return code: <code>failed_when: diff_cmd.rc == 0 or diff_cmd.rc &gt;= 2</code></li>
+</ul></li>
+<li>Modified the <code>changed</code> status by custom judge, such as <code>changed_when: "bass_result.rc != 2"</code></li>
+<li>Abort the play by set <code>any_errors_fatal: true</code></li>
+</ul>
+<h2 id="best-practice">Best Practice</h2>
+<h3 id="content-organization">Content Organization</h3>
+<ol class="incremental">
+<li><p>Directory Layout</p>
+<pre class="text"><code>production                # inventory file for production servers
+staging                   # inventory file for staging environment
+
+group_vars/
+   group1.yml             # here we assign variables to particular groups
+   group2.yml
+host_vars/
+   hostname1.yml          # here we assign variables to particular systems
+   hostname2.yml
+
+library/                  # if any custom modules, put them here (optional)
+module_utils/             # if any custom module_utils to support modules, put them here (optional)
+filter_plugins/           # if any custom filter plugins, put them here (optional)
+
+site.yml                  # master playbook
+webservers.yml            # playbook for webserver tier
+dbservers.yml             # playbook for dbserver tier
+
+roles/
+    common/               # this hierarchy represents a &quot;role&quot;
+        tasks/            #
+            main.yml      #  &lt;-- tasks file can include smaller files if warranted
+        handlers/         #
+            main.yml      #  &lt;-- handlers file
+        templates/        #  &lt;-- files for use with the template resource
+            ntp.conf.j2   #  &lt;------- templates end in .j2
+        files/            #
+            bar.txt       #  &lt;-- files for use with the copy resource
+            foo.sh        #  &lt;-- script files for use with the script resource
+        vars/             #
+            main.yml      #  &lt;-- variables associated with this role
+        defaults/         #
+            main.yml      #  &lt;-- default lower priority variables for this role
+        meta/             #
+            main.yml      #  &lt;-- role dependencies
+        library/          # roles can also include custom modules
+        module_utils/     # roles can also include custom module_utils
+        lookup_plugins/   # or other types of plugins, like lookup in this case
+
+    webtier/              # same kind of structure as &quot;common&quot; was above, done for the webtier role
+    monitoring/           # &quot;&quot;
+    fooapp/               # &quot;&quot;
+</code></pre></li>
+<li><p>Alternative Directory Layout</p>
+<p>Alternatively you can put each inventory file with its group<sub>vars</sub>/host<sub>vars</sub> in a separate directory. This is particularly useful if your group<sub>vars</sub>/host<sub>vars</sub> don’t have that much in common in different environments. The layout could look something like this:</p>
+<pre class="text"><code>inventories/
+   production/
+      hosts               # inventory file for production servers
+      group_vars/
+         group1.yml       # here we assign variables to particular groups
+         group2.yml
+      host_vars/
+         hostname1.yml    # here we assign variables to particular systems
+         hostname2.yml
+
+   staging/
+      hosts               # inventory file for staging environment
+      group_vars/
+         group1.yml       # here we assign variables to particular groups
+         group2.yml
+      host_vars/
+         stagehost1.yml   # here we assign variables to particular systems
+         stagehost2.yml
+
+library/
+module_utils/
+filter_plugins/
+
+site.yml
+webservers.yml
+dbservers.yml
+
+roles/
+    common/
+    webtier/
+    monitoring/
+    fooapp/
+</code></pre></li>
+<li><p>Use Dynamic Inventory With Clouds</p></li>
+<li><p>How to Differentiate Staging vs Production</p>
+<ol class="incremental">
+<li>按业务分组（如 webserver, dbserver）</li>
+<li>按区域分组（如 atlanta, boston）</li>
+</ol>
+<p>例如</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode ini"><code class="sourceCode ini"><span id="cb35-1"><a href="#cb35-1"></a><span class="co"># file: production</span></span>
+<span id="cb35-2"><a href="#cb35-2"></a></span>
+<span id="cb35-3"><a href="#cb35-3"></a><span class="kw">[atlanta-webservers]</span></span>
+<span id="cb35-4"><a href="#cb35-4"></a><span class="dt">www-atl-1.example.com</span></span>
+<span id="cb35-5"><a href="#cb35-5"></a><span class="dt">www-atl-2.example.com</span></span>
+<span id="cb35-6"><a href="#cb35-6"></a></span>
+<span id="cb35-7"><a href="#cb35-7"></a><span class="kw">[boston-webservers]</span></span>
+<span id="cb35-8"><a href="#cb35-8"></a><span class="dt">www-bos-1.example.com</span></span>
+<span id="cb35-9"><a href="#cb35-9"></a><span class="dt">www-bos-2.example.com</span></span>
+<span id="cb35-10"><a href="#cb35-10"></a></span>
+<span id="cb35-11"><a href="#cb35-11"></a><span class="kw">[atlanta-dbservers]</span></span>
+<span id="cb35-12"><a href="#cb35-12"></a><span class="dt">db-atl-1.example.com</span></span>
+<span id="cb35-13"><a href="#cb35-13"></a><span class="dt">db-atl-2.example.com</span></span>
+<span id="cb35-14"><a href="#cb35-14"></a></span>
+<span id="cb35-15"><a href="#cb35-15"></a><span class="kw">[boston-dbservers]</span></span>
+<span id="cb35-16"><a href="#cb35-16"></a><span class="dt">db-bos-1.example.com</span></span>
+<span id="cb35-17"><a href="#cb35-17"></a></span>
+<span id="cb35-18"><a href="#cb35-18"></a><span class="co"># webservers in all geos</span></span>
+<span id="cb35-19"><a href="#cb35-19"></a><span class="kw">[webservers:children]</span></span>
+<span id="cb35-20"><a href="#cb35-20"></a><span class="dt">atlanta-webservers</span></span>
+<span id="cb35-21"><a href="#cb35-21"></a><span class="dt">boston-webservers</span></span>
+<span id="cb35-22"><a href="#cb35-22"></a></span>
+<span id="cb35-23"><a href="#cb35-23"></a><span class="co"># dbservers in all geos</span></span>
+<span id="cb35-24"><a href="#cb35-24"></a><span class="kw">[dbservers:children]</span></span>
+<span id="cb35-25"><a href="#cb35-25"></a><span class="dt">atlanta-dbservers</span></span>
+<span id="cb35-26"><a href="#cb35-26"></a><span class="dt">boston-dbservers</span></span>
+<span id="cb35-27"><a href="#cb35-27"></a></span>
+<span id="cb35-28"><a href="#cb35-28"></a><span class="co"># everything in the atlanta geo</span></span>
+<span id="cb35-29"><a href="#cb35-29"></a><span class="kw">[atlanta:children]</span></span>
+<span id="cb35-30"><a href="#cb35-30"></a><span class="dt">atlanta-webservers</span></span>
+<span id="cb35-31"><a href="#cb35-31"></a><span class="dt">atlanta-dbservers</span></span>
+<span id="cb35-32"><a href="#cb35-32"></a></span>
+<span id="cb35-33"><a href="#cb35-33"></a><span class="co"># everything in the boston geo</span></span>
+<span id="cb35-34"><a href="#cb35-34"></a><span class="kw">[boston:children]</span></span>
+<span id="cb35-35"><a href="#cb35-35"></a><span class="dt">boston-webservers</span></span>
+<span id="cb35-36"><a href="#cb35-36"></a><span class="dt">boston-dbservers</span></span></code></pre></div></li>
+<li><p>Group And Host Variables</p>
+<p>变量定义顺序为</p>
+<ol class="incremental">
+<li>group all</li>
+<li>group vars</li>
+<li>host vars</li>
+</ol>
+<p>可以为同一个主机的多个组分别设置变量</p></li>
+<li><p>Top Level Playbooks Are Separated By Role</p>
+<ol class="incremental">
+<li><p>在 site.yml 中导入相关业务 yaml</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb36-1"><a href="#cb36-1"></a><span class="pp">---</span></span>
+<span id="cb36-2"><a href="#cb36-2"></a><span class="co"># file: site.yml</span></span>
+<span id="cb36-3"><a href="#cb36-3"></a><span class="kw">-</span><span class="at"> </span><span class="fu">import_playbook</span><span class="kw">:</span><span class="at"> webservers.yml</span></span>
+<span id="cb36-4"><a href="#cb36-4"></a><span class="kw">-</span><span class="at"> </span><span class="fu">import_playbook</span><span class="kw">:</span><span class="at"> dbservers.yml</span></span></code></pre></div></li>
+<li><p>在具体 yaml 中引用 roles</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb37-1"><a href="#cb37-1"></a><span class="pp">---</span></span>
+<span id="cb37-2"><a href="#cb37-2"></a><span class="co"># file: webservers.yml</span></span>
+<span id="cb37-3"><a href="#cb37-3"></a><span class="kw">-</span><span class="at"> </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> webservers</span></span>
+<span id="cb37-4"><a href="#cb37-4"></a><span class="at">  </span><span class="fu">roles</span><span class="kw">:</span></span>
+<span id="cb37-5"><a href="#cb37-5"></a><span class="at">    </span><span class="kw">-</span><span class="at"> common</span></span>
+<span id="cb37-6"><a href="#cb37-6"></a><span class="at">    </span><span class="kw">-</span><span class="at"> webtier</span></span></code></pre></div></li>
+<li><p>使用时，可以指定 yaml 文件，并使用 <code>--limit</code> 过滤主机</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb38-1"><a href="#cb38-1"></a><span class="at">ansible-playbook site.yml --limit webservers</span></span>
+<span id="cb38-2"><a href="#cb38-2"></a><span class="at">ansible-playbook webservers.yml</span></span></code></pre></div></li>
+</ol></li>
+<li><p>Task And Handler Organization For A Role</p>
+<ul class="incremental">
+<li>Role 中将 task 与 handler 分在两个目录中</li>
+</ul></li>
+<li><p>What This Organization Enables (Examples)</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1"></a><span class="co"># working on production inventory</span></span>
+<span id="cb39-2"><a href="#cb39-2"></a><span class="ex">ansible-playbook</span> -i production site.yml</span>
+<span id="cb39-3"><a href="#cb39-3"></a></span>
+<span id="cb39-4"><a href="#cb39-4"></a><span class="co"># To reconfigure NTP on everything:</span></span>
+<span id="cb39-5"><a href="#cb39-5"></a><span class="ex">ansible-playbook</span> -i production site.yml --tags ntp</span>
+<span id="cb39-6"><a href="#cb39-6"></a></span>
+<span id="cb39-7"><a href="#cb39-7"></a><span class="co"># To reconfigure just my webservers:</span></span>
+<span id="cb39-8"><a href="#cb39-8"></a><span class="ex">ansible-playbook</span> -i production webservers.yml</span>
+<span id="cb39-9"><a href="#cb39-9"></a></span>
+<span id="cb39-10"><a href="#cb39-10"></a><span class="co"># For just my webservers in Boston:</span></span>
+<span id="cb39-11"><a href="#cb39-11"></a><span class="ex">ansible-playbook</span> -i production webservers.yml --limit boston</span>
+<span id="cb39-12"><a href="#cb39-12"></a></span>
+<span id="cb39-13"><a href="#cb39-13"></a><span class="co"># For just the first 10, and then the next 10:</span></span>
+<span id="cb39-14"><a href="#cb39-14"></a><span class="ex">ansible-playbook</span> -i production webservers.yml --limit boston[0:9]</span>
+<span id="cb39-15"><a href="#cb39-15"></a><span class="ex">ansible-playbook</span> -i production webservers.yml --limit boston[10:19]</span>
+<span id="cb39-16"><a href="#cb39-16"></a></span>
+<span id="cb39-17"><a href="#cb39-17"></a><span class="co"># And of course just basic ad-hoc stuff is also possible:</span></span>
+<span id="cb39-18"><a href="#cb39-18"></a><span class="ex">ansible</span> boston -i production -m ping</span>
+<span id="cb39-19"><a href="#cb39-19"></a><span class="ex">ansible</span> boston -i production -m command -a <span class="st">&#39;/sbin/reboot&#39;</span></span>
+<span id="cb39-20"><a href="#cb39-20"></a></span>
+<span id="cb39-21"><a href="#cb39-21"></a><span class="co"># confirm what task names would be run if I ran this command and said &quot;just ntp tasks&quot;</span></span>
+<span id="cb39-22"><a href="#cb39-22"></a><span class="ex">ansible-playbook</span> -i production webservers.yml --tags ntp --list-tasks</span>
+<span id="cb39-23"><a href="#cb39-23"></a></span>
+<span id="cb39-24"><a href="#cb39-24"></a><span class="co"># confirm what hostnames might be communicated with if I said &quot;limit to boston&quot;</span></span>
+<span id="cb39-25"><a href="#cb39-25"></a><span class="ex">ansible-playbook</span> -i production webservers.yml --limit boston --list-hosts</span></code></pre></div>
+<ul class="incremental">
+<li><code>--tags</code>: filter with tag</li>
+<li><code>-i &lt;inventory&gt;</code></li>
+<li><code>--limit</code>: filter hosts</li>
+<li><code>ansible -m</code>: adhoc stuff</li>
+<li><code>--list-tasks</code>: list tasks names</li>
+<li><code>--list-hosts</code>: list hosts names to play</li>
+</ul></li>
+</ol>
+<h3 id="use-a-separate-inventory-file-for-staging-and-production">Use a separate inventory file for staging and production</h3>
+<h3 id="rolling-updates"><span class="todo TODO">TODO</span> Rolling Updates</h3>
+<p>Understand the ‘serial’ keyword</p>
+<h3 id="always-mention-the-state">Always Mention The State</h3>
+<h3 id="group-by-roles"><span class="todo TODO">TODO</span> Group By Roles</h3>
+<p>Don't repeat yourself.</p>
+<h3 id="operating-system-and-distribution-variance">Operating System and Distribution Variance</h3>
+<p>Dynamic group basing on operation system and distribution variance</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb40-1"><a href="#cb40-1"></a><span class="pp">---</span></span>
+<span id="cb40-2"><a href="#cb40-2"></a></span>
+<span id="cb40-3"><a href="#cb40-3"></a><span class="co"> # talk to all hosts just so we can learn about them</span></span>
+<span id="cb40-4"><a href="#cb40-4"></a><span class="at"> </span><span class="kw">-</span><span class="at"> </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> all</span></span>
+<span id="cb40-5"><a href="#cb40-5"></a><span class="at">   </span><span class="fu">tasks</span><span class="kw">:</span></span>
+<span id="cb40-6"><a href="#cb40-6"></a><span class="at">     </span><span class="kw">-</span><span class="at"> </span><span class="fu">group_by</span><span class="kw">:</span></span>
+<span id="cb40-7"><a href="#cb40-7"></a><span class="at">         </span><span class="fu">key</span><span class="kw">:</span><span class="at"> os_{{ ansible_distribution }}</span></span>
+<span id="cb40-8"><a href="#cb40-8"></a></span>
+<span id="cb40-9"><a href="#cb40-9"></a><span class="co"> # now just on the CentOS hosts...</span></span>
+<span id="cb40-10"><a href="#cb40-10"></a></span>
+<span id="cb40-11"><a href="#cb40-11"></a><span class="at"> </span><span class="kw">-</span><span class="at"> </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> os_CentOS</span></span>
+<span id="cb40-12"><a href="#cb40-12"></a><span class="at">   </span><span class="fu">gather_facts</span><span class="kw">:</span><span class="at"> </span><span class="ch">False</span></span>
+<span id="cb40-13"><a href="#cb40-13"></a><span class="at">   </span><span class="fu">tasks</span><span class="kw">:</span></span>
+<span id="cb40-14"><a href="#cb40-14"></a><span class="at">     </span><span class="kw">-</span><span class="co"> # tasks that only happen on CentOS go here</span></span></code></pre></div>
+<h3 id="bundling-ansible-modules-with-playbooks">Bundling Ansible Modules With Playbooks</h3>
+<p>Playbook can have it's own <code>./library</code> directory for modules that will automatically be in the ansible module path.</p>
+<h3 id="whitespace-and-comments">Whitespace and Comments</h3>
+<p>Generous use of whitespace to break things up, and use of comments (which start with ‘#’), is encouraged.</p>
+<h3 id="always-name-tasks">Always Name Tasks</h3>
+<h3 id="keep-it-simple">Keep It Simple</h3>
+<h3 id="version-control">Version Control</h3>
+<ul class="incremental">
+<li>Use version control. Keep your playbooks and inventory file in git</li>
+<li>commit when you make changes to them</li>
+</ul>
+<h3 id="variables-and-vaults"><span class="todo TODO">TODO</span> Variables and Vaults</h3>
+<ul class="incremental">
+<li>for the sake of <code>grep</code> tools</li>
+<li>define all variables in <code>/vars</code></li>
+<li>overwrite sensitive variables to the <code>/valut</code> file</li>
+</ul>
+<h1 id="role">Role</h1>
+<h2 id="overview-1">Overview</h2>
+<h3 id="what-is-role">What is Role</h3>
+<p>Roles are ways of automatically loading certain vars<sub>files</sub>, tasks, and handlers based on a known file structure.</p>
+<h3 id="why-role">Why Role?</h3>
+<p>For sharing roles with others (encapsulation)</p>
+<h3 id="directory-structure">Directory Structure</h3>
+<ul class="incremental">
+<li>Contains specific sets of directory</li>
+<li>Each directory contains a <code>main.yml</code> configuration file</li>
+</ul>
+<h2 id="directory-explain">Directory Explain</h2>
+<dl class="incremental">
+<dt>tasks</dt>
+<dd>contains the main list of tasks to be executed by the role.
+</dd>
+<dt>handlers</dt>
+<dd>contains handlers, which may be used by this role or even anywhere outside this role.
+</dd>
+<dt>defaults</dt>
+<dd>default variables for the role (see Variables for more information).
+</dd>
+<dt>vars</dt>
+<dd>other variables for the role (see <em>Variable</em> for more information).
+</dd>
+<dt>files</dt>
+<dd>contains files which can be deployed via this role.
+</dd>
+<dt>templates</dt>
+<dd>contains templates which can be deployed via this role.
+</dd>
+<dt>meta</dt>
+<dd>defines some meta data for this role. See below for more details.
+</dd>
+</dl>
+<h2 id="tasks-roles">Tasks &amp; Roles</h2>
+<ul class="incremental">
+<li>Task can import other tasks by <code>import_tasks</code> and <code>when</code> clause</li>
+<li>Task can import other roles by <code>include_role</code> or <code>import_role</code></li>
+<li>Tasks are defined under the <code>role/task/main.yml</code></li>
+</ul>
+<h2 id="modules-plugins-embed"><span class="todo TODO">TODO</span> Modules &amp; Plugins Embed</h2>
+<h2 id="usage-2">Usage</h2>
+<ul class="incremental">
+<li>Playbook choose the roles with <code>roles</code> keyword</li>
+<li>If the <code>roles/x/{tasks,handlers,vars,defaults,meta,script,copy,template}</code> directory exists, do something</li>
+<li><code>meta</code> configured the behaviour of role</li>
+</ul>
+<h2 id="playbook-executions-order">Playbook executions order</h2>
+<ol class="incremental">
+<li>Any <code>pre_tasks</code> defined in the play.</li>
+<li>Any <code>handlers</code> triggered so far will be run.</li>
+<li>Each role listed in <code>roles</code> will execute in turn. Any role dependencies defined in the roles <code>meta/main.yml</code> will be run first, subject to tag filtering and conditionals.</li>
+<li>Any <code>tasks</code> defined in the play.</li>
+<li>Any <code>handlers</code> triggered so far will be run.</li>
+<li>Any <code>post_tasks</code> defined in the play.</li>
+<li>Any <code>handlers</code> triggered so far will be run.</li>
+</ol>
+<h2 id="dependencies">Dependencies</h2>
+<ul class="incremental">
+<li>Role can depend other roles</li>
+<li>include them in <code>meta/main.yml</code></li>
+<li>Execute before current role</li>
+</ul>
+<h2 id="search-path">Search Path</h2>
+<ol class="incremental">
+<li><code>role</code> directory, relative to the playbook file</li>
+<li>By default, in <code>/etc/ansible/roles</code></li>
+</ol>
+<h2 id="misc-1">Misc</h2>
+<ul class="incremental">
+<li>Duplicated roles in playbook would be execute only once (if not be changed in meta)</li>
+<li>Default Values as the fallback of <code>vars</code></li>
+<li>Roles in playbook can be tagged with <code>tags</code> command</li>
+</ul>
+<h1 id="modules">Modules</h1>
+<h2 id="group">group</h2>
+<h2 id="user">user</h2>
+<h2 id="copy">copy</h2>
+<h2 id="file">file</h2>
+<ul class="incremental">
+<li>Change permission</li>
+<li>Create directory</li>
+</ul>
+<h2 id="fetch"><span class="todo TODO">TODO</span> fetch</h2>
+<h2 id="command">command</h2>
+<h2 id="shell"><span class="todo TODO">TODO</span> shell</h2>
+<h2 id="cron">cron</h2>
+<h2 id="yum">yum</h2>
+<h2 id="apt">apt</h2>
+<h2 id="systemd">systemd</h2>
+<h2 id="service">service</h2>
+<h2 id="git"><span class="todo TODO">TODO</span> git</h2>
+<h2 id="script"><span class="todo TODO">TODO</span> script</h2>
+<p>script at local?</p>
+<h2 id="lineinfile">lineinfile</h2>
+<p>This module ensures a particular line is in a file, or replace an existing line using a back-referenced regular expression. This is primarily useful when you want to change a single line in a file only.</p>
+<p>Something like <code>sed</code> or vim replacement.</p>
+<h2 id="async-status"><span class="todo TODO">TODO</span> async-status</h2>
+<h1 id="misc-2">Misc</h1>
+<h2 id="log-types">Log types</h2>
+<ol class="incremental">
+<li>with SSH Key</li>
+<li>Ask for password <code>--ask-pass</code></li>
+<li>Switch to other user (<code>sudo</code>) with <code>--ask-become-pass</code></li>
+</ol>
+<h2 id="disable-host-key">Disable host-key</h2>
+<p>Disable <code>host-key-checking</code> for</p>
+<ol class="incremental">
+<li>host information change in <code>know_hosts</code></li>
+<li>first time to login a ssh server</li>
+</ol>
+<h2 id="ansible-all--m-setup"><code>ansible all -m setup</code></h2>
+<p>Get all hosts' <code>facts</code></p>
+<h2 id="background-execute">background execute</h2>
+<ul class="incremental">
+<li><code>-B 3600</code>: run in background for most 3600s</li>
+<li><code>-P</code> for polling</li>
+</ul>
+<h2 id="ansible-doc"><span class="todo TODO">TODO</span> ansible-doc</h2>
+<h2 id="ansible-pull"><span class="todo TODO">TODO</span> ansible-pull</h2>
+<h2 id="ansible_os_family"><span class="todo TODO">TODO</span> <code>ansible_os_family</code></h2>
+<h2 id="debug"><span class="todo TODO">TODO</span> <code>debug</code></h2>
+<h2 id="yaml-syntax">Yaml Syntax</h2>
+<ol class="incremental">
+<li>(optional) start with <code>---</code> and end with <code>...</code></li>
+<li>Starts with <code>"- "</code> to express list</li>
+<li><code>key:value</code> for mapping</li>
+<li>Boolean literal: <code>yes</code>, <code>no</code>, <code>True</code>, <code>TRUE</code>, <code>false</code></li>
+<li>Span multiple lines with '|' and '&gt;'
+<ol class="incremental">
+<li>'|' to keep newline</li>
+<li>'&gt;' converts newline to space</li>
+</ol></li>
+<li>comment line with '#'</li>
+<li>use <code>{{}}</code> for variable substitute
+<ol class="incremental">
+<li>yaml use <code>: {}</code> for dictionary defnition</li>
+<li>so quote <code>"{{}}"</code> for variable</li>
+</ol></li>
+<li>Be careful for literal convertion for float and boolean value!</li>
+</ol>
+<h1 id="cookbook">Cookbook</h1>
+<h2 id="first-ansible-command">First Ansible Command</h2>
+<p>Echo hello on localhost</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1"></a><span class="ex">ansible</span> [-c local] localhost -a <span class="st">&quot;echo hello&quot;</span></span></code></pre></div>
+<p>By default, run with <code>command</code> module which does not support shell syntax like piping and redirects. Use <code>shell</code> module if we need</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1"></a><span class="ex">ansible</span> localhost -m shell -a <span class="st">&#39;echo $TERM&#39;</span></span></code></pre></div>
+<h2 id="copy-file-to-lots-of-hosts">Copy file to lots of hosts</h2>
+<p>With <code>copy</code> module</p>
+
+      </div>
+    </section>
+  </body>
+</html>

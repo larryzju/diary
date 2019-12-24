@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>algorithm.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/programming/algorithm/algorithm4th">Up: algorithm4th</a>
+	  	
+	</span>
+
+	<span id="next">
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="说明">说明</h1>
+<p>本笔记整理以下教材和教程</p>
+<ol class="incremental">
+<li>阅读 Algorithm Fourth Edition</li>
+<li>Coursera Algorithm Part1</li>
+</ol>
+<p>以 Algorithm 4th 课本目录结构为主线，整合了 Coursera 中的视频笔记</p>
+<h1 id="foundamentals">Foundamentals</h1>
+<h2 id="bags-queues-and-stacks">Bags, Queues, and Stacks</h2>
+<h3 id="概述">概述</h3>
+<p>本节主要讲了三种数据结构，其基本操作包括 add, isEmpty 和 size。</p>
+<p>Bags 为无序集合，但实际实现时为了简化，与 Stack 一致（使用时不假定顺序）</p>
+<p>Queue 与 Stack 支持取出数据，入队和出队次序有所不同:</p>
+<ul class="incremental">
+<li>Queue 为 FIFO
+<ul class="incremental">
+<li><code>enqueue</code> 向队尾插入数据</li>
+<li><code>dequeue</code> 从队头取出数据</li>
+</ul></li>
+<li>Stack 为 FILO
+<ul class="incremental">
+<li><code>push</code> 向栈顶压入数据</li>
+<li><code>pop</code> 弹出栈顶数据</li>
+</ul></li>
+</ul>
+<p>此外，讲解了 Java 中的三个语言特性</p>
+<ol class="incremental">
+<li><p>Generic（泛型）</p>
+<p>定义类时指定 parameterized type，在实现中对泛型进行操作，而具体生成时指定具体类型</p></li>
+<li><p>AutoBoxing</p>
+<p>Java 中 int, double, float 等原始类型不能作为泛型要求的类型参数（要求是引用类型），为此可以使用 Integer 替代 <code>int</code> 类型。编译器会自动在两种类型之间进行转换，由原始类型变为引用类型称为 boxing，由引用类型变为原始类型称为 unboxing</p></li>
+<li><p>Iterable Collections</p>
+<p>Java 中支持 <code>for( Item e: coll ) {...}</code> 的语法，与 Python 中的 iterator 一致，要求 <code>coll</code> 对象有 <code>iterator</code> 方法，返回一个 <code>Iterable</code> 对象，并对其进行迭代。这种语法称为 foreach statement</p></li>
+</ol>
+<p>本节目的在于演示设计数据结构的基本思路</p>
+<ol class="incremental">
+<li>specify API</li>
+<li>Develop client code with reference to specific application</li>
+<li>Describe a data structure to implement ADT</li>
+<li>Describe algorithm</li>
+<li>Analyze the performance characteristics of the algorithm</li>
+</ol>
+<h3 id="linked-list">Linked List</h3>
+<p>Java 中没有指针，用引用来实现链表</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">class</span> <span class="bu">Node</span> {</span>
+<span id="cb1-2"><a href="#cb1-2"></a>    Item item;</span>
+<span id="cb1-3"><a href="#cb1-3"></a>    <span class="bu">Node</span> next;</span>
+<span id="cb1-4"><a href="#cb1-4"></a>}</span></code></pre></div>
+<p>链表的基本操作</p>
+<ol class="incremental">
+<li>insert at the beginning</li>
+<li>remove from the beginning</li>
+<li>insert at the end</li>
+<li>insert at other positions: O(n)</li>
+<li>remove at other positions: O(n)</li>
+</ol>
+<h3 id="pushdown-stack">Pushdown Stack</h3>
+<p>栈的特性为 LIFO。 E.W.Dijkstra 使用两个栈，分别保存 operator 和 operand，来实现算术表达式的求解</p>
+<p>有两种实现方式</p>
+<ol class="incremental">
+<li>数组方式
+<ul class="incremental">
+<li>底层用一个大小为 N 的数组来保存</li>
+<li>维护一个栈顶的 index</li>
+<li>考虑动态伸缩数组（reallocate）
+<ul class="incremental">
+<li>当 push 操作填满数组时，进行扩展，将底层数组扩大为 2N</li>
+<li>当 pop 操作减少数量至四分之一时，缩小底层数组为 N/2 （选择四分之一，避免重复扩展）</li>
+<li>虽然能达到动态效果，但复制内容开销过大</li>
+</ul></li>
+<li>pop 时需要将清理弹出的数据（loiter，即赋值为 null），以触发 GC</li>
+<li>继承 Iterable 接口，iterator 方法，返回 Iterator 对象 (<code>java.util.Iterator</code>)
+<ul class="incremental">
+<li>hasNext</li>
+<li>next，为空时抛出 NoSuchElementException 异常</li>
+<li>remove（不实现）</li>
+</ul></li>
+</ul></li>
+<li>单链表方式
+<ul class="incremental">
+<li><p>定义一个内部类</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">private</span> <span class="kw">class</span> <span class="bu">Node</span> {</span>
+<span id="cb2-2"><a href="#cb2-2"></a>Item item;</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="bu">Node</span> next;</span>
+<span id="cb2-4"><a href="#cb2-4"></a>}</span></code></pre></div></li>
+<li><p>维护一个到 Node 的引用（栈）</p></li>
+<li><p>插入数据相当于生成新的 Node，插入到列表头部</p></li>
+<li><p>删除数据相当于列表中摘取头部 Node</p></li>
+<li><p>空间占用与实际元素数量一致</p></li>
+</ul></li>
+</ol>
+<h3 id="fifo-queue">FIFO Queue</h3>
+<p>以单链表方式来实现，与 Stack 方式类型，关键元素有</p>
+<ol class="incremental">
+<li><code>first</code> 引用链表头</li>
+<li><code>last</code> 引用链表尾</li>
+<li><code>N</code> 记录链表总长度</li>
+</ol>
+<p>需要注意</p>
+<ol class="incremental">
+<li>插入操作，链表为空的情况。此时应当特殊处理 first，使引用 last</li>
+<li>删除操作，链表为空的情况。此时应当特殊处理 last，指向 null</li>
+</ol>
+<h3 id="bags">Bags</h3>
+<p>与 Pushdown Stack 的单链表实现方式一致</p>
+<h3 id="iterator">Iterator</h3>
+<p>以上三个类为了支持 <code>foreach</code> 语句</p>
+<ul class="incremental">
+<li>需要实现接口 <code>java.lang.Iterable</code> 并实现 <code>iterator</code> 方法</li>
+<li>返回一个 <code>java.util.Iterable</code> 对象</li>
+<li>在该对象中缓存着当前访问到的元素中间状态</li>
+<li>通过 hasNext 和 next 方法来迭代操作每个元素</li>
+<li>有利于统一对 sequence 和 collection 的迭代操作方式，隐藏底层实现（ Clojure 尤为强调这一点）</li>
+</ul>
+<h2 id="union-find">Union-Find</h2>
+<h2 id="概述-1">概述</h2>
+<p>Union-Find 也叫作动态连接问题（Dynamic Connectivity），对点集进行动态连接操作，并能实时查询两个点之间是否有直接或间接的通联关系</p>
+<p>该算法可以应用于多种应用场景，如</p>
+<ul class="incremental">
+<li>network 检查子网间的通联性</li>
+<li>variable-name equivalence，检查编程语言中变量名是否引用同一对象（Fortran）</li>
+<li>Mathematical sets，对集合进行分类</li>
+</ul>
+<p>算法几个基本术语如下所示</p>
+<dl class="incremental">
+<dt>connection</dt>
+<dd>两点之间有连接
+</dd>
+<dt>connected components</dt>
+<dd>相互连接的点构成的集合
+</dd>
+</dl>
+<p>本章通过介绍 union-find 的四种算法设计，强调了算法设计的基本步骤</p>
+<ol class="incremental">
+<li>好的算法可以解决原本不可能解决的问题</li>
+<li>好算法可以使实现更为简洁</li>
+<li>分析算法性能</li>
+<li>如何选择算法</li>
+<li>逐步优化算法</li>
+</ol>
+<h2 id="quick-find">Quick Find</h2>
+<ul class="incremental">
+<li>使用 <code>id[]</code> 数组保存各个点的分组情况</li>
+<li>当建立新的连接时，遍历修改 <code>id[p]</code> 相同的组 id 为 <code>id[q]</code></li>
+</ul>
+<h2 id="quick-union">Quick Union</h2>
+<ul class="incremental">
+<li><code>id[i]</code> 指向父结点，子与父同属一个组</li>
+<li>检查是否通联，只需要检查两个结点是否有相同的 root 结点</li>
+<li>通过递归向上找父结点，直到 <code>id[i] == i</code> 时，该节点为 root</li>
+<li>虽然不用扫描全表，但最差情况找 root 仍为 <span class="math inline">\(O(n)\)</span></li>
+<li>合并时，将左树的 root 指向右树的 root</li>
+</ul>
+<h2 id="weighted-quick-union">Weighted Quick Union</h2>
+<ul class="incremental">
+<li>用一个单独的数组，记录每棵树的大小</li>
+<li>合并时将小树合并到大树上，避免树增长过快</li>
+<li>查找、检查联接、合并的时间复杂度不超过 <span class="math inline">\(\lg(N)\)</span></li>
+</ul>
+<h2 id="weighted-quick-union-with-path-compression">Weighted Quick Union with Path Compression</h2>
+<ul class="incremental">
+<li>在 find 向上递归找 root 节点的操作时，遍历过程中将节点的 parent 直接指向 root</li>
+<li>实际效果接近 constant time per operation</li>
+<li>与 Weighted Quick Union 效率相当</li>
+</ul>
+<h2 id="performance">Performance</h2>
+<table>
+<thead>
+<tr class="header">
+<th>algorithm</th>
+<th>constructor</th>
+<th>union</th>
+<th>find</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>quick-find</td>
+<td>N</td>
+<td>N</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>quick-union</td>
+<td>N</td>
+<td>tree-height</td>
+<td>tree-height</td>
+</tr>
+<tr class="odd">
+<td>weighted quick union</td>
+<td>N</td>
+<td>lgN</td>
+<td>lgN</td>
+</tr>
+<tr class="even">
+<td>weighted quick union with path compression</td>
+<td>N</td>
+<td>nearly 1</td>
+<td>nearly 1</td>
+</tr>
+<tr class="odd">
+<td>impossible</td>
+<td>N</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h1 id="sorting">Sorting</h1>
+<p>从两方面来考虑排序的性能：</p>
+<ol class="incremental">
+<li>时间</li>
+<li>额外的空间占用</li>
+</ol>
+<h2 id="elementary-sorts">Elementary Sorts</h2>
+<h3 id="select-sort">Select sort</h3>
+<p>选中剩余数列中的最小一个，与开头的元素交换</p>
+<p>进行 <span class="math inline">\(N^2/2\)</span> 次比较，N 次交换</p>
+<p>特点：</p>
+<ol class="incremental">
+<li>运行时间与输入元素顺序无关</li>
+<li>交换次数最少！</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">public</span> <span class="dt">void</span> <span class="fu">sort</span>(<span class="bu">Comparable</span>[] a ) {</span>
+<span id="cb3-2"><a href="#cb3-2"></a>    <span class="dt">int</span> N = a.<span class="fu">lenght</span>;</span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="kw">for</span> ( <span class="dt">int</span> i = <span class="dv">0</span>; i &lt; N; i++ ) {</span>
+<span id="cb3-4"><a href="#cb3-4"></a>    min = i</span>
+<span id="cb3-5"><a href="#cb3-5"></a>    <span class="kw">for</span> ( <span class="dt">int</span> j = i+<span class="dv">1</span>; j &lt; N; j++ ) {</span>
+<span id="cb3-6"><a href="#cb3-6"></a>        <span class="kw">if</span> ( <span class="fu">less</span>(a[j], a[min]) ) {</span>
+<span id="cb3-7"><a href="#cb3-7"></a>        min = j;</span>
+<span id="cb3-8"><a href="#cb3-8"></a>        }</span>
+<span id="cb3-9"><a href="#cb3-9"></a>    }</span>
+<span id="cb3-10"><a href="#cb3-10"></a>    <span class="fu">exch</span>(a, min, i );</span>
+<span id="cb3-11"><a href="#cb3-11"></a>    }</span>
+<span id="cb3-12"><a href="#cb3-12"></a>}</span></code></pre></div>
+<h3 id="insert-sort">Insert sort</h3>
+<p>将新的元素插入到已经排好序的子序列中，插入操作涉及到局部的后移</p>
+<p>平均需要 <span class="math inline">\(N^2/2\)</span> 次比较和 <span class="math inline">\(N^2/2\)</span> 次交换</p>
+<p>特点有：</p>
+<ol class="incremental">
+<li>对于已经有序的输入，其需要比较 <span class="math inline">\(N-1\)</span> 次，不需要交换，性能大大优于选择排序</li>
+<li>对于 partial sorted array，插入排序优势明显</li>
+<li>The number of exchanges used by insertion sort is equal to the number of inversions in the array</li>
+<li>the number of compares is at least equal to the number of inversions and at most equal to the number of inversions plus the array size minus 1.</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">public</span> <span class="dt">void</span> <span class="fu">sort</span>(<span class="bu">Comparable</span>[] a) {</span>
+<span id="cb4-2"><a href="#cb4-2"></a>    <span class="dt">int</span> N = a.<span class="fu">length</span>;</span>
+<span id="cb4-3"><a href="#cb4-3"></a>    <span class="kw">for</span> ( <span class="dt">int</span> i = <span class="dv">1</span>; i &lt; N; i++ ) {</span>
+<span id="cb4-4"><a href="#cb4-4"></a>    <span class="kw">for</span> ( <span class="dt">int</span> j = i; j &gt;= <span class="dv">0</span> &amp;&amp; <span class="fu">less</span>(a[j], a[j-<span class="dv">1</span>]); j-- ) {</span>
+<span id="cb4-5"><a href="#cb4-5"></a>        <span class="fu">exch</span>( a, j, i-<span class="dv">1</span> );</span>
+<span id="cb4-6"><a href="#cb4-6"></a>    }</span>
+<span id="cb4-7"><a href="#cb4-7"></a>    }</span>
+<span id="cb4-8"><a href="#cb4-8"></a>}</span></code></pre></div>
+<h3 id="shell-sort">Shell sort</h3>
+<p>对 Insert Sort 的优化：由于 insert sort 比较仅针对前一个元素，如果数组逆序严重，则需要太多次的比较和交换</p>
+<p>Shell Sort 增大了比较的跨度，生成 partially sorted array，优化 insert sort 速度</p>
+<p>Shell Sort 选择一个合适的 h 值，h 从大到小减小到 1，每次排序后生成 h-sorted array</p>
+<p>书中给出的经验公式为 <span class="math inline">\(h = \frac{1}{2} ( 3^k - 1 )\)</span></p>
+<p>Shellsort gains efficiency by making a tradeoff between size and partial order in the subsequences.</p>
+<p>最差情况下，shell sort 的时间复杂度为 <span class="math inline">\(N^\frac{3}{2}\)</span></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">sort</span>(<span class="bu">Comparable</span>[] a) {</span>
+<span id="cb5-2"><a href="#cb5-2"></a>    <span class="dt">int</span> N = a.<span class="fu">length</span>;</span>
+<span id="cb5-3"><a href="#cb5-3"></a>    <span class="dt">int</span> h = <span class="dv">1</span>;</span>
+<span id="cb5-4"><a href="#cb5-4"></a>    <span class="kw">while</span>( h &lt; N/<span class="dv">3</span> ) h = <span class="dv">3</span>*h + <span class="dv">1</span>;</span>
+<span id="cb5-5"><a href="#cb5-5"></a>    <span class="kw">while</span>( h &gt;= <span class="dv">1</span> ) {</span>
+<span id="cb5-6"><a href="#cb5-6"></a>    <span class="kw">for</span> ( <span class="dt">int</span> i = h; i &lt; N; i++ ) {</span>
+<span id="cb5-7"><a href="#cb5-7"></a>        <span class="kw">for</span> ( <span class="dt">int</span> j = i; j &gt;= <span class="dv">0</span> &amp;&amp; <span class="fu">less</span>(a[j], a[j-h]); j-=h ) {</span>
+<span id="cb5-8"><a href="#cb5-8"></a>        <span class="fu">exch</span>(a, j, j-h);</span>
+<span id="cb5-9"><a href="#cb5-9"></a>        }</span>
+<span id="cb5-10"><a href="#cb5-10"></a>    }</span>
+<span id="cb5-11"><a href="#cb5-11"></a>    h = h/<span class="dv">3</span>;</span>
+<span id="cb5-12"><a href="#cb5-12"></a>    }</span>
+<span id="cb5-13"><a href="#cb5-13"></a>}</span></code></pre></div>
+<h3 id="selectsort-vs-insertsort">SelectSort vs InsertSort</h3>
+<dl class="incremental">
+<dt>Property D.</dt>
+<dd>The running times of insertion sort and selection sort are quadratic and within a small constant factor of one another for randomly ordered arrays of distinct values.
+</dd>
+</dl>
+<h2 id="merge-sort">Merge sort</h2>
+<p>分治的思路 (divide and conquer)，将数组分成两部分分别进行排序，将已经排序好的两个序列进行合并</p>
+<p>优势在于它的复杂度为 <span class="math inline">\(N \log(N)\)</span> ，劣势在于需要额外的 N 的空间来进行合并</p>
+<dl class="incremental">
+<dt>PropositionF.</dt>
+<dd>Top-down mergesort uses between 1⁄2NlgN and NlgN compares to sort any array of length N.
+</dd>
+<dt>PropositionG.</dt>
+<dd>Top-down mergesort uses at most 6NlgN array accesses to sort an array of length N.
+</dd>
+<dt>PropositionH.</dt>
+<dd>Bottom-upmergesortusesbetween1⁄2NlgNandNlgNcompares and at most 6N lg N array accesses to sort an array of length N.
+</dd>
+</dl>
+<p>优化思路：</p>
+<ol class="incremental">
+<li>对于足够小的数组，使用 insert sort 替换 merge sort （如 15 个元素以下）</li>
+<li>合并前判断 mid 与 mid+1 是否已经有序</li>
+<li>去掉额外的用于合并结构存储空间</li>
+</ol>
+<h2 id="quicksort">QuickSort</h2>
+<h2 id="heapsort">HeapSort</h2>
+<h1 id="视频笔记">视频笔记</h1>
+<p>视频与课本相关，后续将下面的章节分类到课本的章节中去</p>
+<h2 id="union-find-1">Union Find</h2>
+<h3 id="概述-2">概述</h3>
+<p>对于给出的点集，检查各个点的联通性问题（dynamic connectivity problem）。</p>
+<p>Union-Find 问题有两个基本操作 union 和 find，用 API 形式表示如下</p>
+<table>
+<thead>
+<tr class="header">
+<th>method</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>UF(int N)</code></td>
+<td>初始化 N 个 object 构成的点集</td>
+</tr>
+<tr class="even">
+<td><code>void union(int p, int q)</code></td>
+<td>连接 p 和 q 两个 object</td>
+</tr>
+<tr class="odd">
+<td><code>boolean connection(int p, int q)</code></td>
+<td>检查 p 和 q 两个 object 是否相连</td>
+</tr>
+</tbody>
+</table>
+<p>为了简化实现，用 index array 来存储点，以下标来进行标识。如果要实现通用的点集，可以考虑使用 symbol table</p>
+<p>解决 union-find 问题有四种数据结构</p>
+<ol class="incremental">
+<li>quick find</li>
+<li>quick union</li>
+<li>weighted quick union</li>
+<li>weighted quick union with path compression</li>
+</ol>
+<p>常用于 percolation problem from physical chemistry</p>
+<p>本节演示了如何设计一个算法</p>
+<ol class="incremental">
+<li>modeling the problem</li>
+<li>find algorithm</li>
+<li>fast enough? fits memory?</li>
+<li>if not, figure out why</li>
+<li>find a way to address the problem</li>
+<li>iterate until staisfied</li>
+</ol>
+<h3 id="quick-find-1">Quick Find</h3>
+<p>其本思路是</p>
+<ol class="incremental">
+<li><p>初始化时，用不同的 id 来标识不同的组（数组的索引）</p></li>
+<li><p>进行 union 操作时，遍历数组，将符合 p 对应的组 id 修改为 q 的组 id</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb6-1"><a href="#cb6-1"></a><span class="dt">void</span> <span class="fu">union</span>(<span class="dt">int</span> p, <span class="dt">int</span> q) {</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="dt">int</span> pid = A[p];</span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="dt">int</span> qid = A[q];</span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="kw">for</span>(<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; N; i++) {</span>
+<span id="cb6-5"><a href="#cb6-5"></a>    <span class="kw">if</span>(A[i] == pid) {</span>
+<span id="cb6-6"><a href="#cb6-6"></a>    A[i] = qid;</span>
+<span id="cb6-7"><a href="#cb6-7"></a>    }</span>
+<span id="cb6-8"><a href="#cb6-8"></a>}</span>
+<span id="cb6-9"><a href="#cb6-9"></a>}</span></code></pre></div></li>
+<li><p>随着连接变多，组渐变少</p></li>
+</ol>
+<p>本方法对应的算法复杂度如下所示</p>
+<table>
+<thead>
+<tr class="header">
+<th>method</th>
+<th>complexity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>initial</td>
+<td>N</td>
+</tr>
+<tr class="even">
+<td>union</td>
+<td>N</td>
+</tr>
+<tr class="odd">
+<td>find</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>看出，当 N 较大时，union 开销较大</p>
+<h3 id="quick-union-1">Quick Union</h3>
+<h3 id="weighted-quick-union-1">Weighted Quick Union</h3>
+<h3 id="weighted-quick-union-with-path-compression-1">Weighted Quick Union with Path Compression</h3>
+<h3 id="analysis-of-algorithm">Analysis of Algorithm</h3>
+<p>计算机发展中，处理性能和内存同时提升。而处理性能的提升与因为内存增大而造成的处理器的提升成线性比例。也就是说曾经处理性能为 P 时，处理 Q 量的数据；现在处理性能为 1000P 时可能要求处理 1000Q 的数据。对于算法复杂度为 <span class="math inline">\(O(n^2)\)</span> 的情况，实际上性能不升反降</p>
+<h3 id="performance-versus">Performance Versus</h3>
+<h2 id="其它">其它</h2>
+<h3 id="symbol-table"><span class="todo TODO">TODO</span> Symbol Table</h3>
+<h1 id="延伸阅读">延伸阅读</h1>
+<ul class="incremental">
+<li>An Introduction to programming in Java: An interdisciplinary approach</li>
+</ul>
+
+      </div>
+    </section>
+  </body>
+</html>

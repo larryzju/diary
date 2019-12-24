@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>java-note.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	  <a href="/diary/programming/java/ivy-vs-maven.org.html">Prev: ivy-vs-maven.org</a>
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/programming/java">Up: java</a>
+	  	
+	</span>
+
+	<span id="next">
+	  
+	  <a href="/diary/programming/java/maven.org.html">Next: maven.org</a>
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="the-mental-landscape">1. The mental landscape</h1>
+<h2 id="计算机概述">计算机概述</h2>
+<p>核心 CPU 执行机器语言，机器语言以指令形式保存于内存中，内存可以被线性寻址。 指令与数据一起构成 program，程序的运行为一个进程。</p>
+<p>CPU 的运行机制可以简单的归纳为 <code>fetch-and-execute cycle</code> ，其中 PC 寄存器指向下一条要运行的指令。</p>
+<p>计算机中的数据以位形式保存（因为0和1状态易于保持）。位之上构成字节，机器指令或者要操作的数据可能有多个字节构成（或位），结构由具体应用决定。</p>
+<p>计算机有大量外设，如键盘、硬盘等。需要操作系统对硬件及软件（如文件系统）进行抽象，配合硬件提供的有驱动共同作用形成有用的计算机系统。</p>
+<p>中断提供的异步机制，使计算机成为真正的可以交互的工具，而非单纯的输入输出批处理机器。常见的键盘输入、数据读取都有中断机制参与。</p>
+<h1 id="序列化与反序列化">序列化与反序列化</h1>
+<h2 id="serilizable-interface">Serilizable Interface</h2>
+<h2 id="transient">transient</h2>
+<p>一旦变量被transient修饰，变量将不再是对象持久化的一部分，该变量内容在序列化后无法获得访问。</p>
+<p>transient关键字只能修饰变量，而不能修饰方法和类。注意，本地变量是不能被transient关键字修饰的。变量如果是用户自定义类变量，则该类需要实现Serializable接口。</p>
+<p>被transient关键字修饰的变量不再能被序列化，一个静态变量不管是否被transient修饰，均不能被序列化。</p>
+<h2 id="section"></h2>
+<h2 id="参考资料">参考资料</h2>
+<ul class="incremental">
+<li><a href="http://www.cnblogs.com/lanxuezaipiao/p/3369962.html">Java transient关键字使用小记</a></li>
+</ul>
+
+      </div>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>8259a.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	  <a href="/diary/os/80386.org.html">Prev: 80386.org</a>
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/os">Up: os</a>
+	  	
+	</span>
+
+	<span id="next">
+	  
+	  <a href="/diary/os/boot.org.html">Next: boot.org</a>
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="小记">小记</h1>
+<p>8259a 是一个 PIC（programable interrupt controller）</p>
+<p>用于集成多个外部中断，以可编程控制的方式，分优先级输入到 CPU INTR 中断输入中</p>
+<p>一般由主片和从片级联而成，级联后提供 15 个中断请求。</p>
+<h2 id="中断矢量">中断矢量</h2>
+<p>每一个外部中断都有一个唯一的标识（整数），该标识可以通过编程设定</p>
+<h2 id="级联">级联</h2>
+<p>将从片的 INTR 中断接入到主片的 IRQ2 端口上，以实现级联</p>
+<p>级联物理连接与 ICW3 软件设置应保持一致</p>
+<h2 id="irimis">IR,IM,IS</h2>
+<p>内部数据寄存器，需要通过 OCW 指令来操作（类似于类的成员变量，通过方法来操作）</p>
+<dl class="incremental">
+<dt>IR</dt>
+<dd>锁存外部中断
+</dd>
+<dt>IS</dt>
+<dd>记录正在服务的中断
+</dd>
+<dt>IM</dt>
+<dd>掩码寄存器，用于屏蔽特定的中断响应
+</dd>
+</dl>
+<h1 id="参考资料">参考资料</h1>
+<h2 id="activesys的专栏"><a href="http://blog.csdn.net/activesys/article/details/17426609#">activesys的专栏</a></h2>
+<p>目前找到最好的介绍 8259a 的中文博客。条理清晰，而且简化了手册中复杂的 ICW 和 OCW 指令图。</p>
+<p>没有对不重要（对理解整个流程）的 EOI 以及兼容性作过多的讨论</p>
+
+      </div>
+    </section>
+  </body>
+</html>

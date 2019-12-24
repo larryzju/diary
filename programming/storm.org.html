@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>storm.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	  <a href="/diary/programming/scala">Prev: scala</a>
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/programming">Up: programming</a>
+	  	
+	</span>
+
+	<span id="next">
+	  
+	  <a href="/diary/programming/thrift.org.html">Next: thrift.org</a>
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="concept">Concept</h1>
+<h2 id="topology">Topology</h2>
+<p>A graph of spouts and bolts that are connected with stream grouping</p>
+<p>topology 定义了数据流向，类似于 oozie 流程，但会永远循环。</p>
+<p>内部实现是一个 thrift 结构， <code>TopologyBuilder</code> 封装了接口，生成 thrift 内容。</p>
+<p>topology 被提交到 storm 集群或 localCluster 来执行，并指定 config 配置行为。</p>
+<p>topology 有三个核心组件 spout, bolt 和 stream groupings，通过 bolt 的 <code>BoltDeclarer</code> 来指定与具体的 component 和 stream 的连接方式来表示 stream groupings</p>
+<h2 id="streams">Streams</h2>
+<ul class="incremental">
+<li>unbounded sequence of tuples，即时间轴上的 tuple</li>
+<li>tuple 类似于 python 中 named tuple，有 schema 来定义各个 field</li>
+<li>tuple 中的数据必须是可序列化的，默认基本类型可以被序列化</li>
+<li>stream 通过 id 进行标识，默认为 "default"</li>
+</ul>
+<h2 id="spout">Spout</h2>
+<p>从外部数据源读取 tuple，将之发送到 topology 中去。分为 reliable 和 unreliable，前者会由 storm 重新调用</p>
+<p>Spout 可以发送多个 stream</p>
+<ol class="incremental">
+<li>通过 <code>OutputFieldsDeclarer.declareStream</code> 来定义 stream-id</li>
+<li>在 <code>SpoutOutputCollector.emit</code> 函数中指定要发往的 stream id</li>
+</ol>
+<p>开发者要实现其中的</p>
+<ol class="incremental">
+<li><code>nextTuple</code> 方法，将数据以 tuple 形式发往 topology，也可以什么都不做，理论上不应对流程进行阻塞</li>
+<li><code>ack</code> 和 <code>fail</code> , 在检测到成功或失败时调用，仅对 reliable 模式可用</li>
+</ol>
+<h2 id="bolt">Bolt</h2>
+<p>Bolt 用于实现过滤、转换（function）、聚合（aggregation）、联合（join）、与数据库交互等操作</p>
+<p>与 Spout 类似，bolt 可以发射多个 stream</p>
+<ol class="incremental">
+<li>通过 <code>OutputFieldsDeclarer.declareStream</code> 来定义 stream-id</li>
+<li>在 <code>OutputCollector.emit</code> 函数中指定要发往的 stream id</li>
+</ol>
+<p>bolt 的数据来源于其它 bolt 和 spout （合称为 component） 的 stream。通过 <code>InputDeclarer.shuffleGrouping( &lt;comp-id&gt;, [&lt;stream-id&gt;] )</code> 来订阅。</p>
+<p>Bolt 中主要要实现的方法为 <code>execute</code> 。其参数为输入 tuple，调用 OutputCollector 发送生成的 tuple。</p>
+<p>在成功处理 tuple 后需要调用 <code>ack</code> 方法来通知 storm 成功， <code>IBasicBolt</code> 实现了自动 ack 功能。</p>
+<h2 id="stream-grouping">Stream Grouping</h2>
+<p>Stream Groupings defines how that stream should be partitioned among the bolt's tasks.</p>
+<p>内置有八种 stream grouping 方式（如 shuffle, fields, partial key, all, global, none, direct, local or shuffle），可以通过 <code>CustomStreamGrouping</code> 来自定义</p>
+<h2 id="reliability">Reliability</h2>
+<ul class="incremental">
+<li>Storm 会跟踪 tree of tuple</li>
+<li>topology 有全局的 message timeout 配置</li>
+<li>若失败或超时，则会重试</li>
+<li><code>ack</code> / <code>fail</code> 来告诉 storm tuple 处理是否成功或失败</li>
+</ul>
+<h2 id="tasks">Tasks</h2>
+<ul class="incremental">
+<li>spout 或 bolt 的运行实例</li>
+<li>等效于执行的一个线程</li>
+<li>stream grouping 定义了 task 到 task 的 tuple 传输方式</li>
+</ul>
+<h2 id="worker">Worker</h2>
+<ul class="incremental">
+<li>相当于 JVM 进程，其中可以有多个 task</li>
+<li>实现了集群的并发执行</li>
+<li>通过 <code>Config.TOPOLOGY_WORKERS</code> 来配置数量</li>
+</ul>
+<h1 id="local-mode">Local Mode</h1>
+<p>用于开发和本地调试，核心为 <code>LocalCluster</code> 类，其主要方法有</p>
+<dl class="incremental">
+<dt><code>submitTopology</code></dt>
+<dd>等效于 <code>StormSubmitter</code> 中同名函数，指定 name, config, topology 来提交 topology
+</dd>
+<dt><code>killTopology</code></dt>
+<dd>通过 name 来停止 topology
+</dd>
+<dt><code>shutdown</code></dt>
+<dd>关闭本地 storm 环境
+</dd>
+</dl>
+<h2 id="配置">配置</h2>
+<dl class="incremental">
+<dt><code>Config.TOPOLOGY_MAX_TASK_PARALLELISM</code></dt>
+<dd>每个 component 最大的线程数
+</dd>
+<dt><code>Config.TOPOLOGY_DEBUG</code></dt>
+<dd>spout 和 bolt emit 时会记一条日志
+</dd>
+</dl>
+<h1 id="问题">问题</h1>
+<h2 id="tuple-field-是否定义了类型"><span class="todo TODO">TODO</span> tuple field 是否定义了类型？</h2>
+<h2 id="task-是否只有一个-component-在其中阻塞时不影响其它-task"><span class="todo TODO">TODO</span> task 是否只有一个 component 在其中，阻塞时不影响其它 task?</h2>
+
+      </div>
+    </section>
+  </body>
+</html>

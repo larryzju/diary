@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>rescure-libc-deleted.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	  <a href="/diary/blog/python-scope.org.html">Prev: python-scope.org</a>
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/blog">Up: blog</a>
+	  	
+	</span>
+
+	<span id="next">
+	  
+	  <a href="/diary/blog/%e6%b2%99%e4%b8%98.org.html">Next: 沙丘.org</a>
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="前奏">前奏</h1>
+<p>在 RedHat7.5 上部署一个系统，要用到 32 位的 libc 环境。用 <code>yum install glibc.i686</code> 安装时出现了这样的错误</p>
+<pre class="text"><code>Error:  Multilib version problems found. This often means that the root
+       cause is something else and multilib version checking is just
+       pointing out that there is a problem. Eg.:
+
+       ...
+</code></pre>
+<p>多方排查，最终发现机器上竟然同时安装了两个 64位 glibc 版本（没人知道是哪位先辈干的）</p>
+<pre class="text"><code>[root@localhost ~]# rpm -qa | grep glibc
+glibc-common-2.17-222.el7.x86_64
+glibc-2.22-62.6.2.x86_64
+glibc-2.17-222.el7.x86_64
+glibc-headers-2.17-222.el7.x86_64
+glibc-devel-2.17-222.el7.x86_64
+</code></pre>
+<p>RHEL 中 32 位版本要求与 64 位有相同的版本 ( 与 <code>glibc-common</code> 需要有相同的版本 <code>2.17-222</code> )， 所以会出上面的 <code>multilib</code> 问题（不是 32 位与 64 位冲突，而是系统认为 32 位与已经安装的某个 glibc 冲突）</p>
+<h1 id="作死">作死</h1>
+<p>考虑这是自己刚入职的第一个正经任务，去跟领导说 “因为系统 libc 版本冲突，装不下去了”，似乎是个很丢面子的事情。 于是果断向领导轻描淡写地提了下（有个问题，正在想办法），开始作死之旅</p>
+<p>首先，检查动态库的依赖情况</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a>[<span class="ex">root@localhost</span> tmp]# ldd <span class="kw">`</span><span class="fu">which</span> bash<span class="kw">`</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>        <span class="ex">linux-vdso.so.1</span> =<span class="op">&gt;</span>  (0x00007fffdbfac000)</span>
+<span id="cb3-3"><a href="#cb3-3"></a>        <span class="ex">libtinfo.so.5</span> =<span class="op">&gt;</span> /lib64/libtinfo.so.5 (0x00007fcd57a75000)</span>
+<span id="cb3-4"><a href="#cb3-4"></a>        <span class="ex">libdl.so.2</span> =<span class="op">&gt;</span> /lib64/libdl.so.2 (0x00007fcd57871000)</span>
+<span id="cb3-5"><a href="#cb3-5"></a>        <span class="ex">libc.so.6</span> =<span class="op">&gt;</span> /lib64/libc.so.6 (0x00007fcd574a4000)</span>
+<span id="cb3-6"><a href="#cb3-6"></a>        <span class="ex">/lib64/ld-linux-x86-64.so.2</span> (0x00007fcd57c9f000)</span></code></pre></div>
+<p>里面关键是 libc.so.6，检查链接，确定是 RHEL 默认版本 (<code>2.17</code>)</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a>[<span class="ex">root@localhost</span> tmp]# ls -l /lib64/libc.so.6</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="ex">lrwxrwxrwx</span> 1 root root 12 Sep 28 01:47 /lib64/libc.so.6 -<span class="op">&gt;</span> libc-2.17.so</span></code></pre></div>
+<p>马上，我就开始犯第一个错误：没有检查 <code>glibc-2.22-62.6.2.x86_64</code> 的内容。 而是默认它没有与系统中的库文件冲突，认为可以放心的删除之</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a>$ <span class="ex">yum</span> remove glibc-2.22-62.6.2.x86_64</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="ex">error</span>: Failed dependencies:</span>
+<span id="cb5-3"><a href="#cb5-3"></a>        <span class="ex">/sbin/ldconfig</span> is needed by (installed) <span class="ex">pcre-8.32-17.el7.x86_64</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>        <span class="ex">/sbin/ldconfig</span> is needed by (installed) <span class="ex">zlib-1.2.7-17.el7.x86_64</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>        <span class="ex">/sbin/ldconfig</span> is needed by (installed) <span class="ex">xz-libs-5.2.2-1.el7.x86_64</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>        <span class="ex">/sbin/ldconfig</span> is needed by (installed) <span class="ex">popt-1.13-16.el7.x86_64</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>        <span class="ex">/sbin/ldconfig</span> is needed by (installed) <span class="ex">libxml2-2.9.1-6.el7_2.3.x86_64</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a>        <span class="ex">/sbin/ldconfig</span> is needed by (installed) <span class="ex">bzip2-libs-1.0.6-13.el7.x86_64</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a>        <span class="ex">/sbin/ldconfig</span> is needed by (installed) <span class="ex">readline-6.2-10.el7.x86_64</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a>        <span class="ex">/sbin/ldconfig</span> is needed by (installed) <span class="ex">libffi-3.0.13-18.el7.x86_64</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a>        <span class="ex">/sbin/ldconfig</span> is needed by (installed) <span class="ex">libgpg-error-1.12-3.el7.x86_64</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a>        <span class="ex">...</span></span></code></pre></div>
+<p>系统提示 <code>/sbin/ldconfig</code> 被多个软件使用。接下来犯了致命错误（不可原谅）， 认为 <code>ldconfig</code> 之类的行文件不致于影响系统，于是暴力删除</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="ex">rpm</span> -e --nodeps glibc-2.22-62.6.2.x86_64</span></code></pre></div>
+<h1 id="恐慌">恐慌</h1>
+<p>至此，作死完成</p>
+<ol class="incremental">
+<li><p>除了 cd 等 shell 的基本操作可用，其它所有命令都会报 bad ELF interpreter，包括 <code>ls</code> 或者 <code>ln</code> 等命令</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="ex">bash</span>: /usr/bin/ls: /lib64/ld-linux-x86-64.so.2: bad ELF interpreter: No such file or directory</span></code></pre></div></li>
+<li><p>ssh 无法登录，输入用户名和密码后报 <code>/bin/bash: No such file or directory</code></p></li>
+<li><p>scp 同样无法使用</p></li>
+</ol>
+<p>第一时间能想到的方法有</p>
+<ol class="incremental">
+<li>用恢复系统（比如光盘或 U 盘引导）挂载上系统盘，rpm 安装 glibc</li>
+<li>手动从其它机器上拷贝动态库文件到本系统，或者解压 glibc 的 rpm 文件</li>
+</ol>
+<p>如果能直接操作磁盘上的文件，似乎也不是太大的问题。只需要把 glibc 重新安装一遍（甚至手工拷贝或链接）即可。 可这偏偏是台物理机，不知道在几千公里之外。</p>
+<p>面对仅有的远程终端（在 tmux 中，已经无法打开新的 tab），即不能使用系统命令，又不能拷贝文件。 瞬间想到几天前风传的 SF 工程师误删库被开除的新闻，想到自己刚报道没三周就要背着包走人了，只能一头冷汗</p>
+<h1 id="假装镇定">（假装）镇定</h1>
+<p>镇定一下，吃个午饭，顺便查查网上有没有解决方法。</p>
+<p>我的误操作的主要后果是删除了系统所有可执行程序运行时依赖的动态库，正在运行的程序（如果没有动态加载）则不受影响， 这也是为什么我还能保持远程连接，还能敲命令（虽然没一个能用）</p>
+<p>网上有高人提到一个方法，用来解决 <code>/lib64/libc.so.6</code> 被误删的情况（似乎手残的程序员不在少数，虽然我是被之前的管理员的多版本 glibc 坑的）： 通过设置 <code>LD_PRELOAD</code> 让系统执行 ELF 文件时预加载一些动态库，然后重新建立到 libc.so.6 的链接（通常是 <code>/usr/lib/lib64/libc-2.17.so</code> 之类）</p>
+<p>是个办法，但是我还不能确定对我的情况是否有效（因为我不是简单地删除了 <code>libc.so.6</code> ，而是删除了 glibc 整个包）。</p>
+<p>现在只能寄希望于 rpm 在执行删除操作时先删除软链接，后删除库文件。也许删除链接，后续操作就没有执行，也许能给我剩下些什么。</p>
+<h1 id="拯救">拯救</h1>
+<p>强迫自己冷静一下（暗示自己大概不会因为这个原因被开除），回到终端前，开始我的主机拯救行动。</p>
+<p>（以下步骤是事后根据 <code>history</code> 记录回忆，部分内容后来在 docker 里模拟，看官们不要盲目参考）</p>
+<h2 id="第一拨">第一拨</h2>
+<ol class="incremental">
+<li>确认一下系统的 libc 库文件没被删除（但愿因删除了动态库）</li>
+<li>但是 <code>ls</code> 命令不能用</li>
+<li>幸好还有个 tmux 终端（谢天谢地），tab 补全还是可以用的（万岁！）</li>
+<li>猜测 <code>/lib64/libc.so.6</code> 的源文件应该也在 <code>/lib64</code> 目录下，应该也以 <code>libc</code> 开头</li>
+<li>果然有一下 <code>libc-2.17.so</code> 在众多 <code>libc</code> 开头的补全中</li>
+<li>试试 <code>ls</code> ，报错 <code>/lib64/ld-linux-x86-64.so.2: bad ELF interpreter: No such file or directory</code></li>
+</ol>
+<p>这里报的是 <code>/lib64/ld-linux-x86-64.so.2</code> 的错，引用官方手册 (<code>man ld.so</code>) 的说法</p>
+<div class="line-block">The programs ld.so and ld-linux.so* find and load the shared libraries needed by a program, prepare the program to run, and then run it.</div>
+<p><code>ld-linux-x86-64.so</code> 名字看上去是个库文件，实际上是个可执行程序（可以用 <code>file</code> 命令查看）</p>
+<pre class="text"><code>ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, BuildID[sha1]=600742622dd65cd1d5a6c74e1385453981e24b67, not stripped
+</code></pre>
+<p>其它可执行程序的运行都是通过 <code>ld.so</code> 的。 <code>ld.so</code> 为之配置好动态库依赖环境（包括 <code>librt</code> 之类的关键到 <code>main</code> 入口的内容）</p>
+<h2 id="第二拨">第二拨</h2>
+<ol class="incremental">
+<li><p>尝试找到 <code>ld-linux-x86-64.so.2</code> 的源文件</p></li>
+<li><p>猜测在 <code>/lib64</code> 目录下，以 ld 开头，找到了 <code>/lib64/ld-2.17.so</code></p></li>
+<li><p>直接运行之 <code>/lib64/ld-2.17.so</code> ，没有报错（静态链接万岁! Go 语言永远健康）</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a>[<span class="ex">root@de7d8b59a07d</span> lib64]# /lib64/ld-2.17.so</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="ex">Usage</span>: ld.so [OPTION]... EXECUTABLE-FILE [ARGS-FOR-PROGRAM...]</span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="ex">You</span> have invoked <span class="kw">`</span><span class="ex">ld.so</span><span class="st">&#39;, the helper program for shared library executables.</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="st">This program usually lives in the file `/lib/ld.so&#39;</span>, and special directives</span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="kw">in</span> <span class="ex">executable</span> files using ELF shared libraries tell the system<span class="st">&#39;s program</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="st">loader to load the helper program from this file.  This helper program loads</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="st">the shared libraries needed by the program executable, prepares the program</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="st">to run, and runs it.  You may invoke this helper program directly from the</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="st">command line to load and run an ELF executable file; this is like executing</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="st">that file itself, but always uses this helper program from the file you</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="st">specified, instead of the helper program file specified in the executable</span></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="st">file you run.  This is mostly of use for maintainers to test new versions</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a><span class="st">of this helper program; chances are you did not intend to run this program.</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a></span>
+<span id="cb9-15"><a href="#cb9-15"></a><span class="st">  --list                list all dependencies and how they are resolved</span></span>
+<span id="cb9-16"><a href="#cb9-16"></a><span class="st">  --verify              verify that given object really is a dynamically linked</span></span>
+<span id="cb9-17"><a href="#cb9-17"></a><span class="st">                        object we can handle</span></span>
+<span id="cb9-18"><a href="#cb9-18"></a><span class="st">  --inhibit-cache       Do not use /etc/ld.so.cache</span></span>
+<span id="cb9-19"><a href="#cb9-19"></a><span class="st">  --library-path PATH   use given PATH instead of content of the environment</span></span>
+<span id="cb9-20"><a href="#cb9-20"></a><span class="st">                        variable LD_LIBRARY_PATH</span></span>
+<span id="cb9-21"><a href="#cb9-21"></a><span class="st">  --inhibit-rpath LIST  ignore RUNPATH and RPATH information in object names</span></span>
+<span id="cb9-22"><a href="#cb9-22"></a><span class="st">                        in LIST</span></span>
+<span id="cb9-23"><a href="#cb9-23"></a><span class="st">  --audit LIST          use objects named in LIST as auditors</span></span></code></pre></div></li>
+<li><p>用 ld.so 来执行 <code>ls</code> 命令</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1"></a><span class="ex">/lib64/ld-2.17.so</span> /bin/ls</span></code></pre></div></li>
+<li><p>终于开始报动态库问题了</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1"></a><span class="ex">error</span> while loading shared libraries: libc.so.6: cannot open shared object file: No such file or directory</span></code></pre></div></li>
+<li><p>设置 <code>LD_PRELOAD</code> ，包含 <code>libc</code> 文件</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1"></a><span class="va">LD_PRELOAD=</span>/lib64/libc-2.17.so <span class="ex">/lib64/ld-2.17.so</span> /bin/ls</span></code></pre></div></li>
+<li><p>报错，缺少 <code>libdl.so.2</code> （好现象）</p></li>
+<li><p>按提示添加库，运行成功！</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1"></a><span class="va">LD_PRELOAD=</span>/lib64/libc-2.17.so:/lib64/libdl.so <span class="ex">/lib64/ld-2.17.so</span> /bin/ls</span></code></pre></div></li>
+</ol>
+<h2 id="第三拨">第三拨</h2>
+<p>到这里，安心不少，至少有命令可以用了。接下来，我需要手动恢复动态链接库</p>
+<ol class="incremental">
+<li><p>每添加一个链接，就试试 <code>ls</code> 命令是否可以直接使用</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1"></a><span class="va">LD_PRELOAD=</span>/lib64/libc-2.17.so:/lib64/libdl.so <span class="ex">/lib64/ld-2.17.so</span> /bin/ln -s /lib64/ld-2.17.so /lib64/ld-linux-x86-64.so.2</span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="va">LD_PRELOAD=</span>/lib64/libc-2.17.so:/lib64/libdl.so <span class="ex">/lib64/ld-2.17.so</span> /bin/ln -s /lib64/libc-2.17.so /lib64/libc.so.6</span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="va">LD_PRELOAD=</span>/lib64/libc-2.17.so:/lib64/libdl.so <span class="ex">/lib64/ld-2.17.so</span> /bin/ln -s /lib64/libdl.so /lib64/libdl.so.2</span></code></pre></div></li>
+<li><p>到这里 <code>ls</code> 和 <code>ln</code> 都可以直接使用了（幸福来的很突然）</p></li>
+<li><p>接着试试 <code>rpm</code> 命令，依次添加了 <code>libm</code>, <code>libdl</code>, <code>libpthread</code>, <code>librt</code> 链接（ rpm 相对 ls 要复杂的多，还用到了 math 和 pthread 等库）</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">ln</span> -s /lib64/libm-2.17.so /lib64/libm.so.6</span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="fu">ln</span> -s /lib64/libdl-2.17.so /lib64/libdl.so.2</span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="fu">ln</span> -s /lib64/libpthread-2.17.so /lib64/libpthread.so.0</span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="fu">ln</span> -s /lib64/librt-2.17.so /lib64/librt.so.1</span></code></pre></div></li>
+<li><p>修好了 rpm，可以安装 glibc 的 rpm 包了</p></li>
+<li><p>去 <code>/var/cache/yum</code> 目录下找，没找到，缓存被清除了</p></li>
+<li><p>没关系，试试用 <code>yum</code> 。按照提示建立链接</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">ln</span> -s /lib64/libutil-2.17.so /lib64/libutil.so.1</span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="fu">ln</span> -s /lib64/libresolv-2.17.so /lib64/libresolv.so.2</span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="fu">ln</span> -s /lib64/libcrypt-2.17.so /lib64/libcrypt.so.1</span></code></pre></div></li>
+<li><p><code>yum</code> 不报错了，可以来查找一下</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1"></a><span class="ex">yum</span> search glibc</span></code></pre></div></li>
+<li><p>卡在搜索这里</p></li>
+<li><p>跳过 yum，直接从外网找到相关的 rpm 包，试试用 wget 获取 （按捺不住激动）</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">wget</span> http://mirror.centos.org/centos/7/os/x86_64/Packages/glibc-2.17-222.el7.x86_64.rpm</span></code></pre></div></li>
+<li><p>果然，域名解析卡住了。跳过，从其它电脑上 <code>nslookup</code> 找到 IP 地址</p></li>
+<li><p>直接用 IP 地址再次下载 <code>wget http://66.241.106.180/centos/7/os/x86_64/Packages/glibc-2.17-222.el7.x86_64.rpm</code></p></li>
+<li><p>RPM 安装之</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1"></a><span class="ex">rpm</span> -i --force glibc-2.17-222.el7.x86_64.rpm</span></code></pre></div></li>
+<li><p>大功造成，检查一遍</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1"></a><span class="ex">yum</span> search glibc                <span class="co"># 可以</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a><span class="ex">rpm</span> -qa <span class="kw">|</span> <span class="fu">grep</span> glibc            <span class="co"># 正常</span></span></code></pre></div></li>
+</ol>
+<h1 id="小结">小结</h1>
+<p>到这里，总算不用担心被开除了，心可以放到肚子里了。</p>
+<p>从作死到拯救前后不过一个小时，但期间肾上腺素分泌加大，心态变化之快，不足为外人道。 套用一句话：“真是太刺激了”</p>
+<p>有几个问题，后面需要仔细研究研究</p>
+<ol class="incremental">
+<li>域名解析为什么会卡住</li>
+<li>ld.so 相关知识（动态库和操作系统知识）</li>
+<li>YUM 和 rpm 包管理器的冲突解决最佳实践方式</li>
+</ol>
+<p>现在是时候做个小结</p>
+<ol class="incremental">
+<li>千万不要在不确定的情况下做操作（特别是动态库和网络）</li>
+<li>千万不要在不能访问物理机器情况下，远程做危险操作</li>
+<li>遇到事情千万要冷静</li>
+<li>书到用时方恨少（我的《程序员的自我修养》似乎已经落灰不少）</li>
+<li>作为程序员一定要了解操作系统知识</li>
+<li>莫逞强</li>
+<li>自作孽，不可活</li>
+</ol>
+<p>与君共勉！（用脑过度，休息一会儿）</p>
+
+      </div>
+    </section>
+  </body>
+</html>

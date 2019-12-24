@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>scala.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	  <a href="/diary/programming/scala/programming-in-scala.org.html">Prev: programming-in-scala.org</a>
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/programming/scala">Up: scala</a>
+	  	
+	</span>
+
+	<span id="next">
+	  
+	  <a href="/diary/programming/scala/scalikeJDBC.org.html">Next: scalikeJDBC.org</a>
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="collection">Collection</h1>
+<h2 id="说明">说明</h2>
+<p>scala 官方 tutorial 第一章中重点介绍了集合类的特性：</p>
+<ul class="incremental">
+<li>通用性</li>
+<li>一致性</li>
+<li>功能丰富性</li>
+</ul>
+<p>类似于 clojure 等设计思路</p>
+<ul class="incremental">
+<li>对集合作出抽象数据结构，有丰富的通用的 API 和函数式的用法</li>
+<li>使用高阶函数（并提供语法支持）</li>
+<li>方便在 API 兼容的情况下切换到多处理器支持等不同实现数据结构</li>
+</ul>
+<p>优于 clojure 的地方在于</p>
+<ul class="incremental">
+<li>scala 是静态类型语言，通过函数参数显式声明，在编译时会检测出很多类型错误</li>
+</ul>
+<h2 id="可变与不可变">可变与不可变</h2>
+<p>集合类存在三种变体：</p>
+<ul class="incremental">
+<li>root: <code>scala.collection</code></li>
+<li>mutable: <code>scala.collection.mutable</code></li>
+<li>immutable: <code>scala.collection.immutable</code></li>
+</ul>
+<p>为了方便和向后兼容性，一些导入类型在包 <code>scala</code> 中有别名，如： <code>List</code>, <code>Traversable</code>, <code>Iterable</code>, <code>Seq</code>, <code>IndexedSeq</code>, <code>Iterator</code>, <code>Stream</code>, <code>Vector</code>, <code>StringBuilder</code>, <code>Range</code></p>
+<h3 id="scala.collection-数据结构层次">scala.collection 数据结构层次</h3>
+<p><img src="image/collections.png" /></p>
+<p>集合类的抽象层次依次为：</p>
+<ol class="incremental">
+<li>Traverable</li>
+<li>Iterable</li>
+<li>Seq, Set, Map</li>
+<li>…</li>
+</ol>
+<h3 id="scala.collection.immutable-数据结构层次">scala.collection.immutable 数据结构层次</h3>
+<p><img src="image/collections.immutable.png" /></p>
+<h3 id="scala.collection.mutable-数据结构层次">scala.collection.mutable 数据结构层次</h3>
+<p><img src="image/collections.mutable.png" /></p>
+<h3 id="构造">构造</h3>
+<p>直接用类型加参数列表构造，常见语法如</p>
+<ul class="incremental">
+<li><code>Traversable(1,2,3)</code></li>
+<li><code>Map("x"-&gt;24,"y"-&gt;25,"z"-&gt;26)</code></li>
+</ul>
+<h3 id="api">API</h3>
+<ul class="incremental">
+<li>Traversable 类提供了所有集合支持的 API</li>
+<li>可能被具体类型实现重写</li>
+<li>map 操作返回与原类型一致的对象</li>
+</ul>
+<h2 id="常用不可变类型">常用不可变类型</h2>
+<table>
+<thead>
+<tr class="header">
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ArrayBuffer</td>
+<td>底层是 array，隐含 size，向结尾添加高效</td>
+</tr>
+<tr class="even">
+<td>ListBuffer</td>
+<td>内部为 linked list</td>
+</tr>
+<tr class="odd">
+<td>StringBuilder</td>
+<td>用于构造 String，可以直接在 scala 命名空间使用</td>
+</tr>
+<tr class="even">
+<td>LinkedList</td>
+<td>单向链表，用于方便插入</td>
+</tr>
+<tr class="odd">
+<td>DoubleLinkedList</td>
+<td>双向链表</td>
+</tr>
+<tr class="even">
+<td>MutableList</td>
+<td>单向链表+尾指针，append 效率高，是 LineSeq 的标准实现</td>
+</tr>
+<tr class="odd">
+<td>Queue</td>
+<td>用 <code>+=</code> 添加元素， <code>++=</code> 添加 seq</td>
+</tr>
+<tr class="even">
+<td>ArraySeq</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Stack</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>ArrayStack</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>HashMap/HashSet</td>
+<td>底层是数组，返回时按哈希顺序返回</td>
+</tr>
+<tr class="even">
+<td>WeakHashMap</td>
+<td>无引用会自动删除键值对，用作缓存（类似 clojure memorize），底层是 <code>java.util.WeakHashMap</code></td>
+</tr>
+<tr class="odd">
+<td>ConcurrentMap</td>
+<td>有额外带保护的方法，是 trait，实现了 <code>java.util.concurrent.ConcurrentMap</code></td>
+</tr>
+<tr class="even">
+<td>BitSet</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="empty-构造"><span class="todo TODO">TODO</span> empty 构造</h3>
+<p>可以用 <code>mutable.ArrayBuffer.empty[int]</code> 构造对象，empty 的 API 从哪里来？</p>
+<h3 id="linearseq-类型">LinearSeq 类型</h3>
+<p>LinearSeq 底层是 MutableList，那么 LinearSeq 本质上是个 class 还是 type?</p>
+<h1 id="string-interpolation">String Interpolation</h1>
+<p>String Interpolation 是在 2.10.0 中加入的功能，可以在字符串中嵌入变量引用，如 <code>s"Hello, $name"</code></p>
+<p>内置三种前缀字母，表示不同的处理方法：</p>
+<ol class="incremental">
+<li>s 前缀，类似 ruby，替换用 <code>$var</code> 表示的变量，也可将表达式放在 <code>${}</code> 中</li>
+<li>f 前缀，类似 printf 语法，如 <code>f"$name%s is $height%2.2f meters tall"</code></li>
+<li>raw 前缀，类似 python 'r' 前缀，同 's'，但不会处理转义字符</li>
+</ol>
+<p>String Interpolation 本质上是语法糖，对应于 <code>StringContext.id</code> 函数调用，可以自定义，需要实现一个 implicit 类，方法略</p>
+<h1 id="repl">REPL</h1>
+<p>scala repl 将代码按模板进行封装（wrap with template)，编译并执行。并将结果自动导出到当前 scope 中。</p>
+<p>常用的命令有</p>
+<table>
+<thead>
+<tr class="header">
+<th>variable/command</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>$intp</td>
+<td>IMain 实例</td>
+</tr>
+<tr class="even">
+<td>lastException</td>
+<td>最后一个异常</td>
+</tr>
+<tr class="odd">
+<td>:help</td>
+<td>查看帮助</td>
+</tr>
+<tr class="even">
+<td>:javap</td>
+<td>反汇编文件或类</td>
+</tr>
+<tr class="odd">
+<td>:power</td>
+<td>进入 power mode</td>
+</tr>
+<tr class="even">
+<td>&lt;tab&gt;</td>
+<td>补全</td>
+</tr>
+</tbody>
+</table>
+<h1 id="trait">trait</h1>
+<h2 id="概述">概述</h2>
+<p>trait 类似 java 的 interface，用于定义类的方法模板。</p>
+<h2 id="继承inherit与混成mixin">继承(inherit)与混成(mixin)</h2>
+<p>mixin 类比于电影中合成技术（混成），对于两个相同规格的场景（基础类），混成出一个全新的场景（extends … with）。</p>
+<p>trait 可以扩展(extends) 抽象类，实现扩展的方法。并在同样继承(inherit) 抽象类的类中，混成 trait 扩展的方法。</p>
+<p>优点在于，将扩展的通用实现加入到朴素的原始数据结构中。</p>
+<p>如：</p>
+<pre class="example"><code>abstract class AbsIterator {
+  type T
+  def hasNext: Boolean
+  def next: T
+}
+
+trait RichIterator extends AbsIterator {
+  def foreach( f: T =&gt; Unit ) { while ( hasNext ) f(next) }
+}
+
+class StringIterator( s: String ) extends AbsIterator {
+  type T = Char
+  private var i = 0
+  def hasNext = i &lt; s.length()
+  def next  = { val ch = s charAt i; i += 1; ch }
+}
+
+object StringIteratorTest {
+  def main( args: Array[String] ) {
+    class Iter extends StringIterator( args(0) ) with RichIterator
+    val iter = new Iter
+    iter foreach println
+  }
+}
+</code></pre>
+<h2 id="注意事项">注意事项</h2>
+<ul class="incremental">
+<li>trait 不能有构造函数</li>
+<li>定义的函数可以是抽象的，也可以是具体的</li>
+<li>具体的函数可以依赖于抽象函数</li>
+</ul>
+
+      </div>
+    </section>
+  </body>
+</html>

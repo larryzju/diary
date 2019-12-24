@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>reflect.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	  <a href="/diary/programming/golang/misc.org.html">Prev: misc.org</a>
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/programming/golang">Up: golang</a>
+	  	
+	</span>
+
+	<span id="next">
+	  
+	  <a href="/diary/programming/golang/template.org.html">Next: template.org</a>
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="laws-of-reflection">laws of reflection</h1>
+<p>Note of <a href="https://blog.golang.org/laws-of-reflection">laws of reflection</a></p>
+<h2 id="introduction">Introduction</h2>
+<p>Program can examine its own structure with <code>reflect</code> through <strong>types</strong>. (Metaprogramming)</p>
+<h2 id="type-interfaces">Type &amp; Interfaces</h2>
+<p>Go is static type language.</p>
+<p><code>type MyInt int</code> define new type "MyInt" which is different from int even they have the same underlying type.</p>
+<p><strong>interface</strong> type is a special type, which can hold concrete value that satisfied the interface's method prototypes.</p>
+<p><code>interface{}</code> can store any type of value. But it's still static type language.</p>
+<h2 id="the-representation-of-an-interface">The representation of an interface</h2>
+<p>Interface keeps tuple informations: <code>(value, concrete type)</code></p>
+<p>With interface variable, we can only call the methods in interface prototype. Such as <code>r.read()</code>.</p>
+<p>The concrete value can define much more methods, we need to declare (convert) it to another interface to use these methods normally use <strong>type assertion syntax</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb1-1"><a href="#cb1-1"></a>w = r.(io.Writer)</span></code></pre></div>
+<p>Empty interface can be assigned any type of value without type asserting.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">var</span> empty <span class="kw">interface</span>{}</span>
+<span id="cb2-2"><a href="#cb2-2"></a>empty = w</span></code></pre></div>
+<h2 id="law1.-reflection-goes-from-interface-value-to-reflection-object">Law1. Reflection goes from interface value to reflection object</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">package</span> main</span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="kw">import</span> (</span>
+<span id="cb3-4"><a href="#cb3-4"></a>        <span class="st">&quot;fmt&quot;</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>        <span class="st">&quot;reflect&quot;</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>)</span>
+<span id="cb3-7"><a href="#cb3-7"></a></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="kw">func</span> main() {</span>
+<span id="cb3-9"><a href="#cb3-9"></a>        <span class="kw">var</span> x <span class="dt">float64</span> = <span class="dv">3</span><span class="fl">.6</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>        fmt.Println(<span class="st">&quot;type:&quot;</span>, reflect.TypeOf(x))</span>
+<span id="cb3-11"><a href="#cb3-11"></a>        fmt.Println(<span class="st">&quot;value:&quot;</span>, reflect.ValueOf(x).String())</span>
+<span id="cb3-12"><a href="#cb3-12"></a></span>
+<span id="cb3-13"><a href="#cb3-13"></a></span>
+<span id="cb3-14"><a href="#cb3-14"></a>        v := reflect.ValueOf(x)</span>
+<span id="cb3-15"><a href="#cb3-15"></a>        fmt.Println(<span class="st">&quot;type:&quot;</span>, v.Type())</span>
+<span id="cb3-16"><a href="#cb3-16"></a>        fmt.Println(<span class="st">&quot;kind is float64:&quot;</span>, v.Kind() == reflect.Float64)</span>
+<span id="cb3-17"><a href="#cb3-17"></a>        fmt.Println(<span class="st">&quot;value:&quot;</span>, v.Float())</span>
+<span id="cb3-18"><a href="#cb3-18"></a>}</span></code></pre></div>
+<ul class="incremental">
+<li><p>Use <code>reflect.TypeOf</code> gets value's type. The <code>x</code> is convert to empty interface first and <code>reflect.TypeOf</code> unpacks that empty interface to recover the type information.</p></li>
+<li><p>Use <code>reflect.ValueOf</code> gets interface's value</p></li>
+<li><p><code>Value</code> has lots of methods to let use examine and manipulate them</p>
+<ul class="incremental">
+<li><code>Type</code></li>
+<li><code>Kind</code> describes the underlying type, not the static type</li>
+<li><code>Int</code>, <code>Float</code> to grab values</li>
+</ul></li>
+</ul>
+<h2 id="law2.-reflection-goes-from-reflection-object-to-interface-value">Law2. Reflection goes from reflection object to interface value</h2>
+<p>Repack <code>(value, concrete type)</code> to <code>interface</code> which can be seen as a inverse of the `ValueOf` function.</p>
+<p>The result is always of static type <code>interface{}</code></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">package</span> main</span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="kw">import</span> (</span>
+<span id="cb4-4"><a href="#cb4-4"></a>        <span class="st">&quot;fmt&quot;</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>        <span class="st">&quot;reflect&quot;</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>)</span>
+<span id="cb4-7"><a href="#cb4-7"></a></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="kw">func</span> main() {</span>
+<span id="cb4-9"><a href="#cb4-9"></a>        <span class="kw">var</span> x <span class="dt">int32</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a>        x = <span class="dv">10240</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a></span>
+<span id="cb4-12"><a href="#cb4-12"></a>        v := reflect.ValueOf(x)</span>
+<span id="cb4-13"><a href="#cb4-13"></a>        fmt.Printf(<span class="st">&quot;%.2e&quot;</span>, <span class="dt">float64</span>(v.Interface().(<span class="dt">int32</span>)))</span>
+<span id="cb4-14"><a href="#cb4-14"></a>}</span></code></pre></div>
+<h2 id="law3.-to-modifiy-a-reflection-object-the-value-must-be-settable">Law3. To modifiy a reflection object, the value must be settable</h2>
+<p>Before set the value with reflect, call <code>CanSet</code> on the <code>Value</code></p>
+<p>We can modify the reflect value only if its not the copy for the raw value. (Similar to pass parameters to function by value or by reference).</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">package</span> main</span>
+<span id="cb5-2"><a href="#cb5-2"></a></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="kw">import</span> (</span>
+<span id="cb5-4"><a href="#cb5-4"></a>        <span class="st">&quot;fmt&quot;</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>        <span class="st">&quot;reflect&quot;</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>)</span>
+<span id="cb5-7"><a href="#cb5-7"></a></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="kw">func</span> main() {</span>
+<span id="cb5-9"><a href="#cb5-9"></a>        <span class="kw">var</span> x <span class="dt">int32</span> = <span class="dv">1024</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a>        v := reflect.ValueOf(&amp;x)</span>
+<span id="cb5-11"><a href="#cb5-11"></a>        fmt.Println(v.CanSet())</span>
+<span id="cb5-12"><a href="#cb5-12"></a>        t := v.Elem()</span>
+<span id="cb5-13"><a href="#cb5-13"></a>        fmt.Println(t.CanSet())</span>
+<span id="cb5-14"><a href="#cb5-14"></a>        t.SetInt(<span class="dv">2048</span>)</span>
+<span id="cb5-15"><a href="#cb5-15"></a>        fmt.Println(t)</span>
+<span id="cb5-16"><a href="#cb5-16"></a>        fmt.Println(x)</span>
+<span id="cb5-17"><a href="#cb5-17"></a>}</span></code></pre></div>
+<h2 id="struct">Struct</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">package</span> main</span>
+<span id="cb6-2"><a href="#cb6-2"></a></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="kw">import</span> (</span>
+<span id="cb6-4"><a href="#cb6-4"></a>        <span class="st">&quot;fmt&quot;</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>        <span class="st">&quot;reflect&quot;</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>)</span>
+<span id="cb6-7"><a href="#cb6-7"></a></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="kw">type</span> T <span class="kw">struct</span> {</span>
+<span id="cb6-9"><a href="#cb6-9"></a>        Foo <span class="dt">string</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a>        bar <span class="dt">string</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a>}</span>
+<span id="cb6-12"><a href="#cb6-12"></a></span>
+<span id="cb6-13"><a href="#cb6-13"></a><span class="kw">func</span> main() {</span>
+<span id="cb6-14"><a href="#cb6-14"></a>        t := T{<span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;world&quot;</span>}</span>
+<span id="cb6-15"><a href="#cb6-15"></a>        s := reflect.ValueOf(&amp;t).Elem()</span>
+<span id="cb6-16"><a href="#cb6-16"></a>        s.Field(<span class="dv">0</span>).SetString(<span class="st">&quot;Aloha&quot;</span>)</span>
+<span id="cb6-17"><a href="#cb6-17"></a>        <span class="co">// can not set unexport field</span></span>
+<span id="cb6-18"><a href="#cb6-18"></a>        <span class="co">// s.Field(1).SetString(&quot;世界&quot;)</span></span>
+<span id="cb6-19"><a href="#cb6-19"></a>        fmt.Println(t)</span>
+<span id="cb6-20"><a href="#cb6-20"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb7-1"><a href="#cb7-1"></a><span class="co">// iterator all fields in struct</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>typeOfT := s.Type()</span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="kw">for</span> i := <span class="dv">0</span>; i &lt; s.NumField(); i++ {</span>
+<span id="cb7-4"><a href="#cb7-4"></a>        f := s.Field(i)</span>
+<span id="cb7-5"><a href="#cb7-5"></a>        fmt.Printf(<span class="st">&quot;%d: %s %s = %v</span><span class="ch">\n</span><span class="st">&quot;</span>, i,</span>
+<span id="cb7-6"><a href="#cb7-6"></a>                typeOfT.Field(i).Name, f.Type(), f.Interface())</span>
+<span id="cb7-7"><a href="#cb7-7"></a>}</span></code></pre></div>
+
+      </div>
+    </section>
+  </body>
+</html>

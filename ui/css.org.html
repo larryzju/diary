@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>css.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/ui">Up: ui</a>
+	  	
+	</span>
+
+	<span id="next">
+	  
+	  <a href="/diary/ui/tk.org.html">Next: tk.org</a>
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="styling-text">Styling text</h1>
+<h2 id="styling-font">Styling Font</h2>
+<h3 id="color">color</h3>
+<p>See also `text-decoration`</p>
+<h3 id="font-family">font-family</h3>
+<p>Browser will use a default font if the applied font it's not available on the host.</p>
+<p>Supply a <strong>font stack</strong> (multiple fonts) to choose from.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb1-1"><a href="#cb1-1"></a>p {</span>
+<span id="cb1-2"><a href="#cb1-2"></a>  <span class="kw">color</span>: <span class="cn">red</span><span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>  <span class="kw">font-family</span>: Helvetica<span class="op">,</span> Arial<span class="op">,</span> <span class="dv">sans-serif</span><span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>}</span></code></pre></div>
+<ol class="incremental">
+<li><p>web safe fonts</p>
+<p>Which are generally avaialbe across all systems and can therefore be used without much worry.</p>
+<ul class="incremental">
+<li>serif
+<ul class="incremental">
+<li>Georgia</li>
+<li>Times New Roman</li>
+</ul></li>
+<li>sans-serif
+<ul class="incremental">
+<li>Trebuchet MS</li>
+<li>Verdana</li>
+</ul></li>
+<li>monospace
+<ul class="incremental">
+<li>Courier New</li>
+</ul></li>
+</ul></li>
+<li><p>default fonts</p>
+<p>Five generic names</p>
+<ul class="incremental">
+<li>serif</li>
+<li>sans-serif</li>
+<li>monospace</li>
+<li>cursive (hand writting)</li>
+<li>fantasy (decoratived)</li>
+</ul></li>
+</ol>
+<h3 id="font-size">font-size</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb2-1"><a href="#cb2-1"></a>html {</span>
+<span id="cb2-2"><a href="#cb2-2"></a>  <span class="kw">font-size</span>: <span class="dv">10</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>}</span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a>h1 {</span>
+<span id="cb2-6"><a href="#cb2-6"></a>  <span class="kw">font-size</span>: <span class="dv">2.6</span><span class="dt">rem</span><span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>}</span>
+<span id="cb2-8"><a href="#cb2-8"></a></span>
+<span id="cb2-9"><a href="#cb2-9"></a>p {</span>
+<span id="cb2-10"><a href="#cb2-10"></a>  <span class="kw">font-size</span>: <span class="dv">1.4</span><span class="dt">rem</span><span class="op">;</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a>  <span class="kw">color</span>: <span class="cn">red</span><span class="op">;</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>  <span class="kw">font-family</span>: Helvetica<span class="op">,</span> Arial<span class="op">,</span> <span class="dv">sans-serif</span><span class="op">;</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>}</span></code></pre></div>
+<ol class="incremental">
+<li><p>units</p>
+<dl class="incremental">
+<dt>px</dt>
+<dd>absolute unit
+</dd>
+<dt>em</dt>
+<dd>width of the parent element's letter 'M'
+</dd>
+</dl></li>
+</ol>
+<h3 id="font-style">font-style</h3>
+<ul class="incremental">
+<li>normal</li>
+<li>italic</li>
+<li>oblique: simulated version of an italic font</li>
+</ul>
+<h3 id="font-weight">font-weight</h3>
+<p>how bold the text is</p>
+<ul class="incremental">
+<li>normal</li>
+<li>bold</li>
+<li>lighter</li>
+<li>bolder</li>
+<li>100-900</li>
+</ul>
+<h3 id="text-transform">text-transform</h3>
+<ul class="incremental">
+<li>none</li>
+<li>uppercase</li>
+<li>lowercase</li>
+<li>capitalize</li>
+<li>full-width (?)</li>
+</ul>
+<h3 id="text-decoration">text-decoration</h3>
+<p>Combine <code>text-decoration-line</code>, <code>text-decoration-style</code> and <code>text-decoration-color</code></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb3-1"><a href="#cb3-1"></a>text-decoration<span class="in">: wavy</span> line-through red;</span></code></pre></div>
+<p><code>text-decoration-style</code> can be one of</p>
+<ul class="incremental">
+<li>none</li>
+<li>underline</li>
+<li>overline</li>
+<li>line-through</li>
+</ul>
+<h3 id="text-shadow">text-shadow</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb4-1"><a href="#cb4-1"></a>text-shadow<span class="in">: 4px 4px 5px red</span>;</span></code></pre></div>
+<p>Four properties:</p>
+<ul class="incremental">
+<li>horizontal offset</li>
+<li>vertical offset</li>
+<li>blur radius: blur for large value</li>
+</ul>
+<ol class="incremental">
+<li><p>multiple shadows</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb5-1"><a href="#cb5-1"></a>text-shadow<span class="in">: -1px</span> -1px 1px <span class="pp">#aaa</span><span class="op">,</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>             0px 4px 1px rgba(0<span class="op">,</span>0<span class="op">,</span>0<span class="op">,</span>0<span class="fu">.5</span>)<span class="op">,</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>             4px 4px 5px rgba(0<span class="op">,</span>0<span class="op">,</span>0<span class="op">,</span>0<span class="fu">.7</span>)<span class="op">,</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>             0px 0px 7px rgba(0<span class="op">,</span>0<span class="op">,</span>0<span class="op">,</span>0<span class="fu">.4</span>);</span></code></pre></div></li>
+</ol>
+<h3 id="misc">misc</h3>
+<dl class="incremental">
+<dt>font-variant</dt>
+<dd>small-caps, slashed-zero, common-ligature (compress "fi", "fl")
+</dd>
+<dt>font-kerning</dt>
+<dd>
+</dd>
+</dl>
+<h2 id="styling-layout">Styling Layout</h2>
+<h3 id="text-align">text-align</h3>
+<ul class="incremental">
+<li>left</li>
+<li>right</li>
+<li>center</li>
+<li>justify (use this carefully)</li>
+</ul>
+<h3 id="line-height">line-height</h3>
+<p>Can be set to the multiple of <code>font-size</code>, the recommended line height is around 1.5-2</p>
+<h3 id="misc-1">misc</h3>
+<dl class="incremental">
+<dt>letter-spacing</dt>
+<dd>
+</dd>
+<dt>word-spacing</dt>
+<dd>
+</dd>
+<dt>text-indent</dt>
+<dd>paragraph indent
+</dd>
+<dt>text-overflow</dt>
+<dd><code>ellipsis</code>
+</dd>
+<dt>text-orientation</dt>
+<dd>
+</dd>
+<dt>writing-mode</dt>
+<dd>
+</dd>
+<dt>word-break</dt>
+<dd>
+</dd>
+</dl>
+<h2 id="styling-list">Styling List</h2>
+<h2 id="styling-links">Styling Links</h2>
+<h2 id="web-fonts">Web fonts</h2>
+<h1 id="reference">Reference</h1>
+<ul class="incremental">
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text">Styling text, MDN</a></li>
+</ul>
+
+      </div>
+    </section>
+  </body>
+</html>

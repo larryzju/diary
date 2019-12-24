@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>小甲鱼-数据结构与算法-视频笔记.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	  <a href="/diary/programming/algorithm/sample.org.html">Prev: sample.org</a>
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/programming/algorithm">Up: algorithm</a>
+	  	
+	</span>
+
+	<span id="next">
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="roadmap">Roadmap</h1>
+<ul class="incremental">
+<li>[1/1] 绪论</li>
+<li>[1/1] 谈谈算法</li>
+<li>[0/3] 时间和空间复杂度</li>
+<li>[11/17] 线性表</li>
+<li>[0/8] 栈与队列</li>
+<li>[0/4] 递归与分治思想</li>
+<li>[0/5] 字符串</li>
+<li>[0/3] 树</li>
+<li>[2/10+] 图</li>
+</ul>
+<h1 id="绪论">绪论</h1>
+<h2 id="为什么数据结构与算法课程不好学">为什么数据结构与算法课程不好学？</h2>
+<ol class="incremental">
+<li>拼脑力</li>
+<li>教授方式枯燥（老师因为重复讲解而缺少吸引力）</li>
+</ol>
+<h2 id="什么是数据结构">什么是数据结构</h2>
+<ul class="incremental">
+<li>研究非数值计算和程序设计问题的操作对象及它们之间的关系和操作</li>
+<li>程序等于数据结构 + 算法</li>
+</ul>
+<h3 id="逻辑结构和物理结构">逻辑结构和物理结构</h3>
+<ul class="incremental">
+<li>逻辑结构：指对象间的相互关系</li>
+<li>物理结构：指数据的逻辑结构在计算机中的存储形式</li>
+</ul>
+<h3 id="四大逻辑结构">四大逻辑结构</h3>
+<ol class="incremental">
+<li>集合结构</li>
+<li>线性结构（一对一）</li>
+<li>树形结构（一对多）</li>
+<li>图形结构（多对多）</li>
+</ol>
+<h3 id="物理存储结构">物理存储结构</h3>
+<ul class="incremental">
+<li>与存储器有关，如内存、硬盘</li>
+<li>按访问方式分为两种
+<ol class="incremental">
+<li>顺序存储结构（地址连续）</li>
+<li>链式存储结构（相对前缀和后继）</li>
+</ol></li>
+</ul>
+<h1 id="谈谈算法">谈谈算法</h1>
+<p>数据结构与算法有密切的关系</p>
+<h2 id="什么是算法">什么是算法</h2>
+<h2 id="算法的特性">算法的特性</h2>
+<ul class="incremental">
+<li>输入</li>
+<li>输出</li>
+<li>有穷性</li>
+<li>确定性</li>
+<li>可行性</li>
+</ul>
+<h2 id="算法的设计要求">算法的设计要求</h2>
+<ul class="incremental">
+<li>正确性（没有语法错误，对合法输入，对非法输入，对于边界条件输入）</li>
+<li>可读性</li>
+<li>健壮性</li>
+<li>时间效率高和存储量低</li>
+</ul>
+<h1 id="时间和空间复杂度">[0/3] 时间和空间复杂度</h1>
+<h1 id="线性表">[11/17] 线性表</h1>
+<p>线性表是一个有限的有序数列，每一个元素都有唯一有前驱和唯一的后继（除开头和结尾）</p>
+<p>元素具有相同的数据类型。</p>
+<h2 id="抽象数据类型-adt">抽象数据类型 ADT</h2>
+<p>相当于 class，指数学模型及定义在其上的一系列方法。抽象相对于具体，只指定其接口，而没有实现。</p>
+<p>通过 ADT 提供的基本方法可以组合出更加复杂的操作</p>
+<h3 id="为什么有类型">为什么有类型</h3>
+<ol class="incremental">
+<li>适应不同的应用场景</li>
+<li>节省空间（有限精度，如 <code>int</code> 和 <code>long</code> ）</li>
+</ol>
+<h3 id="类型分类">类型分类</h3>
+<ol class="incremental">
+<li>原子类型</li>
+<li>组合类型</li>
+</ol>
+<h2 id="常用操作">常用操作</h2>
+<ul class="incremental">
+<li>init</li>
+<li>clean</li>
+<li>isEmpty</li>
+<li>get(i)</li>
+<li>locate(v)</li>
+<li>insert(v)</li>
+<li>delete(v)</li>
+<li>length</li>
+</ul>
+<h2 id="例子">例子</h2>
+<ul class="incremental">
+<li><code>union(L1,L2)</code></li>
+</ul>
+<h2 id="实现方式">实现方式</h2>
+<p>有两种存储结构来实现线性表</p>
+<ol class="incremental">
+<li>顺序表，使用连贯的内存地址来存放数据，需要记录数据的长度和空间的容量</li>
+<li>链式表，不需要连续地址存放数据，用一个指针域指向下一个后继元素</li>
+</ol>
+<h3 id="顺序表"><span class="todo TODO">TODO</span> 顺序表</h3>
+<p>实现参见代码 [?]()</p>
+<p>优点:</p>
+<ol class="incremental">
+<li>空间紧凑（因为隐式地使用了地址作为下标）</li>
+<li>快速存取</li>
+</ol>
+<p>缺点：</p>
+<ol class="incremental">
+<li>容量固定，扩容可能造成“碎片”化</li>
+<li>插入、删除开销大</li>
+</ol>
+<h3 id="链式表">链式表</h3>
+<p>包括两个基本域：数据域和指针域</p>
+<p>习惯上留置一个头结点作为列表开头，可以在其数据域中存储列表的长度，这样有助于统一列表的访问接口。通过头结点可以访问整个链表，尾指针指向空（null）</p>
+<p>单链表的建立方式</p>
+<ol class="incremental">
+<li>头插法，新建节点指向头节点，将链表指向新建节点，生成链表元素顺序与插入顺序相反</li>
+<li>尾插法，维护一个临时的指向链表最后一个元素的 node，每次向 node.next 加入新元素，并将 node 后移</li>
+</ol>
+<p>对单链表循环删除整表操作时，用一个临时变量来删除</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">for</span> p != <span class="ot">nil</span> {</span>
+<span id="cb1-2"><a href="#cb1-2"></a>    q := p.next</span>
+<span id="cb1-3"><a href="#cb1-3"></a>    free(p) <span class="co">// go 不需要显式的释放空间， p.next = nil</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>    p = q</span>
+<span id="cb1-5"><a href="#cb1-5"></a>}</span></code></pre></div>
+<p>单链实现代码如下所示（go 语言）</p>
+<h3 id="单链表与顺序存储比较">单链表与顺序存储比较</h3>
+<table>
+<thead>
+<tr class="header">
+<th>比较项</th>
+<th>单链表</th>
+<th>顺序表</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>查找</td>
+<td>O(n)</td>
+<td>O(1)</td>
+</tr>
+<tr class="even">
+<td>插入</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr class="odd">
+<td>空间性能</td>
+<td></td>
+<td>预分配空间，造成空间浪费或溢出</td>
+</tr>
+</tbody>
+</table>
+<ul class="incremental">
+<li>频繁查找，考虑用顺序存储</li>
+<li>频繁修改，考虑用链表存储</li>
+<li>元素个数不确定，或变化大，考虑用链表存储</li>
+</ul>
+<h2 id="静态链表">静态链表</h2>
+<p>C 语言的指针提供了极大的灵活性（面向对象使用对象引用机制间接的实现了指针的某些功能），指针是实现链表的语言基础。</p>
+<p>在早期（如 basic, fortran）语言中，以数组下标代替指针来描述单链表。这种方式称为游标实现法，有以下特征</p>
+<ul class="incremental">
+<li>每个元素由游标和数据组成</li>
+<li>整体上 N 个元素构成，</li>
+<li>第 N-1 个元素的游标指向第一个元素</li>
+<li>第 0 个元素的游标指向最后一个元素</li>
+<li>第一个和最后一个元素 data 不存放数据</li>
+<li>其它元素的游标指向下一个元素的下标</li>
+</ul>
+<p>代码实现如下所示</p>
+<p>需要维护两个链表：</p>
+<ol class="incremental">
+<li>实际链表</li>
+<li>备用链表</li>
+</ol>
+<p>列表的操作：</p>
+<ul class="incremental">
+<li>进行插入时，从备用链表中取出一个可用空间，插入到实际链表中</li>
+<li>进行删除时，删除元素放回到备用链表中</li>
+</ul>
+<p>静态链表的优缺点</p>
+<ul class="incremental">
+<li>优点
+<ul class="incremental">
+<li>插入和删除，只需要修改游标，不需要移动元素</li>
+</ul></li>
+<li>缺点
+<ul class="incremental">
+<li>没有解决连续存储分配带来的表长确定的问题</li>
+<li>失去了顺序存储结构随机存取的优势</li>
+</ul></li>
+</ul>
+<h2 id="循环链表">循环链表</h2>
+<ul class="incremental">
+<li>链表的尾部指向表头</li>
+<li>因为单链表必须从头出发，否则无法访问到全部结点</li>
+<li>与单链表的区别在于如何判断链表为空</li>
+<li>空表 <code>head-&gt;next = head</code></li>
+</ul>
+<h3 id="示例代码">示例代码</h3>
+<p>初始化 插入（位置，值） 删除位置（2） 查找元素的位置 查看列表 退出</p>
+<h2 id="例题">例题</h2>
+<ul class="incremental">
+<li>快速找到求知长度单链表的中间节点：快慢指针方法</li>
+</ul>
+<h1 id="栈与队列">[0/8] 栈与队列</h1>
+<h1 id="递归与分治思想">[0/4] 递归与分治思想</h1>
+<h1 id="字符串">[0/5] 字符串</h1>
+<h1 id="树">[0/3] 树</h1>
+<h1 id="图">图</h1>
+<h2 id="概念">概念</h2>
+<h3 id="基本概念">基本概念</h3>
+<p>图（Graph）由有穷非空的点（Vertex）和边（Edge）构成。</p>
+<p>与线性表和树相比：</p>
+<ul class="incremental">
+<li>线性表表示链式关系，一对一</li>
+<li>树表示层次关系，一对多</li>
+<li>图表示网关系，多对多</li>
+<li>图的顶点集合不能为空，而线性表和树可以为空</li>
+</ul>
+<h3 id="边">边</h3>
+<p>按是否有方向，分为有向边和无向边</p>
+<ul class="incremental">
+<li><code>(Vi,Vj)</code> 无向边</li>
+<li><code>&lt;Vi,Vj&gt;</code> 有向边</li>
+<li>有向边也称为弧（Arc），起点称为弧头，终点称为弧尾</li>
+</ul>
+<h3 id="图的表示">图的表示</h3>
+<p>用点和边来表示图，如</p>
+<div class="line-block">G1 = {V1, E1}<br />
+E1 = {(A,B), (B,C), (C,D), (A,C)<br />
+V1 = {A,B,C,D}</div>
+<p>同理，可以表示有向图</p>
+<h3 id="图的分类">图的分类</h3>
+<ul class="incremental">
+<li>简单图，不含重复的边，且没有指向点本身的边</li>
+<li>无向完全图，点两两之间相连，共有 n(n-1)/2 条边</li>
+<li>有向完全图，共有 n(n-1) 条边</li>
+<li>稀疏图和稠密图，约定边（弧）小于 <span class="math inline">\(n\log(n)\)</span> 为稀疏图</li>
+</ul>
+<h3 id="网network">网（Network）</h3>
+<ul class="incremental">
+<li>边（弧）上附有关联数值，该数值称为权。常用于表示距离或价值</li>
+<li>带权的图称为网（Network）</li>
+</ul>
+<h3 id="子图">子图</h3>
+<p>G2 为 G1 的子图，当 V2 包含于 V1, 且 E2 包含于 E1</p>
+<h3 id="顶点与边">顶点与边</h3>
+<ul class="incremental">
+<li>（无向图）当 (V1,V2) 构成 E，则 V1 和 V2 称为邻接点（Adjacent）</li>
+<li>（无向图）E 依附（Incident）于顶点 V1 和 V2</li>
+<li>（无向图）也说 E 与 V1 和 V2 相关联</li>
+<li>（有向图）当 &lt;V1,V2&gt; 构成 E，则 V1 邻接到 V2，或者说 V2 邻接至 V1</li>
+</ul>
+<h3 id="度">度</h3>
+<ul class="incremental">
+<li>（无向图）指与 V 相关的边的数量</li>
+<li>（有向图）入度（InDegree），指以 V 为头的弧</li>
+<li>（有向图）出度（OutDegree），指以 V 为尾的弧</li>
+</ul>
+<h3 id="路径">路径</h3>
+<p>图 G=(V,E)，从 V1 到 V2 的路径指经过的边（弧）的数量，称为 Path</p>
+<h3 id="环与简单图">环与简单图</h3>
+<ul class="incremental">
+<li>路径绕回起点为环</li>
+<li>简单路径：顶点不重复出现的路径</li>
+<li>简单回路：除了起点和终点，其它顶点不重复出现的路径</li>
+</ul>
+<h3 id="连通图">连通图</h3>
+<p>-（无向图）任意 Vi 与 Vj 相互连通的图，称为 ConnectedGraph -（有向图）任意 Vi 与 Vj 相互连通，称为强连通图</p>
+<h3 id="连通分量">连通分量</h3>
+<ul class="incremental">
+<li>（无向图）极大连通子图</li>
+<li>（有向图）极大强连通子图</li>
+</ul>
+<h3 id="生成树">生成树</h3>
+<p>-（无向图）极小连通子图，由全部 N 个顶点，和足以构成树的 N-1 条边构成的连通树 -（有向图）恰有一个顶点入度为 0，其余顶点入度为 1 生成的有向树</p>
+
+      </div>
+    </section>
+  </body>
+</html>

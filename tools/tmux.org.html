@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>tmux.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	  <a href="/diary/tools/spark.org.html">Prev: spark.org</a>
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/tools">Up: tools</a>
+	  	
+	</span>
+
+	<span id="next">
+	  
+	  <a href="/diary/tools/vim.org.html">Next: vim.org</a>
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="concept">Concept</h1>
+<p>Tmux server manage session in background which can be attached by tmux client.</p>
+<p>A <strong>session</strong> is a single collection of pseudo terminals under the management of tmux.</p>
+<p>Each session has one or more window linked to it. A window occupies the entire screen and may be split into rectangle <strong>pane</strong>.</p>
+<p>Any number of tmux instances may connect to the same sessions. (Share windows by multiple tmux client)</p>
+<h2 id="clients-and-sessions"><span class="todo TODO">TODO</span> Clients and Sessions</h2>
+<h2 id="windows-and-panes"><span class="todo TODO">TODO</span> Windows and Panes</h2>
+<h1 id="shortcut">Shortcut</h1>
+<p>Prefix key is <code>Ctrl-b</code> by default, can be customed.</p>
+<h2 id="session">Session</h2>
+<dl class="incremental">
+<dt><code>$</code></dt>
+<dd>name session
+</dd>
+<dt><code>s</code></dt>
+<dd>list session
+</dd>
+<dt><code>d</code></dt>
+<dd>detach session
+</dd>
+</dl>
+<h2 id="window">Window</h2>
+<dl class="incremental">
+<dt><code>c</code></dt>
+<dd>create window
+</dd>
+<dt><code>&amp;</code></dt>
+<dd>kill window
+</dd>
+<dt><code>f</code></dt>
+<dd>find window
+</dd>
+<dt><code>p</code></dt>
+<dd>previous window
+</dd>
+<dt><code>l</code></dt>
+<dd>previous selected window
+</dd>
+<dt><code>n</code></dt>
+<dd>next window
+</dd>
+<dt><code>w</code></dt>
+<dd>list window
+</dd>
+<dt>[0-9]</dt>
+<dd>select window
+</dd>
+<dt><code>,</code></dt>
+<dd>name window
+</dd>
+</dl>
+<h2 id="pane">Pane</h2>
+<dl class="incremental">
+<dt><code>%</code></dt>
+<dd>vertial split
+</dd>
+<dt><code>"</code></dt>
+<dd>horizational split
+</dd>
+<dt><code>o</code></dt>
+<dd>swap pane
+</dd>
+<dt><code>q</code></dt>
+<dd>show pane identity
+</dd>
+<dt><code>x</code></dt>
+<dd>kill pane
+</dd>
+<dt><code>;</code></dt>
+<dd>previous pane
+</dd>
+<dt>arrow-key</dt>
+<dd>switch pane
+</dd>
+<dt>&lt;c-dir&gt; / &lt;m-dir&gt;</dt>
+<dd>resize pane
+</dd>
+<dt>&lt;m-[1-5]&gt;</dt>
+<dd>switch layout
+</dd>
+</dl>
+<h2 id="misc">Misc</h2>
+<dl class="incremental">
+<dt><code>:</code></dt>
+<dd>command prompt
+</dd>
+<dt><code>t</code></dt>
+<dd>show time
+</dd>
+</dl>
+<h1 id="command">Command</h1>
+<table>
+<thead>
+<tr class="header">
+<th>command</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>resize-pane -U/-D/-L/-R</code></td>
+<td>adjust pane size</td>
+</tr>
+<tr class="even">
+<td>source-file theme-file</td>
+<td>load theme file</td>
+</tr>
+</tbody>
+</table>
+<h1 id="shell-subcommand">Shell subcommand</h1>
+<ul class="incremental">
+<li><code>tmux kill-session -t &lt;session&gt;</code></li>
+<li><code>tmux at -t &lt;session&gt;</code></li>
+<li><code>tmux at #</code>: attach the latest session</li>
+</ul>
+<h1 id="configuration"><span class="todo TODO">TODO</span> Configuration</h1>
+<h2 id="commands"><span class="todo TODO">TODO</span> Commands</h2>
+<h2 id="key-binding"><span class="todo TODO">TODO</span> Key Binding</h2>
+<h1 id="practice-tips"><span class="todo TODO">TODO</span> Practice Tips</h1>
+
+      </div>
+    </section>
+  </body>
+</html>

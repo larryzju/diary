@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>learning-go.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/programming/golang/learn-go-note">Up: learn-go-note</a>
+	  	
+	</span>
+
+	<span id="next">
+	  
+	  <a href="/diary/programming/golang/learn-go-note/sample-code">Next: sample-code</a>
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="introduction">Introduction</h1>
+<h2 id="语言的特性">语言的特性</h2>
+<ul class="incremental">
+<li>Clean and Simple</li>
+<li>Concurrent ( goroutine 轻量级线程 )</li>
+<li>Channels</li>
+<li>Fast 编译和运行</li>
+<li>Safe 显示要求和严格的规则，内存回收</li>
+<li>gofmt</li>
+<li>Postfix types</li>
+<li>UTF8 (python3 级)</li>
+<li>Open Source</li>
+<li>Fun</li>
+</ul>
+<h2 id="查看帮助">查看帮助</h2>
+<dl class="incremental">
+<dt><code>godoc builtin</code></dt>
+<dd>类似于 <code>java.lang.System</code>
+</dd>
+<dt><code>godoc hash</code></dt>
+<dd>查看包的手册
+</dd>
+</dl>
+<h1 id="基础">基础</h1>
+<h2 id="hello-world">hello world</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">package</span> main</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">import</span> <span class="st">&quot;fmt&quot;</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="kw">func</span> main() {</span>
+<span id="cb1-6"><a href="#cb1-6"></a>    fmt.Printf( <span class="st">&quot;Hello World.&quot;</span> )</span>
+<span id="cb1-7"><a href="#cb1-7"></a>}</span></code></pre></div>
+<ul class="incremental">
+<li>可执行程序包名必须是 <code>main</code></li>
+<li>可执行程序的入口是 <code>main.main()</code></li>
+<li>main 的参数由 os.Args 传入（第一个参数为程序名）</li>
+</ul>
+<h2 id="编译执行">编译执行</h2>
+<pre class="shell"><code>go build helloworld.go
+</code></pre>
+<ul class="incremental">
+<li>文件名可以与包名不一致</li>
+<li>生成结果与文件名一致</li>
+<li>可以直接使用 <code>go run helloworld.go</code> 来运行</li>
+</ul>
+<h2 id="基础类型和变量">基础类型和变量</h2>
+<h3 id="类型后缀形式">类型后缀形式</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">var</span> a <span class="dt">int</span></span></code></pre></div>
+<p>类型有默认的空值</p>
+<h3 id="声明与初始化可以写在一起">声明与初始化可以写在一起</h3>
+<ul class="incremental">
+<li>如 <code>var a; a = 15</code> 等价于 <code>var a = 15</code></li>
+<li>在函数内部，还可以写作 <code>a := 15</code></li>
+</ul>
+<h3 id="多个变量申明">多个变量申明</h3>
+<p>多变量申明可以放于一起，类似的还有 <code>const</code> 和 <code>import</code> ，如</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">var</span> (</span>
+<span id="cb4-2"><a href="#cb4-2"></a>  x <span class="dt">int</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>  b <span class="dt">bool</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>)</span></code></pre></div>
+<p>相同类型的变量可以一起申明或赋值</p>
+<pre><code>var x, y int 
+a, b := 20, 16
+</code></pre>
+<h3 id="特殊变量-_">特殊变量 <code>`_`</code></h3>
+<p>类似于 lua，表示丢弃这一变量</p>
+<p>go 中检查比较严格，发现未使用的变量会报错，使用 <code>_</code> 来显示的解决错误</p>
+<h3 id="boolean">Boolean</h3>
+<ul class="incremental">
+<li>关键字是 <code>bool</code></li>
+<li>两个字面值是 <code>true</code> 和 <code>false</code></li>
+</ul>
+<h3 id="numerical">Numerical</h3>
+<dl class="incremental">
+<dt><code>int</code></dt>
+<dd>宽度视平台而定
+</dd>
+<dt><code>uint</code></dt>
+<dd>同上
+</dd>
+<dt><code>[u]int{8,16,32,64}</code></dt>
+<dd>指定具体宽度
+</dd>
+<dt><code>byte</code></dt>
+<dd>对应 <code>uint8</code>
+</dd>
+<dt><code>float{32,64}</code></dt>
+<dd>浮点数（无 double）
+</dd>
+</dl>
+<ol class="incremental">
+<li><p><span class="todo TODO">TODO</span> 类型转换</p>
+<p>不同类型之前直接不可赋值或计算</p></li>
+</ol>
+<h3 id="constants">Constants</h3>
+<p>在编译时生成，只能是数字、字符串或布尔值。</p>
+<ol class="incremental">
+<li><p><span class="todo TODO">TODO</span> 枚举</p>
+<p>使用 <code>iota</code> 来生成枚举（ iota 指极少量）</p>
+<p>为什么这里的 iota 可以省略？</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">const</span> (</span>
+<span id="cb6-2"><a href="#cb6-2"></a>  a = <span class="ot">iota</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>  b</span>
+<span id="cb6-4"><a href="#cb6-4"></a>)</span></code></pre></div></li>
+</ol>
+<h3 id="strings"><span class="todo TODO">TODO</span> Strings</h3>
+<ul class="incremental">
+<li>以双引号表示</li>
+<li>？单引号表示字符？</li>
+<li>字符串不可修改（immutable）</li>
+</ul>
+<h3 id="runes"><span class="todo TODO">TODO</span> Runes</h3>
+<p>是 <code>int32</code> 的别名，保存 utf8 编码，方便对宽字符集作操作</p>
+<p>可以修改？</p>
+<h3 id="complex-numbers"><span class="todo TODO">TODO</span> Complex Numbers</h3>
+<p>原生支持复数，有两个类型</p>
+<ol class="incremental">
+<li><code>complex128</code></li>
+<li><code>complex64</code></li>
+</ol>
+<p>有没有字面表示方法？</p>
+<h3 id="error"><span class="todo TODO">TODO</span> Error</h3>
+<ul class="incremental">
+<li>默认值是 <code>nil</code></li>
+</ul>
+<h2 id="操作符和基本函数">操作符和基本函数</h2>
+<p>go 不支持运算符重载！</p>
+<h2 id="控制结构">控制结构</h2>
+<h3 id="if-else">if-else</h3>
+<ul class="incremental">
+<li>if 可以像 for 有初始步骤</li>
+<li>条件不加括号</li>
+<li>body 必须使用大括号</li>
+</ul>
+<h3 id="goto">goto</h3>
+<ul class="incremental">
+<li>和 C 一样，跳转到 label 处</li>
+<li>label 大小写无要求</li>
+</ul>
+<h3 id="for">for</h3>
+<ul class="incremental">
+<li>基本形式与 C 的一致</li>
+<li>可以省略初始和变化而部分，退化成 <code>while(condition)</code></li>
+<li>可以全部省略三个参数，退化成 <code>while()</code></li>
+<li>for 中初始的变量只能在 for 中使用</li>
+</ul>
+<h3 id="break-and-continue">break and continue</h3>
+<ul class="incremental">
+<li>基本用法和 C 的致</li>
+<li>另外可以指定退出的 label，跳出多层循环</li>
+</ul>
+<h3 id="range">range</h3>
+<ul class="incremental">
+<li>关键字 <code>range</code> 用于迭代序列 (loop over)</li>
+<li>对于 slice 或 array，返回 <code>index: int</code> 和 <code>value: string</code></li>
+<li>字符串是对每个 UTF8 字符进行迭代，postition 为字节数</li>
+</ul>
+<h3 id="switch"><span class="todo TODO">TODO</span> switch</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">switch</span>{</span>
+<span id="cb7-2"><a href="#cb7-2"></a>  <span class="kw">case</span> <span class="ch">&#39;0&#39;</span> &lt;= c &amp;&amp; c &lt;= <span class="ch">&#39;9&#39;</span>:</span>
+<span id="cb7-3"><a href="#cb7-3"></a>    <span class="kw">return</span> c - <span class="ch">&#39;0&#39;</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a>  <span class="kw">case</span> <span class="ch">&#39;a&#39;</span> &lt;= c &amp;&amp; c &lt;= <span class="ch">&#39;f&#39;</span>:</span>
+<span id="cb7-5"><a href="#cb7-5"></a>    <span class="kw">return</span> c - <span class="ch">&#39;a&#39;</span> + <span class="dv">10</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>  <span class="kw">case</span> <span class="ch">&#39;A&#39;</span> &lt;= c &amp;&amp; c &lt;= <span class="ch">&#39;F&#39;</span>:</span>
+<span id="cb7-7"><a href="#cb7-7"></a>    <span class="kw">return</span> c - <span class="ch">&#39;A&#39;</span> + <span class="dv">10</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a>}</span>
+<span id="cb7-9"><a href="#cb7-9"></a></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="kw">switch</span> i {</span>
+<span id="cb7-11"><a href="#cb7-11"></a>  <span class="kw">case</span> <span class="dv">0</span>, <span class="dv">1</span>:</span>
+<span id="cb7-12"><a href="#cb7-12"></a>    f()</span>
+<span id="cb7-13"><a href="#cb7-13"></a>  <span class="kw">case</span> <span class="dv">2</span>: <span class="kw">fallthrough</span></span>
+<span id="cb7-14"><a href="#cb7-14"></a>  <span class="kw">case</span> <span class="dv">3</span>: </span>
+<span id="cb7-15"><a href="#cb7-15"></a>    h()</span>
+<span id="cb7-16"><a href="#cb7-16"></a>  <span class="kw">default</span>:</span>
+<span id="cb7-17"><a href="#cb7-17"></a>    g()</span></code></pre></div>
+<ul class="incremental">
+<li>匹配的可以不止是整数（与C相比）</li>
+<li>不加条件的 switch 相当于 <code>switch true</code> ， 可以用于生成条件分支</li>
+<li>不用加 break，若要生成多条件匹配，用关键字 <code>fallthrough</code></li>
+<li>默认分支用 <code>default</code> 标识</li>
+<li>case 后可以跟多个条件</li>
+</ul>
+<h1 id="内建函数">内建函数</h1>
+<h2 id="基础-1">基础</h2>
+<p><strong>使用 <code>godoc builtin</code> 来查看内建函数手册</strong></p>
+<dl class="incremental">
+<dt>close</dt>
+<dd>close a channel
+</dd>
+<dt>delete</dt>
+<dd>delete entries in maps
+</dd>
+<dt>len/cap</dt>
+<dd>长度，容量
+</dd>
+<dt>new</dt>
+<dd>allocating memory for user defined data types.
+</dd>
+<dt>make</dt>
+<dd>allocating memory for builtin types (maps,slices,channels)
+</dd>
+<dt>copy/append</dt>
+<dd>copy or concatenating slices
+</dd>
+<dt>panic,recover</dt>
+<dd>used for an exception mechanism
+</dd>
+<dt>complex,real,img</dt>
+<dd>deal with complex numbers
+</dd>
+</dl>
+<h2 id="arrays">Arrays</h2>
+<h3 id="示例">示例</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">var</span> arr [<span class="dv">10</span>]<span class="dt">int</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>a := [<span class="dv">3</span>]<span class="dt">int</span>{<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>}</span>
+<span id="cb8-3"><a href="#cb8-3"></a>b := [...]<span class="dt">int</span>{<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>} <span class="co">// composite literal</span></span></code></pre></div>
+<h3 id="特性">特性</h3>
+<ul class="incremental">
+<li>有固定长度</li>
+<li>函数参数时传递拷贝，而非指针</li>
+</ul>
+<h2 id="slices">Slices</h2>
+<ul class="incremental">
+<li>类似于数组，但可以动态扩展（通过 <strong>append</strong> 和 <strong>copy</strong> ）方法</li>
+<li>底层也是 array</li>
+<li>是到 array 的指针（类似于 C++ 中的引用类型）</li>
+<li>引用类型通过 <strong>make</strong> 生成</li>
+</ul>
+<h3 id="示例-1">示例</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb9-1"><a href="#cb9-1"></a>c  := [...]<span class="dt">int</span>{<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>}</span>
+<span id="cb9-2"><a href="#cb9-2"></a>sa := <span class="bu">make</span>([]<span class="dt">int</span>, <span class="dv">10</span>)</span>
+<span id="cb9-3"><a href="#cb9-3"></a>sb := c[:<span class="dv">3</span>]</span>
+<span id="cb9-4"><a href="#cb9-4"></a>sc := c[<span class="dv">0</span>:<span class="dv">3</span>:<span class="dv">4</span>] <span class="co">// 同时设定 cap</span></span></code></pre></div>
+<h3 id="append">append</h3>
+<ul class="incremental">
+<li>append 会生成新的底层数组</li>
+<li>后面跟数组元素类型时，添加元素: <code>append(s,1,2,3)</code></li>
+<li>后面跟数组类型时，添加数组（注意 <strong>`…`</strong> ） <code>append(s,s2...)</code></li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb10-1"><a href="#cb10-1"></a>s1 := []<span class="dt">int</span>{<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>}</span>
+<span id="cb10-2"><a href="#cb10-2"></a>s2 := []<span class="dt">int</span>{<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>}</span>
+<span id="cb10-3"><a href="#cb10-3"></a>fmt.Println( <span class="bu">append</span>(s1,s2...) )</span></code></pre></div>
+<h3 id="copy">copy</h3>
+<ul class="incremental">
+<li>copy 返回实际拷贝长度（类似 memcpy）</li>
+</ul>
+<h2 id="array-vs-slices"><span class="todo TODO">TODO</span> Array VS Slices</h2>
+<h3 id="初始化方式">初始化方式</h3>
+<p>Array 初始化时需要指定长度: `[3]int{1,2,3}` 或 `[…]int{1,2,3}` ； 而 Slices 不需要指定: `[]int{1,2,3}`</p>
+<h3 id="如何确定-array-或-slices"><span class="todo TODO">TODO</span> 如何确定 array 或 slices</h3>
+<h2 id="maps">Maps</h2>
+<h3 id="类比">类比</h3>
+<ul class="incremental">
+<li>Perl 中的 hash</li>
+<li>python 中的 dictionary</li>
+<li>C++ 中的maps</li>
+</ul>
+<h3 id="语法">语法</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb11-1"><a href="#cb11-1"></a>monthdays := <span class="kw">map</span>[<span class="dt">string</span>]<span class="dt">int</span>{</span>
+<span id="cb11-2"><a href="#cb11-2"></a>  <span class="st">&quot;Jan&quot;</span>: <span class="dv">31</span>, <span class="st">&quot;Feb&quot;</span>: <span class="dv">28</span>, <span class="st">&quot;Mar&quot;</span>: <span class="dv">31</span>,</span>
+<span id="cb11-3"><a href="#cb11-3"></a>  <span class="st">&quot;Apr&quot;</span>: <span class="dv">30</span>, <span class="st">&quot;May&quot;</span>: <span class="dv">31</span>, <span class="st">&quot;Jun&quot;</span>: <span class="dv">30</span>,</span>
+<span id="cb11-4"><a href="#cb11-4"></a>  <span class="st">&quot;Jul&quot;</span>: <span class="dv">31</span>, <span class="st">&quot;Aug&quot;</span>: <span class="dv">31</span>, <span class="st">&quot;Sep&quot;</span>: <span class="dv">30</span>,</span>
+<span id="cb11-5"><a href="#cb11-5"></a>  <span class="st">&quot;Oct&quot;</span>: <span class="dv">31</span>, <span class="st">&quot;Nov&quot;</span>: <span class="dv">30</span>, <span class="st">&quot;Dec&quot;</span>: <span class="dv">31</span>,</span>
+<span id="cb11-6"><a href="#cb11-6"></a>}</span></code></pre></div>
+<ul class="incremental">
+<li>通用的语法是: <code>map[&lt;from type&gt;]&lt;to type&gt;</code></li>
+<li>注意， <strong>结尾的逗号是必须的</strong></li>
+<li>使用 <code>make[string]int</code> 来生成一个 map</li>
+<li>map 是一个引用类型</li>
+<li>与数组一样，通过方括号进行访问</li>
+<li>通过 <strong>range</strong> 来迭代</li>
+<li>通过 <code>value, present := monthdays["Jan"]</code> 来测试是否存在</li>
+<li>通过 <code>delete( monthdays, "Mar" )</code> 来删除键值</li>
+</ul>
+<h1 id="函数">函数</h1>
+<h2 id="receiver"><span class="todo TODO">TODO</span> receiver</h2>
+<h2 id="定义函数">定义函数</h2>
+<div class="sourceCode" id="cb12"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">type</span> mytype <span class="dt">int</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="kw">func</span> ( p mytype ) funcname ( q <span class="dt">int</span> ) ( r, s <span class="dt">int</span> ) { <span class="kw">return</span> <span class="dv">0</span>, <span class="dv">0</span> }</span></code></pre></div>
+<h3 id="说明"><span class="todo TODO">TODO</span> 说明</h3>
+<ul class="incremental">
+<li>optionally bind to a specific type called receiver ( method )</li>
+<li>parameters are passed pass-by-value</li>
+<li>functions in Go can have multiple return values</li>
+<li>named result parameters, return 后不加参数时被返回</li>
+<li>函数可以以任意顺序声明（与 C 需要声明不同）</li>
+<li>不允许函数嵌套定义！！但可以使用匿名函数</li>
+<li>可以递归。尾递归？？</li>
+</ul>
+<h2 id="作用域">作用域</h2>
+<ul class="incremental">
+<li>注意赋值 <code>=</code> 与定义 <code>:=</code> 的区别</li>
+<li>函数的局部变量不会绑定到要调用的函数环境中</li>
+</ul>
+<h2 id="高阶函数">高阶函数</h2>
+<div class="sourceCode" id="cb13"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">var</span> xs = <span class="kw">map</span>[<span class="dt">int</span>]<span class="kw">func</span>() <span class="dt">int</span>{</span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="dv">1</span>: <span class="kw">func</span>() <span class="dt">int</span> {<span class="kw">return</span> <span class="dv">10</span>},</span>
+<span id="cb13-3"><a href="#cb13-3"></a>  <span class="dv">2</span>: <span class="kw">func</span>() <span class="dt">int</span> {<span class="kw">return</span> <span class="dv">20</span>},</span>
+<span id="cb13-4"><a href="#cb13-4"></a>  <span class="dv">3</span>: <span class="kw">func</span>() <span class="dt">int</span> {<span class="kw">return</span> <span class="dv">30</span>},</span>
+<span id="cb13-5"><a href="#cb13-5"></a>}</span></code></pre></div>
+<h2 id="defer">defer</h2>
+<ul class="incremental">
+<li>不是 lazy eval，而类似于 atexit。在函数退出时被回调</li>
+<li>可以多次注册，以 LIFO （栈）形式被回调</li>
+<li>defer 还可以用于装饰返回结果（如 JSON 序列化）</li>
+</ul>
+<h2 id="变长参数列表">变长参数列表</h2>
+<p>类似于 scala，示例如下：</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">func</span> myfunc2( args ...<span class="dt">string</span> ) {</span>
+<span id="cb14-2"><a href="#cb14-2"></a>        <span class="kw">for</span> _, v := <span class="kw">range</span> args {</span>
+<span id="cb14-3"><a href="#cb14-3"></a>                fmt.Println( v )</span>
+<span id="cb14-4"><a href="#cb14-4"></a>        }</span>
+<span id="cb14-5"><a href="#cb14-5"></a>}</span>
+<span id="cb14-6"><a href="#cb14-6"></a></span>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="kw">func</span> myfunc( args ...<span class="dt">string</span> ) {</span>
+<span id="cb14-8"><a href="#cb14-8"></a>        myfunc2( args[<span class="dv">3</span>:]... )</span>
+<span id="cb14-9"><a href="#cb14-9"></a>}</span></code></pre></div>
+<h3 id="interface"><span class="todo TODO">TODO</span> interface</h3>
+<p>If you don't specify the type of the varadic argument it defaults to the empty interface <code>interface{}</code></p>
+<h2 id="panic-and-recovering">Panic and recovering</h2>
+<h3 id="exception-vs-panic-recovering"><span class="todo TODO">TODO</span> Exception vs Panic-Recovering</h3>
+<p>GO 不提供异常捕获机制</p>
+<ol class="incremental">
+<li><p><span class="todo TODO">TODO</span> 原因</p></li>
+<li><p><span class="todo TODO">TODO</span> 区别</p></li>
+<li><p><span class="todo TODO">TODO</span> 细节</p>
+<ol class="incremental">
+<li><p>Panic</p>
+<ul class="incremental">
+<li>函数调用 <code>panic</code> 时，函数的 defer 被回调，然后返回到被调用处</li>
+<li>对外层函数，触发 panic 的函数，此时相当于一个 panic</li>
+<li>沿着栈回溯向下</li>
+</ul></li>
+<li><p>Recover</p>
+<ul class="incremental">
+<li>正常执行中，返回 nil，无其它作用</li>
+<li>用于恢复被 panic 打断的执行</li>
+</ul></li>
+</ol></li>
+</ol>
+<h1 id="packages">Packages</h1>
+<h2 id="定义">定义</h2>
+<p>A package is a collection of functions and data.</p>
+<h2 id="说明-1">说明</h2>
+<ul class="incremental">
+<li>文件名与包名无关</li>
+<li>包名通常用小写命名</li>
+<li>多个文件可以取相同的包名</li>
+<li>包里的以大写开头的函数对外可见（exported）</li>
+<li>导入名与代码路径一致</li>
+<li>包名是路径的最后一级</li>
+<li><code>import bar "bytes"</code> 重命名包</li>
+</ul>
+<h2 id="多文件包融合问题"><span class="todo TODO">TODO</span> 多文件包融合问题</h2>
+<h2 id="document"><span class="todo TODO">TODO</span> Document</h2>
+<ul class="incremental">
+<li>在 <code>package</code> 关键字节可以加入块级注释，作为代码的文档</li>
+<li>用 <code>go doc</code> 来查看</li>
+<li>多文件的包应该只写一次（重复写会怎样？）</li>
+<li>习惯上建立一个 <code>doc.go</code> 来写文档</li>
+<li>函数注释同理</li>
+</ul>
+<h2 id="testing-packages"><span class="todo TODO">TODO</span> Testing packages</h2>
+<ul class="incremental">
+<li>使用 <code>testing</code> 包提供的功能</li>
+<li>调用 <code>go test</code> 测试</li>
+<li>test 文件以 <code>*_test.go</code> 为后缀</li>
+<li>test 函数原型是 <code>Test: func TestXxx( t *testing.T )</code></li>
+<li>使用 <code>go doc testing</code> 或 <code>go help testfun</code> 来查看帮助</li>
+</ul>
+<h3 id="常用函数">常用函数</h3>
+<dl class="incremental">
+<dt><code>func (t *T) Fail()</code></dt>
+<dd>failed but continues execution
+</dd>
+<dt><code>func (t *T) FailNow()</code></dt>
+<dd>fail and stop execution
+</dd>
+<dt><code>func (t *T) Log( args ...interface{} )</code></dt>
+<dd>error log
+</dd>
+<dt><code>func (t *T) Fatal(args ...interface{} )</code></dt>
+<dd>Log + FailNow
+</dd>
+</dl>
+<h2 id="常用-packages">常用 Packages</h2>
+<h3 id="列表">列表</h3>
+<dl class="incremental">
+<dt>fmt</dt>
+<dd>注意比 C 多出的 <code>%v</code>, <code>%#v</code>, <code>%T</code>
+</dd>
+<dt>io</dt>
+<dd>I/O primitives
+</dd>
+<dt>bufio</dt>
+<dd>buffered I/O
+</dd>
+<dt>sort</dt>
+<dd>sorting
+</dd>
+<dt>strconv</dt>
+<dd>string &lt;-&gt; basic data type
+</dd>
+<dt>os</dt>
+<dd>platform-independent interface
+</dd>
+<dt>sync</dt>
+<dd>synchronization primitives such as mutual exclusion locks
+</dd>
+<dt>flag</dt>
+<dd>argparses or getopt
+</dd>
+<dt>encoding/json</dt>
+<dd>RFC4627
+</dd>
+<dt>html/template</dt>
+<dd>generate HTML
+</dd>
+<dt>net/http</dt>
+<dd>HTTP server/client
+</dd>
+<dt>unsafe</dt>
+<dd>??
+</dd>
+<dt>reflect</dt>
+<dd>run-time reflection
+</dd>
+<dt>os/exec</dt>
+<dd>os.system in python
+</dd>
+</dl>
+<h3 id="其它">其它</h3>
+<ul class="incremental">
+<li>在 <code>$GOROOT/src/pkg</code> 目录下查看</li>
+</ul>
+<h1 id="beyond-the-basics">Beyond the basics</h1>
+<h2 id="pointer">Pointer</h2>
+<h3 id="概念">概念</h3>
+<ul class="incremental">
+<li>Go has pointers.</li>
+<li>There is however no pointer arithmetic</li>
+<li>Go pointers act more like references than pointers in C</li>
+</ul>
+<h3 id="语法-1">语法</h3>
+<ul class="incremental">
+<li>在类型前前缀 '*'</li>
+<li>默认指向 <code>nil</code></li>
+<li>使用 '&amp;' 来取地址，并给指针赋值</li>
+<li>使用 '*' 来反引用（取指向数据）</li>
+</ul>
+<h3 id="例子">例子</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">var</span> p *<span class="dt">int</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>fmt.Printf( <span class="st">&quot;%v %T</span><span class="ch">\n</span><span class="st">&quot;</span>, p, p )</span>
+<span id="cb15-3"><a href="#cb15-3"></a></span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="kw">var</span> i <span class="dt">int</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a>p = &amp;i</span>
+<span id="cb15-6"><a href="#cb15-6"></a>fmt.Printf( <span class="st">&quot;%v %v %T</span><span class="ch">\n</span><span class="st">&quot;</span>, p, *p, p )</span></code></pre></div>
+<h2 id="allocation">Allocation</h2>
+<h3 id="概念-1">概念</h3>
+<ul class="incremental">
+<li>go 有自动内存管理，无须手动释放</li>
+<li>申请有两个原语: <code>new</code> 和 <code>make</code></li>
+<li><strong>new</strong> alloctes; <strong>make</strong> initializes</li>
+</ul>
+<h3 id="new">new</h3>
+<p><code>new(T)</code> 为类型 T 申请一个空的空间，返回地址( *T )</p>
+<h3 id="make">make</h3>
+<ul class="incremental">
+<li><code>make(T, args)</code> 用于创建 slices, map, 或 channels</li>
+<li>返回是 T 本身，而非地址</li>
+</ul>
+<h2 id="composite-literals">Composite literals</h2>
+<p>Composite literal is an expression that creates a new instance each time it is evaluated.</p>
+<h3 id="例子-1"><span class="todo TODO">TODO</span> 例子</h3>
+<div class="sourceCode" id="cb16"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">func</span> NewFile( fd <span class="dt">int</span>, name <span class="dt">string</span> )*File {</span>
+<span id="cb16-2"><a href="#cb16-2"></a>  <span class="kw">if</span> fd &lt; <span class="dv">0</span> {</span>
+<span id="cb16-3"><a href="#cb16-3"></a>    <span class="kw">return</span> <span class="ot">nil</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a>  }</span>
+<span id="cb16-5"><a href="#cb16-5"></a></span>
+<span id="cb16-6"><a href="#cb16-6"></a>  f := File{fd, name, <span class="ot">nil</span>, <span class="dv">0</span>}</span>
+<span id="cb16-7"><a href="#cb16-7"></a>  <span class="kw">return</span> &amp;f</span>
+<span id="cb16-8"><a href="#cb16-8"></a>}</span></code></pre></div>
+<p>注意返回一个局部变量 f 在 golang 中是允许的，go 会自动提升变量存活时长</p>
+<h3 id="说明-2">说明</h3>
+<ul class="incremental">
+<li>laid out in order and must all be present： <code>File{fd,name,nil,0}</code></li>
+<li>也可以加 label，乱序和选填： <code>File{fd:fd, name;name]</code></li>
+<li>甚至可以不填: <code>File{}</code></li>
+<li>返回是一个实例, 可以解引用： <code>&amp;File{}</code></li>
+<li>字符串数组，忽略 field: <code>[...]string{Enone: "no error", Einval: "invalid argument"}</code></li>
+</ul>
+<h1 id="自定义类型">自定义类型</h1>
+<h2 id="基本语法">基本语法</h2>
+<ul class="incremental">
+<li>基本语法是 <code>type foo int</code> ，创建一个类型 foo，定义是 int</li>
+<li>与 C 中的 typedef 相似，顺序相反</li>
+</ul>
+<h2 id="例子-2">例子</h2>
+<div class="sourceCode" id="cb17"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw">type</span> Point <span class="kw">struct</span>{</span>
+<span id="cb17-2"><a href="#cb17-2"></a>        x <span class="dt">float64</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a>        y <span class="dt">float64</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a>}</span>
+<span id="cb17-5"><a href="#cb17-5"></a></span>
+<span id="cb17-6"><a href="#cb17-6"></a><span class="kw">func</span> main() {</span>
+<span id="cb17-7"><a href="#cb17-7"></a>        p := &amp;Point{x:<span class="dv">10</span>}</span>
+<span id="cb17-8"><a href="#cb17-8"></a>        fmt.Printf( <span class="st">&quot;%v %v %T</span><span class="ch">\n</span><span class="st">&quot;</span>, p, *p, p )</span>
+<span id="cb17-9"><a href="#cb17-9"></a>}</span></code></pre></div>
+<h2 id="struct">struct</h2>
+<ul class="incremental">
+<li>struct 可以没有 field</li>
+<li>可以有多个 field</li>
+<li>可以只有类型，称为 anonymous field</li>
+<li>field 以大写开关的表示全局可见，否则只能在本包内使用</li>
+</ul>
+<h1 id="methods">Methods</h1>
+<h2 id="基础-2">基础</h2>
+<ul class="incremental">
+<li>目标是为类型提供方法调用</li>
+<li>但不是以 Java/C++/Python OOP 形式</li>
+<li>更像是 lisp/scheme 中的 GOOP 形式，或 Clojure 中的 Protocol</li>
+<li>要满足 interface，必须要使用 method</li>
+<li>其它情况 method 和 function 都可使用</li>
+<li>对于指针的方法，可以用 <code>x.m()</code> 来简写 <code>(&amp;x).m</code></li>
+</ul>
+<h2 id="继承关系"><span class="todo TODO">TODO</span> 继承关系</h2>
+<h1 id="类型转换-1">类型转换</h1>
+<ul class="incremental">
+<li>通过操作符(operator)来转换（与函数形式一样，本质上有所不同）</li>
+<li>字符串可以转换为 <code>byte[]</code> 或 <code>rune[]</code> ，反之亦然</li>
+<li>自定义类型与其别名之间可以相互转换</li>
+</ul>
+<h1 id="interface-1">Interface</h1>
+<h2 id="意义">意义</h2>
+<ul class="incremental">
+<li>用于函数定义与类型绑定 GOOPS</li>
+<li>定义一个 interface 类型，表示方法的集合: 鸭子类型</li>
+<li>Go 可以使用 interface 类型作为参数类型，称为 interface value</li>
+</ul>
+<h2 id="示例-2">示例</h2>
+<div class="sourceCode" id="cb18"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb18-1"><a href="#cb18-1"></a><span class="kw">type</span> I <span class="kw">interface</span> {</span>
+<span id="cb18-2"><a href="#cb18-2"></a>  Get() <span class="dt">int</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a>  Put(<span class="dt">int</span>)</span>
+<span id="cb18-4"><a href="#cb18-4"></a>}</span>
+<span id="cb18-5"><a href="#cb18-5"></a></span>
+<span id="cb18-6"><a href="#cb18-6"></a><span class="kw">func</span> f( p I ) {</span>
+<span id="cb18-7"><a href="#cb18-7"></a>  fmt.Println( p.Get() )</span>
+<span id="cb18-8"><a href="#cb18-8"></a>  p.Put(<span class="dv">1</span>)</span>
+<span id="cb18-9"><a href="#cb18-9"></a>}</span></code></pre></div>
+<h2 id="拆分多态">拆分多态</h2>
+<div class="sourceCode" id="cb19"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb19-1"><a href="#cb19-1"></a><span class="kw">func</span> f(p I) {</span>
+<span id="cb19-2"><a href="#cb19-2"></a>  <span class="kw">switch</span> t := p.(<span class="kw">type</span>) {</span>
+<span id="cb19-3"><a href="#cb19-3"></a>    <span class="kw">case</span> *S:</span>
+<span id="cb19-4"><a href="#cb19-4"></a>    <span class="kw">case</span> *R:</span>
+<span id="cb19-5"><a href="#cb19-5"></a>    <span class="kw">default</span>:</span>
+<span id="cb19-6"><a href="#cb19-6"></a>}</span></code></pre></div>
+<p>其中 <code>(.type)</code> 语法只在 switch 中有效，也可以写成</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb20-1"><a href="#cb20-1"></a><span class="kw">if</span> t, ok := something.(I); ok {</span>
+<span id="cb20-2"><a href="#cb20-2"></a>   <span class="co">// 检查 something 是否实现了接口 I</span></span>
+<span id="cb20-3"><a href="#cb20-3"></a>}</span></code></pre></div>
+<h2 id="empty-interface">Empty Interface</h2>
+<ul class="incremental">
+<li>每个类型都默认实现了 <code>interface{}</code></li>
+<li>用于创建通用函数</li>
+<li>通用函数，动态的获取其中的函数</li>
+</ul>
+<h3 id="示例-3">示例</h3>
+<div class="sourceCode" id="cb21"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb21-1"><a href="#cb21-1"></a><span class="kw">func</span> g( something <span class="kw">interface</span>{} ) <span class="dt">int</span> {</span>
+<span id="cb21-2"><a href="#cb21-2"></a>    <span class="kw">return</span> something.(I).Get()</span>
+<span id="cb21-3"><a href="#cb21-3"></a>}</span></code></pre></div>
+<h2 id="methods-1">Methods</h2>
+<ul class="incremental">
+<li>Methods are functions that have a receiver</li>
+<li>可以对任何类型定义方法，包括内置类型（除了 int 之外）</li>
+</ul>
+<h2 id="methods-on-interface-faces"><span class="todo TODO">TODO</span> Methods on interface faces</h2>
+<ul class="incremental">
+<li>An interface defines a set of methods : 定义</li>
+<li>A method contains the actual code ： 实现</li>
+<li>receiver can not be an interface type?</li>
+</ul>
+<h3 id="receiver-type">receiver type</h3>
+<ul class="incremental">
+<li>有两种形式 <code>T</code> 或者 <code>*T</code></li>
+<li>T is called the base type</li>
+<li>T must not be a pointer or interface type</li>
+<li>T must be declared in the same package as the method</li>
+<li>不应该对 interface value 作指针</li>
+</ul>
+<h3 id="interface-names">Interface names</h3>
+<ul class="incremental">
+<li>如果只有一个方法，以 <code>-er</code> 为后缀，如 Reader, Writer, Formatter</li>
+<li>方法名避免与标准函数重名</li>
+</ul>
+<h2 id="tag"><span class="todo TODO">TODO</span> tag</h2>
+<h2 id="introspection-and-reflection">Introspection and reflection</h2>
+<h3 id="示例-4">示例</h3>
+<div class="sourceCode" id="cb22"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb22-1"><a href="#cb22-1"></a><span class="kw">type</span> Person <span class="kw">struct</span> {</span>
+<span id="cb22-2"><a href="#cb22-2"></a>    name <span class="dt">string</span> <span class="st">&quot;namestr&quot;</span></span>
+<span id="cb22-3"><a href="#cb22-3"></a>    age <span class="dt">int</span></span>
+<span id="cb22-4"><a href="#cb22-4"></a>}</span>
+<span id="cb22-5"><a href="#cb22-5"></a></span>
+<span id="cb22-6"><a href="#cb22-6"></a></span>
+<span id="cb22-7"><a href="#cb22-7"></a><span class="kw">func</span> ShowTag( i <span class="kw">interface</span>[] ) {</span>
+<span id="cb22-8"><a href="#cb22-8"></a>    <span class="kw">switch</span> t:= reflect.TypeOf(i); t.Kind() {</span>
+<span id="cb22-9"><a href="#cb22-9"></a>    <span class="kw">case</span> reflect.Ptr:</span>
+<span id="cb22-10"><a href="#cb22-10"></a>        tag := t.Elem().Field(<span class="dv">0</span>).Tag</span>
+<span id="cb22-11"><a href="#cb22-11"></a>}</span></code></pre></div>
+<h3 id="说明-3"><span class="todo TODO">TODO</span> 说明</h3>
+<ul class="incremental">
+<li>要通过内存中的变量，得到关于结构体等定义信息</li>
+<li>用于区分 type 和 value</li>
+</ul>
+<h1 id="concurrency">Concurrency</h1>
+<h2 id="概述">概述</h2>
+<ul class="incremental">
+<li>Parallelism is about performance.</li>
+<li>Concurrency is about program design</li>
+<li>核心是 channel 和 goroutine</li>
+</ul>
+<h2 id="goroutine">goroutine</h2>
+<blockquote>
+<p>It is a function executing in parallel with other goroutines in the same address sapce. It is lightweight, cosing little more than the allocation of stack space. And the stacks start small, so they are cheap, and grow by allocating( and freeing) heap storage as required.</p>
+</blockquote>
+<h3 id="说明-4">说明</h3>
+<ul class="incremental">
+<li>普通函数，以关键字 <code>go</code> 开头</li>
+</ul>
+<h2 id="channel">channel</h2>
+<h3 id="说明-5">说明</h3>
+<ul class="incremental">
+<li>类似于双向的 pipe</li>
+<li>只能以 channel 定义的数据类型进行交流</li>
+<li>通过 <code>make(chan int)</code> 来生成</li>
+<li>可以交换 interface, <code>make(chan interface{})</code> !!!</li>
+<li>通过 <code>&lt;-</code> 来发送信息和接收</li>
+<li>使用函数 <code>select</code> 来监听接收信息</li>
+</ul>
+<h3 id="示例-5">示例</h3>
+<div class="sourceCode" id="cb23"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb23-1"><a href="#cb23-1"></a><span class="kw">func</span> ready( w <span class="dt">string</span>, sec <span class="dt">int</span> ) {</span>
+<span id="cb23-2"><a href="#cb23-2"></a>    time.Sleep( time.Duration(sec) * time.Second )</span>
+<span id="cb23-3"><a href="#cb23-3"></a>    fmt.Println( w, <span class="st">&quot;is ready&quot;</span> )</span>
+<span id="cb23-4"><a href="#cb23-4"></a>    c &lt;- w</span>
+<span id="cb23-5"><a href="#cb23-5"></a>}</span>
+<span id="cb23-6"><a href="#cb23-6"></a></span>
+<span id="cb23-7"><a href="#cb23-7"></a><span class="kw">func</span> main() {</span>
+<span id="cb23-8"><a href="#cb23-8"></a>    c = <span class="bu">make</span>(<span class="kw">chan</span> <span class="dt">string</span>)</span>
+<span id="cb23-9"><a href="#cb23-9"></a>    <span class="kw">go</span> ready( <span class="st">&quot;2sec&quot;</span>, <span class="dv">2</span> )</span>
+<span id="cb23-10"><a href="#cb23-10"></a>    <span class="kw">go</span> ready( <span class="st">&quot;1sec&quot;</span>, <span class="dv">1</span> )</span>
+<span id="cb23-11"><a href="#cb23-11"></a>    fmt.Println( <span class="st">&quot;I&#39;m waiting&quot;</span> )</span>
+<span id="cb23-12"><a href="#cb23-12"></a>    fmt.Println( &lt;-c )</span>
+<span id="cb23-13"><a href="#cb23-13"></a>    fmt.Println( &lt;-c )</span>
+<span id="cb23-14"><a href="#cb23-14"></a>    fmt.Println( <span class="st">&quot;over&quot;</span> )</span>
+<span id="cb23-15"><a href="#cb23-15"></a>}</span></code></pre></div>
+<h3 id="缓存">缓存</h3>
+<ul class="incremental">
+<li><code>make(chan bool)</code> 创建的是 unbuffered channel for bools</li>
+<li>unbuffered channel 用于同步多个 goroutine</li>
+<li><code>make(chan bool, 4)</code> 创建带缓存的 channel</li>
+</ul>
+<h3 id="关闭">关闭</h3>
+<ul class="incremental">
+<li>channel 会被单向关闭</li>
+<li>可以以 <code>x, ok = &lt;-ch</code> 来检查是否关闭（ok 为 false 表示关闭）</li>
+</ul>
+<h2 id="parallel">parallel</h2>
+<ul class="incremental">
+<li>goroutine concurrently，而非并行</li>
+<li>使用 <code>runtime.GOMAXPROCS(n)</code> 来设置最大并行度</li>
+<li>也可以设置 <code>GOMAXPROCS</code> 环境变量</li>
+<li>默认并行度是 CPU 的核数</li>
+</ul>
+<h1 id="communication">Communication</h1>
+<h2 id="清单">清单</h2>
+<ul class="incremental">
+<li>与外界交互，如 file, directories, networking, system(shell)</li>
+<li>I/O 接口 <code>io.Reader</code> 和 <code>io.Writer</code></li>
+<li><code>os.Open</code>, <code>os.Close</code>, <code>os.Stdout</code>, <code>os.Stat</code>, <code>os.Mkdir</code></li>
+<li><code>File.Read</code>, <code>File.Write</code></li>
+<li>bufio( Buffered I/O ), 如 NewReader, NewWriter, Read, Write, Flush, ReadString, ReadLine</li>
+<li>日志 <code>log</code>, 如 Fatalf</li>
+</ul>
+<h2 id="命令行参数">命令行参数</h2>
+<ul class="incremental">
+<li>os.Args （类似于 sys.args in python）</li>
+<li>flag 包来解析参数 （类似于 argparsers, optparser in python， getopt）</li>
+<li><code>flag.{Bool,String}</code> , <code>flag.Usage</code>, <code>flag.Parse</code>, <code>flag.PrintDefaults</code></li>
+</ul>
+<h3 id="效率"><span class="todo TODO">TODO</span> 效率？？</h3>
+<h2 id="系统命令">系统命令</h2>
+<ul class="incremental">
+<li><code>os/exec</code> 提供了调用外部命令的函数</li>
+<li><code>exec.Command</code></li>
+<li><code>cmd.Run</code>, <code>cmd.Output</code></li>
+</ul>
+<h2 id="networking">Networking</h2>
+<h3 id="低级接口">低级接口</h3>
+<ul class="incremental">
+<li>在包 <code>net</code> 中定义</li>
+<li><code>net.DIal</code> 返回一个 <code>Conn</code> 接口类型，可以用来收发信息</li>
+<li><code>Conn</code> 实现了 <code>io.Reader</code> 和 <code>io.Writer</code> 类型</li>
+</ul>
+<h3 id="http-接口">http 接口</h3>
+<ul class="incremental">
+<li><code>http</code> 包， Get 方法，对返回结果的 Body 进行操作</li>
+</ul>
+<h1 id="杂项">杂项</h1>
+<h2 id="iota"><span class="todo TODO">TODO</span> iota</h2>
+<div class="sourceCode" id="cb24"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb24-1"><a href="#cb24-1"></a><span class="kw">const</span> (</span>
+<span id="cb24-2"><a href="#cb24-2"></a>   _ = <span class="dv">1000</span> * <span class="ot">iota</span></span>
+<span id="cb24-3"><a href="#cb24-3"></a>   ADD</span>
+<span id="cb24-4"><a href="#cb24-4"></a>   SUB</span>
+<span id="cb24-5"><a href="#cb24-5"></a>   MUL</span>
+<span id="cb24-6"><a href="#cb24-6"></a>   DIV</span>
+<span id="cb24-7"><a href="#cb24-7"></a>   MAXPOS = <span class="dv">11</span></span>
+<span id="cb24-8"><a href="#cb24-8"></a>)</span></code></pre></div>
+
+      </div>
+    </section>
+  </body>
+</html>

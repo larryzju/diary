@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>ext2.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/toarous">Up: toarous</a>
+	  	
+	</span>
+
+	<span id="next">
+	  
+	  <a href="/diary/toarous/gcc.org.html">Next: gcc.org</a>
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="overview">Overview</h1>
+<p>Ext2 filesystem is the concrete implement of filesystem.</p>
+<p>ToaruOs (0da56e6e516b61704dcce834b9afb1e3192371f2) has two header:</p>
+<ol class="incremental">
+<li>fs.h: abstract file system interface, such as <code>inode</code>, <code>read</code>, <code>write</code></li>
+<li>ext2.h: ext2 file system</li>
+</ol>
+<p>Read initrd ramdisk as a ext2 filesystem, load the root directory inode information and convert it to <code>fs_node_t</code></p>
+<h2 id="block">Block</h2>
+<p>Basic storage block of contiguous space whose size is set in superblock.</p>
+<h2 id="inode">Inode</h2>
+<p>Metadata that points to the block of file, directory, symbolic link data.</p>
+<h3 id="size-not-fixed">Size not fixed?</h3>
+<h2 id="block-group">Block Group</h2>
+<p>Disk partitions.</p>
+<ol class="incremental">
+<li>bitmap of free/allocated blocks within the group</li>
+<li>bitmap of allocated inodes within the group</li>
+<li>a table of inode structures that belong to the group</li>
+</ol>
+<h1 id="layout">Layout</h1>
+<h1 id="format">Format</h1>
+<h2 id="superblock">Superblock</h2>
+<h3 id="location">Location</h3>
+<p>Located at byte 1024 from the beginning of the volume and is exactly 1024 bytes in length.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1"></a>initrd_start = (<span class="dt">void</span> *)mem_head;</span>
+<span id="cb1-2"><a href="#cb1-2"></a>initrd_superblock = (ext2_superblock_t *)((<span class="dt">uintptr_t</span>)initrd_start + <span class="dv">1024</span>);</span>
+<span id="cb1-3"><a href="#cb1-3"></a>assert(initrd_superblock-&gt;magic == EXT2_SUPER_MAGIC);</span></code></pre></div>
+<h3 id="informations">Informations</h3>
+<ul class="incremental">
+<li>layout of the file system</li>
+<li>optional features…</li>
+</ul>
+<h2 id="block-group-descriptor-table">Block Group Descriptor Table</h2>
+<p>32bit sized Index Table with descriptor for each block group. Located in the block immediately following the Superblock. (1024 + 1024)</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">struct</span> ext2_bgdescriptor {</span>
+<span id="cb2-2"><a href="#cb2-2"></a>        <span class="dt">uint32_t</span> block_bitmap;</span>
+<span id="cb2-3"><a href="#cb2-3"></a>        <span class="dt">uint32_t</span> inode_bitmap;</span>
+<span id="cb2-4"><a href="#cb2-4"></a>        <span class="dt">uint32_t</span> inode_table;</span>
+<span id="cb2-5"><a href="#cb2-5"></a>        <span class="dt">uint16_t</span> free_blocks_count;</span>
+<span id="cb2-6"><a href="#cb2-6"></a>        <span class="dt">uint16_t</span> free_inodes_count;</span>
+<span id="cb2-7"><a href="#cb2-7"></a>        <span class="dt">uint16_t</span> used_dirs_count;</span>
+<span id="cb2-8"><a href="#cb2-8"></a>        <span class="dt">uint16_t</span> pad;</span>
+<span id="cb2-9"><a href="#cb2-9"></a>        <span class="dt">uint8_t</span> reserved[<span class="dv">12</span>];</span>
+<span id="cb2-10"><a href="#cb2-10"></a>} __attribute__ ((packed));</span></code></pre></div>
+<h2 id="inodes">Inodes</h2>
+<h3 id="index">Index</h3>
+<p>Have a fixed size in <code>superblock.inode_size</code> and addresses start at 1.</p>
+<pre><code>ext2_inodetable_t * 
+ext2_get_inode(
+                uint32_t inode
+                ) {
+        return (ext2_inodetable_t *)((uintptr_t)initrd_inode_table + initrd_superblock-&gt;inode_size * (inode - 1));
+}
+</code></pre>
+<h3 id="root-inode">Root Inode</h3>
+<p>The second inode is specify for root directory.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1"></a>ext2_inodetable_t * root_inode = ext2_get_inode(<span class="dv">2</span>);</span></code></pre></div>
+<h3 id="attributes">Attributes</h3>
+<ul class="incremental">
+<li>uid</li>
+<li>gid</li>
+<li>size</li>
+<li>mask/mode</li>
+<li>node type: link, reg, blk, dir, char, fifo,…</li>
+</ul>
+<h3 id="methods">Methods</h3>
+<ul class="incremental">
+<li>open</li>
+<li>close</li>
+<li>read</li>
+<li>write</li>
+<li>readdir</li>
+<li>finddir</li>
+</ul>
+<h3 id="blocks">Blocks</h3>
+<p>The blocks of an inode are not contiguous.</p>
+<p>And inode has</p>
+<ol class="incremental">
+<li>12 direct pointers</li>
+<li>1 singly indirect pointer</li>
+<li>1 doubly indirect block pointer</li>
+<li>1 triply indirect pointer</li>
+</ol>
+<p>If a file needs more than 12 blocks, a separate block is allocated to store the block addresses of the remaining data blocks needed to store it contents.</p>
+<p>See the wikipage image <img src="https://en.wikipedia.org/wiki/File:Ext2-inode.gif" /></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1"></a><span class="dt">void</span> *  </span>
+<span id="cb5-2"><a href="#cb5-2"></a>ext2_get_inode_block( </span>
+<span id="cb5-3"><a href="#cb5-3"></a>                ext2_inodetable_t * inode,</span>
+<span id="cb5-4"><a href="#cb5-4"></a>                <span class="dt">uint32_t</span> block</span>
+<span id="cb5-5"><a href="#cb5-5"></a>                ) {</span>
+<span id="cb5-6"><a href="#cb5-6"></a>        <span class="cf">if</span> (block &lt; <span class="dv">12</span>) {</span>
+<span id="cb5-7"><a href="#cb5-7"></a>                <span class="cf">return</span> ext2_get_block(inode-&gt;block[block]);</span>
+<span id="cb5-8"><a href="#cb5-8"></a>        } <span class="cf">else</span> <span class="cf">if</span> (block &lt; <span class="dv">12</span> + (<span class="dv">1024</span> &lt;&lt; initrd_superblock-&gt;log_block_size) / <span class="kw">sizeof</span>(<span class="dt">uint32_t</span>)) {</span>
+<span id="cb5-9"><a href="#cb5-9"></a>                <span class="cf">return</span> ext2_get_block(*(<span class="dt">uint32_t</span>*)((<span class="dt">uintptr_t</span>)ext2_get_block(inode-&gt;block[<span class="dv">12</span>]) + (block - <span class="dv">12</span>) * <span class="kw">sizeof</span>(<span class="dt">uint32_t</span>)));</span>
+<span id="cb5-10"><a href="#cb5-10"></a>        }</span>
+<span id="cb5-11"><a href="#cb5-11"></a>        <span class="cf">return</span> NULL;</span>
+<span id="cb5-12"><a href="#cb5-12"></a>}</span></code></pre></div>
+<h3 id="directory">Directory</h3>
+<p>Inode's blocks contains <code>ext2_dir</code> structure array (whose size is equal to 8 + name length)</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">struct</span> ext2_dir {</span>
+<span id="cb6-2"><a href="#cb6-2"></a>        <span class="dt">uint32_t</span> inode;</span>
+<span id="cb6-3"><a href="#cb6-3"></a>        <span class="dt">uint16_t</span> rec_len;</span>
+<span id="cb6-4"><a href="#cb6-4"></a>        <span class="dt">uint8_t</span> name_len;</span>
+<span id="cb6-5"><a href="#cb6-5"></a>        <span class="dt">uint8_t</span> file_type;</span>
+<span id="cb6-6"><a href="#cb6-6"></a>        <span class="dt">char</span> name;              <span class="co">/* Actually a set of characters, at most 255 bytes */</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a>} __attribute__ ((packed));</span></code></pre></div>
+<ol class="incremental">
+<li><p>Get the nth child</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1"></a>ext2_dir_t *</span>
+<span id="cb7-2"><a href="#cb7-2"></a>ext2_get_direntry(</span>
+<span id="cb7-3"><a href="#cb7-3"></a>                ext2_inodetable_t * inode,</span>
+<span id="cb7-4"><a href="#cb7-4"></a>                <span class="dt">uint32_t</span> index</span>
+<span id="cb7-5"><a href="#cb7-5"></a>                ) {</span>
+<span id="cb7-6"><a href="#cb7-6"></a>        <span class="dt">void</span> * block;</span>
+<span id="cb7-7"><a href="#cb7-7"></a>        block = (<span class="dt">void</span> *)ext2_get_inode_block(inode,<span class="dv">0</span>);</span>
+<span id="cb7-8"><a href="#cb7-8"></a>        <span class="dt">uint32_t</span> dir_offset;</span>
+<span id="cb7-9"><a href="#cb7-9"></a>        dir_offset = <span class="dv">0</span>;</span>
+<span id="cb7-10"><a href="#cb7-10"></a>        <span class="dt">uint32_t</span> dir_index;</span>
+<span id="cb7-11"><a href="#cb7-11"></a>        dir_index = <span class="dv">0</span>;</span>
+<span id="cb7-12"><a href="#cb7-12"></a>        <span class="cf">while</span> (dir_offset &lt; inode-&gt;size) {</span>
+<span id="cb7-13"><a href="#cb7-13"></a>                ext2_dir_t * d_ent = (ext2_dir_t *)((<span class="dt">uintptr_t</span>)block + dir_offset);</span>
+<span id="cb7-14"><a href="#cb7-14"></a>                <span class="cf">if</span> (dir_index == index) {</span>
+<span id="cb7-15"><a href="#cb7-15"></a>                        <span class="cf">return</span> d_ent;</span>
+<span id="cb7-16"><a href="#cb7-16"></a>                }</span>
+<span id="cb7-17"><a href="#cb7-17"></a>                dir_offset += d_ent-&gt;rec_len;</span>
+<span id="cb7-18"><a href="#cb7-18"></a>                dir_index++;</span>
+<span id="cb7-19"><a href="#cb7-19"></a>        }</span>
+<span id="cb7-20"><a href="#cb7-20"></a>        <span class="cf">return</span> NULL;</span>
+<span id="cb7-21"><a href="#cb7-21"></a>}</span></code></pre></div></li>
+</ol>
+<h2 id="block-1">Block</h2>
+<h3 id="size">Size</h3>
+<p><code>1024 &lt;&lt; superblock.log_block_size</code></p>
+<h1 id="reference">Reference</h1>
+<ul class="incremental">
+<li><a href="https://wiki.osdev.org/Ext2#Inodes">osdev Ext2</a></li>
+<li><a href="https://github.com/klange/toaruos/blob/0da56e6e516b61704dcce834b9afb1e3192371f2/kernel/core/fs/ext2_initrd.c">https://github.com/klange/toaruos/blob/0da56e6e516b61704dcce834b9afb1e3192371f2/kernel/core/fs/ext2_initrd.c</a></li>
+</ul>
+
+      </div>
+    </section>
+  </body>
+</html>

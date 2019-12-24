@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>x86.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	  <a href="/diary/toarous/vga.org.html">Prev: vga.org</a>
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/toarous">Up: toarous</a>
+	  	
+	</span>
+
+	<span id="next">
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="可执行文件">可执行文件</h1>
+<h2 id="section">section</h2>
+<ul class="incremental">
+<li>Text/Code</li>
+<li>Data</li>
+<li>BSS(Block Started Symbol)，用于保存未初始化的全局变量，用于节省存储空间</li>
+</ul>
+<h2 id="文件格式">文件格式</h2>
+<ul class="incremental">
+<li>ELF ( Executable and Linker Format )</li>
+<li>a.out: 传统的 unix 文件格式</li>
+<li>COFF( Common Object File Format ) 和 PE( Portable Executable )</li>
+</ul>
+<h1 id="elf-文件格式">ELF 文件格式</h1>
+<p>ELF 是 linux 默认格式，PE 是 Windows 默认格式。</p>
+<ol class="incremental">
+<li>可以有任意多个 section</li>
+<li>每个 section 可以有自己的特征</li>
+<li>有利于 dynamic link</li>
+<li>有利于 debug</li>
+</ol>
+<p>使用 <code>readelf --header &lt;file&gt;</code> 或 <code>objdump --disassemble</code> 命令来查看文件的 ELF 相关信息。</p>
+<p>ELF 文件格式可以参考 <code>/usr/include/elf.h=，文件以 =Ehdr</code> 头信息开始，保存了 ELF 硬件类型和版本信息</p>
+<pre class="example"><code>ELF Header:
+  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF64
+  Data:                              2&#39;s complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              EXEC (Executable file)
+  Machine:                           Advanced Micro Devices X86-64
+  Version:                           0x1
+  Entry point address:               0x404030
+  Start of program headers:          64 (bytes into file)
+  Start of section headers:          124688 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               64 (bytes)
+  Size of program headers:           56 (bytes)
+  Number of program headers:         9
+  Size of section headers:           64 (bytes)
+  Number of section headers:         28
+  Section header string table index: 27
+</code></pre>
+<blockquote>
+<p>Magic 为魔数值，=0x7f= + <code>ELF</code> 标识这种文件类型</p>
+</blockquote>
+<h1 id="数据类型">数据类型</h1>
+<p>计算机能做的全部工作可以归结为对数据的存储、检查和处理</p>
+<p>内存是有唯一地址的字节的有序阵列。</p>
+<h2 id="大端与小端问题">大端与小端问题</h2>
+<p>数据的最低有效字节放在相邻字节的地址最低位称为 *小端*，反之称为 <strong>大端</strong></p>
+<p>80386 采用折是小端序（也称为低址结尾）</p>
+<blockquote>
+<p>MSB（最高有效位），LSB（最低有效位）</p>
+</blockquote>
+<h2 id="符号的表示">符号的表示</h2>
+<p>表示带符号整数的方法有以下四种：</p>
+<p>. 偏移值（Biased Numbers） . 带符号的值（Sign Magnitude） . 二进制反码（One's Complement） . 二进制补码（Tow's Complement）</p>
+<p>8086 系列统一使用二进制补码，二进制补码易于实现，通过用于无符号数的简单加法器就能实现负数到二进制被码的转换。</p>
+<h2 id="浮点数处理">浮点数处理</h2>
+<blockquote>
+<p>80387 是 80386 的协处理器</p>
+</blockquote>
+<p>在计算机里，用来表示数的位数是有限的，所以计算机不能精确地表示出所有的实数。而只能表示无穷个实数中的一个极小的子集。然而，就是这个子集，已经可以解决极大多数的实际问题，而且丢掉的精度也是微不足道的。所谓“浮点数”，就是实数类型数据的计算机表示法。</p>
+<p>#+BEGIN<sub>QUOTE</sub> <strong>*</strong> 实数与浮点数</p>
+<p>“实数”描写一个数的集合的数学术语；而“浮点”则是计算机用来表示实数的一个子集的数据类型</p>
+<p>与浮点数相对的是“定点数”，约定好后N位为小数，这种方式表示数的范围是固定的（小数的步长是一定的）。浮点数因为二进制小数点可以浮动，因而得名</p>
+<p>#+END<sub>QUOTE</sub></p>
+<p>浮点数实际上是靠两个整数来表示的，一个保持数据的有效数字，一个规定了二进制小数点的位置。但纯软件实现浮点数运算，其速度慢得无法忍受，所以通过 80387 协处理器来提供浮点运算硬件支持</p>
+<blockquote>
+<p>IEEE 浮点标准</p>
+</blockquote>
+<p>80387 也支持整数数据类型，因此混合整数和浮点数运算，而以只在 80387 完成，省掉了 80387 和 80386 之间的数据传送</p>
+<p>80387 支持三类实数格式:</p>
+<table>
+<thead>
+<tr class="header">
+<th>数据类型</th>
+<th>总位数</th>
+<th>符号位</th>
+<th>指数字段</th>
+<th>有效数字段</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>短实型数</td>
+<td>32</td>
+<td>1</td>
+<td>8</td>
+<td>23</td>
+</tr>
+<tr class="even">
+<td>长实型数</td>
+<td>62</td>
+<td>1</td>
+<td>11</td>
+<td>52</td>
+</tr>
+<tr class="odd">
+<td>临时实型数</td>
+<td>80</td>
+<td>1</td>
+<td>15</td>
+<td>64</td>
+</tr>
+</tbody>
+</table>
+<p>有效数字也被称为 *尾数*，80387 约定：任何实型数只能用下面的格式来表示:（ 在二进制小数的左边，有且仅有一位，而且该位永远为 1，“1” 在记录中被省略）</p>
+<pre class="example"><code>1.xxxxx x 2^n
+</code></pre>
+<p>指数字段是用偏移法来表示带符号的整数，较反码或补码，比较大小比较直观</p>
+<p>除了正常数（Normals）以外，还存在有：</p>
+<ul class="incremental">
+<li>Zero</li>
+<li>Denormals（微小数）</li>
+<li>Pseudo Denormals（伪微小数）</li>
+<li>Infinities</li>
+<li>SignalingNan（信号的非数字）</li>
+<li>Quiet Nan(静的非数字）</li>
+</ul>
+<h1 id="机器状态和存储器寻址">机器状态和存储器寻址</h1>
+<p>机器指令直接对基本的数据类型进行操作。每条机器指令指定了要执行的操作，以及参与操作的输入或输出的数据的位置。输入或输出的数据叫做操作数。</p>
+<p>操作数可以在寄存器中，或者在处理器外的主存储器中，或者在I/O存储器中，或者在指令中作为程序立即常数的数据。</p>
+<h2 id="寄存器">寄存器</h2>
+<p>应用程序可用的寄存器组由 16 个寄存器组成，分为三类：</p>
+<p>. 用于算术和逻辑运算的 8 个 32 位通用寄存器，也可用于基址和变址寻址时存放地址 . 两个处理器控制寄存器 . 6 个 16 位的段寄存器，用来寻址存储器的段</p>
+<blockquote>
+<p>386 寄存器的名字是由老的 16 位寄存器的名字之前冠以 =E=组成</p>
+</blockquote>
+<h3 id="通用寄存器">通用寄存器</h3>
+<p>8 个 32 位通用寄存器，分别是 <code>EAX</code>, <code>ECX</code>, <code>EDX</code>, <code>EBX</code>, <code>ESP</code>, <code>EBP</code>, <code>ESI</code> 和 =EDI=。</p>
+<p>通用寄存器的低 16 位可以作为 16 位的寄存器独立访问。并将之命名为 <code>AX</code>, <code>CX</code>,=DX=, <code>BX</code>, <code>SP</code>, <code>BP</code>, <code>SI</code>, <code>DI</code></p>
+<p><code>AX</code>, <code>BX</code>, <code>CX</code>, <code>DX</code> 的高半和低半个寄存器可以作为 8 位的寄存器来独立访问，后缀以 <code>H</code> 和 <code>L</code> 表示，如 <code>AL</code>, <code>BH</code></p>
+<p>通用寄存器在作为操作数地址存储，或在形成地址的过程中进行加减操作等简单自述运算时是运用的。但像串的运算和双精度的乘法和除法操作这类较复杂的操作，必须要从固定的寄存器中取一个或多个操作数。指令需要从专门的寄存器中读取一个或更多的操作数的技术称为 <strong>特征</strong> 。80386 用它来支持复杂的操作，这种复杂的操作要求 80386 指令格式中提供的两个以上的操作数。</p>
+<h3 id="处理器控制寄存器">处理器控制寄存器</h3>
+<p>两个寄存器控制 80386 的工作：</p>
+<p>. 指令指针寄存器 <code>EIP</code> . 处理器状态和控制标志寄存器 <code>EFLAGS</code></p>
+<p><code>EIP</code> 指向处理器将要执行的下一条指令。（16 位的 <code>IP</code> 寄存器包含在 <code>EIP</code> 的低 16 位）</p>
+<p>32 位的 <code>EFLAGS</code> 寄存器包含有若干个状态标志和控制标志位。程序可置位控制标志位以控制 80386 的某些功能的运行。自述操作之后处理器自己置位适当的状态位，程序测试这些状态位，以检测特定的条件。其中</p>
+<ul class="incremental">
+<li>算术状态标志： <code>CF</code>, <code>PF</code>, <code>AF</code>, <code>ZF</code>, <code>SF</code> 和 <code>OF</code> 由自述和逻辑指令置位</li>
+<li><code>CF</code> 进位标志，无符号算术运算溢出条件，支持多精度算术运算</li>
+<li><code>PF</code> 奇偶标志位，低 8 位的奇偶性，低 8 位 1 的个数为偶数时置位</li>
+<li><code>AF</code> 辅助进位位，如果位 3 向前有一个进位或借位，AF 被置为 1,用于 BCD 算术</li>
+<li><code>ZF</code> 零标志，结果为零时置位</li>
+<li><code>SF</code> 符号标志，置成结果的最高有效位</li>
+<li><code>OF</code> 2 的补码溢出标志</li>
+<li>处理器控制标志: <code>TF</code>, <code>IF</code>, <code>DF</code>, <code>IOPL</code>, <code>NT</code>, <code>RF</code>, <code>VM</code></li>
+<li><code>TF</code> 置位后在每条指令执行结束处将发生单步中断</li>
+<li><code>IF</code> 置位后允许外部中断</li>
+<li><code>DF</code> 方向标志决定串操作指令在每步之后其变址寄存器是后加（DF=0）或后减</li>
+<li><code>IOPL</code> 指定了要求执行IO指令的特权级（保护模式），两位宽</li>
+<li><code>NT</code> 嵌套任务控制 <code>IRET</code> 指令的运行，如果 NT = 0，则用栈中保存的值恢复 <code>EFLAGS=、=CS</code> 和 <code>EIP</code> 执行常规的从中断返回的动作。如果 NT = 1，中断返回胜任务转换代替上述过程</li>
+<li><code>RF</code> 重启动标志控制着调试故障是接受（RF=0），或者是被忽略(RF=1)</li>
+<li><code>VM</code> 虚拟 8086 方式位</li>
+</ul>
+<blockquote>
+<p>运行在任何特权级下的程序都可以置位或清除 <code>RF</code>, <code>NT</code>, <code>DF</code> 和 <code>TF</code> 这些标志位，只有在特权级 0 下执行的程序才能改变 <code>VM</code> 及 <code>IOPL</code> 字段。 <code>IF</code> 位只能由具有 I/O 特权的程序所改变</p>
+</blockquote>
+<h3 id="段寄存器">段寄存器</h3>
+<p>6 个 16 位的寻址内存的段的段寄存器,分别定名为 <code>ES</code>, <code>CS</code>, <code>SS</code>, <code>DS</code>, <code>FS</code> 和 <code>GS=，其中 =FS</code> 和 <code>GS</code> 是 386 上新增加的段寄存器</p>
+<h2 id="寻址的概念">寻址的概念</h2>
+<p>段寄存器寻址把存储器空间分成一个或多个叫做段的线性区域。一个存储器的地址由两个部分组成：一是段的部分，标识所容纳的段；另一个是偏移部分，指出了在该段内的以字节计的偏移量。</p>
+<p>关键的问题是： <strong>如何把诸如代码的过程、数据区和程序的堆栈等的程序单元安排在一个或多个段中</strong></p>
+<p>段的部分是一个 16 位的段选择子，段选择子有一个 14 位的字段，用于识别 16384 种可能的段。32 位的地址偏移部分给出了一个字节在所在段中的偏移。一个段的最大长度为 4G</p>
+<h2 id="内存寻址机制">内存寻址机制</h2>
+<p>大多数的程序倾向于同时只使用不多的几个段，在这些有限的段中产生许多不同的偏移地址。</p>
+<h3 id="段选择">段选择</h3>
+<p>每个存储器的引用或是隐含地或是显示地或是默认地指定了段寄存器。段寄存器中包含有地址的段的部分的选择子。有以下约定：</p>
+<ul class="incremental">
+<li>代码段的引用总是用 CS 段寄存器</li>
+<li>堆栈段的引用总是用 SS 段寄存器</li>
+<li>某些字串处理指令总是用 ES 段寄存器作为目标操作数的段寄存器</li>
+</ul>
+<p>由 CS 寄存器在任何给定的时间上寻址的段叫做当前代码段。EIP 寄存器包含了由 CS 寄存器寻址的段中下一次要执行的指令的偏移地址，因此下一条要执行的指令的地址是 =CS:[EIP]=。所有代码段的引用使用 CS 寄存器，因此在任何时候只有一个代码段是可以寻址的。</p>
+<p>由 SS 寻址的段叫做当前堆栈段，如 PUSH, POP, CALL 和 RETURN 这些堆栈操作，使用由 SS 寻址的段内的一个程序的堆栈。该堆栈的顶是由包含在通用寄存器 ESP 中的偏移地址所指向。 ESP 是专门为这种用途而保留的，程序堆栈的顶的地址是 <code>SS:[ESP]</code></p>
+<blockquote>
+<p>堆栈的内存是由 ESP 向地址低的方向移动分配的，因此 ESP 之上的段的部分已经分配给堆栈，而低于 ESP 部分的内存对于以后需要分配时是可用空间。</p>
+</blockquote>
+<h3 id="偏移部分">偏移部分</h3>
+<p>引用一个存储器操作数的每条指令规定了计算偏移量的方法，这种规定法叫做指令的寻址方式。</p>
+<p>80386 上的寻址方式规定将其相加构成偏移的成分多达三个：</p>
+<p>. 一个基地址寄存器 . 一个比例因子为 1,2,4,8 的变址寄存器 . 一个常数位移量</p>
+<p>8 个通用寄存器中的任意一个可以用作基地址寄存器，除了 SS 之外的 7 个能作为变址寄存器，或者变址成分可以被忽略。</p>
+<pre class="example"><code>基地址 + (变址 X 比例因子) + 位移量
+</code></pre>
+<blockquote>
+<p>如果存储器操作数是对齐的，寻址时比较快（C 中结构体内存对齐的原因）</p>
+</blockquote>
+<p>对于数据引用，其默认的段寄存器取决于所选择的基地址寄存器。如果基地址寄存器是 ESP 或者 EBP，则默认的段寄存器从通常的 DS 改为 SS。</p>
+<h1 id="interrupt-exception">Interrupt &amp; Exception</h1>
+<h2 id="overview">Overview</h2>
+<p>Both are special kinds of control transfer like unprogrammed <code>CALLs</code> which alter the normal program flow to handle external events or to report errors or exceptional conditions.</p>
+<p>The difference betwwen the interrupt and exception is that</p>
+<ul class="incremental">
+<li>Interrupt is used to handle asynchronous events external to the process</li>
+<li>Exceptions is used to handle events of executing instruction</li>
+</ul>
+<h2 id="interrupt">Interrupt</h2>
+<h3 id="type">Type</h3>
+<ol class="incremental">
+<li>Maskable interrupt: signalled via the <code>INTR</code> pin</li>
+<li>Non-Maskable interrupt: signalled via the <code>NMI</code> pin</li>
+</ol>
+<h2 id="exception">Exception</h2>
+<h3 id="type-1">Type</h3>
+<ol class="incremental">
+<li>Processor detected: faults, traps, aborts</li>
+<li>Programmed: <code>INTO</code>, <code>int 3</code>, <code>int n</code> and <code>bound</code> (software interrupts)</li>
+</ol>
+<h3 id="fault-trp-and-abort">fault, trp and abort</h3>
+<ul class="incremental">
+<li>the way they are reported</li>
+<li>whether restart of the instruction
+<ul class="incremental">
+<li>fault: reported "before" the instruction causing the exception</li>
+<li>trap: reported at the instruction boundary immediately after the instruction</li>
+<li>abort: don't know percise location and don't restart the program</li>
+</ul></li>
+</ul>
+<h2 id="identity">Identity</h2>
+<h3 id="princple">Princple</h3>
+<ul class="incremental">
+<li><code>ID [0-32)</code> is used to represent NMI and exception</li>
+<li><code>ID [32-256)</code> is used for Maskable interrupt (via Intel's 8259A PIC chip)</li>
+</ul>
+<h3 id="detail">Detail</h3>
+<table>
+<thead>
+<tr class="header">
+<th>id</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>Divide error</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Debug exceptions</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>Nonmaskable interrupt</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Breakpoint (one-byte INT 3 instruction)</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>Overflow (INTO instruction)</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>Bounds check (BOUND instruction)</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td>Invalid opcode</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td>Coprocessor not available</td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td>Double fault</td>
+</tr>
+<tr class="even">
+<td>9</td>
+<td>(reserved)</td>
+</tr>
+<tr class="odd">
+<td>10</td>
+<td>Invalid TSS</td>
+</tr>
+<tr class="even">
+<td>11</td>
+<td>Segment not present</td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td>Stack exception</td>
+</tr>
+<tr class="even">
+<td>13</td>
+<td>General protection</td>
+</tr>
+<tr class="odd">
+<td>14</td>
+<td>Page fault</td>
+</tr>
+<tr class="even">
+<td>15</td>
+<td>(reserved)</td>
+</tr>
+<tr class="odd">
+<td>16</td>
+<td>Coprecessor error</td>
+</tr>
+</tbody>
+</table>
+<h2 id="enabledisable">Enable/Disable</h2>
+<h3 id="nmi-masks-further-nmis">NMI Masks Further NMIs</h3>
+<p>Only one NMI handler is executing at the same time (until the next <code>IRET</code>)</p>
+<h3 id="if-masks-intr">IF Masks INTR</h3>
+<p>When IF (interrupt-enable flag) = 0, <code>INTR</code> interrupts are inhibited.</p>
+<p>Use <code>CLI</code> and <code>STI</code> instruction to alter the setting of IF.</p>
+<h3 id="rf-masks-debug-faults">RF Masks Debug Faults</h3>
+<p>RF bit in EFLAGS controls the recongnition of debug faults.</p>
+<h3 id="mov-or-pop-to-ss-masks-some-interrupts-and-exception">MOV or POP to SS Masks Some Interrupts and Exception</h3>
+<pre><code>MOV SS, AX
+MOV ESP, StackTop
+</code></pre>
+<p>Protect no interrupt handler called before the ESP being set.</p>
+<h2 id="priority"><span class="todo TODO">TODO</span> Priority</h2>
+<ol class="incremental">
+<li>High priority handler first</li>
+<li>lower priority exceptions are discarded</li>
+<li>lower priority interrupts are held pending</li>
+</ol>
+<h3 id="details">Details</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Priority</th>
+<th>Class of Interrupt or Exception</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>HIGHEST</td>
+<td>Faults except debug faults</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Trap instructions INTO, INT n, INT 3</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Debug traps for this instruction</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Debug faults for next instruction</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>NMI interrupt</td>
+</tr>
+<tr class="even">
+<td>LOWEST</td>
+<td>INTR interrupt</td>
+</tr>
+</tbody>
+</table>
+<h2 id="idt">IDT</h2>
+<p>Interrupt Descriptor Table (IDT) associates identifier with a descriptor (for handler).</p>
+<ul class="incremental">
+<li>IDT is an array of 8-byte descrpitors</li>
+<li>may reside anywhere in physical memory</li>
+<li>Located by IDTR (IDT register)</li>
+<li>Use <code>LIDT</code> and <code>SIDT</code> operate on the IDTR (with 6 byte operand: base address and limit values)</li>
+</ul>
+<h3 id="illustration">Illustration</h3>
+<pre class="example"><code>                                            INTERRUPT DESCRIPTOR TABLE
+                                            +------+-----+-----+------+
+                                      +----&gt;|      |     |     |      |
+                                      |     |- GATE FOR INTERRUPT #N -|
+                                      |     |      |     |     |      |
+                                      |     +------+-----+-----+------+
+                                      |     *                         *
+                                      |     *                         *
+                                      |     *                         *
+                                      |     +------+-----+-----+------+
+                                      |     |      |     |     |      |
+                                      |     |- GATE FOR INTERRUPT #2 -|
+                                      |     |      |     |     |      |
+                                      |     |------+-----+-----+------|
+          IDT REGISTER                |     |      |     |     |      |
+                                      |     |- GATE FOR INTERRUPT #1 -|
+                  15            0     |     |      |     |     |      |
+                 +---------------+    |     |------+-----+-----+------|
+                 |   IDT LIMIT   |----+     |      |     |     |      |
++----------------+---------------|          |- GATE FOR INTERRUPT #0 -|
+|            IDT BASE            |---------&gt;|      |     |     |      |
++--------------------------------+          +------+-----+-----+------+
+ 31                             0
+</code></pre>
+<h3 id="descriptors">Descriptors</h3>
+<ol class="incremental">
+<li><p>Kinds</p>
+<dl class="incremental">
+<dt>Task gates</dt>
+<dd>task switch in a manner similar to a <code>CALL</code>
+</dd>
+<dt>Interrupt gates</dt>
+<dd>normal handler
+</dd>
+<dt>Trap gates</dt>
+<dd>invokes the handler in a manner similar to a <code>CALL</code> to a call gate
+</dd>
+</dl></li>
+<li><p>Illustration</p>
+<pre class="example"><code>                              80386 TASK GATE
+ 31                23                15                7                0
++-----------------+-----------------+---+---+---------+-----------------+
+|#############(NOT USED)############| P |DPL|0 0 1 0 1|###(NOT USED)####|4
+|-----------------------------------+---+---+---------+-----------------|
+|             SELECTOR              |#############(NOT USED)############|0
++-----------------+-----------------+-----------------+-----------------+
+
+                              80386 INTERRUPT GATE
+ 31                23                15                7                0
++-----------------+-----------------+---+---+---------+-----+-----------+
+|           OFFSET 31..16           | P |DPL|0 1 1 1 0|0 0 0|(NOT USED) |4
+|-----------------------------------+---+---+---------+-----+-----------|
+|             SELECTOR              |           OFFSET 15..0            |0
++-----------------+-----------------+-----------------+-----------------+
+
+                              80386 TRAP GATE
+ 31                23                15                7                0
++-----------------+-----------------+---+---+---------+-----+-----------+
+|          OFFSET 31..16            | P |DPL|0 1 1 1 1|0 0 0|(NOT USED) |4
+|-----------------------------------+---+---+---------+-----+-----------|
+|             SELECTOR              |           OFFSET 15..0            |0
++-----------------+-----------------+-----------------+-----------------+
+</code></pre></li>
+</ol>
+<h2 id="interrupt-tasks-and-interrupt-procedures">Interrupt Tasks and Interrupt Procedures</h2>
+<h3 id="difference-between-task-and-procedure"><span class="todo TODO">TODO</span> Difference between task and procedure?</h3>
+<ul class="incremental">
+<li>Procedure execute in the context of the currently executing task
+<ul class="incremental">
+<li>selector points to an executable-segment descriptor in either the GDT or the current LDT</li>
+<li>offset points to the relative address of handler procedure</li>
+</ul></li>
+</ul>
+<h3 id="interrupt-procedures">Interrupt Procedures</h3>
+<ul class="incremental">
+<li>for interrupt gate or trap gate only</li>
+<li>pushes the <code>FLAGS</code> register onto the stack before the pointer to the interrupted instruction</li>
+<li><code>IRET</code> is used to exit from an interrupt procedure which is similar to <code>RET</code> except
+<ul class="incremental">
+<li>increments EIP by an extra four bytes (for the EFLAG flag on the stack)</li>
+<li>move the saved flags into the EFLAGS register</li>
+</ul></li>
+<li>Both reset TF (trap flag)</li>
+<li>Interrupt also resets IF (interrupt-enable flag) but trap gate does not change IF.</li>
+</ul>
+<pre class="example"><code>                  IDT                                    EXECUTABLE SEGMENT
+           +---------------+                             +---------------+
+           |               |                       OFFSET|               |
+           |---------------|  +-------------------------&gt;| ENTRY POINT   |
+           |               |  |      LDT OR GDT          |               |
+           |---------------|  |   +---------------+      |               |
+           |               |  |   |               |      |               |
+INTERRUPT  |---------------|  |   |---------------|      |               |
+   ID-----&gt;| TRAP GATE OR  |--+   |               |      |               |
+           |INTERRUPT GATE |--+   |---------------|      |               |
+           |---------------|  |   |               |      |               |
+           |               |  |   |---------------|      |               |
+           |---------------|  +--&gt;|   SEGMENT     |-+    |               |
+           |               |      |  DESCRIPTOR   | |    |               |
+           |---------------|      |---------------| |    |               |
+           |               |      |               | |    |               |
+           |---------------|      |---------------| |    |               |
+           |               |      |               | |BASE|               |
+           +---------------+      |---------------| +---&gt;+---------------+
+                                  |               |
+                                  |               |
+                                  |               |
+                                  +---------------+
+</code></pre>
+<h3 id="interrupt-tasks">Interrupt Tasks</h3>
+<ul class="incremental">
+<li>task gate only</li>
+<li>selector points to a <code>TSS</code> descriptor int the GDT</li>
+<li>two advantages
+<ol class="incremental">
+<li>the entire context is saved automatically</li>
+<li>the interrupt handler can be isolated from other tasks by giving it a separate address space, either via its LDT or vira its page directory</li>
+</ol></li>
+</ul>
+<ol class="incremental">
+<li><p>Illustration</p>
+<pre class="example"><code>           IDT                       GDT
+    +----------------+        +----------------+
+    |                |        |                |              TSS
+    |----------------|        |----------------|       +----------------+
+    |                |        |                |       |                |
+    |----------------|        |----------------|       |                |
+    |                |        |                |       |                |
+    |----------------|        |----------------|       |                |
++--&gt;|   TASK GATE    |---+    |                |       |                |
+|   |----------------|   |    |----------------|       |                |
+|   |                |   +---&gt;| TSS DESCRIPTOR |---+   |                |
+|   |----------------|        |----------------|   |   |                |
+|   |                |        |                |   |   |                |
+|   |----------------|        |----------------|   +--&gt;+----------------+
+|   |                |        |                |
+|   |----------------|        |----------------|
+|   |                |        |                |
+|   +----------------+        +----------------+
+|
++-INTERRUPT ID
+</code></pre></li>
+</ol>
+<h2 id="error-code">Error Code</h2>
+<p>Parameter to some handler that will be pushed onto the stakc of the exception handler</p>
+<h3 id="format">Format</h3>
+<pre class="example"><code> 31              15                                         2 1 0
++---------------+----------------+-----------------+-------+-+-+-+
+|################################|                         |T| |E|
+|###########UNDEFINED############|     SELECTOR INDEX      | |I| |
+|################################|                         |I| |X|
++---------------+----------------+-----------------+-------+-+-+-+
+</code></pre>
+<ol class="incremental">
+<li><code>EXT</code> flag to mark the external source</li>
+<li>if <code>I</code> | <code>TI</code>, then use IDT, else use GDT</li>
+</ol>
+<h1 id="instruction">instruction</h1>
+<h1 id="misc">misc</h1>
+<h2 id="interrupt-1">interrupt</h2>
+<p>IRET jump back from the interrupt handler.</p>
+<h2 id="stack">stack</h2>
+<p>PUSHF and POPF push/pop all flags into stack</p>
+<h1 id="term">term</h1>
+<h2 id="cpl-iopl"><span class="todo TODO">TODO</span> CPL &amp; IOPL</h2>
+<p>protection control</p>
+<h2 id="interrupt-gate"><span class="todo TODO">TODO</span> interrupt gate</h2>
+<h1 id="参考资料">参考资料</h1>
+<ul class="incremental">
+<li><a href="http://www.bottomupcs.com/chapter07.xhtml">binary format</a></li>
+<li><a href="http://www.logix.cz/michal/doc/i386/">Intel 80386 Programmer's Reference Manual (non-official)</a></li>
+</ul>
+
+      </div>
+    </section>
+  </body>
+</html>

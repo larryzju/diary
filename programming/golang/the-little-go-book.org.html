@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>the-little-go-book.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	  <a href="/diary/programming/golang/template.org.html">Prev: template.org</a>
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/programming/golang">Up: golang</a>
+	  	
+	</span>
+
+	<span id="next">
+	  
+	  <a href="/diary/programming/golang/the-way-to-go.org.html">Next: the-way-to-go.org</a>
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="前言">前言</h1>
+<p>本笔记整理自 <a href="https://www.openmymind.net/The-Little-Go-Book/">The Little Go Book</a> 一书。</p>
+<h2 id="为什么不愿意学习新的语言">为什么不愿意学习新的语言</h2>
+<ol class="incremental">
+<li>语言是开发的基础，语言特性影响设计模式乃至上层架构</li>
+<li>语言细节多，学习涉及方方面面，付出与收效比例不相当</li>
+</ol>
+<h2 id="为什么要学习-go">为什么要学习 go</h2>
+<ul class="incremental">
+<li>语法和标准库相对简单</li>
+<li>社区活跃</li>
+<li>静态语言</li>
+<li>适合于系统级或大型应用级别的开发</li>
+</ul>
+<h1 id="代码结构">代码结构</h1>
+<ul class="incremental">
+<li><code>${GOPATH}</code> 环境变量定义 workspace</li>
+<li>workspace 下保存目录代码和生成结果，如 <code>src</code>, <code>bin</code>, <code>pkg</code> 等</li>
+</ul>
+<h1 id="basic">Basic</h1>
+<h2 id="特点">特点</h2>
+<h3 id="编译型">编译型</h3>
+<ul class="incremental">
+<li>编译速度快，能更快迭代</li>
+<li>运行速度相对解释型快</li>
+<li>无依赖</li>
+</ul>
+<h3 id="静态类型">静态类型</h3>
+<ul class="incremental">
+<li>可以通过手动指定类型，或由编译器推导类型</li>
+<li>编译时可以检查出很多错误，增强可靠性</li>
+</ul>
+<h3 id="类-c-语法">类 C 语法</h3>
+<ul class="incremental">
+<li>去掉了 semi-colon terminated</li>
+<li>去掉了 parenthese around conditions</li>
+<li>在表示优先级时可以使用括号</li>
+</ul>
+<h3 id="gc">GC</h3>
+<ul class="incremental">
+<li>keep track of values</li>
+<li>and free them when they're no longer used.</li>
+</ul>
+<h2 id="running">running</h2>
+<ul class="incremental">
+<li>使用 go run 来执行</li>
+<li>使用 go build 来编译，生成可执行文件</li>
+<li>入口是 main 包的 main 函数</li>
+<li>非 main 包不能执行</li>
+<li>非 main 包能 build，但不会生成可执行文件</li>
+<li>build 生成的可执行文件与源码同名</li>
+</ul>
+<h2 id="import">Import</h2>
+<ul class="incremental">
+<li>有一些默认的函数不需要导入，如 <code>len</code>, <code>cap</code>, <code>println</code></li>
+<li><code>import</code> 用于导入指定字符串对应的包，可以一次导入多个</li>
+<li>不允许未被使用的包的导入（会降低编译速度）</li>
+<li>使用 godoc 来查看包及函数、类型的使用手册</li>
+</ul>
+<h2 id="变量与申明">变量与申明</h2>
+<ul class="incremental">
+<li>使用 <code>var</code> 定义，类型在后</li>
+<li>或者使用 <code>:=</code> 来定义局部变量，类型由值推导而来</li>
+<li>默认会赋予 zero value</li>
+<li>可以多变量赋值</li>
+<li>不允许存在未被使用的变量</li>
+</ul>
+<h3 id="注意">注意</h3>
+<ul class="incremental">
+<li><code>:=</code> 会阻止重复定义</li>
+<li>但只要左值有一个是新的变量， <code>:=</code> 将允许赋值</li>
+</ul>
+<h2 id="函数声明">函数声明</h2>
+<ul class="incremental">
+<li>可以返回多个值</li>
+<li>使用 blank identifier ( "_" ) 来忽略赋值</li>
+<li>相同参数类型时，可以简写类型到最后（ shorter syntax ）</li>
+<li>Named return values</li>
+</ul>
+<h1 id="structure">Structure</h1>
+<h2 id="overview">Overview</h2>
+<ul class="incremental">
+<li>Go 不支持继承 (inheritance), 不支持多态 (polymorphism) 和重载 (overloading)</li>
+<li>Go 提供 composition 功能</li>
+<li>可以为结构体添加方法</li>
+</ul>
+<h2 id="声明与初始化">声明与初始化</h2>
+<ul class="incremental">
+<li><code>Struct{Key: value, Key2: value2,}</code> 构造结构体</li>
+<li>也可以忽略键名，顺序传入参数构造结构体: <code>Struct{value, value2}</code></li>
+<li>Go 默认以拷贝形式传参，通过指针避免拷贝结构体</li>
+<li>使用 <code>&amp;</code> 符号来通变量值的地址，使用 <code>*</code> 来取指针指向的对象</li>
+<li>指针拷贝开销低，并且拷贝指针指向的内容还是原地址</li>
+<li>指针是一个内存地址，指向实际变量值</li>
+</ul>
+<h2 id="方法">方法</h2>
+<ul class="incremental">
+<li><code>func(s *Struct) Func() {...}</code> 为结构体定义一个方法</li>
+<li>其中 <code>*Struct</code> 被称为 <code>Func</code> 的接收者 (receiver)</li>
+</ul>
+<h2 id="构造器">构造器</h2>
+<ul class="incremental">
+<li>Go 中结构体没有构造器</li>
+<li>实现一个普通函数来生成并返回结构体即可</li>
+</ul>
+<h2 id="new-方法">new 方法</h2>
+<ul class="incremental">
+<li><code>new(X)</code> 等价于 <code>&amp;X{}</code></li>
+<li>更习惯于使用后者</li>
+</ul>
+<h2 id="结构体成员">结构体成员</h2>
+<ul class="incremental">
+<li>结构体成员称为 field</li>
+<li>可以是任何类型：结构体，array, map, interface 或者 function</li>
+</ul>
+<h2 id="composition">Composition</h2>
+<ul class="incremental">
+<li>将一个结构体包含于另一个</li>
+<li>也称为 trait 或者 mixin</li>
+<li>避免手工封闭子结构体及其方法</li>
+<li>外部结构体可以复写(overwrite) 内部结构体的方法</li>
+<li>Composition 较之 inheritance 更健壮</li>
+<li>inheritance 方式下我们将更多关注继承关系，而非子类的行为</li>
+</ul>
+<h2 id="指针">指针</h2>
+<ul class="incremental">
+<li>时刻关注应该用“值”还是“指针”</li>
+<li>值传递更安全，开销也更大</li>
+</ul>
+<h1 id="maps-arrays-and-slices">Maps, Arrays and Slices</h1>
+<h2 id="arrays">Arrays</h2>
+<ul class="incremental">
+<li>固定长度，申明时须指定长度</li>
+<li>下标从 0 开始，越界访问会报错</li>
+<li>使用 <code>len</code> 获取长度</li>
+<li>通过 <code>for index, value := range scores</code> 来遍历</li>
+</ul>
+<h2 id="slices">Slices</h2>
+<ul class="incremental">
+<li>Go 中很少直接使用 array，而是使用 slices</li>
+<li>Slice 是基于 Array 的一个轻量封装</li>
+<li>可以用 <code>[]int{}</code> 或 <code>make([]int, 10)</code> 来构造</li>
+<li><code>make</code> 不同于 <code>new</code> ，后者仅建立了对象，而前者还要申请底层的数组空间</li>
+<li>slices 有两个长度： <code>cap</code> 表示底层数组的容量， <code>len</code> 表示 slice 的实际长度</li>
+<li><code>make([]int, length, capacity)</code> 可以同时指定 len 和 cap</li>
+<li>访问 len 范围之外的元素用报错</li>
+<li><code>append</code> 方法可以安全的在 slice 中添加元素，必要时会申请新的 array 并将数据拷贝过去</li>
+<li><code>scores[0:8]</code> 来 re-slice，重新定义 slice 的 length，容量不变</li>
+<li>Ruby 或者 javascript 中，slice 方法将生成一个新的数组（拷贝出）; 但在 Go 中 Slice 共享底层数据</li>
+<li>不同于 Python，Go 不支持负索引</li>
+<li><code>copy(dst, src)</code> 函数复制 slice 的数据，注意层级数据的覆盖</li>
+</ul>
+<h2 id="maps">Maps</h2>
+<ul class="incremental">
+<li>使用 <code>make(map[string]int)</code> 或 <code>map[string]int{}</code> 构造</li>
+<li><code>len</code> 求得内容数量</li>
+<li><code>delete(m, key)</code> 删除键值对</li>
+<li>可以指定初始容量 <code>make(map[string]int, 100)</code></li>
+<li>用 <code>for key, value := range lookup</code> 遍历所有键值对，不应假设遍历顺序</li>
+</ul>
+<h2 id="值类型">值类型</h2>
+<ul class="incremental">
+<li>slices 是引用类型</li>
+<li>map 是引用类型</li>
+</ul>
+<h1 id="code-organization-and-interfaces">Code Organization and Interfaces</h1>
+<h2 id="packages">Packages</h2>
+<ul class="incremental">
+<li>通常包名与目录名一致，使用 <code>package</code> 关键字申明</li>
+<li>导入时使用完整路径，使用 <code>import</code> 关键字导入</li>
+<li>可执行命令通常放在 <code>main</code> 子目录中， <code>main.go</code> 文件中定义 <code>main</code> 方法</li>
+</ul>
+<h3 id="循环依赖-cyclical-imports">循环依赖 (Cyclical Imports)</h3>
+<ul class="incremental">
+<li>不允许两个 package 相互引用: <em>import cycle not allowed</em></li>
+<li>可以抽象出一个公用 package 为两者导入使用</li>
+</ul>
+<h3 id="可见性">可见性</h3>
+<ul class="incremental">
+<li>首字母小写包外不可见</li>
+<li>没有文件级的访问控制</li>
+</ul>
+<h3 id="包管理">包管理</h3>
+<ul class="incremental">
+<li><code>go get</code> 命令，支持多种协议，包括 github</li>
+<li>同时会下载依赖</li>
+<li><code>-u</code> 参数更新包</li>
+</ul>
+<h2 id="interfaces">Interfaces</h2>
+<ul class="incremental">
+<li>定义接口，没有具体实现</li>
+<li>用于解耦具体实现与标准接口，可以用于避免循环导入</li>
+<li>不同于 C# 或者 Java，实现接口时不需要显式地声明</li>
+<li>满足接口的实现将自动被认为实现了该接口</li>
+<li>习惯将接口设计的比较简单、单一、少量</li>
+<li>接口也支持 composition，可以与其它接口混合，例如 <code>io.ReadCloser</code> 混合了 <code>io.Reader</code> 和 <code>io.Closer</code></li>
+</ul>
+<h1 id="tidbits">Tidbits</h1>
+<h2 id="error-handling">Error handling</h2>
+<ul class="incremental">
+<li>Go 通过返回 error 值来表示错误</li>
+<li>error 接口中只有一个方法 <code>Error() string</code> ，可以自定义 Error 类型</li>
+<li><code>errors.New()</code> 函数生成一个新的 Error 对象</li>
+<li>Go 提供了 <code>panic</code> 和 <code>recover</code> 函数，前者抛出异常，后者捕获异常。但很少用</li>
+</ul>
+<h2 id="defer">Defer</h2>
+<ul class="incremental">
+<li>Go 带有 GC （垃圾回收），但有时我们需要显式地关闭资源（如关闭文件）</li>
+<li><code>defer</code> 语句保证在函数结束前被调用，在有多返回点时可以避免忘记显式关闭资源</li>
+<li>可以用于结束时打印函数用时</li>
+</ul>
+<h2 id="go-fmt">go fmt</h2>
+<ul class="incremental">
+<li><code>go fmt</code> 格式化代码成标准格式</li>
+<li><code>go fmt ./...</code> 来格式化当前所有的包</li>
+</ul>
+<h2 id="initialized-if">Initialized if</h2>
+<ul class="incremental">
+<li>Go 的 <code>if</code> 语句支持变量构造: <code>if err := process(); err != nil {...}</code></li>
+<li>构造的变量可以在配对的 <code>else</code> 和 <code>else if</code> 访问，但不能在外部访问</li>
+</ul>
+<h2 id="empty-interface-and-conversions">Empty Interface and Conversions</h2>
+<ul class="incremental">
+<li>Go 没有继承，也就不存在 <code>object</code> 对象做为所有对象的基类对象</li>
+<li>所有的对象都可以被转换为 <code>interface{}</code> 类型</li>
+<li>通过 type assert 来转换类型，例如 <code>a.(int)</code></li>
+<li>switch 语句支持类型分支，如 <code>switch a.(type) {case int: ...; default: ...}</code></li>
+<li>谨慎使用 <code>interface{}</code> 来表示抽象类型，丢失类型对静态语言不是个好事情</li>
+</ul>
+<h2 id="strings-and-byte-arrays">Strings and Byte Arrays</h2>
+<ul class="incremental">
+<li>字符串类型和 byte 数组可以相互转换： <code>[]byte(s)</code>, <code>string(byts)</code></li>
+<li>Go 的字符串类型是不可变类型， <code>[]byte(s)</code> 会产生数据拷贝</li>
+<li><code>len(s)</code> 表示字节数，而非字符 (rune) 数</li>
+<li>对 string 类型进行 for 遍历时，访问的是 rune 元素</li>
+</ul>
+<h2 id="function-type">Function Type</h2>
+<ul class="incremental">
+<li>类似 C 的函数指针，定义一个函数 <code>type Add func(a int, b int) int</code></li>
+<li>函数类型是第一类型，可以做为其它函数的参数或返回值</li>
+<li>如同 interface, 可以用于解耦函数定义和函数实现</li>
+</ul>
+<h1 id="concurrency">Concurrency</h1>
+<h2 id="goroutines">Goroutines</h2>
+<ul class="incremental">
+<li>类似于线程 (thread)，但由 Go 核心管理，而非操作系统</li>
+<li>开销较线程小，可以开很多个。多个 goroutines 可以共享于同一个 thread 中</li>
+<li>并发 (concurrency) 而非并行：有独立的上下文，但不保证同时被调度</li>
+<li><code>go</code> 关键字使后面的函数调用在新的 goroutine 中执行</li>
+</ul>
+<h3 id="synchronization">Synchronization</h3>
+<ul class="incremental">
+<li>主协程退出将导致其它协程一并退出</li>
+<li>协程间访问共享数据可能会出现抢占错误，需要考虑对共享数据进行加锁保护 (<code>sync.Mutex</code>)</li>
+<li>加锁可能降低性能，可能造成死锁 (deadlock)</li>
+<li><code>sync.RWMutex</code> 实现读写锁</li>
+</ul>
+<h2 id="channels">Channels</h2>
+<ul class="incremental">
+<li>erlang 的思路，消息传递方式实现多协程间的通信，避免在协程间共享数据</li>
+<li>channel 用于在 goroutines 之间传递数据，同一时刻只能有一个 goroutine 来访问 channel</li>
+<li>channel 指定传输数据的类型， <code>make(chan int)</code> 创建一个 int 类型的 channel，其类型为 <code>chan int</code></li>
+<li><code>ch &lt;- data</code> 写数据，channel 没有容量写数据，将导致写 channel 的 goroutine 被阻塞</li>
+<li><code>v := &lt;-ch</code> 读数据，channel 中没有数据，将导致读 channel 的 goroutine 被阻塞</li>
+<li>创建时可以指定 channel 的容量 <code>make(chan int, 100)</code></li>
+<li><code>len(ch)</code> 可以检查 channel 中的元素数量</li>
+</ul>
+<h3 id="select">select</h3>
+<ul class="incremental">
+<li>语法类似于 <code>switch</code> , <code>default</code> 入口用于处理 channel 资源不可得的情况</li>
+<li>通常用于同时监听多个 channel，随机选中可以访问的 channel</li>
+<li>没有 <code>default</code> 分支，则在无数据就绪时将被阻塞</li>
+</ul>
+<h3 id="timeout">timeout</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">for</span> {</span>
+<span id="cb1-2"><a href="#cb1-2"></a>        <span class="kw">select</span> {</span>
+<span id="cb1-3"><a href="#cb1-3"></a>        <span class="kw">case</span> c &lt;- rand.Int():</span>
+<span id="cb1-4"><a href="#cb1-4"></a>        <span class="kw">case</span> &lt;-time.After(time.Millisecond * <span class="dv">100</span>):</span>
+<span id="cb1-5"><a href="#cb1-5"></a>                fmt.Println(<span class="st">&quot;timed out&quot;</span>)</span>
+<span id="cb1-6"><a href="#cb1-6"></a>        }</span>
+<span id="cb1-7"><a href="#cb1-7"></a>        time.Sleep(time.Millisecond * <span class="dv">50</span>)</span>
+<span id="cb1-8"><a href="#cb1-8"></a>}</span></code></pre></div>
+<ul class="incremental">
+<li><code>time.After()</code> 创建一个 channel，并在 timeout 时间后向其中传递一个值</li>
+<li>若在指定时间没有其它数据到达， <code>select</code> 将进入超时处理流程</li>
+</ul>
+
+      </div>
+    </section>
+  </body>
+</html>

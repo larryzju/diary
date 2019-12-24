@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>nginx.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	  <a href="/diary/tools/markdown.org.html">Prev: markdown.org</a>
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/tools">Up: tools</a>
+	  	
+	</span>
+
+	<span id="next">
+	  
+	  <a href="/diary/tools/rpm.org.html">Next: rpm.org</a>
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="reverse-proxy">Reverse Proxy</h1>
+<h2 id="what-is-proxy">What is Proxy?</h2>
+<p>Proxying is typically used to distribute the load among several servers, seamlessly show content from different websites, or pass requests for processing to application servers over protocols other than HTTP.</p>
+<h2 id="why-reverse-proxy">Why reverse proxy?</h2>
+<ol class="incremental">
+<li>Expose internal service</li>
+<li>Traffic Balance</li>
+<li>Security</li>
+<li>Accelerate (buffering)</li>
+</ol>
+<h2 id="feature">Feature</h2>
+<ul class="incremental">
+<li>non-HTTP Protocol: FastCGI, uwsgi, SCGI, memcached</li>
+<li>buffering</li>
+<li>header modify</li>
+</ul>
+<h2 id="request-response-flow">Request-Response flow</h2>
+<p>When NGINX proxies a request, it sends the request to a specified proxied server, fetches the response, and sends it back to the client.</p>
+<h2 id="configuration">Configuration</h2>
+<h3 id="basic">Basic</h3>
+<p>Forward request with URL <code>/some/path/page.html</code> to <code>http://www.example.com/link/page.html</code></p>
+<pre class="text"><code>location /some/path/ {
+    proxy_pass http://www.example.com/link/;
+}
+</code></pre>
+<p>There are <code>**_pass</code> directive for non-HTTP protocol:</p>
+<ul class="incremental">
+<li><code>fastcfg_pass</code></li>
+<li><code>uwsgi_pass</code></li>
+<li><code>scgi_pass</code></li>
+<li><code>memcached_pass</code></li>
+</ul>
+<h3 id="named-group"><span class="todo TODO">TODO</span> Named Group</h3>
+<h3 id="header-modification">Header Modification</h3>
+<pre class="text"><code>location /some/path/ {
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_pass http://localhost:8000;
+}
+</code></pre>
+<h3 id="buffer">Buffer</h3>
+<dl class="incremental">
+<dt><code>proxy_buffering</code></dt>
+<dd>default <strong>on</strong>
+</dd>
+<dt><code>proxy_buffer_size</code></dt>
+<dd>The first part of the response from a proxied server is stored in a separate buffer
+</dd>
+<dt><code>proxy_buffer</code></dt>
+<dd><code>proxy_buffers 16 4k</code> specific the number of buffers and the size allocated for a request
+</dd>
+</dl>
+<pre class="text"><code>location /some/path/ {
+    proxy_buffers 16 4k;
+    proxy_buffer_size 2k;
+    proxy_pass http://localhost:8000;
+}
+</code></pre>
+<h3 id="choosing-an-outgoing-ip-address">Choosing an Outgoing IP Address</h3>
+<ul class="incremental">
+<li>For multiple network interface</li>
+<li>Specify the <code>proxy_bind</code> directive and the IP address of the necessary network interface</li>
+</ul>
+<pre class="text"><code>location /app1/ {
+    proxy_bind 127.0.0.1;
+    proxy_pass http://example.com/app1/;
+}
+
+location /app2/ {
+    proxy_bind 127.0.0.2;
+    proxy_pass http://example.com/app2/;
+}
+</code></pre>
+<h2 id="note">Note</h2>
+<h3 id="what-does-reverse-mean"><span class="todo TODO">TODO</span> What does "Reverse" mean?</h3>
+<h3 id="vs-iptables"><span class="todo TODO">TODO</span> vs <span class="underline">Iptables</span></h3>
+<h3 id="balancer"><span class="todo TODO">TODO</span> Balancer</h3>
+
+      </div>
+    </section>
+  </body>
+</html>

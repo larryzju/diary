@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>aws.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/cloud">Up: cloud</a>
+	  	
+	</span>
+
+	<span id="next">
+	  
+	  <a href="/diary/cloud/consul.org.html">Next: consul.org</a>
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="s3">S3</h1>
+<p>S3 is short for Amazon Simple Storage Service. It is storage for the internet which stores data as <strong>objects</strong> within <strong>buckets</strong>.</p>
+<h2 id="object">Object</h2>
+<p>An <strong>object</strong> consists of a file and optionally any metadata that describes that file. (like inode with data)</p>
+<h2 id="bucket">Bucket</h2>
+<p><strong>Buckets</strong> are the containers for objects are placed as a whole object</p>
+<ul class="incremental">
+<li>control access</li>
+<li>view access logs for it and its objects</li>
+<li>choose the geographical region where S3 will store the bucket and its contents</li>
+</ul>
+<h3 id="permission">Permission</h3>
+<h2 id="basic-usage-steps">basic usage steps</h2>
+<ol class="incremental">
+<li>sign up for S3</li>
+<li>create a bucket: specify unique name and region</li>
+<li>add an object to bucket</li>
+<li>you can view information about the object and download the object to local computer</li>
+<li>create a folder and copy the object into the new folder</li>
+<li>delete object, or empty bucket - delete all objects in the bucket, or delete a bucket</li>
+</ol>
+<h2 id="command-line">Command Line</h2>
+<p>Refer to <code>aws s3 help</code> page</p>
+<h3 id="pattern-match">Pattern Match</h3>
+<p>No support for UNIX style wildcards in path arguments. Use <code>--exclude</code> or <code>--include</code> paramters instead.</p>
+<p>The order is important</p>
+<table>
+<thead>
+<tr class="header">
+<th>command</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>--exclude "*" --include "*.txt"</code></td>
+<td>exclude all files except for files ending with .txt</td>
+</tr>
+<tr class="even">
+<td><code>--include "*.txt" --exclude "*"</code></td>
+<td>exclude all files</td>
+</tr>
+</tbody>
+</table>
+<p>If the source target is a file, then the source directory will be used for pattern match</p>
+<h3 id="prefix"><span class="todo TODO">TODO</span> Prefix</h3>
+<h3 id="path-type">Path Type</h3>
+<dl class="incremental">
+<dt>LocalPath</dt>
+<dd>absolute path or relative path
+</dd>
+<dt>S3Uri</dt>
+<dd>location of a S3 object, prefix, or bucket. For example <code>s3://mybucket/mykey</code>
+</dd>
+</dl>
+<h3 id="commands">Commands</h3>
+<table>
+<thead>
+<tr class="header">
+<th>command</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ls</td>
+<td><code>aws s3 ls s3://mybucket</code></td>
+</tr>
+<tr class="even">
+<td>cp</td>
+<td><code>aws s3 cp ~/cities.csv s3://mybucket</code></td>
+</tr>
+<tr class="odd">
+<td>mv</td>
+<td><code>aws s3 mv s3://mybucket/cities.csv s3://mybucket/cities2.csv</code></td>
+</tr>
+<tr class="even">
+<td>rm</td>
+<td><code>aws s3 rm s3://mybucket/cities2.csv</code></td>
+</tr>
+<tr class="odd">
+<td>sync</td>
+<td>recursively copies new and updated files from src to dst</td>
+</tr>
+<tr class="even">
+<td>mb</td>
+<td>make bucket</td>
+</tr>
+<tr class="odd">
+<td>rb</td>
+<td>remove bucket</td>
+</tr>
+<tr class="even">
+<td>website</td>
+<td>generate a static website, <code>aws s3 website s3://my-bucket/ --index-document index.html</code></td>
+</tr>
+<tr class="odd">
+<td>presign</td>
+<td>Generate a pre-signed URL for S3 object</td>
+</tr>
+</tbody>
+</table>
+<h3 id="acl"><span class="todo TODO">TODO</span> ACL</h3>
+<h2 id="issue">Issue</h2>
+<h3 id="optionsrequestdenied">OptionsRequestDenied</h3>
+<p>Refer to <a href="https://aws.amazon.com/premiumsupport/knowledge-center/s3-optionsrequestdenied-error/">https://aws.amazon.com/premiumsupport/knowledge-center/s3-optionsrequestdenied-error/</a></p>
+<p>It seems a client-side error</p>
+<ul class="incremental">
+<li>blocked by the web browser extension</li>
+<li>blocked by proxies or firewalls</li>
+<li>intermittent network connection problem</li>
+</ul>
+<p>Try uploading files using AWS CLI command instead.</p>
+<h2 id="how-to">How To</h2>
+<h3 id="get-the-website-url">Get the website URL</h3>
+<h1 id="ec2">EC2</h1>
+<p>Elastic Compute Cloud is the service we can use to create and run VM in the cloud.</p>
+<h2 id="term">Term</h2>
+<dl class="incremental">
+<dt>AMI</dt>
+<dd>Amazon Machine Image, pre-configured server templates to launch an instance
+</dd>
+</dl>
+<h1 id="vpc">VPC</h1>
+<p>Virtual Private Cloud is a virtual networking layer for Amazon EC2 that enable you to launch AWS resources into a virtual network.</p>
+<p>By default, there's already a default VPC for your instances. And we can create our own VPC and subnets.</p>
+<p>Feature of EC2-VPC:</p>
+<ul class="incremental">
+<li>static and persisted private IPv4 addresses to instance</li>
+<li>optionally associated an IPv6 CIDE block to VPC</li>
+<li>optionally assign IPv6 address to instance</li>
+<li>define multiple network interfaces to your instance</li>
+<li>manage security group membership</li>
+<li>egress/ingress filtering</li>
+<li>ACL</li>
+<li>run your instance on single-tenant hardware (?)</li>
+</ul>
+<p>VPC information</p>
+<ul class="incremental">
+<li>subnet</li>
+<li>internet gateway</li>
+<li>route table
+<ul class="incremental">
+<li>main route table (by default)</li>
+<li>custom route table</li>
+</ul></li>
+</ul>
+<h2 id="key-concept">Key Concept</h2>
+<ul class="incremental">
+<li>isolate from other virtual network
+<ul class="incremental">
+<li>IP address range</li>
+<li>subnets
+<ul class="incremental">
+<li>public subnet that can connect to the internet</li>
+<li>private subnet for resources that won't be connected to the internet</li>
+</ul></li>
+<li>security groups</li>
+<li>configure route tables</li>
+</ul></li>
+</ul>
+<h2 id="architecture">Architecture</h2>
+<h3 id="default-vpc">Default VPC</h3>
+<p>#+CAPTION <img src="./images/default-vpc-diagram.png" /> VPC may span multiple zones and there's a separated subnet in each zone.</p>
+<p>Each instance that launch into a default subnet has</p>
+<ul class="incremental">
+<li>a private IPv4 address</li>
+<li>a public IPv4 address</li>
+</ul>
+<p>These instances can communicate with the internet through the internet gateway.</p>
+<h3 id="nondefault-vpc">Nondefault VPC</h3>
+<figure>
+<img src="./images/nondefault-vpc-diagram.png" alt="" /><figcaption>Nondefault VPC Diagram</figcaption>
+</figure>
+<ul class="incremental">
+<li>Only private IPv4 addresses are assigned</li>
+<li>instances can communicate with each other (even across the subnets)</li>
+<li>there's no internet gateway been attached to this VPC</li>
+</ul>
+<ol class="incremental">
+<li><p>Enable internet access</p>
+<figure>
+<img src="./images/internet-gateway-diagram.png" alt="" /><figcaption>Internet gateway Diagram</figcaption>
+</figure>
+<ol class="incremental">
+<li>Attach an internet gateway to this VPC</li>
+<li>associate an Elastic IP to the instance</li>
+</ol></li>
+<li><p>NAT</p>
+<p>For the scenario that to allow outbound traffic only by</p>
+<ul class="incremental">
+<li>create a NAT device (has an Elastic IP address and connects to the internet through an internet gateway)</li>
+<li>and map multiple private IPv4 addresses to single IPv4 address</li>
+</ul></li>
+<li><p><span class="todo TODO">TODO</span> IPv6</p></li>
+<li><p><span class="todo TODO">TODO</span> VPN</p></li>
+<li><p><span class="todo TODO">TODO</span> PrivateLink</p></li>
+</ol>
+<h2 id="different-from-traditional-network">Different from traditional network</h2>
+<h2 id="vpc-endpoints"><span class="todo TODO">TODO</span> VPC Endpoints</h2>
+<h2 id="dns"><span class="todo TODO">TODO</span> DNS</h2>
+<h2 id="hardware-tenancy"><span class="todo TODO">TODO</span> Hardware tenancy</h2>
+<h2 id="security-group"><span class="todo TODO">TODO</span> Security Group</h2>
+<p>Acts as a virtual firewall to control the traffic for its associated instances.</p>
+<p>Rules contains:</p>
+<ul class="incremental">
+<li>inbound rules</li>
+<li>outbound rules</li>
+</ul>
+<p>Associate a security group with an instance when launching the instance.</p>
+<p>There's a default security group</p>
+<h3 id="inbound-rules">inbound rules</h3>
+<p>IP + Protocol + Port Range + Comments</p>
+<ul class="incremental">
+<li>public IPv4 address range of your home network</li>
+</ul>
+<ul class="incremental">
+<li>Type
+<ul class="incremental">
+<li>Protocol</li>
+<li>Port Range</li>
+</ul></li>
+<li>Source
+<ul class="incremental">
+<li>Custom</li>
+<li>Anywhere</li>
+<li>My IP</li>
+</ul></li>
+<li>Description</li>
+</ul>
+<h3 id="outbound-rules">outbound rules</h3>
+<h2 id="how-to-1">How to</h2>
+<h3 id="check-the-internet-gateway-info-of-vpc">check the internet gateway info of VPC</h3>
+<h3 id="display-the-main-route-table-rules">display the main route table rules</h3>
+<h3 id="get-the-custom-route-table-info-of-vpc">get the custom route table info of VPC</h3>
+<ul class="incremental">
+<li>local route, allow instances to communicate with each other</li>
+<li>outside flow</li>
+</ul>
+<h3 id="check-the-default-security-group">check the default security group</h3>
+<h3 id="get-the-subnet-info-of-vpc">get the subnet info of VPC</h3>
+<h3 id="describe-vpcs">describe VPCs</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">aws</span> ec2 describe-vpcs</span></code></pre></div>
+<p>Return list of VPC configurations</p>
+<ul class="incremental">
+<li>CIDR block</li>
+<li>DHCP options set</li>
+<li>Tenancy: if allow tenancy of instances launched into the VPC</li>
+<li>is default</li>
+<li>Owner ID: Aws account</li>
+</ul>
+<h3 id="expose-service-inside-a-non-default-vpc">expose service inside a non-default VPC</h3>
+<ol class="incremental">
+<li>create a VPC (specify CIDR)</li>
+<li>attach an internet gateway</li>
+<li>create subnet (specify subnet's CIDR)</li>
+<li>create a custom route table and associate it with the subnet</li>
+</ol>
+<h3 id="launch-an-instance">launch an instance</h3>
+<h3 id="assign-an-elastic-ip-address-to-your-instance">assign an elastic IP address to your instance</h3>
+<ul class="incremental">
+<li>specify the subnet</li>
+</ul>
+<ol class="incremental">
+<li><p><span class="todo TODO">TODO</span> AMI</p></li>
+</ol>
+<h2 id="reference">Reference</h2>
+<ul class="incremental">
+<li><a href="https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html">What is Amazon VPC</a></li>
+<li><a href="https://docs.aws.amazon.com/vpc/latest/userguide/getting-started-ipv4.html">getting started with IPv4</a></li>
+</ul>
+<h1 id="ecs">ECS</h1>
+<p>Elastic Container Service is the service to run Docker application on a scalable cluster.</p>
+<h1 id="eks">EKS</h1>
+<p>EKS is short for Elastic Kubernetes Service which is a logical grouping of EC2 compute instances that run your containers. EKS works as a managed service that makes it easy for you to use Kubernetes on AWS without needing to install and operate the Kubernetes control plane.</p>
+<p>A cluster consists of the <span class="underline">control plane</span> and the <span class="underline">data plane</span>.</p>
+<p>There're two types of instances:</p>
+<dl class="incremental">
+<dt>master</dt>
+<dd>host the Kubernetes API server and control how, when, and where your container run
+</dd>
+<dt>worker</dt>
+<dd>compute instance where your containers actually run and process data
+</dd>
+</dl>
+<p>Pod is the basic component of the Kubernetes which includes containers and specifications for how they should run, networking, and storage.</p>
+<p><code>etcd</code> is a distributed key value store that lets you store and share data across a distributed cluster of machines. K8s's control plane data is stored in <code>etcd</code>.</p>
+<h2 id="what-is"><span class="todo TODO">TODO</span> What is</h2>
+<h3 id="control-plane">control plane</h3>
+<h3 id="node-group">node group</h3>
+<h3 id="iam-identity-mapping">IAM identity mapping</h3>
+<h3 id="security-group-1">security group</h3>
+<h2 id="steps-to-deploy">Steps to deploy</h2>
+<ol class="incremental">
+<li>Provision and EKS cluster</li>
+<li>Amazon EC2</li>
+<li>Connect to EKS</li>
+</ol>
+<h2 id="create-cluster-with-eksctl">create cluster with eksctl</h2>
+<p>Refer to <a href="https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html">https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html</a></p>
+<h3 id="prerequisites">prerequisites</h3>
+<ol class="incremental">
+<li><p>install awscli</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="ex">pip</span> install awscli --upgrade --user</span></code></pre></div></li>
+<li><p>configure awscli credential</p>
+<p>Login with access key, secret access key, AWS region, and output format. This information is stored in a profile named <em>default</em>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="ex">aws</span> configure</span></code></pre></div></li>
+<li><p>install eksctl</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="ex">curl</span> --silent --location <span class="st">&quot;https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_</span><span class="va">$(</span><span class="fu">uname</span> -s<span class="va">)</span><span class="st">_amd64.tar.gz&quot;</span> <span class="kw">|</span> <span class="fu">tar</span> xz -C /tmp</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">mv</span> /tmp/eksctl ~/.local/bin</span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="ex">eksctl</span> version</span></code></pre></div></li>
+<li><p>install kubectl</p>
+<p>skip</p></li>
+</ol>
+<h3 id="create-eks-cluster-and-worker-nodes">create EKS cluster and worker nodes</h3>
+<ol class="incremental">
+<li><p>create</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">eksctl</span> create cluster \</span>
+<span id="cb5-2"><a href="#cb5-2"></a>  --name larry-testing \</span>
+<span id="cb5-3"><a href="#cb5-3"></a>  --version 1.13 \</span>
+<span id="cb5-4"><a href="#cb5-4"></a>  --nodegroup-name standard-workers \</span>
+<span id="cb5-5"><a href="#cb5-5"></a>  --node-type t3.medium \</span>
+<span id="cb5-6"><a href="#cb5-6"></a>  --nodes 2 \</span>
+<span id="cb5-7"><a href="#cb5-7"></a>  --nodes-min 1 \</span>
+<span id="cb5-8"><a href="#cb5-8"></a>  --nodes-max 3 \</span>
+<span id="cb5-9"><a href="#cb5-9"></a>  --node-ami auto</span></code></pre></div></li>
+<li><p>verify</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="ex">kubectl</span> get svc</span></code></pre></div></li>
+</ol>
+<h2 id="create-cluster-with-aws-management-console">create cluster with AWS Management Console</h2>
+<h3 id="prerequisites-1">Prerequisites</h3>
+<p>Prerequisites contain</p>
+<ul class="incremental">
+<li>create an IAM role that k8s can assume to create AWS resources, such as Elastic Load balancing</li>
+<li>create a VPC and security group</li>
+</ul>
+<ol class="incremental">
+<li><p>create EKS service role in the IAM console</p>
+<ol class="incremental">
+<li>select AWS service, EKS use case</li>
+<li>skip permission step, choose <strong>Next: Tags</strong></li>
+<li>(optional) add metadata to the role by attaching tags</li>
+<li>review and assign a unique name for your role</li>
+<li>create role</li>
+</ol></li>
+<li><p>create EKS Cluster VPC</p>
+<ol class="incremental">
+<li>goto <a href="https://console.aws.amazon.com/cloudformation">CloudFormation console</a></li>
+<li>select region and create stack</li>
+<li>use the Amazon S3 URL template source</li>
+<li>fill in URL <code>https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-02-11/amazon-eks-vpc-private-subnets.yaml</code></li>
+<li>fill out the parameters
+<ul class="incremental">
+<li>Stack name: unique name</li>
+<li>VpcBlock: CIDR range for your VPC</li>
+<li>PublicSubnet01Block: CIDR range for public subnet1</li>
+<li>PublicSubnet02Block: CIDR range for public subnet2</li>
+<li>PrivateSubnet01Block: CIDR range for private subnet1</li>
+<li>PrivateSubnet02Block: CIDR range for private subnet2</li>
+</ul></li>
+<li>(optional) tag your stack resources</li>
+<li>review and create</li>
+<li>select the stack that is created and record the <strong>SecurityGroups</strong> value in the <strong>Outputs</strong></li>
+<li>record <strong>VpcId</strong> for the VPC that was created</li>
+<li>record the <strong>SubnetIds</strong> for the subnets that were created</li>
+<li>Tag your private subnets so the k8s knows that it can use them for internal load balancers
+<ol class="incremental">
+<li>goto <a href="https://console.aws.amazon.com/vpc/">VPC console</a> and choose <strong>Subnets</strong></li>
+<li>select the two private subnets and create new tag <code>kubernetes.io/role/inernal-elb</code> with value <code>1</code></li>
+</ol></li>
+</ol>
+<ol class="incremental">
+<li><p>SecurityGroups</p>
+<p>Apply to the cross-account elastic network interfaces that are created in your subnets that allow the Amazon EKS control plane to communicate with your worker nodes.</p></li>
+<li><p>VpcID</p>
+<p>The VPC that worker nodes run on</p></li>
+<li><p>SubnetIds</p>
+<p>The subnets that your worker nodes are launched into.</p></li>
+</ol></li>
+<li><p>install kubectl</p>
+<p>skip</p></li>
+<li><p>install awscli</p>
+<p>skip</p></li>
+</ol>
+<h3 id="create-eks-cluster">create EKS cluster</h3>
+<ol class="incremental">
+<li>goto <a href="https://console.aws.amazon.com/eks/home#/clusters">EKS console</a></li>
+<li>Choose <strong>Create cluster</strong></li>
+<li>fill in fields
+<ul class="incremental">
+<li>cluster name: uniqune name for your cluster</li>
+<li>kubernetes version: the version of kubernetes to use for your cluster</li>
+<li>Role ARN: the IAM role created before</li>
+<li>VPC</li>
+<li>Subnets: choose all private/public subnets created before</li>
+<li>Security groups</li>
+<li>API server endpoint access: private false</li>
+<li>Logging</li>
+</ul></li>
+<li>choose a cluster name and create</li>
+</ol>
+<h3 id="create-a-kubeconfig-file">create a kubeconfig file</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="ex">aws</span> eks --region <span class="op">&lt;</span>region<span class="op">&gt;</span> update-kubeconfig --name <span class="op">&lt;</span>cluster-name<span class="op">&gt;</span> --kubeconfig <span class="op">&lt;</span>kubeconfig-path<span class="op">&gt;</span></span></code></pre></div>
+<p>Verify by running <code>kubectl get svc</code></p>
+<h3 id="launch-and-configure-eks-worker-nodes">launch and configure EKS worker nodes</h3>
+<ol class="incremental">
+<li><p>launch worker nodes</p>
+<ol class="incremental">
+<li>wait for your cluster status to show as <code>ACTIVE</code></li>
+<li>go to <a href="https://console.aws.amazon.com/cloudformation/">CloudFormation console</a></li>
+<li>create work nodes stack</li>
+<li>use Amazon S3 template URL and fill the URL <code>https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-02-11/amazon-eks-nodegroup.yaml</code></li>
+<li>specify details
+<ul class="incremental">
+<li>ClusterName must exactly match the name we used for EKS cluster</li>
+<li>NodeImageId is the AMI ID, for example <code>ami-07ebcae043cf995aa</code></li>
+<li>KeyName is the EC2 Key Pair Name</li>
+<li>BootstrapArguments are the extra <code>kubelet</code> arguments</li>
+</ul></li>
+<li>add tag to the stack resources</li>
+<li>review and create</li>
+<li>waiting for the creating has finished</li>
+<li>select the stack and record <strong>NodeInstanceRole</strong> in the output tab</li>
+</ol></li>
+<li><p>enable worker nodes to join your cluster</p>
+<ol class="incremental">
+<li><p>get the kubeconfig via <code>awk eks update-kubeconfig</code> command</p></li>
+<li><p>download configure map yaml configuration</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a><span class="ex">curl</span> -o aws-auth-cm.yaml https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-02-11/aws-auth-cm.yaml</span></code></pre></div></li>
+<li><p>update the configure map and replace the <code>ARN of instance role</code> with the <strong>NodeInstanceRole</strong></p></li>
+<li><p>apply the configuration</p></li>
+<li><p>check the nodes with <code>kubectl get nodes</code></p></li>
+</ol></li>
+</ol>
+<h2 id="delete-cluster">delete cluster</h2>
+<h3 id="remove-all-service-with-external-ip">remove all service with external IP</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a><span class="ex">kubectl</span> get svc --all-namespaces</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="ex">kubectl</span> delete svc <span class="op">&lt;</span>service-name<span class="op">&gt;</span></span></code></pre></div>
+<h3 id="delete-the-worker-node-aws-cloudformation-stack">delete the worker node AWS CloudFormation stack</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1"></a><span class="ex">aws</span> cloudformation list-stacks --query StackSummaries[].StackName</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="ex">aws</span> cloudformation delete-stack --stack-name <span class="op">&lt;</span>worker-node-stack<span class="op">&gt;</span></span></code></pre></div>
+<h3 id="delete-the-eks-cluster">delete the EKS cluster</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1"></a><span class="ex">aws</span> eks delete-cluster --name <span class="op">&lt;</span>my-cluster<span class="op">&gt;</span></span></code></pre></div>
+<h3 id="delete-the-vpc-aws-cloudformation-stack">delete the VPC AWS CloudFormation stack</h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1"></a><span class="ex">aws</span> cloudformation list-stacks --query StackSummaries[].StackName</span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="ex">aws</span> cloudformation delete-stack --stack-name <span class="op">&lt;</span>my-vpc-stack<span class="op">&gt;</span></span></code></pre></div>
+<h2 id="command-line-1">Command line</h2>
+<h3 id="aws-eks">aws eks</h3>
+<table>
+<thead>
+<tr class="header">
+<th>command</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>aws eks list-clusters</td>
+<td>list all clusters</td>
+</tr>
+<tr class="even">
+<td>aws eks describe-cluster –name &lt;cluster-name&gt;</td>
+<td>describe cluster</td>
+</tr>
+<tr class="odd">
+<td>aws eks update-kubeconfig –kubeconfig ~/.kube/output –name &lt;cluster-name&gt;</td>
+<td>create kubeconfig file</td>
+</tr>
+<tr class="even">
+<td>aws eks delete-cluster –name &lt;cluster-name&gt;</td>
+<td>delete eks cluster</td>
+</tr>
+</tbody>
+</table>
+<h3 id="eksctl">eksctl</h3>
+<p><code>eksctl</code> is a <code>kubectl</code> style like command line tool.</p>
+<table>
+<thead>
+<tr class="header">
+<th>command</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>eksctl get cluster</td>
+<td>get clusters</td>
+</tr>
+<tr class="even">
+<td>eksctl get cluster -n &lt;cluster-name&gt;</td>
+<td>show cluster details</td>
+</tr>
+<tr class="odd">
+<td>eksctl delete cluster -n &lt;cluster-name&gt;</td>
+<td>delete a cluster</td>
+</tr>
+</tbody>
+</table>
+<h2 id="how-to-2">How To</h2>
+<h3 id="get-the-ec2-instance-of-the-cluster">Get the EC2 instance of the cluster</h3>
+<p>Filter the EC2 instance with VPCId</p>
+<ol class="incremental">
+<li><p>get the EKS clusters's metadata</p>
+<p>Describe the cluster and record the VPCId.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1"></a><span class="ex">aws</span> eks list-clusters</span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="ex">aws</span> eks describe-cluster --name <span class="op">&lt;</span>cluster-name<span class="op">&gt;</span></span></code></pre></div></li>
+<li><p>filter the EC2 instance with VPC id</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1"></a><span class="ex">aws</span> ec2 describe-instances --filter Name=network-interface.vpc-id,Values=<span class="va">${VPCID}</span></span></code></pre></div></li>
+</ol>
+<h1 id="landscape">Landscape</h1>
+<h2 id="region-and-zone"><span class="todo TODO">TODO</span> Region and Zone</h2>
+<h1 id="cloudformation">CloudFormation</h1>
+<p>Declare all of your resoruces and dependencies in a template file to create and manage AWS infrastructure deployments predictably and repeatedly.</p>
+<p>It can be used to leverage AWS products</p>
+<ul class="incremental">
+<li>EC2</li>
+<li>Elastic Block Store</li>
+<li>Simple Notification Service</li>
+<li>Elastic Load Balancing</li>
+</ul>
+<h2 id="what-is-1">What is</h2>
+<h3 id="stack"><span class="todo TODO">TODO</span> Stack</h3>
+<h2 id="how-to-3">How to</h2>
+<h3 id="get-stack-template">get stack template</h3>
+<ul class="incremental">
+<li>Use command <code>aws cloudformation get-template --stack-name &lt;stack-name&gt;</code></li>
+<li>Or check it in cloudformation, stack, template tab page.</li>
+</ul>
+<h2 id="commands-1">Commands</h2>
+<table>
+<thead>
+<tr class="header">
+<th>command</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>aws cloudformation list-stacks</td>
+<td>list stacks</td>
+</tr>
+<tr class="even">
+<td>aws cloudformation describe-stacks –stack-name &lt;stack-name&gt;</td>
+<td>describe stack</td>
+</tr>
+<tr class="odd">
+<td>aws cloudformation get-template –stack-name &lt;stack-name&gt;</td>
+<td>get stack's template</td>
+</tr>
+<tr class="even">
+<td>aws cloudformation delete-stack –stack-name &lt;stack-name&gt;</td>
+<td>delete a stack</td>
+</tr>
+</tbody>
+</table>
+<h1 id="todo"><span class="todo TODO">TODO</span> TODO</h1>
+<h2 id="awscli-command-parameters">awscli command parameters</h2>
+<h1 id="howto">HOWTO</h1>
+<h2 id="get-current-region">get current region</h2>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1"></a><span class="ex">aws</span> configure --profile default get region</span></code></pre></div>
+<h2 id="get-access-key">get access key</h2>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1"></a><span class="ex">aws</span> configure get aws_access_key_id</span></code></pre></div>
+<p>Or you can get the credential by check files <code>~/.aws/config</code> and <code>/.aws/credential</code></p>
+
+      </div>
+    </section>
+  </body>
+</html>

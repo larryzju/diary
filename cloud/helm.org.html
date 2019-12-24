@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>helm.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	  <a href="/diary/cloud/gke.org.html">Prev: gke.org</a>
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/cloud">Up: cloud</a>
+	  	
+	</span>
+
+	<span id="next">
+	  
+	  <a href="/diary/cloud/images">Next: images</a>
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="概述">概述</h1>
+<p>Helm is a package management for kubernetes.</p>
+<h2 id="packagechart">package/chart</h2>
+<p>Package ，称做 Chart，是按一定目录结构定义的 kubernetes 软件部署逻辑</p>
+<h2 id="architecture">architecture</h2>
+<ul class="incremental">
+<li>helm client</li>
+<li>tiller server</li>
+</ul>
+<h1 id="helm-template-language">Helm Template Language</h1>
+<h2 id="directory-structure">Directory Structure</h2>
+<dl class="incremental">
+<dt>Chart.yaml</dt>
+<dd>软件名和版本号
+</dd>
+<dt>Values.yaml</dt>
+<dd>全局变量
+</dd>
+<dt>templates/</dt>
+<dd>kubernetes yaml 文件模板（go template 语法，由 helm tiller 解析）
+</dd>
+</dl>
+<h2 id="install-a-package">Install a Package</h2>
+<ul class="incremental">
+<li><code>helm install &lt;package&gt;</code> install package</li>
+<li><code>helm get manifest &lt;name&gt;</code> check the details of installed package</li>
+<li>add <code>--debug --dry-run</code> options for debug</li>
+</ul>
+<h2 id="builtin-object">Builtin Object</h2>
+<p>The template files will be send to helm tiller server to interprete and render to kubernetes yaml files.</p>
+<p>There are lots of builtin objects in helm</p>
+<dl class="incremental">
+<dt>Release</dt>
+<dd>package name or version
+</dd>
+<dt>Values</dt>
+<dd>variables defined in <code>Values.yaml</code>
+</dd>
+<dt>Chart</dt>
+<dd>..
+</dd>
+</dl>
+<h2 id="value-file">Value File</h2>
+<p>The values for render will be coalesce from multiple value files/settings.</p>
+<ul class="incremental">
+<li><code>Values.yaml</code></li>
+<li>Command line arguments
+<ul class="incremental">
+<li><code>-f</code></li>
+<li><code>--set</code></li>
+</ul></li>
+</ul>
+<h2 id="function-pipeline">Function &amp; Pipeline</h2>
+<h3 id="basic">Basic</h3>
+<pre><code>{{ .Value.name | quote }}
+</code></pre>
+<p>Quote is a function which works like clojure thread function</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode clojure"><code class="sourceCode clojure"><span id="cb2-1"><a href="#cb2-1"></a>(<span class="kw">&gt;</span> <span class="st">&quot;hello&quot;</span> quote)</span></code></pre></div>
+<h3 id="functions">Functions</h3>
+<ul class="incremental">
+<li><code>default("default", value)</code></li>
+<li><code>quote</code></li>
+</ul>
+<h2 id="flow-control">Flow Control</h2>
+<dl class="incremental">
+<dt><code>if/else if/else/end</code></dt>
+<dd>..
+</dd>
+<dt><code>with</code></dt>
+<dd>like python statement, define a new local object '.'
+</dd>
+<dt><code>range</code></dt>
+<dd>go range
+</dd>
+</dl>
+<h2 id="variable">Variable</h2>
+<dl class="incremental">
+<dt><code>$</code></dt>
+<dd>refer to global scope
+</dd>
+<dt><code>$v := expression</code></dt>
+<dd>define new variable, block scoped
+</dd>
+</dl>
+<h2 id="subtemplate">Subtemplate</h2>
+<p>Template block that can be embedded into other template files.</p>
+<ul class="incremental">
+<li>define with <code>define</code></li>
+<li>insert by <code>template</code> or <code>include + nindent</code> statement</li>
+<li>global scoped</li>
+</ul>
+<p>The subtemplate can not be interpreted by Kubernetes. So it must named with <code>_</code> prefix</p>
+<h2 id="files">Files</h2>
+<dl class="incremental">
+<dt><code>Get</code></dt>
+<dd>load file content
+</dd>
+<dt><code>Glob</code></dt>
+<dd>glob with pattern and return File Objects
+</dd>
+<dt><code>.AsConfig</code> , <code>.AsSecrets</code></dt>
+<dd>load file as configmap or secret
+</dd>
+<dt><code>Lines</code></dt>
+<dd>loop over file line by line
+</dd>
+</dl>
+<h2 id="subchart">Subchart</h2>
+<p>We can define sub-charts inside "charts/" directory.</p>
+<ul class="incremental">
+<li>The values definition in parent chart can override the child chart</li>
+<li>Define global variables in <code>Values.global</code> section</li>
+<li>Avoid using <code>block</code></li>
+</ul>
+<h2 id="misc">Misc</h2>
+<h3 id="hack-whitespaces">hack whitespaces</h3>
+<p><code>{{-</code> and <code>-}}</code> to trim space before or after this part.</p>
+<h3 id="indent">indent</h3>
+<p>use <code>indent</code> function to indent block</p>
+<h3 id="notes.txt">NOTES.txt</h3>
+<p>Add <code>NOTES.txt</code> file to describe the package. And in this file we can use the template variables.</p>
+<h1 id="helm-command-line">Helm Command Line</h1>
+<h2 id="lint">lint</h2>
+<h2 id="get-manifest">get manifest</h2>
+<h1 id="todo"><span class="todo TODO">TODO</span> TODO</h1>
+<h2 id="helpers.tpl"><code>_helpers.tpl</code></h2>
+<h2 id="the-execution-order-of-the-template-files">The execution order of the template files</h2>
+<h1 id="yaml">Yaml</h1>
+<h2 id="multiple-lines-block">multiple lines block</h2>
+<p><code>|-</code></p>
+
+      </div>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>k8s.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	  <a href="/diary/cloud/kubernetes/k8s-in-action.org.html">Prev: k8s-in-action.org</a>
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/cloud/kubernetes">Up: kubernetes</a>
+	  	
+	</span>
+
+	<span id="next">
+	  
+	  <a href="/diary/cloud/kubernetes/kubeadm.org.html">Next: kubeadm.org</a>
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="overview">Overview</h1>
+<p>Kubernetes Control Plane (aka Kubernetes) consists of</p>
+<ol class="incremental">
+<li>Master</li>
+<li>Node</li>
+</ol>
+<p>And the major works of kubernetes are:</p>
+<ol class="incremental">
+<li>execute instructions (interact)</li>
+<li>making the cluster's actual state match the desired state (maintain)</li>
+</ol>
+<p>We interact with Kubernetes cluster and check the status of Kubernetes with API. <code>kubectl</code> is a command line tools for interaction. We can write yaml files in API specification, and the kubectl will convert it to json format and submit to kubernetes' components.</p>
+<p>Kubernetes would maintain the status of cluster and jobs, such like</p>
+<ol class="incremental">
+<li>start or restart containers</li>
+<li>scaling the number of replicas of an Application</li>
+</ol>
+<h2 id="master">Master</h2>
+<p>Consists of three process:</p>
+<ol class="incremental">
+<li><code>kube-apiserver</code></li>
+<li><code>kube-controller-manager</code></li>
+<li><code>kube-scheduler</code></li>
+</ol>
+<h2 id="node">Node</h2>
+<p>Node components run on every node</p>
+<ol class="incremental">
+<li>maintain running Pods</li>
+<li>provide the Kubernetes runtime environment</li>
+</ol>
+<p>On each node, there're several components running:</p>
+<ol class="incremental">
+<li>kubelet: Run container as the rules of <code>PodSpecs</code></li>
+<li>kube-proxy: maintain network configuration for supporting Service</li>
+<li>container runtime: docker, rkt, OCI runtime-spec</li>
+</ol>
+<h2 id="feature">Feature</h2>
+<p>From <a href="https://courses.edx.org/courses/course-v1:LinuxFoundationX+LFS158x+1T2018/courseware/8835181d87b046b697603bd83f242f16/669a580b34764a0cadee817202b8c74a/?child=first">Kubernetes Features I</a> and <a href="https://courses.edx.org/courses/course-v1:LinuxFoundationX+LFS158x+1T2018/courseware/8835181d87b046b697603bd83f242f16/669a580b34764a0cadee817202b8c74a/?child=first">Kubernetes Feature II</a></p>
+<dl class="incremental">
+<dt>Automatic binpacking</dt>
+<dd>Kubernetes automatically schedules the containers based on resource usage and constraints, without sacrificing the availability
+</dd>
+<dt>Self-healing</dt>
+<dd>Kubernetes automatically replaces and reschedules the containers from failed nodes. It also kills and restarts the containers which do not respond to health checks, based on existing rules/policy.
+</dd>
+<dt>Horizontal scaling</dt>
+<dd>Kubernetes can automatically scale applications based on resource usage like CPU and memory. In some cases, it also supports dynamic scaling based on customer metrics.
+</dd>
+<dt>Service discovery and Load balancing</dt>
+<dd>Kubernetes groups sets of containers and referes to them via a Domain Name System (DNS). This DNS is also called a Kubernetes <strong>service</strong>. Kubernetes can discover these services automatically, and load-balance requests between containers of a given service.
+</dd>
+<dt>Automated rollouts and rollbacks</dt>
+<dd>Kubernetes can roll out and roll back new version/configurations of an application, without introducing any downtime.
+</dd>
+<dt>Secrets and configuration management</dt>
+<dd>Kubernetes can manages secrets and configuration details for an application without re-building the respective images. With secrets, we can share confidential information to our application without exposing it to the stack configuration, like on Github.
+</dd>
+<dt>Storage orchestration</dt>
+<dd>With Kubernetes and its plugins, we can automatically mount local, external, and storage solutions to the containers in a seamless manner, based on software-defined storage (SDS).
+</dd>
+<dt>Batch execution</dt>
+<dd>Besides long running jobs, Kubernetes also supports batch execution.
+</dd>
+</dl>
+<h2 id="objects">Objects</h2>
+<p>Basic objects in Kubernetes are</p>
+<dl class="incremental">
+<dt>pod</dt>
+<dd>a group of running instances
+</dd>
+<dt>service</dt>
+<dd>policy to expose network
+</dd>
+<dt>volume</dt>
+<dd>persist storage
+</dd>
+<dt>namespace</dt>
+<dd>isolate resources
+</dd>
+</dl>
+<p>In high level, there're some abstracts named <strong>controller</strong>, such as</p>
+<ul class="incremental">
+<li>ReplicaSet</li>
+<li>Deployment</li>
+<li>StatefulSet</li>
+<li>DaemonSet</li>
+<li>Job</li>
+</ul>
+<p>Objects informations can be split into two groups</p>
+<dl class="incremental">
+<dt>spec</dt>
+<dd>desired state
+</dd>
+<dt>status</dt>
+<dd>actual state, and is supplied and updated by the kubernete system
+</dd>
+</dl>
+<h2 id="why-use-kubernetes">Why use Kubernetes?</h2>
+<ul class="incremental">
+<li>open source and be maintained by a large community of volunteers</li>
+<li>run applications at scale</li>
+<li>seamlessly move applications from local to production deployment</li>
+<li>run anywhere</li>
+</ul>
+<h1 id="pods">Pods</h1>
+<h2 id="what-is">What is?</h2>
+<ul class="incremental">
+<li>Smallest deployable units of computing that can be created and managed in k8s cluster</li>
+<li>A group of Docker containers with shared namespaces and shared volumes
+<ul class="incremental">
+<li>a group of containers, relatively tightly coupled</li>
+<li>shared storage/network</li>
+<li>with specification for how to run the containers</li>
+<li>containers share an <strong>IP address and port space</strong>, can communicate with each-other via <strong>localhost</strong></li>
+<li>volume provides shared filesystem and data persistent</li>
+<li>with a single DNS name</li>
+</ul></li>
+<li>Some notes about underlying
+<ul class="incremental">
+<li>supports more container runtimes (beyond Docker)</li>
+<li>undergroupd is a set of Linux namespaces, cgroups, and potentially other facets of isolation</li>
+</ul></li>
+</ul>
+<h2 id="life-of-a-pod"><span class="todo TODO">TODO</span> life of a pod</h2>
+<ul class="incremental">
+<li>relatively ephemeral</li>
+<li>volume has the same lifetime as the pod</li>
+<li><a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/">https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/</a></li>
+</ul>
+<h2 id="replication"><span class="todo TODO">TODO</span> replication</h2>
+<p>pod 的一个 node 异常后，将重新发起一个新的 pod 替换之</p>
+<p><a href="https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/">https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/</a></p>
+<h2 id="motivation">Motivation</h2>
+<ul class="incremental">
+<li>Serve as unit of deployment, horizontal scaling, and replication.</li>
+<li>Automatically handles:
+<ul class="incremental">
+<li>Colocation (co-scheduling)</li>
+<li>shared fate (termination together)</li>
+<li>coordinated replication</li>
+<li>resource sharing</li>
+<li>dependency management</li>
+</ul></li>
+</ul>
+<h2 id="usage"><span class="todo TODO">TODO</span> Usage</h2>
+<h2 id="terminates"><span class="todo TODO">TODO</span> Terminates</h2>
+<h3 id="how-to-find-each-other-by-localhost"><span class="todo TODO">TODO</span> How to find each other by <strong>localhost</strong></h3>
+<h1 id="volume">Volume</h1>
+<h2 id="vs-docker-volume">vs Docker Volume</h2>
+<p>docker volume 是将本地的一个目录挂载到 container 中，存在以下问题</p>
+<ol class="incremental">
+<li>实现方式单一（docker driver 提供了一定的扩展功能）</li>
+<li>不能在多个容器之间共享</li>
+<li>没有生命周期管理（独立于 container）</li>
+</ol>
+<p>k8s volume 有以下特点：</p>
+<ol class="incremental">
+<li>与 Pod 生命周期相同</li>
+<li>当 Pod 容器重启后，volume 依旧存在</li>
+<li>Pod 中的窗口共享 volume</li>
+<li>有很多种 backend 实现方式</li>
+</ol>
+<h2 id="persistentvolume-persistentvolumeclaims">PersistentVolume &amp; PersistentVolumeClaims</h2>
+<h3 id="pv-vs-pvc">PV vs PVC</h3>
+<ul class="incremental">
+<li>PVs are resources in the cluster</li>
+<li>PVCs are requests for those resources and also act as <em>claim checks</em> to the resource.</li>
+</ul>
+<h3 id="lifecycle">Lifecycle</h3>
+<ol class="incremental">
+<li><p>Provisioning</p>
+<ol class="incremental">
+<li>Static: Administration allocated</li>
+<li>Dynamic: automatic provision for PVC request, based on <code>StorageClasses</code></li>
+</ol></li>
+<li><p>Binding</p>
+<ul class="incremental">
+<li>PVC request amount of storage and access mode</li>
+<li>Master find a matching PV for PVC and binding them together</li>
+</ul></li>
+<li><p>Using</p></li>
+</ol>
+<h1 id="deployments">Deployments</h1>
+<h1 id="replicasets">ReplicaSets</h1>
+<ul class="incremental">
+<li>Use <code>Deployment</code> instead when possible to support rolling update feature</li>
+<li><code>Deployment</code> is a high-level abstract of <code>ReplicaSets</code></li>
+<li>Similar to <code>ReplicationController</code>, but support set-based selector</li>
+<li>Specific pod configuration by <code>spec.template</code></li>
+</ul>
+<h1 id="network">Network</h1>
+<p>Pods had private cluster-IP which means:</p>
+<ol class="incremental">
+<li>containers in Pod can reach each other's port on <code>localhost</code></li>
+<li>All pods can see each other without NAT</li>
+</ol>
+<h2 id="vs-docker-bridge-network">vs Docker Bridge Network</h2>
+<p>Docker's conatiners can visit others on the same machine.</p>
+<p>But for communicating across machine, user must setup proxy to forward traffic to specific ports.</p>
+<h1 id="service">Service</h1>
+<h2 id="overview-1">Overview</h2>
+<p>Pod has internal and temporary cluster-IP address which is easy-to-dead.</p>
+<p>Kubernetes provides Deployment or ReplicaSet controller for monitoring pods status which would spawn new pods with different cluster-IP address when necessary.</p>
+<p><code>Service</code> is an abstraction which defines a logical set of <code>Pods</code> and a policy by which to access them. Use <code>service</code> to decouple frontend pod with backend pod connection.</p>
+<p>Service is assigned a unique IP address which is independent with pods. Traffic will be routed to some pod in the groups of service.</p>
+<h2 id="how-to-create-services">How to create services</h2>
+<ol class="incremental">
+<li><p><code>kubectl expose &lt;deployment&gt;</code></p></li>
+<li><p>create by <code>Service</code> API</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1"></a><span class="at"> </span><span class="fu">kind</span><span class="kw">:</span><span class="at"> Service</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> v1</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> my-service</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="at">  </span><span class="fu">selector</span><span class="kw">:</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="at">    </span><span class="fu">app</span><span class="kw">:</span><span class="at"> MyApp</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="at">  </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">protocol</span><span class="kw">:</span><span class="at"> TCP</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="at">    </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">80</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="at">    </span><span class="fu">targetPort</span><span class="kw">:</span><span class="at"> </span><span class="dv">9376</span></span></code></pre></div></li>
+</ol>
+<h2 id="endpoints"><code>Endpoints</code></h2>
+<p><code>Endpoints</code> is an object for Pods and will update whenever set of <code>Pods</code> in a <code>Service</code> changed.</p>
+<p>For non-native application, use virtual-IP-based bridge to Service.</p>
+<p>When create <code>Service</code>, an <code>Endpoints</code> will be created with the same name as Service (must have label selectors)</p>
+<h2 id="label-selectors">Label Selectors</h2>
+<ul class="incremental">
+<li>Worked just as a route item, map port to target port which is not part of <code>Pods</code></li>
+<li>Because no selector specific, there will not be <code>Endpoints</code> be created automatically</li>
+<li>Create <code>Endpoint</code> manual</li>
+<li><em>ExternalName service</em> is a special case, see below</li>
+</ul>
+<h2 id="network-1">Network</h2>
+<p>Pod has cluster-IP and can be visited in other cluster's nodes or pods.</p>
+<h2 id="define-a-service">Define a service</h2>
+<ul class="incremental">
+<li>Would be assigned an IP address (cluster-IP), which is used by proxy</li>
+<li>An <code>Endpoints</code> also named 'my-service' will be created automatically</li>
+<li>Map an incompoint <code>port</code> to any <code>targetPort</code></li>
+</ul>
+<h2 id="proxy">Proxy</h2>
+<ul class="incremental">
+<li>Each node has a process named <code>kube-proxy</code></li>
+<li>Which is responsible for implementing a form of virtual IP for <code>Services</code></li>
+<li>There are three mode for <code>Proxy</code>
+<ul class="incremental">
+<li>Userspace
+<ol class="incremental">
+<li>iptable rules to forward <code>ClusterIP:Port</code> to <code>localhost:ProxyPort</code></li>
+<li>proxied <code>localhost:ProxyPort</code>'s traffic to one of the <code>Service</code>'s backend <code>Pods</code></li>
+</ol></li>
+<li>Iptables
+<ul class="incremental">
+<li>Set iptable rule for each <code>Endpoints</code></li>
+<li>Random forward request to <code>CLusterIP:Port</code> to backend <code>Pod</code></li>
+<li>But can not retry for failed, depends on having working readiness probes</li>
+</ul></li>
+<li>ipvs (new in v1.9, skip)</li>
+</ul></li>
+</ul>
+<h2 id="find-service">Find <code>Service</code></h2>
+<p><code>Service</code> clusterIP is choosed randomly, Two methods to find <code>Service</code> clusterIP</p>
+<h3 id="environment">Environment</h3>
+<ul class="incremental">
+<li><p>After create <code>Services</code>, new <code>Pods</code> will be configured with environment variables</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="va">${SVCNAME}</span><span class="ex">_SERVICE_HOST</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="va">${SVCNAME}</span><span class="ex">_SERVICE_PORT</span></span></code></pre></div></li>
+<li><p>To use env, Services must be created before Pods</p></li>
+</ul>
+<h3 id="dns">DNS</h3>
+<ul class="incremental">
+<li><code>kube-system/kube-dns</code> pod provide DNS service</li>
+<li>DNS Server monitor the changes of <code>Services</code> and maintain items to service IP</li>
+<li>Map <code>service-name.namespace</code> to Service cluster IP</li>
+</ul>
+<h2 id="publish-services-to-external">Publish services to external</h2>
+<p>Some kind of service by setting <code>Type</code> value (ServiceType)</p>
+<ol class="incremental">
+<li>ClusterIP: for cluster-internal usage</li>
+<li>NodePort: Can be visited from external by <code>&lt;NodeIP&gt;:&lt;NodePort&gt;</code> (every node)</li>
+<li>LoadBalancer: Expose the service externally using a cloud provider's load balancer(?)</li>
+<li>ExternalName: return a <code>CNAME</code> record with <code>externalName</code> field's value (?)</li>
+</ol>
+<h2 id="shortcomings"><span class="todo TODO">TODO</span> Shortcomings</h2>
+<h2 id="misc">Misc</h2>
+<ul class="incremental">
+<li><p><code>Services</code> can expose more than one port and you must give all of your ports names. For examples:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Service</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> v1</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> my-service</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="at">  </span><span class="fu">selector</span><span class="kw">:</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="at">    </span><span class="fu">app</span><span class="kw">:</span><span class="at"> MyApp</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="at">  </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> http</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="at">    </span><span class="fu">protocol</span><span class="kw">:</span><span class="at"> TCP</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a><span class="at">    </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">80</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="at">    </span><span class="fu">targetPort</span><span class="kw">:</span><span class="at"> </span><span class="dv">9376</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> https</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a><span class="at">    </span><span class="fu">protocol</span><span class="kw">:</span><span class="at"> TCP</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a><span class="at">    </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">443</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a><span class="at">    </span><span class="fu">targetPort</span><span class="kw">:</span><span class="at"> </span><span class="dv">9377</span></span></code></pre></div></li>
+<li><p>Can set clusterIP of <code>Services</code> by <code>.spec.clusterIP</code>. Most useful for legacy system which configured a specific IP address</p></li>
+</ul>
+<h1 id="configmap"><span class="todo TODO">TODO</span> ConfigMap</h1>
+<p>Something like register or key/value database(?)</p>
+<p>Can be mounted to container's file.</p>
+<h1 id="todo"><span class="todo TODO">TODO</span> TODO</h1>
+<h2 id="prove-containers-ports-may-conflict-under-docker-bridge-networks">Prove containers' ports may conflict under docker bridge networks</h2>
+<h2 id="link-how-we-archieve-this">link: how we archieve this</h2>
+<h2 id="pod-spec-containerport">Pod spec containerPort</h2>
+<h2 id="pods-container-port-and-targetport">Pod's container port and targetPort</h2>
+<h2 id="printenv-vs-env"><code>printenv</code> vs <code>env</code></h2>
+<h2 id="how-does-kubernetes-monitor-the-status-change">How does kubernetes monitor the status change?</h2>
+<ol class="incremental">
+<li>polling</li>
+<li>callback?</li>
+</ol>
+<p>I guess polling is much easier to implement.</p>
+<h1 id="kubectl">kubectl</h1>
+<h2 id="run">run</h2>
+<p>create a deployment</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="ex">kubectl</span> run nginx --image=nginx --replicas=2</span></code></pre></div>
+<h2 id="expose">expose</h2>
+<p>create a service for deployment</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">kubectl</span> expose deployment nginx --port=80</span></code></pre></div>
+
+      </div>
+    </section>
+  </body>
+</html>

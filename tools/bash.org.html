@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>bash.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	  <a href="/diary/tools/ansible.org.html">Prev: ansible.org</a>
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/tools">Up: tools</a>
+	  	
+	</span>
+
+	<span id="next">
+	  
+	  <a href="/diary/tools/dig.org.html">Next: dig.org</a>
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="condition">Condition</h1>
+<dl class="incremental">
+<dt><code>-r</code></dt>
+<dd>readable
+</dd>
+<dt><code>-f</code></dt>
+<dd>regular file test
+</dd>
+</dl>
+<h1 id="sed">Sed</h1>
+<dl class="incremental">
+<dt><code>basename</code></dt>
+<dd><code>echo $0 | sed -e 's:^.*/::'</code>
+</dd>
+</dl>
+<h1 id="os">OS</h1>
+<dl class="incremental">
+<dt><code>uname -s</code></dt>
+<dd>return "Linux", "SunOS" ..
+</dd>
+<dt><code>uname -r</code></dt>
+<dd>linux kernel version, such as <code>3.10.0-862.11.6.el7.x86_64</code>
+</dd>
+</dl>
+<h1 id="special-variable">Special Variable</h1>
+<dl class="incremental">
+<dt><code>$#</code></dt>
+<dd>parameters' count
+</dd>
+</dl>
+<h1 id="process">Process</h1>
+<p>Processes makes up a tree. Each process has its own environment.</p>
+<p>It takes two steps to execute a program:</p>
+<ol class="incremental">
+<li>make a copy of bash itself (fork), this will inherit environment of bash</li>
+<li>replace with program itself</li>
+</ol>
+<p>Bash defines its variable by <code>NAME=VALUE</code> which cannot be seen from subprocess. But we need to <code>export</code> the variable to environment.</p>
+<p>Bash would spawn new subshell in following scenarios:</p>
+<ol class="incremental">
+<li>execute command (use <code>source script</code> to import code rather than execute script)</li>
+<li>pipe</li>
+<li>subshell. For example, <code>(subcommand) &gt;output.txt</code></li>
+<li>command substitution: <code>A=$(cat /etc/passwd | wc -l)</code></li>
+</ol>
+<p>Two ways to check variables:</p>
+<ol class="incremental">
+<li><code>set</code>: list shell variables</li>
+<li><code>env</code>: list environment variables (only variables been exported)</li>
+</ol>
+<h1 id="directory-stack-buildtin-command">directory stack buildtin command</h1>
+<p>Refer to <a href="https://agilesysadmin.net/understanding-pushd-and-popd/">https://agilesysadmin.net/understanding-pushd-and-popd/</a></p>
+<h2 id="dirs">dirs</h2>
+<p>display the stack of currently remembered directories</p>
+<ul class="incremental">
+<li><code>dirs -l -v</code> shows stacks with index one per line</li>
+<li><code>dirs -0</code> show bottom of the stack</li>
+<li><code>dirs +0</code> show top of the stack</li>
+<li><code>dirs -c</code> clear the stack</li>
+</ul>
+<h2 id="pushd">pushd</h2>
+<p>change dir and push the olddir onto the stack (the current working directory is <strong>always</strong> the top of the stack)</p>
+<ul class="incremental">
+<li><code>pushd -n</code> push target to stack but not change current directory (insert target after the top of the stack)</li>
+<li><code>pushd +N</code> rotate left N elements</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="bu">dirs</span> +3   <span class="co"># check the 4th dir in stack</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="bu">pushd</span> +3  <span class="co"># rotate to the 4th dir</span></span></code></pre></div>
+<h2 id="popd">popd</h2>
+<p>removing items from the stack and change to the next directory of the stack</p>
+<ul class="incremental">
+<li><code>popd +N</code> remove the N directory and <strong>do not</strong> change directory to it</li>
+<li><code>popd -n</code> pop but do not change directory</li>
+<li><code>popd -0</code> remove the last entry</li>
+</ul>
+<h1 id="scope">scope</h1>
+<h2 id="local">local</h2>
+<p>local variable is only within the function block</p>
+<p><a href="http://tldp.org/LDP/abs/html/localvar.html">http://tldp.org/LDP/abs/html/localvar.html</a></p>
+<h1 id="pattern-match">pattern match</h1>
+<p>与正则表达式不同</p>
+<ol class="incremental">
+<li><code>**</code> 匹配 0-N 级目录</li>
+<li><code>[:class:]</code> 语法</li>
+</ol>
+<div class="sourceCode" id="cb2" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="va">a=</span>abcd123</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="bu">echo</span> <span class="va">${a##</span>*[[:lower:]]<span class="va">}</span> -<span class="op">&gt;</span> 123</span></code></pre></div>
+<div class="sourceCode" id="cb3" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="va">b=</span><span class="st">&quot;foo=bar&quot;</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="bu">echo</span> <span class="va">${b#</span>*=<span class="va">}</span> -<span class="op">&gt;</span> bar</span></code></pre></div>
+<p><code>##</code> 表示最大匹配， <code>#</code> 为最小长度匹配</p>
+
+      </div>
+    </section>
+  </body>
+</html>

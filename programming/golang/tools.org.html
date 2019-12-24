@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>tools.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	  <a href="/diary/programming/golang/the-way-to-go.org.html">Prev: the-way-to-go.org</a>
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/programming/golang">Up: golang</a>
+	  	
+	</span>
+
+	<span id="next">
+	  
+	  <a href="/diary/programming/golang/%e6%97%a0%e9%97%bb%e8%a7%86%e9%a2%91%e7%ac%94%e8%ae%b0.org.html">Next: 无闻视频笔记.org</a>
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="gofix"><span class="todo TODO">TODO</span> gofix</h1>
+<h1 id="cover">cover</h1>
+<p>Generates coverage staticstics. Test coverage is a term that describes how much of a package's code is exercised by running the package's tests.</p>
+<p>Refer to</p>
+<ul class="incremental">
+<li><a href="https://blog.golang.org/cover">The cover story – The Go Blog</a></li>
+</ul>
+<h2 id="go-is-suitable-for-supporting-good-tooling">Go is suitable for supporting good tooling</h2>
+<ul class="incremental">
+<li>regular syntax that is easy to parse
+<ul class="incremental">
+<li>upper-case letter to define exported names</li>
+<li>radically simplified scoping rules</li>
+</ul></li>
+<li>builtin lex, parse and pretty-print library</li>
+</ul>
+<h2 id="gnu-gcov-program">GNU gcov program</h2>
+<p>sets breakpoints at branches executed by the binary. As each branch executes, the breakpoint is cleared and the target statements of the branch are marked as 'covered'.</p>
+<h2 id="test-coverage-for-go">Test Coverage for Go</h2>
+<p>Took a different approach that avoids dynamic debugging. But rewrite the package's source code before compilation to add instrumentation, compile and run the modified source, and dump the statistics.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">%</span> go test -cover</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="ex">PASS</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="ex">coverage</span>: 42.9% of statements</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="ex">ok</span>      size    0.026s</span></code></pre></div>
+<h2 id="viewing-the-results">Viewing the results</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="ex">%</span> go test -coverprofile=coverage.out </span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="ex">PASS</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="ex">coverage</span>: 42.9% of statements</span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="ex">ok</span>      size    0.030s</span></code></pre></div>
+<h3 id="broken-the-coverage-statistics-down-by-function">broken the coverage statistics down by function</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="ex">%</span> go tool cover -func=coverage.out</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="ex">size.go</span>:    Size          42.9%</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="ex">total</span>:      (statements)  <span class="ex">42.9%</span></span></code></pre></div>
+<h3 id="output-into-html">output into HTML</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a>$ <span class="ex">go</span> tool cover -html=coverage.out</span></code></pre></div>
+<h2 id="heat-maps">Heat maps</h2>
+<p>How many times the statement has been executed.</p>
+<p>Set by the <code>-covermode</code> flag</p>
+<dl class="incremental">
+<dt>set</dt>
+<dd>did each statement run? (default)
+</dd>
+<dt>count</dt>
+<dd>how many times did each statement run?
+</dd>
+<dt>atomic</dt>
+<dd>like count, but counts precisely in parallel programs
+</dd>
+</dl>
+<h2 id="basic-blocks">Basic blocks</h2>
+<p>Based on line statement, treat <code>f() &amp;&amp; g()</code> as a single expression</p>
+
+      </div>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>jenkins.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	  <a href="/diary/tools/gpg.org.html">Prev: gpg.org</a>
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/tools">Up: tools</a>
+	  	
+	</span>
+
+	<span id="next">
+	  
+	  <a href="/diary/tools/markdown.org.html">Next: markdown.org</a>
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="overview">Overview</h1>
+<p>Automation server for automate all sorts of tasks related to building, testing, and delivering/deploying software.</p>
+<p>User defines <strong>pipeline</strong> by specify</p>
+<ul class="incremental">
+<li>agent</li>
+<li>steps</li>
+<li>environment variables</li>
+</ul>
+<p>Jenkins will</p>
+<ul class="incremental">
+<li>start executor and run the steps</li>
+<li>record and aggregate test results (<code>post.always.junit()</code>)</li>
+<li>archive artifacts</li>
+<li>cleaning up at the end of Pipeline's execution</li>
+<li>notification</li>
+</ul>
+<h2 id="execution-environment">execution environment</h2>
+<p><code>agent</code> directive tells jenkins where and how to execute the Pipeline</p>
+<h2 id="blue-ocean">blue ocean</h2>
+<h2 id="plugins">plugins</h2>
+<h2 id="jenkinsfile">Jenkinsfile</h2>
+<h1 id="terms">Terms</h1>
+<dl class="incremental">
+<dt>pipeline</dt>
+<dd><p>make up of multiple steps to build, test and deploy applications</p>
+<dl class="incremental">
+<dt>node</dt>
+<dd>machine to execute a Pipeline
+</dd>
+<dt>stage</dt>
+<dd>a block defines a conceptually distinct subset of tasks of entrie Pipeline
+</dd>
+<dt>step</dt>
+<dd>A single task
+</dd>
+</dl>
+</dd>
+<dt>agent</dt>
+<dd>where and how to execute the Pipeline
+</dd>
+<dt>executor</dt>
+<dd>execute step if itself is available
+</dd>
+<dt>workspace</dt>
+<dd>contain source files as well as any additional working files for the Pipeline
+</dd>
+<dt>artifacts</dt>
+<dd><p>files generated during the execution of the Pipeline</p>
+</dd>
+</dl>
+<h1 id="agent">Agent</h1>
+<p>Several ways to define agents for use in Pipeline</p>
+<ul class="incremental">
+<li>docker container</li>
+</ul>
+<h2 id="docker-container">Docker container</h2>
+<pre class="groovy"><code>agent {
+    docker { image &#39;node:7-alpine&#39; }
+}
+</code></pre>
+<h1 id="notification">Notification</h1>
+<table>
+<thead>
+<tr class="header">
+<th>method</th>
+<th>key word</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Email</td>
+<td>mail to</td>
+<td>to, body, subject</td>
+</tr>
+<tr class="even">
+<td>Hipchat</td>
+<td>hpchatSend</td>
+<td>message, color</td>
+</tr>
+<tr class="odd">
+<td>Slack</td>
+<td>slackSend</td>
+<td>message, color, channel</td>
+</tr>
+</tbody>
+</table>
+<h1 id="pipeline">Pipeline</h1>
+<h2 id="basic">Basic</h2>
+<p>Pipeline provides an extensible set of tools for modeling simple-to-complex delivery pipelines "as code" via the SDL syntax.</p>
+<ul class="incremental">
+<li>Stage</li>
+<li>Steps</li>
+<li>Directive</li>
+</ul>
+<h2 id="pipeline-as-code">Pipeline as Code</h2>
+<p>Pipeline-as-code (<code>Jenkinsfile</code>) provides a number of immediate benefits</p>
+<ul class="incremental">
+<li>Automatically creates a Pipeline build process for all branches and pull requests</li>
+<li>Code review/iteration on the Pipeline</li>
+<li>Audit trail for the Pipeline</li>
+<li>Single source of truth for the Pipeline</li>
+</ul>
+<h2 id="why-pipeline">Why Pipeline?</h2>
+<p>The reasons to use Pipeline are</p>
+<ul class="incremental">
+<li>Code: Implemented in code and mamanged with VCS</li>
+<li>Durable: is regardless the Jenkins master restarts</li>
+<li>Pausable: can optionally stop and wait for human inputor approval</li>
+<li>Versatile: features like: fork/join, loop, parallel</li>
+<li>Extensible: custom extensions and custom options</li>
+</ul>
+<h2 id="way-to-create-pipeline">Way to create Pipeline</h2>
+<dl class="incremental">
+<dt>Blue Ocean</dt>
+<dd>Blue Ocean Wizard helps to generate <code>Jenkinsfile</code>
+</dd>
+<dt>Classic UI</dt>
+<dd>by UI
+</dd>
+<dt>SCM</dt>
+<dd>write and save <code>Jenkinsfile</code> in VCS repo
+</dd>
+</dl>
+<h2 id="note">Note</h2>
+<ul class="incremental">
+<li>Need to install <strong>Pipeline Plugin</strong> before using the Pipeline</li>
+</ul>
+<h2 id="problem">Problem</h2>
+<ul class="incremental">
+<li>every pipeline can be expressed with Pipeline script?</li>
+</ul>
+<h2 id="syntax">syntax</h2>
+<p>There're two types of syntax</p>
+<ol class="incremental">
+<li>declarative</li>
+<li>scripted</li>
+</ol>
+<p>Declarative Pipeline is a more recent feature which</p>
+<ul class="incremental">
+<li>provides richer syntactical features over Scripted Pipeline syntax</li>
+<li>is deisgned to make writing and reading Pipeline code easier.</li>
+</ul>
+<h3 id="basic-1">basic</h3>
+<pre class="groovy"><code>pipeline {
+    agent any 
+    stages {
+        stage(&#39;Build&#39;) { 
+            steps {
+                // 
+            }
+        }
+        stage(&#39;Test&#39;) { 
+            steps {
+                // 
+            }
+        }
+        stage(&#39;Deploy&#39;) { 
+            steps {
+                // 
+            }
+        }
+    }
+}
+</code></pre>
+<ol class="incremental">
+<li>Execute this Pipeline on "any" available agent</li>
+<li>Three stages "Build", "Test" and "Deploy" will be executed one by one</li>
+</ol>
+<h3 id="environment">environment</h3>
+<ol class="incremental">
+<li>to configure the build or tests differently to run them inside of Jenkins</li>
+<li>set or override "dummy" credentials in build or test scripts</li>
+</ol>
+<pre class="groovy"><code>pipeline {
+    agent any
+
+    environment {
+        DISABLE_AUTH = &#39;true&#39;
+        DB_ENGINE    = &#39;sqlite&#39;
+    }
+
+    stages {
+        stage(&#39;Build&#39;) {
+            steps {
+                sh &#39;printenv&#39;
+            }
+        }
+    }
+}
+</code></pre>
+<h3 id="wrapper">wrapper</h3>
+<ol class="incremental">
+<li>timeout</li>
+<li>retry</li>
+</ol>
+<pre class="groovy"><code>pipeline {
+    agent any
+    stages {
+        stage(&#39;Deploy&#39;) {
+            steps {
+                retry(3) {
+                    sh &#39;./flakey-deploy.sh&#39;
+                }
+
+                timeout(time: 3, unit: &#39;MINUTES&#39;) {
+                    sh &#39;./health-check.sh&#39;
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<h3 id="finishing-up">finishing up</h3>
+<p>Define clean-up steps in <code>pipeline.post</code> (similar to <code>swtich</code> expression)</p>
+<pre class="groovy"><code>pipeline {
+    agent any
+    stages {
+        stage(&#39;Test&#39;) {
+            steps {
+                sh &#39;echo &quot;Fail!&quot;; exit 1&#39;
+            }
+        }
+    }
+    post {
+        always {
+            echo &#39;This will always run&#39;
+        }
+        success {
+            echo &#39;This will run only if successful&#39;
+        }
+        failure {
+            echo &#39;This will run only if failed&#39;
+        }
+        unstable {
+            echo &#39;This will run only if the run was marked as unstable&#39;
+        }
+        changed {
+            echo &#39;This will run only if the state of the Pipeline has changed&#39;
+            echo &#39;For example, if the Pipeline was previously failing but is now successful&#39;
+        }
+    }
+}
+</code></pre>
+<h3 id="recording-tests-and-artifacts">recording tests and artifacts</h3>
+<pre class="groovy"><code>pipeline {
+    agent any
+    stages {
+        stage(&#39;Build&#39;) {
+            steps {
+                sh &#39;./gradlew build&#39;
+            }
+        }
+        stage(&#39;Test&#39;) {
+            steps {
+                sh &#39;./gradlew check&#39;
+            }
+        }
+    }
+
+    post {
+        always {
+            archiveArtifacts artifacts: &#39;build/libs/**/*.jar&#39;, fingerprint: true
+            junit &#39;build/reports/**/*.xml&#39;
+        }
+    }
+}
+</code></pre>
+<h3 id="options">options</h3>
+<pre class="groovy"><code>pipeline {
+    agent any
+    options {
+        skipStagesAfterUnstable()
+    }
+    stages {
+        stage(&#39;Build&#39;) {
+            steps {
+                echo &#39;Building&#39;
+            }
+        }
+        stage(&#39;Test&#39;) {
+            steps {
+                echo &#39;Testing&#39;
+            }
+        }
+        stage(&#39;Deploy&#39;) {
+            steps {
+                echo &#39;Deploying&#39;
+            }
+        }
+    }
+}
+</code></pre>
+<h3 id="interactive">interactive</h3>
+<pre class="groovy"><code>pipeline {
+    agent any
+    stages {
+        /* &quot;Build&quot; and &quot;Test&quot; stages omitted */
+
+        stage(&#39;Deploy - Staging&#39;) {
+            steps {
+                sh &#39;./deploy staging&#39;
+                sh &#39;./run-smoke-tests&#39;
+            }
+        }
+
+        stage(&#39;Sanity check&#39;) {
+            steps {
+                input &quot;Does the staging environment look ok?&quot;
+            }
+        }
+
+        stage(&#39;Deploy - Production&#39;) {
+            steps {
+                sh &#39;./deploy production&#39;
+            }
+        }
+    }
+}
+</code></pre>
+<h2 id="global-variable-reference">Global Variable Reference</h2>
+<dl class="incremental">
+<dt>env</dt>
+<dd>for example: <code>env.PATH</code> or <code>env.BUILD_ID</code>
+</dd>
+<dt>params</dt>
+<dd>for example: <code>params.MY_PARAM_NAME</code>
+</dd>
+<dt>currentBuild</dt>
+<dd>for example <code>currentBuild.result</code>
+</dd>
+</dl>
+<h1 id="how-to">How to</h1>
+<h2 id="define-a-simple-pipeline">Define a Simple Pipeline</h2>
+<ol class="incremental">
+<li>install Pipeline plugin</li>
+<li>new Item with Pipeline type</li>
+<li>fill the Pipeline script and save</li>
+<li>click "Build Now" and run the pipeline</li>
+<li>Click job #id and go to "Console Output" to see the full output from the Pipeline run</li>
+</ol>
+<h2 id="define-a-scm-based-pipeline">Define a SCM based Pipeline</h2>
+<ol class="incremental">
+<li>Install Pipeline Plugin</li>
+<li>new Item with Pipeline type</li>
+<li>define pipeline script from SCM</li>
+<li>choose the type of source control system of the repo contain your <code>Jenkinsfile</code></li>
+</ol>
+<h2 id="generator-snippet">Generator Snippet</h2>
+<ol class="incremental">
+<li>visit <strong>Pipeline Sytnax</strong> page at <a href="https://jenkines-host:8080/pipeline-syntax">https://jenkines-host:8080/pipeline-syntax</a></li>
+<li>select the desired step in the <strong>Sample step</strong> dropdown menu</li>
+<li>use the dynamically populated area below the <strong>Sample Step</strong> dropdown to configure the selected step</li>
+<li>click <strong>Generate Pipeline Script</strong> to create a snippet of Pipeline and copy the snippet into a pipeline</li>
+</ol>
+<h2 id="export-jenkinsfile"><span class="todo TODO">TODO</span> Export Jenkinsfile</h2>
+<h2 id="parallel-steps"><span class="todo TODO">TODO</span> Parallel steps</h2>
+<h2 id="custom-scm-polling-trigger"><span class="todo TODO">TODO</span> Custom SCM polling trigger</h2>
+<h1 id="what-is">What is</h1>
+<h2 id="groovy">groovy</h2>
+<h2 id="pipeline-vs-project-vs-job">Pipeline vs Project vs Job</h2>
+<h2 id="smoke-test">Smoke Test</h2>
+<h2 id="end-to-end-test">End-to-End Test</h2>
+<h2 id="single-source-of-truth">Single source of truth</h2>
+<h1 id="reference">Reference</h1>
+<ul class="incremental">
+<li><a href="https://jenkins.io/doc/book/pipeline/">Pipeline (User Handbook)</a></li>
+<li><a href="https://jenkins.io/doc/book/pipeline/getting-started/">Getting Started with Pipeline</a></li>
+</ul>
+
+      </div>
+    </section>
+  </body>
+</html>

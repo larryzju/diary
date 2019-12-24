@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8"></meta>
+    <title>hdfs-permission-guide-note.org</title>
+    <link rel="stylesheet" href="/diary/resources/css/main.css" />
+    <link rel="stylesheet" href="/diary/resources/highlight/styles/default.css" />
+    <script src="/diary/resources/js/jquery-3.4.1.min.js"></script>
+    <script src="/diary/resources/js/swgen.js"></script>
+    <script src="/diary/resources/highlight/highlight.pack.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <section class="main-article-area">
+      <nav id='content'>
+	<span id="prev">
+	  	
+	</span>
+
+	<span id="home"><a href="/diary">Home</a></span>
+	<span id="Up">
+	  
+	  <a href="/diary/programming/hadoop">Up: hadoop</a>
+	  	
+	</span>
+
+	<span id="next">
+	  	
+	</span>
+      </nav>
+      
+      <div id='main'>
+	<h1 id="overview">Overview</h1>
+<h2 id="与-posix-相同之处">与 Posix 相同之处</h2>
+<ul class="incremental">
+<li>hdfs 实现了类 UNIX 的文件和目录的权限，抽象出用户和组的概念</li>
+<li>权限分为：用户、组和其它三类</li>
+<li>文件有可读、可写权限</li>
+<li>目录可读表示可以列出其内容</li>
+<li>目录可写表示可以创建或删除其中数据</li>
+<li>目录可执行(x) 表示允许访问目录中的子文件（或目录）</li>
+</ul>
+<h2 id="与-posix-不同之处">与 Posix 不同之处</h2>
+<ul class="incremental">
+<li>没有 setuid 或 setgid 位</li>
+<li>没有可执行文件的概念</li>
+<li>目录可以设置 Sticky 位，只允许 superuser 和文件的属主来删除或移动其文件</li>
+<li>创建文件或目录时，owner 是客户端用户，group 继承自父目录的 group</li>
+<li>HDFS 提供额外的 ACL 机制，来更精细的控制文件权限</li>
+</ul>
+<h2 id="认证过程">认证过程</h2>
+<ol class="incremental">
+<li>user name 认证</li>
+<li>group lists 认证</li>
+</ol>
+<h1 id="user-identity"><span class="todo TODO">TODO</span> User Identity</h1>
+<h2 id="方式">方式</h2>
+<p>分为两种，由 <code>hadoop.security.authentication</code> 来控制</p>
+<dl class="incremental">
+<dt>simple</dt>
+<dd>使用 <code>whoami</code> 命令确定主机的用户
+</dd>
+<dt>kerberos</dt>
+<dd>??
+</dd>
+</dl>
+<h2 id="注意">注意</h2>
+<ul class="incremental">
+<li>不同的用户身份识别方式对 HDFS 没有影响</li>
+<li>HDFS 没有创建用户、建立组或认证的机制</li>
+</ul>
+<h1 id="group-mapping">Group Mapping</h1>
+<ul class="incremental">
+<li>HDFS 确定用户后，通过 group mapping service 来确定对应的 group list</li>
+<li>该服务通过 <code>hadoop.security.group.mapping</code> 配置来确定</li>
+<li>TDH 中该配置为 <code>ShellBasedUnixGroupsMapping</code></li>
+<li>ShellBasedUnixGroupsMapping 在 UNIX 环境中使用 <code>bash -c groups</code> (group命令)来获取组信息</li>
+<li>除些之外，还有 <code>JniBasedUnixGroupsMappingWithFallback</code> 模式</li>
+<li><code>LdapGroupsMapping</code> 联系 LDAP 服务来获取 list of groups</li>
+<li><strong>获取 group list 的动作在 NameNode 上进行</strong></li>
+</ul>
+<h1 id="understanding-the-implementation">Understanding the Implementation</h1>
+<ul class="incremental">
+<li>权限管理针对的完整路径，在每次操作时会进行</li>
+<li>HDFS 客户端连接 name node 时带着 user id 信息</li>
+<li>权限是针对块级别的，同一个文件可能中途失败</li>
+</ul>
+<h1 id="superuser"><span class="todo TODO">TODO</span> SuperUser</h1>
+<ul class="incremental">
+<li>namenode 进程用户是超级用户（一般是 hdfs）</li>
+<li>另外可以手动设定一系列组，组内成员作为超级用户（How？）</li>
+</ul>
+<h1 id="acls"><span class="todo TODO">TODO</span> ACLs</h1>
+<h2 id="概述">概述</h2>
+<ul class="incremental">
+<li>ACL 提供不同的用户和组方式的权限管理</li>
+<li>默认 HDFS 关闭 ACL 支持，不允许创建 ACLs</li>
+<li>通过设置 <code>dfs.namenode.acls.enabled</code> 来开启</li>
+<li>ACL 是一系列的规则（类似 iptables）</li>
+</ul>
+<h2 id="规则">规则</h2>
+<ul class="incremental">
+<li>包含三部分，用 ':' 分隔，分别是 type, optional name, permission string</li>
+<li>type 为 user, group, other 以及 mask</li>
+<li>每个 ACL 规则组需要有一个 mask，否则用自动生成一个（根据当前的权限求并）</li>
+<li>chmod 实际上修改了 mask 的信息</li>
+<li>可以前缀 'default:' 来描写 default ACL</li>
+</ul>
+<h2 id="示例">示例</h2>
+<pre><code>user::rw-
+user:bruce:rwx  # bruce 用户 777 -&gt; r--
+group::r-x      #                r--
+group:sales:rwx # sales 组 777 -&gt; r--
+mask::r--       # 影响全部 named user, named group, unamed group
+other::r--      # 654 权限
+</code></pre>
+<h2 id="default-acl-vs-access-acl">default ACL vs access ACL</h2>
+<ul class="incremental">
+<li>default ACL 用于新文件和目录的创建时缺省的权限</li>
+<li>access ACL 定义了权限检查</li>
+<li>前者类似 umask ? 并只针对目录</li>
+</ul>
+
+      </div>
+    </section>
+  </body>
+</html>
