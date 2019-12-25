@@ -67,11 +67,11 @@ GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 
    - static 与 global 变量
    - global 变量重名
    - 静态库与动态库
-   - 库的顺序对正确的影响
+   - 库的顺序影响正确性
    - 运行时发生的错误
 3. Avoiding security holes：
-   - 限制从未知数据源获取数据
-   - 注意栈上的存储方式可能造成信息泄漏
+   - 限制从未知源获取数据
+   - 栈的存储方式可能造成信息泄漏
 
 ** Processors Read and Interrupt Instructions Stored in Memory
 
@@ -99,9 +99,9 @@ GNU 项目由 Richard Stallman 于 1984 年发起，提供了诸多工具，如 
 机器指令中的很大一部分工作都是在外部存储、内存、寄存器和外设之间移动数据。
 
 而存储的容量与读写的效率成反比，而且差距还在增大。所以需要考虑如何优化
-拷贝的效率。一个关键的问题称为 processor-memory gap：处理器性能与内存
-读取的鸿沟。通过添加 cache memory 来缓存近线数据来弥补数据的速度与容量
-的差距性。
+拷贝的效率。一个关键的问题称为 processor-memory gap (处理器性能与内存
+读取的鸿沟)。通过添加 cache memory 来缓存近线数据来弥补数据的速度与容
+量的差距性。
 
 ** Storage Devices From a Hierarchy
 
@@ -372,12 +372,44 @@ platform. But it's a fault error in 64bit platform.
 
 ** Floating Point 
 
-* TODO 处理器体系结构
+* [1/7] TODO 处理器体系结构
 
-- ISA，指处理器指令和指令处理的数据集
-- 作为在编译器与处理器之间中间层
-  + 编译器只需要知道哪些指令可用
-  + 处理器建造出执行这些指令的处理器
+** DONE 概述
+
+处理器操作如基本指令控制，指令(instruction) 被编码成一个或多个字节。
+不同的处理器有自己的一套指令集和编码格式，称为 ISA （instruction-set architecture）
+
+ISA 提供了一个抽象层，编译器开发者需要与之打交道。
+IA32 是一个比较大众的 ISA，被多家厂商使用与支持。
+
+实际的硬件实现又与 ISA 模型有很大不同。处理器可能使用流水线技术，并行地处理多条指令，以提高性能。
+但对于使用者来说，仍然感觉到指令是在被顺序执行的。
+
+*** 为什么要关心处理器的设计
+
+- 有趣，处理器包含了很多工程上的巧妙设计，反映如何用简单的方法来解决复杂的问题
+- 有助于理解计算机体系
+- 嵌入式系统
+- 假如你刚好从事这个行业
+
+*** TODO Y86
+
+本书为了介绍 I32 （也称为 X86）而简化的一种处理器结构。
+并讲解从 sequence processor 如何进化成为 pipelined processor
+
+
+
+** TODO The Y86 Instruction Set Architecture
+
+** TODO Logic Design and the Hardware Control Language HCL
+
+** TODO Sequential Y86 Implementations
+
+** TODO General Principles of Pipelining
+
+** TODO Pipelined Y86 Implementations
+
+** TODO Summary
 
 * [8/13] Virtual Memory
 
