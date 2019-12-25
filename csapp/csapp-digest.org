@@ -399,7 +399,45 @@ IA32 是一个比较大众的 ISA，被多家厂商使用与支持。
 
 
 
-** TODO The Y86 Instruction Set Architecture
+** [2/6] TODO The Y86 Instruction Set Architecture
+
+*** DONE Programmer-Visible State
+
+一些可以被开发人员（汇编开发者或编译器开发者）访问的对象，包括
+
+- program register :: %eax, %ecx, %edx, %ebx, %esi, %edi, %esp, %ebp (其中 %esp 为栈指针)
+- condition code :: 逻辑运算结果，包括三个位 ZF, SF, OF
+- PC :: 指向下一条指令
+- Program Status Word :: 记录异常信息
+- Memory :: a large array of bytes
+
+**** TODO figure 4.1
+
+*** DONE Y86 Instructions
+
+精简后的指令有
+
+- halt :: 停止
+- nop :: 空
+- mov :: 有四种（针对内存、寄存器、立即数），包括 rrmovl, irmovl, rmmovl, mrmovl
+- op :: 四种计算：addl, subl, andl, xorl，只能针对寄存器
+- jump :: 七种，根据 condition code 来跳转，包括 jmp, jle, jl, je, jne, jge, jg
+- condition move :: 六种，包括 cmovle, cmovl, cmove, cmovne, cmovge, cmovg
+- call :: 压栈，并跳转到新函数
+- ret :: 从函数中返回
+- pushl :: 压栈
+- popl :: 弹栈
+
+**** TODO figure 4.2
+
+
+*** TODO Instruction Encoding
+
+*** TODO Y86 Exception
+
+*** TODO Y86 Programs
+
+*** TODO Some Y86 Instruction Details
 
 ** TODO Logic Design and the Hardware Control Language HCL
 
