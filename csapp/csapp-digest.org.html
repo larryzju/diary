@@ -106,13 +106,13 @@
 <li>static 与 global 变量</li>
 <li>global 变量重名</li>
 <li>静态库与动态库</li>
-<li>库的顺序对正确的影响</li>
+<li>库的顺序影响正确性</li>
 <li>运行时发生的错误</li>
 </ul></li>
 <li>Avoiding security holes：
 <ul class="incremental">
-<li>限制从未知数据源获取数据</li>
-<li>注意栈上的存储方式可能造成信息泄漏</li>
+<li>限制从未知源获取数据</li>
+<li>栈的存储方式可能造成信息泄漏</li>
 </ul></li>
 </ol>
 <h2 id="processors-read-and-interrupt-instructions-stored-in-memory">Processors Read and Interrupt Instructions Stored in Memory</h2>
@@ -144,7 +144,7 @@
 </dl>
 <h2 id="caches-matters">Caches Matters</h2>
 <p>机器指令中的很大一部分工作都是在外部存储、内存、寄存器和外设之间移动数据。</p>
-<p>而存储的容量与读写的效率成反比，而且差距还在增大。所以需要考虑如何优化 拷贝的效率。一个关键的问题称为 processor-memory gap：处理器性能与内存 读取的鸿沟。通过添加 cache memory 来缓存近线数据来弥补数据的速度与容量 的差距性。</p>
+<p>而存储的容量与读写的效率成反比，而且差距还在增大。所以需要考虑如何优化 拷贝的效率。一个关键的问题称为 processor-memory gap (处理器性能与内存 读取的鸿沟)。通过添加 cache memory 来缓存近线数据来弥补数据的速度与容 量的差距性。</p>
 <h2 id="storage-devices-from-a-hierarchy">Storage Devices From a Hierarchy</h2>
 <figure>
 <img src="img/memory-hierarchy.png" alt="" /><figcaption>Memory Hierarchy</figcaption>
@@ -441,15 +441,85 @@
 <h2 id="integer-representations">Integer Representations</h2>
 <h2 id="integer-arithmetic">Integer Arithmetic</h2>
 <h2 id="floating-point">Floating Point</h2>
-<h1 id="处理器体系结构"><span class="todo TODO">TODO</span> 处理器体系结构</h1>
+<h1 id="todo-处理器体系结构">[1/7] TODO 处理器体系结构</h1>
+<h2 id="概述"><span class="done DONE">DONE</span> 概述</h2>
+<p>处理器操作如基本指令控制，指令(instruction) 被编码成一个或多个字节。 不同的处理器有自己的一套指令集和编码格式，称为 ISA （instruction-set architecture）</p>
+<p>ISA 提供了一个抽象层，编译器开发者需要与之打交道。 IA32 是一个比较大众的 ISA，被多家厂商使用与支持。</p>
+<p>实际的硬件实现又与 ISA 模型有很大不同。处理器可能使用流水线技术，并行地处理多条指令，以提高性能。 但对于使用者来说，仍然感觉到指令是在被顺序执行的。</p>
+<h3 id="为什么要关心处理器的设计">为什么要关心处理器的设计</h3>
 <ul class="incremental">
-<li>ISA，指处理器指令和指令处理的数据集</li>
-<li>作为在编译器与处理器之间中间层
-<ul class="incremental">
-<li>编译器只需要知道哪些指令可用</li>
-<li>处理器建造出执行这些指令的处理器</li>
-</ul></li>
+<li>有趣，处理器包含了很多工程上的巧妙设计，反映如何用简单的方法来解决复杂的问题</li>
+<li>有助于理解计算机体系</li>
+<li>嵌入式系统</li>
+<li>假如你刚好从事这个行业</li>
 </ul>
+<h3 id="y86"><span class="todo TODO">TODO</span> Y86</h3>
+<p>本书为了介绍 I32 （也称为 X86）而简化的一种处理器结构。 并讲解从 sequence processor 如何进化成为 pipelined processor</p>
+<h2 id="todo-the-y86-instruction-set-architecture">[2/6] TODO The Y86 Instruction Set Architecture</h2>
+<h3 id="programmer-visible-state"><span class="done DONE">DONE</span> Programmer-Visible State</h3>
+<p>一些可以被开发人员（汇编开发者或编译器开发者）访问的对象，包括</p>
+<dl class="incremental">
+<dt>program register</dt>
+<dd>%eax, %ecx, %edx, %ebx, %esi, %edi, %esp, %ebp (其中 %esp 为栈指针)
+</dd>
+<dt>condition code</dt>
+<dd>逻辑运算结果，包括三个位 ZF, SF, OF
+</dd>
+<dt>PC</dt>
+<dd>指向下一条指令
+</dd>
+<dt>Program Status Word</dt>
+<dd>记录异常信息
+</dd>
+<dt>Memory</dt>
+<dd>a large array of bytes
+</dd>
+</dl>
+<h4 id="figure-4.1"><span class="todo TODO">TODO</span> figure 4.1</h4>
+<h3 id="y86-instructions"><span class="done DONE">DONE</span> Y86 Instructions</h3>
+<p>精简后的指令有</p>
+<dl class="incremental">
+<dt>halt</dt>
+<dd>停止
+</dd>
+<dt>nop</dt>
+<dd>空
+</dd>
+<dt>mov</dt>
+<dd>有四种（针对内存、寄存器、立即数），包括 rrmovl, irmovl, rmmovl, mrmovl
+</dd>
+<dt>op</dt>
+<dd>四种计算：addl, subl, andl, xorl，只能针对寄存器
+</dd>
+<dt>jump</dt>
+<dd>七种，根据 condition code 来跳转，包括 jmp, jle, jl, je, jne, jge, jg
+</dd>
+<dt>condition move</dt>
+<dd>六种，包括 cmovle, cmovl, cmove, cmovne, cmovge, cmovg
+</dd>
+<dt>call</dt>
+<dd>压栈，并跳转到新函数
+</dd>
+<dt>ret</dt>
+<dd>从函数中返回
+</dd>
+<dt>pushl</dt>
+<dd>压栈
+</dd>
+<dt>popl</dt>
+<dd>弹栈
+</dd>
+</dl>
+<h4 id="figure-4.2"><span class="todo TODO">TODO</span> figure 4.2</h4>
+<h3 id="instruction-encoding"><span class="todo TODO">TODO</span> Instruction Encoding</h3>
+<h3 id="y86-exception"><span class="todo TODO">TODO</span> Y86 Exception</h3>
+<h3 id="y86-programs"><span class="todo TODO">TODO</span> Y86 Programs</h3>
+<h3 id="some-y86-instruction-details"><span class="todo TODO">TODO</span> Some Y86 Instruction Details</h3>
+<h2 id="logic-design-and-the-hardware-control-language-hcl"><span class="todo TODO">TODO</span> Logic Design and the Hardware Control Language HCL</h2>
+<h2 id="sequential-y86-implementations"><span class="todo TODO">TODO</span> Sequential Y86 Implementations</h2>
+<h2 id="general-principles-of-pipelining"><span class="todo TODO">TODO</span> General Principles of Pipelining</h2>
+<h2 id="pipelined-y86-implementations"><span class="todo TODO">TODO</span> Pipelined Y86 Implementations</h2>
+<h2 id="summary"><span class="todo TODO">TODO</span> Summary</h2>
 <h1 id="virtual-memory-1">[8/13] Virtual Memory</h1>
 <h2 id="overview-1"><span class="done DONE">DONE</span> Overview</h2>
 <p>与 CPU 共享不同，CPU 共享最多因为进程数增大而变慢。内存共享可能会有其它问题</p>
@@ -1274,7 +1344,7 @@
 <h2 id="dynamic-memory-allocation"><span class="todo TODO">TODO</span> Dynamic Memory Allocation</h2>
 <h2 id="garbage-collection"><span class="todo TODO">TODO</span> Garbage Collection</h2>
 <h2 id="common-memory-related-bugs-in-c-programs"><span class="todo TODO">TODO</span> Common Memory-Related Bugs in C Programs</h2>
-<h2 id="summary"><span class="todo TODO">TODO</span> Summary</h2>
+<h2 id="summary-1"><span class="todo TODO">TODO</span> Summary</h2>
 <h1 id="footnotes">Footnotes</h1>
 <section class="footnotes" role="doc-endnotes">
 <hr />
