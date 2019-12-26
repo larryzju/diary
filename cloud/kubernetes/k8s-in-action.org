@@ -158,6 +158,57 @@ kubectl scale rc kubia --replica=3
 - kubelet 指挥 Docker 拉取镜像并运行容器
 
 
+* Pods: running containers in Kubernetes
+
+** Introducing pods
+
+Pod 是 kubernetes 的最小单元，其中的 container 一定运行在同一主机上，Pod 相当于一个虚拟主机
+
+- Pod 内的容器共享 network, UTS, IPC, PID （可选）
+- 容器间通过 volume 来共享存储。
+- 容器与容器的网络端口不能冲突，相互之间可以通过 localhost 来访问
+- Pod 与 Pod 可能在不同的主机上运行，相互之间需要通过 pod IP 来访问。
+  IP 地址未经过地址转换，称为 Flat Network，由 software-defined
+  network layer 层来实现
+
+Pod 内部包括多个 container，这样可以避免在同一容器内运行多个进程的问题：
+
+- 多进程可能会使 stdout 变乱
+- 需要自己控制不同进程的异常退出的保护机制 
+
+划分 Pod 与 Container 需要考虑的因素有
+
+- 是否有利于水平扩展（如数据库不能水平扩展，但后端可以）
+- 保持 container 轻量，有助于错误恢复
+- Pod 中使用 SideCar 容器，用于收集日志、adapter、数据爬取等功能
+
+** Creating Pods from YAML or JSON descriptors
+
+使用 yaml 来描述复杂的 pod 结构，包括几个部分
+
+- apiVersion :: 版本
+- kind :: resource 类型
+- metadata :: name, label, annotation
+- spec :: container, volume
+- status :: IP, container status
+
+*** Container Spec Sample
+
+#+BEGIN_SRC yaml
+  containers:
+  - image: registry/kubia
+    name: kubia
+    ports:
+    - containerPort: 8080
+      protocol: TCP
+#+END_SRC
+
+其中 ports 信息仅为了方便理解之用，不会影响实际的网络
+
+*** Organizing pods with labels
+
+Label 相当于标签 (Tag)，用来组合查询不同的对象
+
 * 问题
 
 ** TODO ENTRYPOINT 和 COMMAND 是怎样被表示和存放在 docker image layer 中的？
@@ -183,3 +234,16 @@ kubectl scale rc kubia --replica=3
 #+BEGIN_SRC sh
 source <(kubectl completion bash | sed s/kubectl/kc/g)
 #+END_SRC
+** explain
+
+#+BEGIN_SRC 
+# 查看 resource 帮助信息
+kubectl explain pods
+kubectl explain pods.spec
+#+END_SRC
+
+** port-forward
+
+** logs
+
+默认按 10MB 和“天”进行轮转
