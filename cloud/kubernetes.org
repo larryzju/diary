@@ -1,0 +1,55 @@
+* 架构
+
+K8S Cluster 由 Node 和 Master 构成。前者提供了 k8s 运行环境，对应于每台主机。后者为控制面，统一管理整体资源。
+
+k8s 的核心机制是 reconcile，不同的 resource 对象中记录着期望状态 (spec) 和实际状态 (status)。Controller 根据当前状态采取相应操作，以使得实际状态与期望一致，这就是 reconcile。
+
+** master
+
+中央服务，使用者通过 REST API 或者 =kubectl= 来与之交互，reconcile 各组件的状态
+
+包括三个组件 
+
+- kube-apiserver
+- kube-controller-manager
+- kube-scheduler
+
+** node
+
+作用有二
+
+- 维护 Pod 状态
+- 提供 k8s 运行环境
+
+包括几个核心组件
+
+- kubelet :: 运行 container
+- kube-proxy :: 管理网络
+- container runtime :: 如 docker, rkt, OCI runtime-spec
+
+** 特点
+
+- 自动调度
+- 异常恢复
+- 水平扩展，动态扩展（依据 metric）
+- DNS，自动服务发现，并在容器间负载均衡
+- 版本升级和降级（rollout, rollbacks）
+- 管理 secret 和 configmap
+- 支持多种存储，可扩展
+- 支持批处理任务（batch job）
+
+** 基本对象
+
+- pod :: 虚拟主机，包含多个容器
+- service :: 暴露内部服务
+- volume :: 持久化存储
+- namespace :: 隔离资源
+
+** 高级对象 （Controller 对象）
+
+- ReplicaSet
+- Deployment
+- StatefulSet
+- DaemonSet
+- Job
+
