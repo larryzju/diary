@@ -1,0 +1,42 @@
+* 1. Computer Abstractions and Technology
+
+** 1.1 Introduction 
+
+*** 计算机分类
+
+ - PC
+ - Server
+ - Embedded Computer
+
+*** 后 PC 时代
+
+ - 移动终端
+ - WSC (Warehouse Scale Computer) && Cloud Computing
+
+*** 学习内容
+
+ - 高级语言如何编译生成低级语言
+ - 软件硬件的的接口
+ - 影响程序的性能，以及如何改善
+ - 如何降低能耗
+ - 并行处理
+
+*** 影响程序性能的因素
+
+ - 算法
+ - 编程语言、编译、架构
+ - 处理器与内存
+ - IO
+
+
+** 1.2 Eight Great Ideas in Computer Architecture
+
+- Design for Moore's Law :: up and to the fright, design for rapid change
+- abstract :: hide details
+- make the common case fast :: 加速大概率事件
+- parallelism :: 通过并行提高性能
+- pipeline :: 通过流水线提高性能
+- prediction :: it's better to ask for forgiveness than to ask for permission
+- hierarchy of memories :: 三角形图示
+- dependability via redundancy :: 通过冗余提高可靠性
+
