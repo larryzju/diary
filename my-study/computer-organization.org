@@ -65,3 +65,56 @@
 
 
 
+
+** 1.4 Under the Covers
+
+计算机五个基础组件
+
+1. input device
+2. output device
+3. memory
+4. datapath
+5. control
+
+datapath 和 control 一起称为 processor
+
+*** TODO figure 1.5
+
+*** LCD
+
+两层正交的偏光板构成。每个像素点有晶体管控制光线折射率，以 RGB 方式控制颜色显示。硬件采用 raster refresh buffer （光栅刷新缓冲区），也叫 frame buffer 来存储数据，并定期刷新到显示器上
+
+*** Touchscreen
+
+人体是导电的，利用电容变化来进行交互
+
+*** IPad 拆机
+
+- CPU: 两核 ARM A5 处理器，1 GHz
+  - datapath: 算术计算
+  - control: 控制 datapath, memory 和 IO
+- Memory: 512MB, DRAM (dynamic random access memory)
+  - cache memory: SRAM (static random access memory），更快也更贵，与 DRAM 形成 memory hierarchy
+
+*** ISA (architecture)
+
+- instruction set architecture，对计算机硬件的抽象
+- 操作系统接口加上 ISA 称为 ABI (Application Binary Interface)
+- 程序员在 ISA 层次上设计和实现
+- 硬件工程师提供 implementation of an architecture
+
+*** 存储
+
+- 内存是易失的（volatile），硬盘是非失失的（nonvolatile）
+- 硬盘与内存也构成 memory hierarchy
+- 移动设备中常用 flash disk （但会因写入次数损坏）
+
+*** 网络
+
+- Ethernet
+  + local are network 
+  + wide area network
+
+- Optical commnunications technology
+
+- wireless technology (IEEE 802.11)
