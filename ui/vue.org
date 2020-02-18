@@ -1,0 +1,35 @@
+* 基本步骤
+
+创建三个文件 main.js, index.html, component.js
+1. index.html 里实现 root html，其中 vue app 用 id 标识出来
+2. main.js 里 new Vue，el 选择 DOM 元素，挂载 data, computed, components
+3. index.html 里使用 component 标签（在 main.js 里申明），并绑定变量
+4. component.js 里定义 Vue.component，定义 template, props (v-bind 传入参数)，methods
+
+* 总结
+
+Vue 的核心是虚拟 DOM，通过 reactive 方式实现数据与 DOM 的同步修改。
+
+虚拟 DOM 相当于一个独立的 DOM（由 HTML, css 定义），加上与之关联的 data，和对应的 action。当我们通过 action 修改其 data 时，view 也会相应的被改变。
+
+我们可以定义 .vue 为后缀的文件，称为 Standalone component，其中包括了几个部分
+- template: HTML 定义
+- script: 申明 component，并提供 data 函数，接受 props，定义 methods 和 computed 方法
+- style: CSS
+
+数据的传递有三种：
+1. 父到子：props，v-bind
+2. 子到父：发送自定义事件
+3. vuex
+
+** Vuex
+
+Vuex 是 vue 的一个扩展，用于抽象 Store 对象。Store 对象用来管理状态和变化。
+
+Store 有四个关键部分，记忆方式是 SMAG
+- S(State) :: 保存状态
+- M(Mutation) :: 修改 State 的内容
+- A(Action) :: 触发 Mutation（context.commit 方法），并与后端同步
+- G(Getter) :: 读取 State 内容（类似于 Vue 中的 Computed）
+
+Vuex 中提供了一些用于简化 Vue Compoents 的 Method 和 Computed 的方法，如 =mapGetters= 等
