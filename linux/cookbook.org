@@ -1,0 +1,10 @@
+* diff directories
+
+#+BEGIN_SRC bash
+diff -urNa dir1 dir2 --color=always | less -r
+#+END_SRC
+
+Note:
+- -N: treat the non-exist file as empty one
+- -r: recursive
+- --color=always: by default is auto mode
