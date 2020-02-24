@@ -1,5 +1,17 @@
+
 #+TITLE: git
 
+* Term
+
+| Term            | Description                                                 |
+|-----------------+-------------------------------------------------------------|
+| repository      | organize a single project                                   |
+| branch          | way to work on different versions of repository at one time |
+| master = branch | definitive branch                                           |
+| commits         | saved changes with commit message                           |
+| pull request    | proposing changes and requesting that someone review        |
+
+#+TBLFM: $1=master= branch
 * Commit
 
 ** TODO Objects
@@ -55,7 +67,6 @@ A branch is simply a lightweight movable pointer to one of these commits:
 - go back to the iss53 branch and continue working on it :: =git checkout iss53=
 - you can also merge the =master= branch into =iss53= if you what :: =git merge master=
 
-
 ** Merge
 
 *** Fast Forward
@@ -82,6 +93,7 @@ one parent).
 #+CAPTION: Merge commit
 [[https://git-scm.com/book/en/v2/images/basic-merging-2.png]]
 
+
 ** TODO Stashing and Cleaning
 
 ** Cookbook
@@ -91,6 +103,7 @@ one parent).
 - switch branch :: =git checkout testing=
 - show where the branch pointers are pointing :: =git log --decorate=
 - show all history :: =git log --oneline --decorate --graph --all=
+- find common ancestor :: =git merge-base A B=
 
 * 配置
 
@@ -116,3 +129,4 @@ git config --global core.quotepath off
 
 - [[file:~/diary/book/git%E6%95%99%E7%A8%8B.org][Git 教程笔记]]
 - [[https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell][Git branching]]
+- [[https://guides.github.com/activities/hello-world/][Github Guide - hello world]]
