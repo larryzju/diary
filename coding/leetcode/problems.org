@@ -1,0 +1,433 @@
+* 93. Restore IP Addresses				   :recursive:string:
+
+递归解法
+
+需要注意如何判断一个字段是否为合法的整数（0-255），小心 00, 010 这种字段
+
+#+BEGIN_SRC go
+import "fmt"
+
+func restoreIpAddresses(s string) []string {
+	return solve(s, 4)
+}
+
+func parse(s string) (res int) {
+	if len(s) == 0 {
+		return -1
+	}
+	
+	if len(s) > 1 && s[0] == '0' {
+		return -1
+	}
+	
+	for i := 0; i < len(s); i++ {
+		c := int(s[i])
+		v := c - int('0')
+		res = res*10 + v
+	}
+	return res
+}
+
+func solve(s string, n int) (res []string) {
+	if n <= 0 {
+		return []string{}
+	}
+
+	if n == 1 {
+		v := parse(s)
+		if v >= 0 && v < 256 {
+			return []string{s}
+		} else {
+			return []string{}
+		}
+	}
+
+	if len(s) > 0 {
+		for _, v := range solve(s[1:], n-1) {
+			res = append(res, fmt.Sprintf("%s.%s", s[:1], v))
+		}
+	}
+
+	if len(s) > 1 {
+		if x := parse(s[:2]); x >= 0 {
+			for _, v := range solve(s[2:], n-1) {
+				res = append(res, fmt.Sprintf("%s.%s", s[:2], v))
+			}
+		}
+	}
+
+	if len(s) > 2 {
+		if x := parse(s[:3]); x >= 0 && x < 256 {
+			for _, v := range solve(s[3:], n-1) {
+				res = append(res, fmt.Sprintf("%s.%s", s[:3], v))
+			}
+		}
+	}
+
+	return res
+}
+#+END_SRC
+
+* 139. Word Break							 :dp:
+
+** 暴力递归求解
+
+#+BEGIN_SRC go
+func wordBreak(s string, wordDict []string) bool {
+    if s == "" {
+        return true
+    }
+    
+    for _, w := range wordDict {
+        if len(s) >= len(w) && s[:len(w)] == w {
+            if wordBreak(s[len(w):], wordDict) {
+                return true
+            }
+        }
+    }
+    return false
+}
+#+END_SRC
+
+超时：如果每个 word in dict 都匹配
+
+#+BEGIN_SRC 
+"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab"
+["a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa"]
+#+END_SRC
+
+** 候选项排序
+
+#+BEGIN_SRC go
+import "sort"
+
+func wordBreak(s string, wordDict []string) bool {
+    sort.Slice(wordDict, func(i, j int) bool {
+        return len(wordDict[i]) > len(wordDict[j])
+    })
+    return solve(s, wordDict)
+}
+
+func solve(s string, wordDict []string) bool {
+    if s == "" {
+        return true
+    }
+    
+    for _, w := range wordDict {
+        if len(s) >= len(w) && s[:len(w)] == w {
+            if solve(s[len(w):], wordDict) {
+                return true
+            }
+        }
+    }
+    return false
+}
+#+END_SRC
+
+依然超时。因为不能快速失败。需要遍历所有的可能项
+
+** TODO 动态规划
+
+递归方法的最大问题是重复计算
+
+我们的问题可以简化描述为
+
+#+BEGIN_SRC 
+f(w) =>
+  f(w[1:]) if w[:1] in dict ||
+  f(w[2:]) if w[:2] in dict ||
+  ... ||
+  f(w[n:]) if w[:n] in dict; // n 为 dict 中最长单词长度
+#+END_SRC
+
+可以看到 =w[:n] in dict= 可能被重复求值，因此我们可以缓存其状态，避免重复求值
+
+#+BEGIN_SRC go
+func wordBreak(s string, wordDict []string) bool {
+	var solve func(string) bool
+	cache := map[int]bool{}
+
+	solve = func(s string) bool {
+		if s == "" {
+			return true
+		}
+
+		for _, w := range wordDict {
+			if len(s) >= len(w) && s[:len(w)] == w {
+				has, ok := cache[len(w)]
+				if !ok {
+					has = solve(s[len(w):])
+					cache[len(w)] = has
+				}
+
+				if has {
+					return true
+				}
+			}
+		}
+		return false
+	}
+    
+    return solve(s)
+}     
+#+END_SRC
+
+* 221. Maximal Square							:geo:
+
+** 预计算面积
+
+与 [[1292.%20Maximum%20Side%20Length%20of%20a%20Square%20with%20Sum%20Less%20than%20or%20Equal%20to%20Threshold][1292. Maximum Side Length of a Square with Sum Less than or Equal to Threshold]] 一样
+
+#+BEGIN_SRC go
+func maximalSquare(mat [][]byte) int {
+	if len(mat) == 0 {
+		return 0
+	}
+
+	// prepare the v matrix
+	// v[i][j] is the sum of the value in rec (0,0,i,j)
+	n, m := len(mat), len(mat[0])
+	v := make([][]int, n+1)
+	for i := 0; i < n+1; i++ {
+		v[i] = make([]int, m+1)
+	}
+
+	for i := 1; i < n+1; i++ {
+		for j := 1; j < m+1; j++ {
+            v[i][j] = v[i][j-1] + v[i-1][j] - v[i-1][j-1] + int(mat[i-1][j-1] - '0')
+		}
+	}
+
+	check := func(size int) bool {
+		for i := 0; i <= n-size; i++ {
+			for j := 0; j <= m-size; j++ {
+				s := v[i+size][j+size] + v[i][j] - v[i+size][j] - v[i][j+size]
+				if s == size*size {
+					return true
+				}
+			}
+		}
+		return false
+	}
+
+	maxSize := m
+	if maxSize > n {
+		maxSize = n
+	}
+
+	for size := maxSize; size >= 0; size-- {
+		if check(size) {
+			return size*size
+		}
+	}
+	return 0
+}
+#+END_SRC
+** TODO 更快
+
+* TODO 455. Assign Cookies					     :greedy:
+
+总是分配最小符合的
+
+#+BEGIN_SRC go
+import "sort"
+
+func findContentChildren(g []int, s []int) int {
+	sort.Ints(g)
+	sort.Ints(s)
+
+	i, x, y := 0, 0, 0
+	for x < len(g) && y < len(s) {
+		if g[x] <= s[y] {
+			i += 1
+			x += 1
+			y += 1
+		} else {
+			y += 1
+		}
+
+	}
+
+	return i
+}
+#+END_SRC
+
+* 515. Find Largest Value in Each Tree Row			       :tree:
+
+树的广度优先遍历
+
+注意：root 为 nil 的特殊情况
+
+#+BEGIN_SRC go
+func largestValues(root *TreeNode) []int {
+    if root == nil {
+        return []int{}
+    }
+    
+	res := []int{}
+	candidates := []*TreeNode{root}
+	for len(candidates) > 0 {
+		length := len(candidates)
+		max := candidates[0].Val
+		for i := 0; i < length; i++ {
+			can := candidates[i]
+			if can.Left != nil {
+				candidates = append(candidates, can.Left)
+			}
+
+			if can.Right != nil {
+				candidates = append(candidates, can.Right)
+			}
+
+			if max < can.Val {
+				max = can.Val
+			}
+		}
+		res = append(res, max)
+		candidates = candidates[length:]
+	}
+	return res
+}
+#+END_SRC
+* 650. 2 Keys Keyboard					   :greedy:recursive:
+
+优先选择最大的分子。
+
+注意 n == 1 的特殊情况。
+
+#+BEGIN_SRC go
+func minSteps(n int) int {
+	if n == 1 {
+		return 0
+	}
+	for i := n / 2; i > 1; i-- {
+		t := i
+		for t < n {
+			t += i
+		}
+		if t == n {
+			return minSteps(i) + n/i
+		}
+	}
+	return n
+}
+#+END_SRC
+
+* 884. Uncommon Words from Two Sentences			       :easy:
+
+使用 map 计数即可
+
+#+BEGIN_SRC go
+import "strings"
+
+func uncommonFromSentences(A string, B string) []string {
+    a := map[string]int{}
+    for _, w := range strings.Split(A, " ") {
+        a[w] += 1
+    }
+    
+    b := map[string]int{}
+    for _, w := range strings.Split(B, " ") {
+        b[w] += 1
+    }
+    
+    res := []string{}
+    
+    for w, v := range a {
+        if v == 1 && b[w] == 0 {
+            res = append(res, w)
+        }
+    }
+    
+    for w, v := range b {
+        if v == 1 && a[w] == 0 {
+            res = append(res, w)
+        }
+    }
+    
+    return res
+}
+#+END_SRC
+* TODO 991. Broken Calculator					     :greedy:
+
+贪婪算法：依据是指数比线性快？求证明
+#+BEGIN_SRC go
+func brokenCalc(X int, Y int) int {
+	// fmt.Println(X,Y)
+	if X == Y {
+		return 0
+	}
+
+	if X > Y {
+		return X - Y
+	}
+
+	i := 0
+	for Y > X {
+		if Y%2 == 0 {
+			Y /= 2
+		} else {
+			Y += 1
+		}
+		i += 1
+	}
+
+	return X - Y + i
+}
+#+END_SRC
+* 1292. Maximum Side Length of a Square with Sum Less than or Equal to Threshold :geo:
+
+** 预计算 rect(0,0,x,y) 面积
+
+#+BEGIN_SRC go
+func maxSideLength(mat [][]int, threshold int) int {
+	if len(mat) == 0 {
+		return 0
+	}
+
+	// prepare the v matrix
+	// v[i][j] is the sum of the value in rec (0,0,i,j)
+	n, m := len(mat), len(mat[0])
+	v := make([][]int, n+1)
+	for i := 0; i < n+1; i++ {
+		v[i] = make([]int, m+1)
+	}
+
+	for i := 1; i < n+1; i++ {
+		for j := 1; j < m+1; j++ {
+			v[i][j] = v[i][j-1] + v[i-1][j] - v[i-1][j-1] + mat[i-1][j-1]
+		}
+	}
+
+	check := func(size int) bool {
+		for i := 0; i <= n-size; i++ {
+			for j := 0; j <= m-size; j++ {
+				s := v[i+size][j+size] + v[i][j] - v[i+size][j] - v[i][j+size]
+				if s <= threshold {
+					return true
+				}
+			}
+		}
+		return false
+	}
+
+	maxSize := m
+	if maxSize > n {
+		maxSize = n
+	}
+
+	for size := maxSize; size >= 0; size-- {
+		if check(size) {
+			return size
+		}
+	}
+	return 0
+}
+#+END_SRC
+** TODO 更快？
+
+第一种解法尚不够快，时间复杂度 O(n^3):
+
+Runtime: 120 ms, faster than 44.44% of Go online submissions for Maximum Side Length of a Square with Sum Less than or Equal to Threshold.
+
+
