@@ -1,0 +1,46 @@
+* 对比 fluentd
+
+- 和 fluentd 解决同样的问题，由同一家公司开发
+- 轻量（用 C 编写，fluentd 用 c + ruby 编写），占用内存小，适合 k8s 和 IoT 场景
+- 插件相对 fluentd 少
+- 不支持 aggregate 功能。可以把数据推给 fluentd 来聚合
+
+* Data Pipeline
+
+设置 input, parser, filter, buffer, router 和 output
+
+1. filter 不仅用于筛选，还可以对数据进行修改，添加新的字段（如 k8s label, annotation, pod metadata 等 ）
+2. 记录（Event/Record）通过 Tag 来标识（类似于 Prometheus）
+3. router 通过匹配 （Match）tags 进行选路（分路）
+4. 记录中包括 timestamp，可以是从输入中解析出来的，也可以是 input plugin 给加上的
+
+
+* 配置
+
+1. 配置 data pipeline
+   1. service: flush, daemon, log level, parser file
+   2. input: name（插件名），tag
+   3. filter: name, match
+   4. output: name, match
+2. 配置 parser 规则
+   1. json 或者 regexp
+   2. 可以对嵌套内容进行 lift 或者 nest
+
+
+
+* 常用插件
+
+** input
+
+- tail
+
+
+** output
+
+- es
+
+** filter
+
+- kubernetes
+- modify
+- nest
