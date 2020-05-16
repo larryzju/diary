@@ -1,0 +1,89 @@
+* GDT
+
+** Descriptor Table
+
+Intel 有三种描述表
+
+1. Interrupt Descriptor Table
+2. Global Descriptor Table
+3. Local Descriptor Table
+
+每个表有 N 个 descriptor items，通过 =LIDT=, =LGDT=, =LLDT= 来设置三张表
+
+
+** 术语
+
+| Term             | Description                                 |
+|------------------+---------------------------------------------|
+| Segment          | 定义一块内存                                |
+| Segment Register | 寄存器，用于选中 Segment, 如 CS, DS, SS     |
+| Selector         | 指定用哪个 Descriptor Table，并选中其中一条 |
+| Descriptor       | 描述 segment 的内存结构                       |
+
+** 作用
+
+将物理内存映射到 segment
+
+** 数据结构
+
+每个描述项占 8 个字节，包括
+
+1. Base Address: 32bit (4G)
+2. Limit: 20bit (1M)
+3. Flags: 4bit
+   1. Granularity bit: 1 for 4KiB blocks
+   2. Size bit: 16 or 32 bit protect mode
+   3. L bit: x86-64 code descritpro
+4. Access Byte: 8bit
+   1. Present: 1bit，selector 是否有效
+   2. Privilege: 2bit, 0: kernel, 3: app
+   3. Descriptor type(S): 1bit, code or data
+   4. Executable: 1bit
+   5. Direction bit: grow up or grow down
+   6. RW bit: reable for code selector, or writable for data selector
+   7. Accessed
+
+Flag 中可以配置 Granularity 大小（默认是 1Byte， 可以设为 4K）。设为 4K 时，limit 大小为 4G，占满整个内存空间
+
+** 描述表种类
+
+1. null descriptor table
+2. code segment descriptor (0x9A)
+3. data segment descriptor (0x92)
+4. TSS segment descriptor
+5. misc (user-level, LDTs, TSS)
+
+*** 0x9A 与 0x92
+
+区别在于 Executable bit 不同
+
+* 代码
+
+** 结构体
+
+#+BEGIN_SRC c
+/*
+ * Global Descriptor Tablet Entry
+ */
+struct gdt_entry {
+        unsigned short limit_low;
+        unsigned short base_low;
+        unsigned char base_middle;
+        unsigned char access;
+        unsigned char granularity;
+        unsigned char base_high;
+} __attribute__((packed));
+
+/*
+ * GDT pointer
+ */
+struct gdt_ptr {
+        unsigned short limit;
+        unsigned int base;
+} __attribute__((packed));
+#+END_SRC
+
+* Reference
+
+- https://wiki.osdev.org/Global_Descriptor_Table
+- https://wiki.osdev.org/index.php?title=GDT_Tutorial&printable=yes
