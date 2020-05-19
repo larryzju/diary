@@ -1,3 +1,24 @@
+* Command Line
+
+** 配置文件
+
+有两个 
+
+1. =~/.aws/config=
+
+   ini 语法，默认是 default section，可以定义 =[profile profile-name]= section，保存 region, access id, secret access key
+
+2. =~/.aws/credential=
+
+   ini 语法，按 config 中的 profile 来分 section，用来保存 access key id, secret access key, session token
+
+** 指定 credential 
+
+1. 命令行
+2. 环境变化
+3. credential file
+4. config file
+
 * S3
 
 S3 is short for Amazon Simple Storage Service. It is storage for the
