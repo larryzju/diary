@@ -625,4 +625,116 @@ aws configure get aws_access_key_id
 
 Or you can get the credential by check files =~/.aws/config= and ~/.aws/credential~
 
+** get IAM access ID
 
+Get access key (without secret access token)
+#+BEGIN_SRC sh
+aws iam list-access-keys --user-name 'larry.zhao01@sap.com'
+#+END_SRC
+
+每个用户最多有两个 access ID，secret access token 仅在创建时返回，之后无法再次获得
+ 
+** rotate access key
+
+每个用户最多有两个 access ID，secret access token 仅在创建时返回，之后无法再次获得
+
+1. 创建新 access key: ~aws iam create-access-key~ ，记录 secret access key
+2. 禁用老的 access key: ~aws iam update-access-key --access-key-id access-key --status Inactive~
+3. 删除老的 access key: ~aws iam delete-access-key --access-key-id access-key~
+
+* IAM
+
+全称是 AWS Identity and Access Management，包括了认证和授权两部分功能
+
+1. authenticate (sign in)
+2. authorized (permission control)
+
+Root user/password 有最高的权限，一般不应用于实际生产环境。而是创建其它的 IAM 账户来使用。
+
+
+
+** 使用场景
+
+为不同的客户生成 IAM User，每个 IAM 用户都有自己的权限配置，来限制不同的资源访问
+
+
+
+** Terms
+
+| Name      | Description                         |
+|-----------+-------------------------------------|
+| principal | 使用者，使用 root credential 或 IAM |
+| resources | 要访问的 AWS 资源                   |
+| identity  | 标识 IAM，如 user, group, role      |
+
+
+** Policy
+
+*** Indentity-based policy
+
+*** Resource-based policy
+
+跨不同的 account 访问资源，例如跨 AWS account 访问 ECR
+
+
+** User, Group, Role
+
+三类
+
+1. root user :: 邮箱名和密码登录, root user 有最高的权限，类似于 linux
+                root 用户。不要用于日常生产环境，而是新建 IAM 用户来使
+                用。
+
+2. IAM users :: root 账号下的子账号，有独立的密码和权限管理。不一定是
+                真正的“人”，也可能分配给某个应用使用
+
+3. Federating users :: 使用外部账户登录，需要与 SSO 或者 IDP 集成
+
+
+
+** Permissions, Policies
+
+创建 policy，并将之赋予 IAM identity 或者 AWS resource，进行访问管理 (Access Management）
+
+
+** identity-based policy
+
+Control what _actions_ the _identity_ can perform, on which _resources_, and under what _conditions_
+
+可以在 user, group, role 嵌入式的指定，也可以创建 policy 并在 user, group, role 中引用之
+
+*** Account
+
+- 对于单账户 (single account) ，可以通过 policy 来管理
+- 对于多账户，使用 IAM roles, resource-based policy, ACL 来管理
+
+*** User
+
+创建 identity-based policy ，把 policy 授予 user 或者 group。Policy 以 JSON 描述，包括
+
+| Name     | Description |
+|----------+-------------|
+| Effect   | Allow/Deny  |
+| Action   | dynamodb:*  |
+| Resource | ARN path    | 
+
+上表中层次可以描述为
+
+1. Service: dynamodb
+2. Action: *
+3. Resource: ARN path
+
+*** Group
+
+用于为多个用户配置相同的 policy
+
+*** Federated Users
+
+外部用户在 AWS account 没有对应的 identities，因此需要创建一个 role，并为 role 分配以 policy。外部来的用户会匹配到一个 role
+
+
+** resource-based policy
+
+policy 被内联设置在 resource 上，用于跨 AWS account 访问资源 
+
+Question: 跨 AWS account 能否通过 role 来访问？
