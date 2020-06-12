@@ -19,6 +19,20 @@
 3. credential file
 4. config file
 
+*** 环境变量
+
+- =AWS_ACCESS_KEY_ID=
+- =AWS_SECRET_ACCESS_KEY=
+
+** bash complete
+
+参见 https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-completion.html
+
+#+BEGIN_SRC 
+complete -C $(which aws_completer) aws
+#+END_SRC
+
+
 * S3
 
 S3 is short for Amazon Simple Storage Service. It is storage for the
