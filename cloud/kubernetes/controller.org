@@ -1,11 +1,24 @@
 * Overview
 
-Conclude how to 
-1. create Custom Resource with Custom Resource Defnition
-2. add/update/delete Custom Resource
-3. create custom controller and associate it with the new created custom resource
+CRD 是用户自定义的类型，对应该类型可以创建一组 CR，可以在 CRD 中指定 validation 规则。CR 中包括 Spec，表示期望的状态。
 
-See https://github.com/kubernetes/sample-controller for details
+Controller 的作用是监听 CR，reconcile CR 的 Spec 与 Status。(/kubernets runs a group of *controllers that take care of routine
+taks to ensure the desired state of the cluster matches the observed data*/)
+
+#+BEGIN_QUOTE
+In applications of robotics and automation, a control loop is a
+non-terminating loop that regulates the state of the system. In
+Kubernetes, a controller is a control loop that watches the shared
+state of the cluster through the API server and makes changes
+attempting to move the current state towards the desired
+state. Examples of controllers that ship with Kubernetes today are the
+replication controller, endpoints controller, namespace controller,
+and serviceaccounts controller.
+#+END_QUOTE
+
+为了避免 Controller 显式的轮循 CR 状态（代码冗余、不必要的开销），Controller 提供了 informer 和 workqueue 机制。
+Controller 申请监听某种 CR，当 CR 状态发生变化（创建、修改、删除时）产生事件到 workqueue 中。
+
 
 * Create Custom Resource
 
@@ -55,7 +68,19 @@ CRD is not namespaced (but scoped)
 #+BEGIN_SRC bash
 kubectl get foos example-foo -n larry -o yaml
 #+END_SRC
+
 * Define Custom Resource Spec for Controller
 * TODO Validation
 
 CustomResourceValidation
+* code-generator
+
+kubernetes provide a toolkit named https://github.com/kubernetes/code-generator to generate deepcopy, informer, lister, client from the  
+CRD type definition.
+
+** TODO what is informer?
+* informer
+
+* reference
+
+- [[https://engineering.bitnami.com/articles/a-deep-dive-into-kubernetes-controllers.html][A deep dive into Kubernetes controllers]]
