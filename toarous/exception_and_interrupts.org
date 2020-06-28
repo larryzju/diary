@@ -1,0 +1,64 @@
+* 概述
+
+系统和应用实现者注册了一组回调函数（用 0-255 的编号来表示），在发生异常或有外部事件发生时 CPU 将自动调用该方法。
+其中 NMI 和 exception 编号为 0-31, 可屏蔽中断 INTR 编号为 32-255
+
+Interrupt 与 Exception 的区别在于：前者由外部事件产生，后者在 CPU 执行过程中生成。
+
+
+
+
+* Interrupt
+
+分为两类
+
+1. 可屏蔽 (maskable），由 INTR 管脚接入，通过 IF 控制位来启用禁用
+2. 不可屏蔽 (nonmaskable），由 NMI 管脚接入（Non-Maskable Interrupt）
+
+
+* Exception
+
+分为两类
+
+1. processor detected，又可细分为 faults, traps, aborts
+   - faults :: 指令执行前或执行中发生，指令可以被重启
+   - traps :: 执行后
+   - aborts :: 无法恢复的问题
+2. programmed, 如 INTO, INT 3, INT n, BOUND 指定触发，称为软中断 （software interrupts）
+
+
+
+* IDT
+
+中断表中记录了每种中断、异常的回调方法，每个项占八个字节。通过 LIDT (Load IDT Register) 指令来设置 IDTR 寄存器，指向内存中的中断表
+
+** IDT Descriptors
+
+分三种类型
+
+1. Task gates
+2. Interrupt gates
+3. Trap gates
+
+
+** Task & Procedure
+
+TODO 两者区别是什么？
+
+* Misc
+
+** 禁止中断
+
+- IF flag 禁止 INTR
+- NMI 中断时，禁止其它中断
+- MOV SS 和 MOV ESP 中间不能中断
+
+** 中断优先级
+
+1. 低优先级的异常被丢弃，当恢复执行时会被再次触发
+2. 低优先级的中断被阻塞
+
+
+* 参考资料
+
+- Intel 80386 Programmer's Reference Manual, 1986
