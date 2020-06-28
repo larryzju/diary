@@ -230,6 +230,31 @@ Refer to [[https://wiki.osdev.org/Text_Mode_Cursor#Moving_the_Cursor_2][moving t
 1. 80 characters can be displayed per line
 2. set 0x3D4 to 0x0E/0x0F and set the cursor position.
 
+** scroll the screen
+
+#+BEGIN_SRC c
+void
+scroll() {
+        unsigned blank, temp;
+        blank = 0x20 | (attrib << 8);
+        if (csr_y >= 25) {
+                /*
+                 * Move the current text chunk that makes up the screen
+                 * back in the buffer by one line.
+                 */
+                temp = csr_y - 25 + 1;
+                memcpy(textmemptr, textmemptr + temp * 80, (25 - temp) * 80 * 2);
+                /*
+                 * Set the chunk of memory that occupies
+                 * the last line of text to the blank character
+                 */
+                memsetw(textmemptr + (25 - temp) * 80, blank, 80);
+                csr_y = 25 - 1;
+        }
+}
+#+END_SRC
+
+
 * 参考资料
   :PROPERTIES:
   :CUSTOM_ID: 参考资料

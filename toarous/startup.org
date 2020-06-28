@@ -1,0 +1,15 @@
+* 启动流程
+
+1. 配置 GDT
+2. 初始化 video
+
+
+
+
+** 配置 GDT
+
+创建三个 GDT 表项：null, code segment, data segment。参见 [[file:gdt.org][GDT]]
+
+** 初始化 video
+
+参见 [[file:vga.org]] text-ui 章节，使用 text mode 
