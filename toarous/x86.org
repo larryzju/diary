@@ -1,67 +1,53 @@
 #+TITLE: intel 80x86 笔记
 #+AUTHOR: 赵文彬
 
-* 可执行文件
+* 寄存器
 
-** section
+8 个 32-bit 通用寄存器，部分名称已经失去了历史命名时的意义
 
--  Text/Code
--  Data
--  BSS(Block Started Symbol)，用于保存未初始化的全局变量，用于节省存储空间
+| register | description   |
+|----------+---------------|
+| EAX      | 累加          |
+| EBX      |               |
+| ECX      | counter       |
+| EDX      |               |
+| ESP      | stack pointer |
+| EBP      | base pointer  |
 
-** 文件格式
-
--  ELF ( Executable and Linker Format )
--  a.out: 传统的 unix 文件格式
--  COFF( Common Object File Format ) 和 PE( Portable Executable )
-
-* ELF 文件格式
-
-ELF 是 linux 默认格式，PE 是 Windows 默认格式。
-
-1. 可以有任意多个 section
-2. 每个 section 可以有自己的特征
-3. 有利于 dynamic link
-4. 有利于 debug
-
-使用 =readelf --header <file>= 或 =objdump --disassemble=
-命令来查看文件的 ELF 相关信息。
-
-ELF 文件格式可以参考 =/usr/include/elf.h=，文件以 =Ehdr=
-头信息开始，保存了 ELF 硬件类型和版本信息
-
-#+BEGIN_EXAMPLE
-    ELF Header:
-      Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00
-      Class:                             ELF64
-      Data:                              2's complement, little endian
-      Version:                           1 (current)
-      OS/ABI:                            UNIX - System V
-      ABI Version:                       0
-      Type:                              EXEC (Executable file)
-      Machine:                           Advanced Micro Devices X86-64
-      Version:                           0x1
-      Entry point address:               0x404030
-      Start of program headers:          64 (bytes into file)
-      Start of section headers:          124688 (bytes into file)
-      Flags:                             0x0
-      Size of this header:               64 (bytes)
-      Size of program headers:           56 (bytes)
-      Number of program headers:         9
-      Size of section headers:           64 (bytes)
-      Number of section headers:         28
-      Section header string table index: 27
-#+END_EXAMPLE
-
-#+BEGIN_QUOTE
-  Magic 为魔数值，=0x7f= + =ELF= 标识这种文件类型
-#+END_QUOTE
+其中 EAX, EBX, ECX, EDX 的低 16 位，以及低 16 位的高低 8 位可以单独使用（如 AX, AH, AL)
 
 * 数据类型
 
-计算机能做的全部工作可以归结为对数据的存储、检查和处理
+计算机能做的全部工作可以归结为对数据的存储、检查和处理。内存是有唯一地址的字节的有序阵列。
 
-内存是有唯一地址的字节的有序阵列。
+** 静态数值 
+
+用 =.DATA= 来指令开始，用 =DB=, =DW=, =DD= 来声明，如
+
+#+BEGIN_SRC 
+.DATA
+var  DB 64
+var2 DB ? ; 未初始化
+     DB 10
+X    DW ?
+Y    DD 30000
+str  DB 'hello', 0
+arr  DD 100 DUP(0)  ; 100 个四字节数组，初始值为 0
+#+END_SRC
+
+** 寻址
+
+间接寻址 =mov eax, [ebx]= , 地址可以进行偏移，如 =mov edx, [esi+4*ebx]= ，最多可以有两个寄存器参与计算
+
+** size directive
+
+通常汇编器会根据寄存器和操作数推断出实际的指定位数，有些情况需要手动显式地指定
+
+#+BEGIN_SRC asm
+  mov BYTE PTR [ebx], 2  		; single byte
+  mov WORD PTR [ebx], 2		; 16-bit integer
+  mov DWORD PTR [ebx], 2		; 32-bit integer
+#+END_SRC
 
 ** 大端与小端问题
    :PROPERTIES:
@@ -146,6 +132,63 @@ ELF 文件格式可以参考 =/usr/include/elf.h=，文件以 =Ehdr=
 -  Infinities
 -  SignalingNan（信号的非数字）
 -  Quiet Nan(静的非数字）
+
+
+* 可执行文件
+
+** section
+
+-  Text/Code
+-  Data
+-  BSS(Block Started Symbol)，用于保存未初始化的全局变量，用于节省存储空间
+
+** 文件格式
+
+-  ELF ( Executable and Linker Format )
+-  a.out: 传统的 unix 文件格式
+-  COFF( Common Object File Format ) 和 PE( Portable Executable )
+
+* ELF 文件格式
+
+ELF 是 linux 默认格式，PE 是 Windows 默认格式。
+
+1. 可以有任意多个 section
+2. 每个 section 可以有自己的特征
+3. 有利于 dynamic link
+4. 有利于 debug
+
+使用 =readelf --header <file>= 或 =objdump --disassemble=
+命令来查看文件的 ELF 相关信息。
+
+ELF 文件格式可以参考 =/usr/include/elf.h=，文件以 =Ehdr=
+头信息开始，保存了 ELF 硬件类型和版本信息
+
+#+BEGIN_EXAMPLE
+    ELF Header:
+      Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00
+      Class:                             ELF64
+      Data:                              2's complement, little endian
+      Version:                           1 (current)
+      OS/ABI:                            UNIX - System V
+      ABI Version:                       0
+      Type:                              EXEC (Executable file)
+      Machine:                           Advanced Micro Devices X86-64
+      Version:                           0x1
+      Entry point address:               0x404030
+      Start of program headers:          64 (bytes into file)
+      Start of section headers:          124688 (bytes into file)
+      Flags:                             0x0
+      Size of this header:               64 (bytes)
+      Size of program headers:           56 (bytes)
+      Number of program headers:         9
+      Size of section headers:           64 (bytes)
+      Number of section headers:         28
+      Section header string table index: 27
+#+END_EXAMPLE
+
+#+BEGIN_QUOTE
+  Magic 为魔数值，=0x7f= + =ELF= 标识这种文件类型
+#+END_QUOTE
 
 * 机器状态和存储器寻址
 
@@ -584,6 +627,184 @@ Parameter to some handler that will be pushed onto the stakc of the exception ha
 2. if =I= | =TI=, then use IDT, else use GDT
 
 * instruction
+
+分为三大类
+
+1. data movement
+2. arithmetic/logic
+3. control/flow
+
+** Data Movement Instructions
+
+*** mov
+
+不能直接从内存移动到内存，需要通过寄存器中转
+
+Syntax
+
+- mov <reg>, <reg>
+- mov <reg>, <mem>
+- mov <mem>, <reg>
+- mov <reg>, <const>
+- mov <mem>, <const>
+
+Examples,
+
+#+BEGIN_SRC asm
+  mov eax, ebx 			;copy the value in ebx into eax
+  mov byte ptr [var], 5		;store the vaue 5 into the byte at location var
+#+END_SRC
+
+
+
+*** push
+
+等效于 ~*(--esp) = val~ ,注意栈是向下增长的
+
+Syntax
+
+- push <reg32>
+- push <mem>
+- push <con32>
+
+Examples
+
+#+BEGIN_SRC asm
+  push eax			; push eax on the stack
+  push [var]			; push the 4 bytes at address var onto the stack
+#+END_SRC
+
+
+*** pop
+
+等效于 ~val = *(sp++)~
+
+
+*** lea
+
+Load Effective Address，计算地址
+
+#+BEGIN_SRC asm
+  lea edi, [ebx + 4 * esi]	; EDI = EBX + 4 * ESI
+  lea eax, [var]			; EAX = &var
+  lea eax, [val]			; EAX = val
+#+END_SRC
+
+
+** Arithmetic and Logic Instructions
+
+*** add
+
+Syntax
+
+- add <reg>, <reg>
+- add <reg>, <mem>
+- add <mem>, <reg>
+- add <reg>, <con>
+- add <mem>, <con>
+
+Example
+
+#+BEGIN_SRC asm
+  add BYTE PTR[var], 10
+#+END_SRC
+
+
+*** sub
+
+#+BEGIN_SRC asm
+  sub al, ah
+  sub eax, 216
+#+END_SRC
+
+
+*** inc, dec
+
+#+BEGIN_SRC asm
+  dec eax
+  inc DWORD PTR [var]
+#+END_SRC
+
+
+*** imul
+
+分为两个操作数和三个操作数两种格式
+
+#+BEGIN_SRC asm
+  imul eax, [var] 		; eax *= *var
+  imul esi, edi, 25		; esi = edi * 25
+#+END_SRC
+
+
+*** idiv
+
+被除数存放在 =EDX:EAX= 中（EDX 为高位），除数在指定中指定。商存放在 EAX，余数存放在 EDX
+
+*** and, or, xor
+
+位运算，使用方式同 =add=, =sub=
+
+
+*** not
+
+按位取反
+
+*** neg
+
+two's complement negation
+
+
+*** shl, shr
+
+移位符（c 中的 <<, >>）
+
+
+** Control Flow Instructions
+
+IP (instruction pointer) 寄存器指向当前执行的指令位置。通过控制指令来修改 IP 指向，实现跳转。
+
+汇编源码中可以用 "label:" 来标识一个位置，可以被其它的指令来引用
+
+
+*** jmp
+
+jmp <label>，跳转到某个 label
+
+
+*** jcondition sets
+
+根据状态码（machine status word）不同进行不同的跳转操作
+
+- je :: jump when equal
+- jne :: jump when not equal
+- jz :: jump when last result was zero
+- jg :: jump when greater than
+- jge :: jump when greater or equal to
+- jl :: jump when less than
+- jle :: jump when less than or equal to
+
+Example:
+#+BEGIN_SRC asm
+  cmp eax, ebx
+  jle done
+#+END_SRC
+
+
+*** cmp
+
+类似于 =sub= ，但结果被丢弃，只影响 condition codes
+
+
+*** call, ret
+
+子程序调用。首先把当前下下文压栈，跳转到指定位置执行子程序，最后通过 =ret= 恢复上下文（从栈中），返回上一级继续执行
+
+Syntax
+#+BEGIN_SRC asm
+  call <label>
+  ret
+#+END_SRC
+
 
 * misc
 
