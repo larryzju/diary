@@ -805,6 +805,65 @@ Syntax
   ret
 #+END_SRC
 
+* Calling Convention
+
+call 和 ret 仅保证子方法能被调用，但没有规定参数传递等格式。高级语言的编译器使用了一套规范，例如 C 语言约定把参数通过 stack 来传递，把寄存器内容压栈，把本地变量也存放在栈上。
+
+calling convention 主要包括两部分
+
+1. 调用者规范 (caller)
+2. 被调用者规范 (callee)
+
+[[https://www.cs.virginia.edu/~evans/cs216/guides/stack-convention.png][stack during subroutine call]]
+
+
+** caller rules
+
+1. stage register of caller-saved, such as EAX, ECX, EDX
+2. push parameters of function n inverted order (last parameter first)
+3. =call= will stack the return address on top of the parameters on thestack
+
+
+返回值将被置于 EAX 中，调用者首先弹出入参，再按栈信息来恢复上下文（寄存器的值）。
+
+例如调用 =_myFunc(eax, 216, &var)=
+#+BEGIN_SRC asm
+  push [var]
+  push 216
+  push eax
+
+  call _myFunc
+
+  add esp, 12
+#+END_SRC
+
+** callee rules
+
+1. copy the value of ESP into EBP to find the parameters and local variables on the stack. Before copy from ESP, the EBP should be stacked.
+   #+BEGIN_SRC asm
+     push ebp
+     mov ebp, esp
+   #+END_SRC
+
+2. allocate local variables on the stack
+
+3. save the callee-saved registers, such as EBX, EDI, ESI
+
+返回时的步骤
+
+1. leave the return value in EAX
+2. restore EDI and ESI
+3. deallocate local variables =mov esp, ebp=
+4. restore EBP by popping ESP off the stack
+5. return to the caller by executing a =ret= instruction
+
+
+函数的参数和本地变量都可以通过 base pointer 相对寻址找出，其中
+
+1. 参数在高地址（中间隔了一个 4 字节的 return address），第一个参数为 EBP+8，第二个参数在 EBP+12，依次类推
+2. 本地变量在低地址，第一个本地变量在 EBP-4
+
+** TODO 被调用者如何知道有几个参数？
 
 * misc
 
@@ -830,4 +889,5 @@ protection control
 
 - [[http://www.bottomupcs.com/chapter07.xhtml][binary format]]
 - [[http://www.logix.cz/michal/doc/i386/][Intel 80386 Programmer's Reference Manual (non-official)]]
+- [[https://www.cs.virginia.edu/~evans/cs216/guides/x86.html][x86 Assembly Guide]]
 
