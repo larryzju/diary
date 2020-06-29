@@ -147,6 +147,19 @@ Elastic Compute Cloud：云服务器。称为 EC2 实例
 2. add private key to putty auth configuration (convert from PEM to PPK format before login with *PuttyGen*)
 3. login with the default user name =ec2-user= 
 
+* EBS
+
+提供 EC2 的存储空间，可以是硬盘，也可以是 SSD。有自己的生命周期，可以不随 EC2 删除而删除
+
+可以生成快照，并复制到不同的 zone 和 region，并从快照中恢复。存储内容可以被自动加密
+
+** steps to create and use ebs volume
+
+1. create volume: specify availability zone, volume type, size
+2. attach volume to instance and set the device path (such as /dev/sdb)
+3. login in linux, check with =lsblk= command line
+4. format disk: =mkfs.ext4 /dev/xvdb=
+5. mount partition to mountpoint =mount /dev/xvdb /mnt=
 
 * VPC
 
