@@ -119,12 +119,34 @@ Try uploading files using AWS CLI command instead.
 
 * EC2
 
-Elastic Compute Cloud is the service we can use to create and run VM
-in the cloud.
+Elastic Compute Cloud：云服务器。称为 EC2 实例
+
+- 按实际使用量付费
+- 软件/硬件选项
+- 多 region 区域
 
 ** Term
 
 - AMI :: Amazon Machine Image, pre-configured server templates to launch an instance
+
+** steps to create EC2 instance
+
+1. choose region
+2. choose AMI (OS Image)
+3. choose an instance type: cpu, memory, cores
+4. configure instance details
+5. add storage (volume)
+6. add tags (friendly name)
+7. configure security group (firewall rules)
+8. review and launch, download key pair for future SSH usage
+
+
+** access the instance
+
+1. get the public DNS or public IP address from AWS management console
+2. add private key to putty auth configuration (convert from PEM to PPK format before login with *PuttyGen*)
+3. login with the default user name =ec2-user= 
+
 
 * VPC
 
@@ -584,7 +606,7 @@ CMKs 的常规操作包括
 ** Concepts
 
 - CMKs :: master key with metadata (key ID, date, description, state)
-- alias :: identify an associated CMK within an account and region
+- alias :: identify an associated CMK within an account and region. Can be used as the =key-id= to describe or tag the CMK
 - Key identifier :: unique identity for the customer master keys
   1. key arn
   2. key id
