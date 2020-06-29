@@ -569,6 +569,50 @@ Describe the cluster and record the VPCId.
 aws ec2 describe-instances --filter Name=network-interface.vpc-id,Values=${VPCID}
 #+END_SRC
 
+* KMS
+
+Key Management Service 的缩写，用于创建和管理 CMK (Control Customer Master Keys，用于加密数据）
+
+CMKs 的常规操作包括
+
+- 创建、删除、修改
+- 启用、禁用
+- 自动 rotation
+- alias
+
+
+** Concepts
+
+- CMKs :: master key with metadata (key ID, date, description, state)
+- alias :: identify an associated CMK within an account and region
+- Key identifier :: unique identity for the customer master keys
+  1. key arn
+  2. key id
+  3. alias
+  4. alias ARN
+
+** How to 
+
+*** select keys by alias
+
+#+BEGIN_SRC sh
+aws kms list-aliases
+#+END_SRC
+
+*** describe key
+
+#+BEGIN_SRC sh
+aws kms describe-key --key-id e049c24a-8370-4ddb-8233-7bfe7c959190
+#+END_SRC
+
+
+*** list tags 
+
+#+BEGIN_SRC sh
+ aws kms list-resource-tags --key-id e049c24a-8370-4ddb-8233-7bfe7c959190
+#+END_SRC
+
+
 * Landscape
 ** TODO Region and Zone
 
