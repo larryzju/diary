@@ -21,6 +21,13 @@
 
 CloudFront 提供类似 CDN 功能，自动将请求改善到优化的、可用的站点
 
+** Security Group
+
+通过配置安全规则 ，允许或禁止流量：私有、公有、混合
+
+Management Console 中选择 EC2，在 Security Group Tab 进行配置
+例如，创建一个 web-server-sg 组，选择相应的 VPC，配置 inbound 规则，允许 0.0.0.0/0 TCP 80/443 流量
+
 * Command Line
 
 ** 配置文件
