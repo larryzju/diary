@@ -32,25 +32,60 @@
 complete -C $(which aws_completer) aws
 #+END_SRC
 
+* EC2
+
+Elastic Compute Cloud：云服务器。称为 EC2 实例
+
+- 按实际使用量付费
+- 软件/硬件选项
+- 多 region 区域
+
+** Term
+
+- AMI :: Amazon Machine Image, pre-configured server templates to launch an instance
+
+** steps to create EC2 instance
+
+1. choose region
+2. choose AMI (OS Image)
+3. choose an instance type: cpu, memory, cores
+4. configure instance details
+5. add storage (volume)
+6. add tags (friendly name)
+7. configure security group (firewall rules)
+8. review and launch, download key pair for future SSH usage
+
+
+** access the instance
+
+1. get the public DNS or public IP address from AWS management console
+2. add private key to putty auth configuration (convert from PEM to PPK format before login with *PuttyGen*)
+3. login with the default user name =ec2-user= 
+
+* EBS
+
+提供 EC2 的存储空间，可以是硬盘，也可以是 SSD。有自己的生命周期，可以不随 EC2 删除而删除
+
+可以生成快照，并复制到不同的 zone 和 region，并从快照中恢复。存储内容可以被自动加密
+
+** steps to create and use ebs volume
+
+1. create volume: specify availability zone, volume type, size
+2. attach volume to instance and set the device path (such as /dev/sdb)
+3. login in linux, check with =lsblk= command line
+4. format disk: =mkfs.ext4 /dev/xvdb=
+5. mount partition to mountpoint =mount /dev/xvdb /mnt=
 
 * S3
 
-S3 is short for Amazon Simple Storage Service. It is storage for the
-internet which stores data as *objects* within *buckets*.
+Amazon Simple Storage Service 的缩写，可以为传输过程加密，设置不同的访问权限
 
-** Object
+** terms
 
-An *object* consists of a file and optionally any metadata that
-describes that file. (like inode with data)
+- object :: An *object* consists of a file and optionally any metadata
+            that describes that file. (like inode with data)
 
-** Bucket 
-
-*Buckets* are the containers for objects are placed as a whole object
-- control access
-- view access logs for it and its objects
-- choose the geographical region where S3 will store the bucket and its contents
-
-*** Permission
+- bucket :: objects' container, associate with region, have duplicas, control access
 
 ** basic usage steps
 
@@ -116,50 +151,6 @@ Try uploading files using AWS CLI command instead.
 
 ** How To
 *** Get the website URL
-
-* EC2
-
-Elastic Compute Cloud：云服务器。称为 EC2 实例
-
-- 按实际使用量付费
-- 软件/硬件选项
-- 多 region 区域
-
-** Term
-
-- AMI :: Amazon Machine Image, pre-configured server templates to launch an instance
-
-** steps to create EC2 instance
-
-1. choose region
-2. choose AMI (OS Image)
-3. choose an instance type: cpu, memory, cores
-4. configure instance details
-5. add storage (volume)
-6. add tags (friendly name)
-7. configure security group (firewall rules)
-8. review and launch, download key pair for future SSH usage
-
-
-** access the instance
-
-1. get the public DNS or public IP address from AWS management console
-2. add private key to putty auth configuration (convert from PEM to PPK format before login with *PuttyGen*)
-3. login with the default user name =ec2-user= 
-
-* EBS
-
-提供 EC2 的存储空间，可以是硬盘，也可以是 SSD。有自己的生命周期，可以不随 EC2 删除而删除
-
-可以生成快照，并复制到不同的 zone 和 region，并从快照中恢复。存储内容可以被自动加密
-
-** steps to create and use ebs volume
-
-1. create volume: specify availability zone, volume type, size
-2. attach volume to instance and set the device path (such as /dev/sdb)
-3. login in linux, check with =lsblk= command line
-4. format disk: =mkfs.ext4 /dev/xvdb=
-5. mount partition to mountpoint =mount /dev/xvdb /mnt=
 
 * VPC
 
@@ -647,8 +638,8 @@ aws kms describe-key --key-id e049c24a-8370-4ddb-8233-7bfe7c959190
  aws kms list-resource-tags --key-id e049c24a-8370-4ddb-8233-7bfe7c959190
 #+END_SRC
 
-
-* Landscape
+* Concepts
+** Landscape
 ** TODO Region and Zone
 
 * CloudFormation
@@ -682,11 +673,6 @@ It can be used to leverage AWS products
 | aws cloudformation describe-stacks --stack-name <stack-name> | describe stack       |
 | aws cloudformation get-template --stack-name <stack-name>    | get stack's template |
 | aws cloudformation delete-stack --stack-name <stack-name>    | delete a stack       |
-
-
-* TODO TODO
-
-** awscli command parameters
 
 * HOWTO
 
@@ -817,3 +803,5 @@ Control what _actions_ the _identity_ can perform, on which _resources_, and und
 policy 被内联设置在 resource 上，用于跨 AWS account 访问资源 
 
 Question: 跨 AWS account 能否通过 role 来访问？
+
+
