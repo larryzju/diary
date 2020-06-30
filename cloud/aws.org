@@ -182,6 +182,11 @@ Try uploading files using AWS CLI command instead.
 Virtual Private Cloud is a virtual networking layer for Amazon EC2
 that enable you to launch AWS resources into a virtual network.
 
+主要功能包括：隔离网络，访问控制，定义路由规则
+
+针对 region，跨多个 availability zone。定义一个 IP 范围，可以包括多个子网。
+子网包括公有和私有两种，公网包括公有 IP 地址。
+
 By default, there's already a default VPC for your instances. And we
 can create our own VPC and subnets.
 
@@ -202,6 +207,13 @@ VPC information
   + main route table (by default)
   + custom route table
 
+
+** Steps to set up VPC
+
+1. choose a region
+2. create VPC: name, IP address range (10.0.0.0/16)
+3. create subnet: name, ip address range (10.0.0.0/24), zone
+4. add internet gateway: to access the internet
 
 ** Key Concept
 
@@ -291,7 +303,6 @@ IP + Protocol + Port Range + Comments
 - Description
 
 *** outbound rules
-
 
 ** How to
 
