@@ -78,7 +78,9 @@ Elastic Compute Cloud：云服务器。称为 EC2 实例
 
 * S3
 
-Amazon Simple Storage Service 的缩写，可以为传输过程加密，设置不同的访问权限
+Amazon Simple Storage Service 的缩写，提供对象存储，可以为传输过程加密，设置不同的访问权限。提供容灾备份，可以作为大数据的数据x存放
+
+EC2 中可以使用 aws 命令直接访相关 bucket（不像 EBS 被挂载到文件系统）
 
 ** terms
 
@@ -151,6 +153,7 @@ Try uploading files using AWS CLI command instead.
 
 ** How To
 *** Get the website URL
+
 
 * VPC
 
@@ -804,4 +807,12 @@ policy 被内联设置在 resource 上，用于跨 AWS account 访问资源
 
 Question: 跨 AWS account 能否通过 role 来访问？
 
+
+* SDK for Go
+
+** Install SDK
+
+#+BEGIN_SRC sh
+  go get -u github.com/aws/aws-sdk-go/...
+#+END_SRC
 
