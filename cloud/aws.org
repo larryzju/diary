@@ -747,6 +747,21 @@ aws iam list-access-keys --user-name 'larry.zhao01@sap.com'
 2. 禁用老的 access key: ~aws iam update-access-key --access-key-id access-key --status Inactive~
 3. 删除老的 access key: ~aws iam delete-access-key --access-key-id access-key~
 
+** get account ID
+
+#+BEGIN_SRC sh
+ aws sts get-caller-identity
+#+END_SRC
+
+** show account alias
+
+#+BEGIN_SRC sh
+  aws iam list-account-aliases
+#+END_SRC
+
+** TODO how to check the policy definition
+
+
 * IAM
 
 全称是 AWS Identity and Access Management，包括了认证和授权两部分功能
@@ -756,6 +771,7 @@ aws iam list-access-keys --user-name 'larry.zhao01@sap.com'
 
 Root user/password 有最高的权限，一般不应用于实际生产环境。而是创建其它的 IAM 账户来使用。
 
+AWS Account 可以有（且仅有最多）一个 Alias，这样在登录时可以用 alias 作为 URL 前缀，而不使用数字的 account ID，如 https://Your_Account_Alias.signin.aws.amazon.com/console/
 
 
 ** 使用场景
@@ -775,11 +791,25 @@ Root user/password 有最高的权限，一般不应用于实际生产环境。�
 
 ** Policy
 
+需要显式的被授权，默认为禁用
+
 *** Indentity-based policy
 
 *** Resource-based policy
 
 跨不同的 account 访问资源，例如跨 AWS account 访问 ECR
+
+*** TODO user policy, user attached policy, group policy and group attached policy
+
+一个 IAM 账号的权限由多个 policy 来控制
+
+#+BEGIN_SRC sh
+aws iam list-user-policies --user-name username
+aws iam list-attached-user-policies --user-name username
+aws iam list-group-policies --group-name groupname
+aws iam list-attached-group-policies --group-name groupname
+#+END_SRC
+
 
 
 ** User, Group, Role
@@ -853,3 +883,39 @@ Question: 跨 AWS account 能否通过 role 来访问？
   go get -u github.com/aws/aws-sdk-go/...
 #+END_SRC
 
+
+** Configure SDK
+
+必须提供 region 和 credential 信息（IAM 的 access ID 和 secret access key），可选地设置 retry, log level 配置
+
+*** create session
+
+Create session with =aws/session.NewSession=: provide with region, credentials
+#+BEGIN_SRC go
+  sess, err := session.NewSession(&aws.Config{
+          Region: aws.String("us-west-2"),
+          Credentials: credentials.NewStaticCredentials("AKID", "SECRET_KEY", "TOKEN"),
+  })
+#+END_SRC
+
+
+*** create client
+
+For example, create an S3 client instance from a session (=github.com/aws/aws-sdk-go/service/s3=)
+
+#+BEGIN_SRC go
+  sess, err := session.NewSession()
+  if err != nil {
+  }
+  svc := s3.New(sess)
+#+END_SRC
+
+
+** Misc
+
+*** pagination
+
+如果一次请求返回数据过多，可能会分页
+
+1. 判断 isTruncated 是否为真
+2. 重新请求，并将上次返回的 marker 作为重新请求的参数传入
