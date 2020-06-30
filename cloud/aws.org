@@ -1,3 +1,26 @@
+* Concepts
+** Landscape
+** TODO Region and Zone
+
+** Global Infrastructure
+
+分为三个主题: region, zone, edge location
+
+*** region
+
+降低成本，减小延迟，数据保护。不同的 region 中可能提供的服务略有不同
+
+*** availability zone
+
+数据中心，同一个 region 内有多个独立的 zone，物理上独立，通过低速网络连接。
+不会受其它 zone 故障影响。
+
+建议跨 zone 部署应用和数据
+
+*** edge clocatoin
+
+CloudFront 提供类似 CDN 功能，自动将请求改善到优化的、可用的站点
+
 * Command Line
 
 ** 配置文件
@@ -153,7 +176,6 @@ Try uploading files using AWS CLI command instead.
 
 ** How To
 *** Get the website URL
-
 
 * VPC
 
@@ -641,9 +663,6 @@ aws kms describe-key --key-id e049c24a-8370-4ddb-8233-7bfe7c959190
  aws kms list-resource-tags --key-id e049c24a-8370-4ddb-8233-7bfe7c959190
 #+END_SRC
 
-* Concepts
-** Landscape
-** TODO Region and Zone
 
 * CloudFormation
 
