@@ -311,6 +311,7 @@ IP + Protocol + Port Range + Comments
 
 *** outbound rules
 
+** VPC Peering 
 ** How to
 
 *** check the internet gateway info of VPC
@@ -681,12 +682,35 @@ aws kms describe-key --key-id e049c24a-8370-4ddb-8233-7bfe7c959190
  aws kms list-resource-tags --key-id e049c24a-8370-4ddb-8233-7bfe7c959190
 #+END_SRC
 
+* MSK
+
+AWS 管理的 kafka 集群，除了常规的 kafka 数据操作外，AWS 提供了额外的 control-pane 能力，通过 AWS CLI 来管理整个集群。
+结构图参见 https://docs.aws.amazon.com/msk/latest/developerguide/what-is-msk.html
+
+注意：
+- 每个 zone 都有独立的 VPC，其中包括 EC2 来运行 broker
+
+MSK 监控 broker 健康状态，如果发现异常，则会替换 broker（在同一个 zone?）
+
+** 创建步骤
+
+1. 创建单公共子网 VPC (single public subnet)
+2. HA: 创建另外两个子网，使用独立了子网 CIDR （如 10.0.1.0/24 和 10.0.2.0/24），修改 route table association 为子网一的 route table (??)
+3. 准备配置文件 clusterinfo.json (指定子网 ID, VPC security group ID, CMK ID，Client 加密方式), 创建 cluster =aws kafka create-cluster --cli-input-json <json-file>=
+4. 在同一 VPC 中新建 EC2 实例，并在 VPC secrutiy group 中添加 inboud rule，允许 EC2 对应的 security group 访问
+5. 检查 cluster 状态 =aws kafka describe-cluster --region <regon> --cluster-arn <cluster-arn>= ，检查返回的 'State' 字段是否为 'Active'
+6. 在 EC2 实例中安装 kafka client，访问 =ZookeeperConnectString= 对应的 kafka 集群，创建 topic
+7. 配置 client.properties（加密方式），连接 =BootstrapBrokerStringTLs= （通过 describe-cluster 返回），生产或消息 topic messages
+8. 使用 =aws kafka delete-cluster --region <region> --cluster-arn <cluster-arn>= 删除 kafka cluster
+
 
 * CloudFormation
 
 Declare all of your resoruces and dependencies in a template file to
 create and manage AWS infrastructure deployments predictably and
 repeatedly.
+
+类似于 helm chart？
 
 It can be used to leverage AWS products
 - EC2
@@ -713,6 +737,10 @@ It can be used to leverage AWS products
 | aws cloudformation describe-stacks --stack-name <stack-name> | describe stack       |
 | aws cloudformation get-template --stack-name <stack-name>    | get stack's template |
 | aws cloudformation delete-stack --stack-name <stack-name>    | delete a stack       |
+
+* CloudWatch
+
+查看 metrics
 
 * HOWTO
 
