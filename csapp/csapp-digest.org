@@ -785,7 +785,7 @@ additional fetch from memory, at a cost of tens to hundreds of cycles.
 Many systems include a small cache of PTEs in the MMU called a
 /translation lookaside buffer/ (TLB).
 
-TBL is a small, virtually addressed cache where each line holds a
+TLB is a small, virtually addressed cache where each line holds a
 block consisting of a single PTE.
 
 #+CAPTION: Components of a VA to access the TLB
@@ -899,50 +899,52 @@ MMU 首先查询是否在 TLB 中有对应在 (TLBI, TLBT) 缓存，如果存在
 高 6 位内容作为比较内容。
 
 #+BEGIN_SRC go
-type TLBEntry struct {
-   Tag   bit6
-   Valid bool
-   PPN   bit6
-}
-
-type L1CacheEntry struct {
-   Tag   bit6
-   Valid bool
-   Bytes [4]byte
-}
-
-var L1Cache [16]L1CacheEntry
-var TLB [4]map[bit6]TLBEntry
-
-func AddressTranslateWithTLB(va bit14) (pa bit12) {
-  VPO := va & 0x3F
-  VPN := va >> 6
-  TLBI := VPN & 0x11
-  TLBT := VPN >> 2
-  // tlb hit
-  if entry, ok := TLB[TLBI][TLBT]; ok {
-    return (entry.PPN << 6) | VPO
-  } else {
-    pa := AddressTranslate(va)
-    CacheInTLB(pa, va)
-    return pa
+  type TLE struct {
+     Tag   bit6
+     Valid bool
+     PPN   bit6
   }
-}
 
-func ReadPAByteWithCache(pa bit12) byte{
-  CO := (pa & 0x11)
-  CI := ((pa >> 2) & 0x0F)
-  CT := (pa >> 6)
-  entry := L1Cache[CI]
-  // cache hit
-  if entry.Valid && entry.Tag == CT {
-    return entry.Bytes[CO]
-  } else {
-    byte := ReadPAByte(pa)
-    CacheInL1D(byte, pa)
-    return byte
+  type L1CacheEntry struct {
+     Tag   bit6
+     Valid bool
+     Bytes [4]byte
   }
-}
+
+  var L1Cache [16]L1CacheEntry
+
+  // TLB caches 16 of TLEs which can be looked up by the TLBI and TLBT
+  var TLB [4]map[bit6]TLE
+
+  func AddressTranslateWithTLB(va bit14) (pa bit12) {
+    VPO := va & 0x3F
+    VPN := va >> 6
+    TLBI := VPN & 0x11            // [0,4)
+    TLBT := VPN >> 2              // [0,32)
+    // tlb hit
+    if tle, ok := TLB[TLBI][TLBT]; ok {
+      return (tle.PPN << 6) | VPO
+    } else {
+      pa := AddressTranslate(va)
+      CacheInTLB(pa, va)
+      return pa
+    }
+  }
+
+  func ReadPAByteWithCache(pa bit12) byte{
+    CO := (pa & 0x11)             // 2bit
+    CI := ((pa >> 2) & 0x0F)      // 4bit
+    CT := (pa >> 6)               // 6bit
+    entry := L1Cache[CI]
+    // cache hit
+    if entry.Valid && entry.Tag == CT {
+      return entry.Bytes[CO]
+    } else {
+      byte := ReadPAByte(pa)
+      CacheInL1D(byte, pa)
+      return byte
+    }
+  }
 #+END_SRC
 
 
