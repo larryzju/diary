@@ -999,7 +999,7 @@ Associate Array? Fix sized hash table?
 *** Core i7 Address Translation
 
 #+CAPTION: Summary of Core i7 address translation
-[[./img/core-i7-address-translation-summary.img]]
+[[./img/core-i7-address-translation-summary.png]]
 
 Use a four-level page table hierarchy and each process has its own
 private page table hierarchy.
@@ -1089,6 +1089,144 @@ kernel's page fault handler, which then performs the following steps:
      after the page fault handler return
 
 ** TODO Memory Mapping
+
+Linux maps an /object/ on disk to a virtual memory. (=mmap=)
+
+There're two types of objects
+1. Regular file in the Linux file system: map to file section, divided into page-size pieces
+2. Anonymous file: *no data are actually transferred between disk and memory* (demand-zero pages)
+
+Pages are swapped back and forth between a special swap file maintained by the kernel.
+
+*** Shared Objects Revisited
+
+Avoid to load shared program (=bash=) or libraries (=libc=) into each
+process' own memory. But using memory mapping for controlling how
+objects are shared by multiple processes.
+
+**** shared object
+
+[[./img/mmap-shared-object.png]]
+
+Kernel can quickly determine the process 1 has already mapped this object and can
+point the page table entries in process 2 to the appropriate physical pages.
+
+Only a single copy of the shared object needs to be stored in physical
+memory, even though the object is mapped into multiple shared areas.
+
+
+**** private object
+
+#+CAPTION: =copy-on-write= technique
+
+[[./img/mmap-private-object.png]]
+
+1. the page table entries for the corresponding private area are
+   flagged as read-only, and the are struct is flagged as /private
+   copy-on-write/.
+2. write to some page in the private area triggers a *protection
+   fault*
+3. fault handler create a new copy of the page in physical memory,
+   updates the page table entry to point to the new copy, and then
+   restores write permissions to the page
+4. CPU re-executes the write
+
+*** The =fork= Function Revisited
+
+To fork a new process, it crates exact copie of current process's
+=mm_struct=, area structs, and page tables.  It flags each page in
+both processes as read-only, and flags each area struct in both
+processes as private copy-on-write.
+
+*** The =execve= Function Revisited
+
+#+BEGIN_QUOTE
+execve() does not return on success, and the text, initialized data,
+uninitialized data (bss), and stack of the calling process are
+overwritten according to the contents of the newly loaded program.
+#+END_QUOTE
+
+[[file:img/execve.png]]
+
+Loading and running =a.out= requires the following steps:
+
+1. Delete existing user ares
+2. map private areas: Create new area structs for the code, data, bss,
+   and stack ares of the new program (private copy-on-write)
+   1. The code and data areas are mapped to the =.text= and =.data= sections
+   2. The bss area is demand-zero, mapped to an anonymous file whose
+      size is contained in =a.out=
+   3. The stack and heap are are also demand-zero, initially of zero length
+3. Map shared areas (dynamic link shared libraries)
+4. Set the program counter (PC) to the entry point in the code area
+
+*** User-Level Memory Mapping with the =mmap= Function
+
+Using =mmap= function to create new areas of virtual memory and to map
+objects into these areas
+
+#+BEGIN_SRC c
+  /* 
+   ,* map file descriptor `fd`'s content from offset with length to area `starts` address (preferably)
+   ,* the `start` address is merely a hint, the real start address will chose by the kernel
+   ,*
+   ,* `prot` contains bits that describe the access permissions:
+   ,* 1. PROT_EXEC
+   ,* 2. PROT_READ
+   ,* 3. PROT_WRITE
+   ,* 4. PROT_NONE
+   ,*
+   ,* flags consists of bits that describe the type of the mapped object
+   ,* 1. MAP_ANON: backing store is an anonymous object and the corresponding virtual pages are demand-zero
+   ,* 2. MAP_PRIVATE: private copy-on-write object
+   ,* 3. MAP_SHARED: shared object
+   ,*/
+  void *mmap(void *start, size_t length, int prot, int flags, int fd, off_t offset);
+#+END_SRC
+
+**** Solution of Practice Problem 9.5
+#+BEGIN_SRC c
+  #include <sys/types.h>
+  #include <sys/stat.h>
+  #include <sys/mman.h>
+  #include <fcntl.h>
+  #include <unistd.h>
+
+  #include <errno.h>
+  #include <string.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+
+  #define BLOCK_SIZE 1024
+
+  int main(int argc, char *argv[]) {
+    if(argc != 2) {
+      fprintf(stderr, "Usage: %s <input>\n", argv[0]);
+      exit(0);
+    }
+
+    const char *fpath = argv[1];
+    int fd = open(fpath, O_RDONLY);
+    if(fd == -1) {
+      fprintf(stderr, "open file %s failed: %s\n", fpath, strerror(errno));
+      exit(-1);
+    }
+
+    struct stat stat = {0};
+    if(fstat(fd, &stat) == -1) {
+      fprintf(stderr, "get file stat %s failed: %s\n", fpath, strerror(errno));
+      exit(-1);
+    }
+
+    void *src = mmap(NULL, stat.st_size, PROT_READ, MAP_SHARED, fd, 0);
+    if (src == NULL) {                                                                                                                                fprintf(stderr, "mmap %s failed: %s\n", fpath, strerror(errno));                                                                          exit(-1);                                                                                                                         }                                                                                                                                                                                                                                                                                   char *ptr = (char*)src;                                                                                                                   char *end = ptr + stat.st_size;                                                                                                           while (ptr < end) {                                                                                                                               int s = end - ptr;                                                                                                                        if (s > BLOCK_SIZE) {                                                                                                                             s = BLOCK_SIZE;                                                                                                                   }                                                                                                                                                                                                                                                                                   write(STDOUT_FILENO, ptr, s);                                                                                                             ptr += s;                                                                                                                         }                                                                                                                                                                                                                                                                                   return 0;
+  }
+#+END_SRC
+
+*** TODO Question
+
+- When we install a Linux and don't mount a swap partition, where the virtual page is swapped out to?
+- =set ULIMIT=0= dump process memory?
 
 ** TODO Dynamic Memory Allocation
 
