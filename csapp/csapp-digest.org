@@ -372,7 +372,7 @@ platform. But it's a fault error in 64bit platform.
 
 ** Floating Point 
 
-* TODO [0/1] Machine-Level Representation of Programs
+* TODO [1/12] Machine-Level Representation of Programs
 
 A compiler generates machine code through a series of stage, based on
 
@@ -415,7 +415,40 @@ Key knowledge
 - buffer overflow attacks
 - GDB debugger
 
-** TODO A Historical Perspective
+** DONE A Historical Perspective
+
+x86 CPU series
+
+- 8086 :: 1978, 29K transistor, 16-bit microprocessors. 8088 is a variant of the 8086 with an 8-bit external bus. Used
+          as the CPU of the MS-DOS operating system. 1980, Intel introduced 8087 floating-point coprocessor
+- 80286 :: 1982, 134K transistor. Formed the basis of the IBM PC-AT PC
+- i386 :: 1985, 275K, 32-bits. Added the flat addressing model, could fully support a Unix operating system
+- i486 :: 1989: 1.2M transistor, integrated the floating-point unit
+- Pentium :: 1993, 3.1M transistor
+- PentiumPro :: 1995, 5.5M transistor, add P6 microarchitecture
+- Pentium/MMX :: 1997, 4.5M transistor, add intructions to manipulate vector of integers
+- Pentium II :: 1997, 7M transistor
+- Pentium III :: 1999, 8.2M transistor, Introduce SSE (manipulate vectors of integer or floating-point data)
+- Pentium 4 :: 2000, 42M transistor, extended SSE to SSE2
+- Pentium 4E :: 2004, 125M transistor, add hyperthreading and EM64T (x84-64)
+- Core 2 :: 2006, 291M transistor, fist multi-core Intel microprocessor
+- Core i7, Nehalem :: 2008, 781M transistor
+- Core i7, Sandy Bridge :: 2011, 1.17G transistor, introduced AVX
+- Core i7, Haswell :: 2013, 1.4G transistor, extended AVX to AVX2
+
+
+Terms
+
+- IA32 :: Intel Architecture 32-bit
+- Intel64 :: the 64-bit extension to IA32, refer to as x86-64
+
+
+#+BEGIN_ASIDE
+Moore's Law
+
+The number of transistors doubles about every 26 months.
+#+END_ASIDE
+
 
 ** TODO Program Encodings
 
