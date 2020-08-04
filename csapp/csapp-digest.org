@@ -452,6 +452,41 @@ The number of transistors doubles about every 26 months.
 
 ** TODO Program Encodings
 
+#+BEGIN_SRC sh
+  > gcc -Og -o p p1.c p2.c
+#+END_SRC
+
+=-Og= instructs the compiler to apply a level of optimization that yields machine code that follows the overall structure
+of the origin C code.
+
+Sequence of programs to turn the source code into executable code
+1. preprocessor expand macros
+2. compiler generate assembly-code version (.s)
+3. assembler converts the assembly code into binary object-code (.o)
+4. linker merges object-code files along with code implementing library function, generate the executable code file
+
+*** Machine-Level Code
+
+1. ISA (instruction set architecture) define the format and behavior of a machine-level program
+2. virtual address provides a memory model 
+
+Assembly-code representation is very close to machine code but in a more readable textual format.
+
+C programmer cannot see some processor state, such as
+- program counter (PC, %rip in x6464)
+- 16 named register file
+- condition code registers: used to implement conditional changes in the control or data flow
+- set of registers hold integer or floating-point value
+
+Machine-level code doesn't have data types (integer, unsigned integer, pointer, string, array or structure) but a
+contiguous collections of bytes.
+
+64-bit CPU can address up to $2^48$ (64 TB) memory
+
+*** TODO Code Examples 
+
+*** TODO Notes on Formatting
+
 ** TODO Data Formats
 
 ** TODO Accessing Information
