@@ -372,6 +372,73 @@ platform. But it's a fault error in 64bit platform.
 
 ** Floating Point 
 
+* TODO [0/1] Machine-Level Representation of Programs
+
+A compiler generates machine code through a series of stage, based on
+
+- the rules of the programming language, 
+- the instruction set of the target machine, 
+- the conventions followed by the operating system.
+
+Stages of compile with GCC
+
+1. generate assembly code
+2. assembler: generate machine code
+3. linker: generate the executable machine code
+
+
+With the compiler
+
+1. program in a higher level
+2. detect many program errors and make sure we reference and manipulate data in consistent ways
+3. optimize the generated code
+4. cross multiple platform and machine
+
+Why should we learn machine code?
+
+- being able to read and understand it is an important skill for serious programmers
+- understand the optimizations capabilities and analyze the underlying inefficiencies in the code
+- understand the data share in multiple threads and other machine-code level hidden by the program language
+- understand how the vulnerabilities arise and how to guard against them
+
+(与汉语识繁用简同理)
+
+
+Key knowledge
+
+- relation between C, assembly code, and machine code
+- representation and manipulation of data
+- implementation of control: if, while, switch
+- implementation of procedures, including how the program maintains a run-time stack, as well as storage for local variables
+- implementation of data structures: structure , unions, arrays
+- the problems of out-of-bounds memory reference
+- buffer overflow attacks
+- GDB debugger
+
+** TODO A Historical Perspective
+
+** TODO Program Encodings
+
+** TODO Data Formats
+
+** TODO Accessing Information
+
+** TODO Arithmetic and Logical Operations
+
+** TODO Control
+
+** TODO Procedures
+
+** TODO Array Allocation and Access
+
+** TODO Heterogeneous Data Structures
+
+** TODO Combining Control and Data in Machine-Level Programs
+
+** TODO Floating-Point Code
+
+** TODO Summary
+
 * [1/7] TODO 处理器体系结构
 
 ** DONE 概述
