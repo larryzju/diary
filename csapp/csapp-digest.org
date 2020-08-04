@@ -372,7 +372,7 @@ platform. But it's a fault error in 64bit platform.
 
 ** Floating Point 
 
-* TODO [1/12] Machine-Level Representation of Programs
+* TODO [2/12] Machine-Level Representation of Programs
 
 A compiler generates machine code through a series of stage, based on
 
@@ -450,7 +450,7 @@ The number of transistors doubles about every 26 months.
 #+END_ASIDE
 
 
-** TODO Program Encodings
+** DONE Program Encodings
 
 #+BEGIN_SRC sh
   > gcc -Og -o p p1.c p2.c
@@ -483,9 +483,34 @@ contiguous collections of bytes.
 
 64-bit CPU can address up to $2^48$ (64 TB) memory
 
-*** TODO Code Examples 
+*** Code Examples 
 
-*** TODO Notes on Formatting
+Command lines 
+- Generate assembly code with =gcc -Og -S mstore.c=
+- Compile and assemble the code with =gcc -Og -c mstore.c=
+- Inspect the object file (disassemblers): =objdump -d mstroe.o=
+- Generate an executable program =gcc -Og -o prog main.c mstore.c=
+
+Note:
+
+- x86-64 instructions can range in length from 1 to 15 bytes
+- Linker shifts the location of code to a different range of addresses
+- Linker insert the real function address
+- The generated =mstore.s= have directive beginning with "." to guide the assembler and linker
+
+#+BEGIN_ASIDE
+ATT vs Intel assembly-code format
+
+GNU tools use AT&T format, use =gcc -Og -S -masm=intel mstore.c= to generate Intel format.
+
+The differences are
+
+- Intel code omits the size designation suffixes (for example using =push= other than =pushq=)
+- Intel code omits the '%' character in front of register names, using =rbx= instead of =%rbx=
+- Intel code has a different way to describe location in memory, using =QWORD PTR [rbx]= rather than =(%rbx)=
+- Instructions with multiple operands list them in the reverse order
+
+#+END_ASIDE
 
 ** TODO Data Formats
 
