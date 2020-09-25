@@ -133,7 +133,28 @@ module.exports = {
 
 
 
-### Plugins
+
+## Development
+
+### source map
+
+使用 source map，为生成的 bundle.js 添加到源文件的映射信息，方法调试。在 webpack.config.js 中添加
+
+```json
+{
+    mode: "development",
+    devtool: "inline-source-map"
+}
+```
+
+### watch mode
+
+类似 entr 功能，webpack --watch 参数
+
+### webpack-dev-server
+
+
+## Plugins
 
 ```js
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //installed via npm
@@ -159,4 +180,4 @@ plugins array 中写入 plugin instance，常用的插件如
 | html-webpack-plugin     | 自动生成 html 页面           |
 | html-webpack-template   | 同上                         |
 | webpack-manifest-plugin | 导出 manifest 到 json        |
-
+| webpack-dev-server      | 可实现浏览器自动刷新         |
