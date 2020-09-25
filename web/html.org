@@ -1,0 +1,113 @@
+* HTML FOR BEGINNERS
+
+https://www.theblogstarter.com/html-for-beginners
+
+** What is HTML
+
+超文本标记语言，浏览器可识别的语言
+
+- hypertext: 链接到其它页面
+- Markup: 控制样式和文档结构
+- Language: 语法规范
+
+
+** Why Should You Learn HTML?
+
+现成的 website builder 不好定制
+
+** Are There Different Versions of HTML?
+
+- 1991, first version, by Tim Berners Lee
+- 2014, HTML5
+
+由 W3C 定义标准
+
+
+** How Does HTML Relate To Other Programming Languages?
+
+- HTML 基本结构
+- CSS 调整格式
+- JavaScript 实现交互
+
+
+** What Does HTML Code Look Like?
+
+** What Programs Can I Use To Write And Edit HTML Code?
+
+** The Basics of HTML Code
+
+1. tags
+2. element
+3. attribute
+
+*** HTML Tags
+
+尖括号
+
+**** How To Use Tags
+
+#+BEGIN_SRC 
+<b>This is bold text</b>
+<a href="www.google.com">opening tag bbefore the text</a>
+#+END_SRC
+
+
+**** Two Important Rules For Using Tags
+
+1. 尖括号
+2. 成对出现
+
+
+*** HTML Elements
+
+开 Tag，闭 Tag，加上其中内容构成一个 Element，Element 之间相互包含，形成了 HTML Document
+
+body 和 head 是两类特殊的 element，有些 element 不是用于显示的。html element 是一切元素的根
+*** HTML Attributes
+
+Element 的属性定性，在 opening tag 中，以键值对形式书写。列如 href 是 a element 的属性
+
+几条原则 
+1. 属性用小写名
+2. 值用引号引起来
+3. 建议使用双引号（ )
+
+
+** A Step-By Step Tutorial For Coding Your First HTML Document
+
+*** Step 1 - Create A New Document In Your Text Editor
+
+依惯例，命名为 index.html，作为 website 的默认页面
+
+*** Step 2 - Create A Basic HTML Template
+
+#+BEGIN_SRC html
+  <!DOCTYPE html> <!-- HTML5 -->
+
+  <html>
+    <head>
+      <!-- meta information -->
+    </head>
+
+    <body>
+    </body>
+  </html>
+#+END_SRC
+
+*** Step 3 - Add A page Title And Practice Some Indenting
+
+#+BEGIN_SRC html
+  <head>
+    <title>Our HTML Cheat Sheet</title>
+  </head>
+#+END_SRC
+
+*** Step 4 - Add Some Headings And Preview In The Browser
+
+h1 - h6 用于定义标题，不要尝试用来格式化字体大小
+
+*** Step 5 - Add Some Paragraph Text
+
+p 用于定义段落，浏览器会忽略 text 中多余的空格和空行
+
+br (page break) 用于插入换行，不需要闭括号
