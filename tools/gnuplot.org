@@ -1,0 +1,24 @@
+Here's a sample source file to draw three metrics with lines into a same image.
+
+#+BEGIN_SRC gnuplot
+set datafile separator comma;
+set xdata time;
+set timefmt "%Y%m%d%H%M%S";
+set xrange ["202012071000":"202012090200"];
+set yrange [-5:70];
+set term png enhanced transparent size 2000,600 font "arial,18";
+set output "azure-disk-latency.png";
+set xlabel "timestamp";
+set ylabel "latency (ms)";
+unset border;
+
+plot 'latency.csv' using 1:2 with lines title "Standard",\
+     '' using 5:6 with lines lw 1.8 title "StandardSDD",\
+     '' using 9:10 with lines lw 2 title "Preminum";
+#+END_SRC
+
+- data are read from local file: =set datafile= set the file format
+- =set timefmt= customize the timestamp format when serialize or deserize data. Don't forget the =set xdata time=
+- adjust the looks of the plot with =xrange=, =yrange=, =term=, =outupt=, =xlabel=, =ylabel=, '=border='
+- plot lines from data of the csv file with different color and legend
+
