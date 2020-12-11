@@ -1,0 +1,18 @@
+** 为什么需要 SNI
+
+SSL Certification 是针对某个主机而设，同一主机可以有多个 website，不同的 website 可能希望使用不同的 SSL Certificate。但 server 无法知道应该用哪一个 SSL Certification
+因为 TLS 握手是 TCP 层协议，并不知道 HTTP 的流量信息
+
+
+** SNI 做了什么
+
+增强了 TLS Protocol，握手时传入 domain name 或者 hostname，用来标识需要用哪一个证书
+
+同时，SNI name 和 domain name 可以不同（服务器切换了 DNS，但 website 仍使用老的域名、或者本地主机名的场景）
+
+
+** 详解
+
+- SNI 是 Server Name Indication 的缩写
+- NSI 之与 SSL Certification，可类比于 TCP 之与 IP
+- 同一主机上运行多个安全的 website，提供类似于 http server 的 virtual hostname
