@@ -1,0 +1,47 @@
+* SSO
+
+SSO 指 Single Sign-On，与 IdP (Identity Provider) 配合实现只需要登录一次即可访问多个应用（Resource Provider）的效果。
+SSO 与 Resource Provider 及 IdP 交互有多种协议可选，如 SAML, OAuth。
+理解 SSO 时应注意区分 authentication 和 authorization 的区别
+
+** 类比
+
+- IdP 相当于公司人事的花名单，有员工信息用来确认本人不是伪造的
+- SSO 相当于外服的保安，通过花名单认证访客，授予他访问公司各个部门的权限
+- Resource Provider 相当于公司的各个部门，只要 SSO 认可的访客都可以来访部门
+- Authentication 相当于大门保安，只要用户合法就可进入
+- Authorization 相当于部门前台，需要用户被授权，才能进入具体部门
+
+** SSO vs IdP
+
+SSO 与 IdP 一般是分离的，之间通过 SAML 协议交互；SSO 与 Application 之间通过 SAML 交互（SAML Assert 消息）。
+SSO 无状态；IdP 负责安全的保存密码信息
+
+** OAuth vs SAML
+
+- OAuth 向某个应用授权，分配一个临时的 token，用来访问 resource owner 的部分资源
+- SAML 仅用于 SSO 认证功能
+
+
+** 登录流程
+
+1. 访客（principal）访问 app (service provider)
+2. app 重定向访客到 SSO 登录界面
+3. 用户输入密码，SSO 向 IdP 确认用户信息
+4. SSO 可选的进行 MFA/2FA 认证
+5. 重定向到 app，app 向 SSO 确认，SSO 发送 SAML Assert 回复给 app
+6. 访客正常访问 app
+
+** SSO 协议
+
+- Kerberos
+- SAML
+- Smart Card
+- OAuth
+
+** TODO 访客 Session
+
+1. app session
+2. auth server session
+3. identity provider session
+
