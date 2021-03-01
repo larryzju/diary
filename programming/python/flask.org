@@ -44,7 +44,6 @@ Get the cookie by =request.cookies= and set the cookie to response by =resp.set_
 
 =app.abort(401)=
 
-
 ** Response
 
 Post-process to convert response of different format to Response object
@@ -99,3 +98,13 @@ Use =app.errorhandler= decorator to custom 404 page
 
 ** Depoyment Options
 
+* flask-restplus
+
+** features
+
+- namespace scoped endpoints: =api.namespace=
+- generate swagger api doc automatically: =api.doc=
+- class based endpoint definition (with method =get=, =post=, etc)
+- defintion model with =api.model= (field name, field type)
+- force request body have certain model: =api.expect=
+- marshal response content with =api.marshal_with=
