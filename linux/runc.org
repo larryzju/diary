@@ -1,0 +1,53 @@
+* Overview
+
+- Official repo: https://github.com/opencontainers/runc
+
+Runc is a binary tool used by docker/podman to spawn new container based on the runtime-spec (filesystem).
+
+
+* Bulid
+
+1. install go
+2. install libseccomp-dev (ubuntu)
+3. make
+4. copy =runc= to /usr/local/bin and add executable permission
+
+
+* Usage
+
+Steps to run a root cotnainer (attach to sh)
+
+1. prepare rootfs: =docker export $(docker create busybox) | tar -C rootfs -xvf -=
+2. prepare config.json: =runc spec=
+3. run container: =runc run container-id=
+
+
+Lifecycle of container
+
+1. created: =runc create=
+2. running: =runc start container-id=
+3. deleted: =runc delete container-id=
+
+
+Useful command
+
+- list all container: =runc list=
+
+
+Rootless container
+
+1. prepare config.json: =runc spec --rootless=
+2. run rootless container: =runc --root /tmp/runc run container-id=
+
+
+* TBD
+
+** How the container be created
+
+** How is the rootless container implement
+
+
+
+
+
+
