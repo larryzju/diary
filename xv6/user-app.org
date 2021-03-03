@@ -1,0 +1,4 @@
+* cat
+
+- no parameter : read from stdin
+- with parameters: open file, read and dump content in order
