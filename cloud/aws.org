@@ -947,3 +947,14 @@ For example, create an S3 client instance from a session (=github.com/aws/aws-sd
 
 1. 判断 isTruncated 是否为真
 2. 重新请求，并将上次返回的 marker 作为重新请求的参数传入
+
+* MISC
+
+** Can CIDR be changed for VPC?
+
+No. 
+
+1. Can associate a seconadary IPv4 CIDR block with your VPC.
+2. snapshot all resources, delete VPC, create new VPC, restore resources
+
+https://aws.amazon.com/premiumsupport/knowledge-center/vpc-ip-address-range/
