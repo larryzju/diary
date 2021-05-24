@@ -1,0 +1,42 @@
+** DevOps toolkit series
+
+   https://www.devopstoolkitseries.com
+
+DevOps 没有明确的定义。
+
+喜欢开会，但不是为了内容。而是理解不同人的想法。(corridor-talks)
+
+整本书围绕 what is devops 展开。
+
+devops is not a department. DevOps brings sanity into a very chaotic
+world created by a misunderstanding that software development is
+similar to factory production.
+
+*** Aim of book
+
+My goal with this book is solely to present both sides of the devops
+paradox and leave the door open for you to make up your own mind.
+
+** Jeff Sussna
+
+book: **Designing Delivery: Rethinking IT in the Digital Service
+Economy**
+
+DevOps means thinking about development and operation as part of one
+larger unified entity.
+
+Service is that the way you make it is part of what you make.
+
+Operability is as important as the funcitionality. It doesn't matter
+how wonderful your design or how well coded your website is, if it's
+very, very slow or if people are constantly getting 500 errors, their
+level of satisfaction will drop.
+
+You have to think about your code in terms of, "how will this code get
+deployed, how secure will thius code be, how efficient will this code
+be, and how well will this code scale?"
+
+*** devops in the team environment
+
+Thinking about how to make customer successed. Change from how do we
+run the network to how do we help people use the network.
