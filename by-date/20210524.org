@@ -1,6 +1,8 @@
-** DevOps toolkit series
+* DevOps toolkit series
 
-   https://www.devopstoolkitseries.com
+** preface  
+
+https://www.devopstoolkitseries.com
 
 DevOps 没有明确的定义。
 
@@ -40,3 +42,9 @@ be, and how well will this code scale?"
 
 Thinking about how to make customer successed. Change from how do we
 run the network to how do we help people use the network.
+
+*** empathy in devops
+
+DevOps should be cognitive empathy and think about things as if from
+another's perspective.
+
