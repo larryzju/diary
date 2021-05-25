@@ -1,0 +1,207 @@
+* tenant & subscription
+
+subscription 用户计费，tenant 用于管理用户（认证和访问控制）。一个 tenant 下可以有多个 subscription
+
+每个 tenant 都对应于一个 Azure AD directory，记录了 tenant 下的 user、group、apps
+
+
+** User
+
+指定用户 ID 、用户名创建用户、Group（可以后期设置）、Directory Role（可选），密码将自动生成。用户可以被添加到 group 中
+
+** Group
+
+tenant 下有 group，group 可以添加 member （从已有的用户中），可以包含 app
+
+*** Member
+
+指向 User，随着 Group 被删除而删除
+
+*** application
+
+此 Application 不是指运行时 Software，而是 AD 中的配置，用来申明 app 对应的认证机制和权限管理
+
+application object 定义了 application 的模板，每个 tenant 中要使用这个 applicaation，都会创建一个 service principal object
+
+参见 https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals
+
+
+* command line
+
+** login
+
+#+BEGIN_SRC sh
+az login --service-principal -u <id> -p <secret> --token <token>
+#+END_SRC
+
+
+** account
+
+| command                            | description              |
+|------------------------------------+--------------------------|
+| az account list                    | list subscription        |
+| az account set --subscription <id> | set default subscription |
+
+** resource group
+
+| command       | description         |
+|---------------+---------------------|
+| az group list | list resource group |
+
+** storage account & container
+
+| command                                                    | description          |
+|------------------------------------------------------------+----------------------|
+| az storage account list                                    | list storage account |
+| az storage container list --account-name <name>            | list containers      |
+| az storage blob list --account-name <> --container-name <> | list blob            |
+
+
+* concept
+
+** user, AD, subscription
+
+Azure account 是一个 identity，记录在 Azure AD 或者外部 directory 中，一个账号可以有多个 subscription。
+
+Subscription 用户记费，它管理了一组 Azure services，同时与一个 AD 关联进行用户的认证和权限管理。
+
+AD 中除了 user，还可以配置 group，方便对一组用户进行管理 (RBAC: role-based access control)
+
+*** subscription
+
+- Account Administrator 具有最高管理权限
+- Service Administrator 管理其中所有的 service
+
+*** Azure AD
+
+#+BEGIN_QUOTE
+The Microsoft multitenant, cloud-based identity and access management service
+#+END_QUOTE
+
+** App Service
+
+用于发布 web project，web service Backend, RESTFul service。平台提供认证、扩容、测试、CI/CD 功能
+
+** Azure AD
+
+应用本身没有权限管理，需要把它注册在 Azure AD 中，以便使用平台提供的 IAM （Identity and Access Management）功能。
+
+注册 App 将生成一个 application object 和 applicaation ID (client ID)，可以为其指定 credential。
+
+Application object 作为模板 (blueprint)，可以生成多个 service principal。在 tenant 中使用 application，就需要创建一个 service principle。
+
+*** Application Object
+
+描述了应用的三个方法
+
+1. how the service can issue tokens in order to access the application
+2. resources that application might need to access
+3. actions that application can take
+
+*** service principal
+
+要访问 Azure AD tenant 里的资源，请求者必须是 security principal，被分配了不同的权限。
+
+security principal 分为两种
+
+1. user principal (user)
+2. service principal (application)
+
+
+service principal 是应用在当前 tenant 里的实例（其中包括了 application object 的完整信息），定义了 application 在当前 tenant 里的权限 
+
+- 可以访问什么
+- 可以被谁访问
+
+Portal 页面上，AD/Enterprise applications 可以显示所有的 service principal
+
+**** consent
+
+* storage account
+
+** Create
+
+https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-cli#use-azure-cloud-shell
+
+1. create resource group
+2. create storage account in resource group (name, location, sku, kind)
+
+** Blob
+
+https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction
+
+Like AWS S3, store unstructured data
+
+Blob storage offers 3 types of resources
+1. storage account
+2. container (directory)
+3. blob (file)
+
+
+There are 3 types of blob
+1. block blob: text and binary data
+2. append blob: logging
+3. page blob: VHD (virtual hard drive)
+
+Tools to communicate with blob
+- AzCopy
+- Blobfuse
+
+*** Access Blob in Portal
+
+https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-portal#create-a-container
+
+*** Access Blob with Azure CLI
+
+https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-cli
+
+
+*** Authorize Access
+
+https://docs.microsoft.com/en-us/azure/storage/blobs/authorize-data-operations-cli?toc=/azure/storage/blobs/toc.json
+
+Two ways to authorize data access
+1. Azure AD security principal
+2. Access Key (or a shared access signature token)
+
+Controlled by =--auth-mode==
+1. login :: Azure AD security principal
+2. key :: access key
+
+** TODO Encryption
+
+
+* resource manager (ARM)
+
+a service, let you to operate on the resources and features, in authorized and declarative way
+
+** references
+
+- https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview#resiliency-of-azure-resource-manager
+
+
+
+** terminology
+
+- resource :: VM, storage account, app, database, vnet, or resource group, subscription, tags
+- resource group :: container of resources
+- resource provider :: Microsoft.Compute for VM, Microsoft.Storage for storage
+- resoruce manager template :: JSON spec
+
+** scope
+
+1. management groups
+2. subscriptions
+3. resource groups
+4. resource
+
+Lower levels inherit settings from higher levels.
+
+** TODO ARM template
+
+** resource group
+
+*** principle
+
+- resources share the same lifecycle
+- resource group has location, in where the metadata is stored in. resources can have different region
