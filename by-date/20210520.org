@@ -1,0 +1,63 @@
+* AKS                                                               :aks:k8s:
+
+读 AKS 文档 https://docs.microsoft.com/en-us/azure/aks/intro-kubernetes
+
+类似于 Gardener，master 由 Azure 管理，使用者只需要管理 agent nodes。 master 不需要付费（花不了多少？）
+
+** core concepts                                                        :k8s:
+
+https://docs.microsoft.com/en-us/azure/aks/concepts-clusters-workloads
+
+k8s 管理 container, network 和 storage，开发者不需要关注 infrastructure 层次的问题。
+
+Control Plan 包括
+1. kube-apiserver
+2. etcd: key value store
+3. kube-scheduler
+4. kube-controller-manager: controllers
+
+Node 包括
+1. kubelet: node agent
+2. kube-proxy: virtual network handler
+3. container runtime: containerd/moby (latency)
+
+
+*** Azure
+
+AKS VM image 默认使用 ubuntu 或者 window server。
+
+Azure node resource 限制可用资源，保留一部分运行等系统软件
+1. kubelet 使用 750Mi 内存
+2. kube-reserved (?)
+
+Gardener 的 reserved 资源远小于 AKS
+
+*** Deployment, StatefulSets and Daemonsets
+
+Pod Disruption Budgets 控制 deployment 的最小保证 pod 数量
+
+StatefulSets 保证 pod 和 storage 关联是稳定的。但要实现真正的 stateful，还需要应用层面的支持。如 sticky route
+
+
+
+* Azure Subscription
+
+https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/decision-guides/subscriptions/
+
+Subscription 用于管理 resources
+
+** Create your initial Azure subscriptions
+
+[[https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/initial-subscriptions][Link]]
+
+一般生成两个 subscription
+1. production
+2. non-production
+
+好处
+1. Subscriptions 可以分别设置 policy，
+2. non-production 可以使用某些特定的资源
+
+ 
+
+
