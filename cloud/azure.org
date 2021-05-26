@@ -170,6 +170,33 @@ Controlled by =--auth-mode==
 
 ** TODO Encryption
 
+* container registry
+
+** repository-scoped permission
+
+https://docs.microsoft.com/en-us/azure/container-registry/container-registry-repository-scoped-permissions
+
+terms
+- token :: permission, expiration, can be disabled at any time
+- scope map :: permission group definition, to be associated with token
+
+create token with =az acr token create= command. you need to specify the permission directly
+- repository
+- registry
+- name
+- permission, such as content/write, context/read, etc.
+
+Or you can create a scope map, and refer it when creating token
+1. az acr scope-map create
+2. az acr token create --scope-map
+
+The permissions could be used are
+1. content/delete
+2. content/read
+3. content/write
+4. metadata/read
+5. metadata/write
+
 
 * resource manager (ARM)
 
