@@ -1,0 +1,207 @@
+* Architecture
+
+https://hbase.apache.org/book.html#_architecture
+
+** NoSQL
+
+- not an RDBMS
+- doesn't support SQL as primary language
+
+
+** HBase vs RDBMS
+
+Lacks
+- typed columns
+- secondary indexes
+- trigger
+- advanced query language
+
+Have
+- linear and modular scaling region-server
+- strongly consistentn reads/writes
+- automatic sharding: split region and re-distributed automatically
+- region-server failover
+- block cache and bloom filters
+
+
+** Suitable scenario
+
+- enough data (>=10E8)
+- can live without typed columns, secondary indexes, transactions, advanced query language
+- have enough hardware
+
+
+** HBase vs HDFS
+
+HBase is built on top of HDFS, and provide fast individual record lookups (and updates).
+The StoreFiles is stored in HDFS and for itself contains index information.
+
+
+** Catalog Tables
+
+=hbase:meta=, whose location is stored in ZooKeeper, contains region information
+
+- key: (table,region-start,region-end)
+- value
+  - =regioninfo=
+  - =server=
+  - =serverstartcode=
+  - splitA, splitB
+
+
+At the start of hbase, the meta table is located from the address records in zookeeper,
+and then it will be updated with the server and startcode values.
+
+
+** Client
+
+Client query data from region server finally
+
+1. query hbase:meta table to get region server which serves the region
+2. cache the region-regionserver info, retry if the region is re-balanced
+
+The basic steps to use API is 
+
+1. get =Connection= instance from =ConnectionFactory=
+2. get =Table= from =Connection=
+3. close =Table=
+4. cleanup =Connection=
+
+HBase 2.0 provides asynchronous connection which return =CompletableFuture= instead of the real response.
+
+
+** Client Request Filters
+
+Get and Scan can be configured with filters, which is applied in region-server level
+
+Types of filter
+1. filter list: chain filters in 'and' or 'or' mode
+2. column value filter
+   1. single column value: string compare with 'equal', 'not-equal' or 'greater'
+   2. column value
+3. column value comparators: used in column value filter
+   1. regex string comparator
+   2. substring comparator
+   3. binary prefix comparator
+   4. binary comparator
+   5. binary component comparator
+4. key-value metadata: if a row has some keys
+   1. family filter
+   2. qualifier filter
+   3. column prefix filter
+   4. multiple column prefix filter
+   5. column range filter
+5. row key filter: filter rows between start-row and stop-row
+6. first key only filter: use to count rows
+
+
+
+** master
+
+master-server is responsible for monitoring all region-server instances, and is the interface for all metadata changes.
+
+HBase can have more than one masters. client choose the active one from ZooKeeper. Elect the leader by lease.
+
+Master runs several background threads
+1. load balancer moves regions across cluster
+2. catalog janitor syncs hbase:meta table
+3. proc-wal for master failures replay
+
+
+
+** region server
+
+It is responsible for serving and managing regions
+
+Region server has several background threads
+1. compact-split thread
+2. major ompaction
+3. mem-store-flusher: flush in-memory writes in the mem-store to StoreFile
+4. log-roller
+
+Use block cache to optimize performance.
+
+
+* Principle
+
+- master server doesn't return data to client
+- cluster is available if master server is done. but region server failover and region split can not be done
+
+
+
+* TODO Bloom Filters
+
+
+* Block Cache
+
+caches data read from HDFS
+
+1. level 1 (metadata): on-heap =LruBlockCache=
+2. level 2 (data): off-heap =BucketCache=, or in file-backed mode with mmap, or memory backed mode
+
+
+** LRU cache
+
+contains 3 levels of block priority
+1. single access priority: the first time block is loaded
+2. multi access priority: the block is loaded again
+3. in-memory access priority: set column family to be always in memory, and is the last one to be evicted
+
+LRU cache is enabled by default. The cache memory usage is up to 0.4 heap size of each region server.
+
+The things in LRU cache are
+- hbase:meta table is forced into block cache
+- user table can be set in block cache per each column family
+- HFiles indexes
+- Keys
+- Bloom Filter
+
+Two use cases that should avoid to use LRU cache. It can be turned off in Scan object
+1. fully random reading pattern: almost never access the same row twice within a short amount of time
+2. mapping a table in MR job
+
+
+** Bucket cache
+
+can be deployed in 3 modes
+1. off-heap
+2. file: can have multiple files
+3. mmaped file mode
+
+
+* TODO Data Model
+
+* TODO Region-RegionServer Assignment
+
+
+* TODO Data Structure & Interface
+
+** HRegionInfo
+
+** HMasterInterface
+
+
+
+1. Table
+2. ColumnFamily
+3. Region
+
+** HRegionServer
+
+1. Data
+2. Region (split, compact)
+
+** HFile
+
+contains a multi-layered index which allows HBase to seek the data without having to read the whole file
+
+* TODO HBase HMaster Architecture
+
+
+* TODO Balancer
+
+
+* TODO Coprocessors
+
+
+* TODO working set size
