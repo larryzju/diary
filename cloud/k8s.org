@@ -1,0 +1,151 @@
+* image pull policy
+
+1. "Always" for non latest image
+2. "IfNotPresent" for other image
+
+https://kind.sigs.k8s.io/docs/user/quick-start/#loading-an-image-into-your-cluster
+
+
+* kind
+
+Tools, whose name is short for "Kubernetes in Docker"
+
+Contains
+
+1. command line
+2. go package
+3. "node" base image
+
+
+* TODO docker label
+
+
+** TODO select container by label
+
+
+* TODO kube-proxy
+
+Per node? Per cluster?
+
+
+
+
+* kubectl
+
+** kubeconfig
+
+consist with 3 parts
+
+1. users: certification or username/password
+2. clusters: apiserver, CA, skip TLS
+3. contexts: tuple of (namespace, user, cluster)
+
+One kubeconfig can have more than one cluster, user and contexts.
+
+Check the current config with
+
+#+BEGIN_SRC shell
+  kubectl config view --minify
+#+END_SRC
+
+The kubconfig will be search in $KUBECONFIG env variable. It can have multiple path separate with colon.
+
+* scheduler
+
+Choose a node for unscheduled pod, in two steps
+
+1. filter :: select *feasible* nodes
+2. scoring :: nodes based on resource requirements,
+              hardware/software/policy constraints, affinity and
+              anti-affinity spec, data locality, inter-workload
+              interferences
+
+Then kube-scheduler, which is part of control-plane component, binds
+pod to the node with highest ranked node.
+
+** configure
+
+- scheduling policies :: predicates for filtering, properties for scoring
+- scheduling profiles :: plugins implement different shceduling
+     stages: QueueSort, Filter, Score, bind, Reserve, Permit and
+     others
+
+Specify the *predicates* and *priorites* to filter and score nodes in
+
+1. kube-scheduler command line
+2. policy type 
+
+** Predicates
+
+Filter the feasible nodes
+
+- PodFitsHostPorts ::
+- PodFitsHost ::
+- PodFitsResources ::
+- MatchNodeSelector ::
+- NoVolumeZoneConflict ::
+- NoDiskConflict ::
+- CheckNodeMemoryPressure :: memory real usage
+- CheckNodePIDPressure ::
+- CheckNodeDiskPressure ::
+- CheckNodeCondition :: filesystem, network, kubelet health status
+- PodToleratesNodeTaints :: if a pod's tolerations can tolerate the node's taints
+- CheckVolumeBinding :: 
+
+** Priorities
+
+Scoring the feasible nodes
+
+- SelectorSpreadPriority ::
+- InterPodAffinityPriority ::
+- LeastRequestedPriority :: use more node
+- MostRequestedPriority :: use smallest number of nodes
+- RequestedToCapacityRatioPriority :: ??
+- BalancedResourceAllocation ::
+- NodePreferAvoidPodsPriority ::
+- NodeAffinityPriority ::
+- NodeAffinityPriority ::
+- TaintTolerationPriority ::
+- ImageLocalityPriority ::
+- ServiceSpreadingPriority ::
+- EqualPriority ::
+- EvenPodsSpreadPriorty :: 
+
+** TODO policy type
+
+** Filters 
+
+such as =PodFitsReousrces=
+
+
+** References
+
+- [[https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/][Kubernetes Scheduler]]
+- [[https://kubernetes.io/docs/reference/scheduling/policies/][Scheduling Policies]]
+
+* taint and toleration
+
+* control plane
+
+- etcd ::
+- API server :: 
+- Scheduler :: 
+- Controller Manager :: replication, endpoints, namespace, serviceaccount controller
+- Cloud Controller manager ::
+
+
+* etcd                                                         :controlPlane:
+
+k8s backing KV storage
+
+
+* cloud controller manager                                     :controlPlane:
+
+embeds cloud-specific control logic and decouple the interoperability
+logic between kubernetes and the underlying cloud infrastructure.
+
+
+Controllers for specific hyperscaler
+- node controller :: create/delete node
+- route controller :: communicate among nodes scatter in different nodes
+- service controllerload balancer :: 
