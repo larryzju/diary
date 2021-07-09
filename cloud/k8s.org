@@ -50,6 +50,36 @@ Check the current config with
 
 The kubconfig will be search in $KUBECONFIG env variable. It can have multiple path separate with colon.
 
+
+** acess cluster
+
+1. restful api: kubectl proxy, apiserver with token
+2. programmatic: client-go, python kubernetes
+
+*** certification
+
+Used by client to verify API server
+
+*** Token
+
+1. get from kubeconfig
+2. in pod, found in =/var/run/secrets/kubernetes.io/serviceaccount/token=
+
+*** Proxy
+
+**** kubectl proxy
+
+#+BEGIN_SRC 
+user ----------> kubectl proxy -------------> APIServer
+         HTTP                     HTTPS
+#+END_SRC
+
+
+**** kube proxy
+
+Running on node, to route TCP/UDP traffic to service
+
+
 * scheduler
 
 Choose a node for unscheduled pod, in two steps
