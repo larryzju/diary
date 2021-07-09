@@ -58,7 +58,7 @@ The kubconfig will be search in $KUBECONFIG env variable. It can have multiple p
 
 *** certification
 
-Used by client to verify API server
+Used by client to verify API serveor
 
 *** Token
 
@@ -74,10 +74,21 @@ user ----------> kubectl proxy -------------> APIServer
          HTTP                     HTTPS
 #+END_SRC
 
+To access the server, the URL looks like
+
+
+**** apiserver proxy
+
+#+BEGIN_SRC 
+http://kubernetes_apiserver_address/api/v1/namespaces/namespace_name/services/https:service_name:[port_name]/proxy
+#+END_SRC
+
+The port name could be a string or integer.
 
 **** kube proxy
 
 Running on node, to route TCP/UDP traffic to service
+
 
 
 * scheduler
