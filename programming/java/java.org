@@ -1,0 +1,34 @@
+* heap vs stack memory
+
+https://www.journaldev.com/4098/java-heap-space-vs-stack-memory
+
+Heap memory
+- JRE manage heap space memory
+- new object will allocate memory from heap space
+- Garbage collection revokes the unrefered memory back to heap
+
+Stack memory
+- used for the execution of a thread
+- short-lived values
+- referenced in LIFO order
+
+
+
+Differences between heap and stack memory
+1. stack is used only by one thread of execution
+2. object is placed in heap while the reference (variable) is in stack space. The primitive variable is always in stack space
+3. heap memory is divided into young-generation, old-generation, etc.
+4. use -Xms and -Xmx to specify the startup size and maximum size of heap memory; use -Xss to define the stack memory size
+5. StackOverFlowError vs OutOfMeoryError exception
+6. stack memory size is very less compared to heap memory. 
+
+
+* on heap vs off heap memory
+
+off heap memory includes
+1. thread stacks
+2. application code
+3. NIO buffers
+
+* TODO java garbage collection
+

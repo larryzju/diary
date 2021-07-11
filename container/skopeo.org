@@ -1,0 +1,14 @@
+* Overview
+
+https://www.redhat.com/en/blog/skopeo-10-released
+
+Firstly invented to check the manifest of docker image. Now it has been extended to
+1. copy image from one registry to another
+2. delete image from registry
+
+
+* Build 
+
+
+1. install nix =curl -L https://nixos.org/nix/install | sh=
+2. make static

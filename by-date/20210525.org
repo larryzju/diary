@@ -1,0 +1,72 @@
+* DevOps Paradox
+
+** Jeff Sussna (cont.)
+
+Praise AWS: they were looking at what it was that their customers were
+struggling with and how they could help make it easier.
+
+That's the essence of DevOps: how do I, as a developer, make
+operations' lives easier and better, and as an operations person, how
+do I make development's life easier and better.
+
+Forget about what I'm doing, what is it that you're trying to accomplish
+and how could I use my expertise to help you accomplish it?
+
+*** The big DevOps guy versus the little DevOps guy
+
+The problem is separation. People don't trust others in some fashion.
+
+As DevOps, you have flow, feedback and continuous learning. It's
+surprising how difficult feedback is. People tend to adopt practices,
+but where they fail is in understanding the goals behind those
+practices. As a result, we implement practices but fail to connect
+with them and gain any real benefits. The real question is, how many
+use that feedback to learn and adapt?
+
+The danger for Agile and DevOps is We get really focused on how fast
+we can get stuff to production, and we see it as essentially a push
+problem. One of the misconceptions about DevOps is that DevOps is
+about deployment automation.
+
+The idea behind short sprints is not to be able to do more work but to
+get that feedback sooner and better decide what to do next. If we just 
+pick up a new item from the backlog, we are missing the point.
+
+*** how to change the culture
+
+just poke it and see what comes out
+
+*** design thinking
+
+user-centered design, which is based around empathy. 
+
+Currently Agile and DevOps practices are incomplete because we don't
+really have a mechanism to incorporate true feedback from the people
+we're trying to serve.
+
+*** Agile versus DevOps
+
+Agile talks about delivering value and working code. Agile can't
+actually deliver the value unless the code can be deployed, and that
+deployment environment can be operated, and the problems can be fixed,
+including where new code can be deployed, and so on.
+
+*** which is worse: being slow or not secure
+
+Being slow is definitely better than not being available at all due to
+a security exploit that someone has used to bring your whole cluster
+down.
+
+DevSecOps is confusing. Isn't security something that is mandatory
+anyway and therefore part of DevOps?
+
+You cannot really believe in a fundamental separation between Agile
+and DevOps.
+
+* English
+
+** elaborate
+
+I'm curious about design thinking, which is something you've mentioned
+a few times now. Can you elaborate on that?
+

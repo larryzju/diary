@@ -1,0 +1,223 @@
+* Kubernetes Up and Running Dive into the future of infrastructure
+
+** cloud native benefit
+
+The history of computer science is a history of the development of
+abstractions that hide complexity and empower you to buildever more
+sophisticated applications.
+
+** book outlines
+
+1. high-level benefits
+2. docker 
+3. deploy k8s cluster
+4. ?
+5. pod
+6. label, annotation
+7. service
+8. replicasets
+9. daemonsets
+10. job
+11. configmap/secrets
+12. lifecycle of a complete application
+13. storage
+
+** chapter 1. introduction
+
+k8s benefits
+- velocity
+- scaling
+- abstracting your infrastructure
+- efficiency
+
+*** velocity
+
+- change constantly while maintaining a highly available service
+- core concepts
+  - immutability: build image instead of changing in-place
+  - declarative configuration: reconcile state and spec
+  - self-healing: guard against any failure 
+
+
+build image helps
+- the records of building image make it easy to understand the new and change
+- can quickly rollback
+
+declarative configuration helps
+- understand actions before executing
+- less error-prone
+- source control, code review, unit testing
+- rollback configuration
+
+
+*** scaling your service and your teams
+
+Decoupled architecture
+- componet is separated from others
+- APIs provide a buffer between implementer and consumer
+- load balanacer provide a buffer between running instances of each service
+
+
+Scaling
+- deployment, replicas, nodes
+- development team add new microservice
+
+Combine mutliple application in the same cluster, resource can be balanced more efficiently. 
+(move free resources for A to B).
+
+K8s abstractions for developer scale
+- pod: health-checking, rollout
+- service: load balancing, naming, discovery to isolate one microservice from another
+- namespace: access control
+- ingress: combine multiple microservices into a single externalized API surface area
+
+Application developer relies on SLA delivered by cluster ops team
+- decouple container and OS
+- decouple app with infrastructure
+
+
+*** abstract your infrastructure
+
+Cloud API can not be used by developer team. We need to use k8s
+cluster to provide application-oriented container APIs
+1. higher-level API than machine-oriented IT level
+2. other things like storage, load balancer
+
+Avoid to use cloud-managed services (DynamoDB). Always use open source storage solution.
+
+
+*** Efficiency
+
+- reduce the number of machines needed
+- reduce human costs to manage installation
+- run tests on shared k8s cluster
+
+The lower cost to run test, the more test cases can be run, the much reliable of the code
+
+
+** chapter 2. creating and running containers
+
+application is comprised of 
+- language runtime
+- libraries (shared libraries)
+- source code
+
+traditional methods of running application
+- production environment is different from development environment
+- production environment changed due imperative scripts
+- multiple applications are deployed on a single machine (must use same versions of shared libraries)
+
+topics of this chapter
+1. how to build docker image
+2. how to run docker container 
+
+*** docker image
+
+Types of docker image
+- docker image format is one of the formats. which is developed by Docker Inc.
+- Open Container Image (OCI) project
+
+Docker image is made up of fs layers and metadata. 
+
+Types of fs supports layers 
+- aufs
+- overlay
+- overlay2
+
+Metadata includes
+- how to set up network
+- namespace isolation
+- resource constraints (cgroups)
+- syscall restrictions
+
+Image security concerns: secrets and images should **never** be mixed.
+
+The idea to optimize image size
+- remove file in upper layer will not actually remove it from under layers
+- order layers from least likely to change to most likely to change
+
+*** docker runtime
+
+container runtime provides API to setup container
+1. cgroups
+2. namespaces
+
+cgroup can be used to limit resource usage
+1. memory
+2. memory-swap
+3. cpu-shares
+
+
+
+** chapter 3. deploying a k8s cluster
+
+ways to deploy 
+- cloud provider provides services to provision k8s cluster.
+  - AWS
+  - Azure/Azure Container Service
+  - GCP/GKE: gclodu tool
+- minikue create single- node cluster in VM
+- kubeadm
+
+
+steps to create Azure Container Service cluster
+1. create resource group: =az group create --name=xx --location=westus=
+2. create cluster: =az acs create --orchestrator-type=kubernetes --resource-group=xx --name=xx=
+
+
+When the book is wrote, AWS doesn't provide k8s cluster service. But
+- suggest create k8s by Heptio
+- or use project called [[https://github.com/kubernetes/kops][kops]]
+- Currently there's EKS available
+
+minikube depends on hypervisor (virtualbox for linux, hyper-v for windows): =minikube start=
+
+We can also build on top of Raspberry Pi clusters.
+
+common used kubectl commands
+- kubectl version
+- kubectl get cs: short for componentstatuses
+- kubectl get nodes
+
+
+
+
+
+
+
+* English
+
+** though not essential
+
+Likewise, experience with Linux, Linux containers, and Docker, though
+not essential, will help you make the most of this book
+
+** preceding
+
+We hope the proceeding sections have given you an idea of why you
+should deploy your applications using Kubernetes.
+
+** Byzantine
+
+Too often the state of the art for deployment involves running
+imperative scripts, which inevitably have twisty and Byzantine failure
+cases.
+
+** never do that
+
+Secrets and images should never be mixed. If you do so, you will be
+hacked, and you will bring shame to your entire company or department.
+We all want to be on TV someday, but there are better ways to go about
+that.
+
+** bare metal
+
+We highly recommend this approach (cloud provider provided k8s
+cluster) if you are just getting started with Kubernetes. Even if you
+are ultimately planning on running Kubernetes on bare metal, it makes
+sense to quickly get started with Kubernetes, learn about Kubernetes
+itself, and then learn how to install it on physical machines.
+
+* To Read
+
+-  [[https://queue.acm.org/detail.cfm?id=2898444#content-comments][Borg, Omega, and Kubernetes: Lessons learned from three container-management systems over a decade]]
