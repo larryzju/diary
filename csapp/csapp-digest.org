@@ -609,6 +609,14 @@ IA32 是一个比较大众的 ISA，被多家厂商使用与支持。
 
 ** TODO Summary
 
+* [0/7] The Memory Hierarchy
+** TODO Storage Techonologies
+** TODO Locality
+** TODO The Memory Hierarchy
+** TODO Cache Memories
+** TODO Writing Cache-friendly Code
+** TODO Putting it Together: The Imp[act of Caches on Program Performance
+** TODO Summary
 * [8/13] Virtual Memory
 
 ** DONE Overview
@@ -1238,15 +1246,15 @@ Each segment is represented by =vm_area_struct=
 MMU triggers a page fault while trying to translate some virtual
 address A.  The exception results in a tranfer of control to the
 kernel's page fault handler, which then performs the following steps:
-- Is VA =A= legal? :: search the list of area structus, or trigger a
-     segmentation fault and terminates the process
+- Is VA =A= legal? :: search the list of area structs, or trigger a
+  segmentation fault and terminates the process
 - Is the access legal? :: does the process have permission to read,
-     write, or execute the pages in this area? or trigger a protection
-     exception, which terminates the process
+  write, or execute the pages in this area? or trigger a protection
+  exception, which terminates the process
 - handle the page fault :: select a victim page, swapping out the
-     victim page if it is dirty, swapping in the new page, and
-     updating the page table. And restart the faulting instruction
-     after the page fault handler return
+  victim page if it is dirty, swapping in the new page, and updating
+  the page table. And restart the faulting instruction after the page
+  fault handler return
 
 ** TODO Memory Mapping
 
@@ -1293,12 +1301,14 @@ memory, even though the object is mapped into multiple shared areas.
 
 *** The =fork= Function Revisited
 
-To fork a new process, it crates exact copie of current process's
+To fork a new process, it creates exact copie of current process's
 =mm_struct=, area structs, and page tables.  It flags each page in
 both processes as read-only, and flags each area struct in both
 processes as private copy-on-write.
 
 *** The =execve= Function Revisited
+
+
 
 #+BEGIN_QUOTE
 execve() does not return on success, and the text, initialized data,
