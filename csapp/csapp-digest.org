@@ -656,7 +656,7 @@ Topics of this chapter
 - "memory mountain"
 
 ** TODO [0/4] Storage Techonologies
-*** TODO [4/7] Random-Access Memory
+*** TODO [5/7] Random-Access Memory
 
 Two varieties
 1. static (faster and expensive, used for cache memory, both on/off CPU cihp)
@@ -716,7 +716,24 @@ In above figure,
 |        512x4 |  512 | 4 |     9 |     2 |               9 |
 |       1024x4 | 1024 | 4 |    10 |     2 |              10 |
 
-**** TODO Enhanced DRAMs
+**** DONE Enhanced DRAMs
+
+Types of new DRAMs
+- Fast page mode DRAM (FPM DRAM) :: optimize read consecutive columns in same row
+- Extended data out DRAM (EDO DRAM) :: optimized FPM DRAM
+- Synchronous DRAM (SDRAM) :: synchronous controller signal, faster than FPM or EDO (async mode)
+- Double Data-Rate Synchronous DRAM (DDR SDRAM) :: enhanced SDRAM,
+  using both clock edges as control signals to double the speed. Have
+  different prefetch buffer size: DDR (2bit), DDR2 (4bit), DDR3 (8bit)
+- Rambus DRAM (RDRAM) :: proprietary tech like DDR SDRAM
+- Video RAM (VRAM) :: used in frame buffer, like FPM DRAM, support concurrent I/O
+
+
+History
+- Until 1995, FPM DRAMs
+- 1996-1999, EDO DRAMs
+- SDRAMs 1995-2002
+- By 2010, DDR3 SDRAM  (Intel Core i7 supports only DDR3 SDRAM)
 
 **** TODO Nonvolatile Memory
 
