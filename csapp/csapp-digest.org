@@ -655,7 +655,11 @@ Topics of this chapter
 - analyze locality, how to improve the locality in your programs
 - "memory mountain"
 
-** TODO Storage Techonologies
+** TODO [0/4] Storage Techonologies
+*** TODO Random-Access Memory
+*** TODO Disk Storage
+*** TODO Solid State Disks
+*** TODO Storage Technology Trends
 ** TODO Locality
 ** TODO The Memory Hierarchy
 ** TODO Cache Memories
