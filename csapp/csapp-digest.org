@@ -609,7 +609,52 @@ IA32 是一个比较大众的 ISA，被多家厂商使用与支持。
 
 ** TODO Summary
 
-* [0/7] The Memory Hierarchy
+* [0/0] The Memory Hierarchy
+
+Simple mode of a computer
+1. CPU executes instructions
+2. memory system is a linear array of bytes
+3. CPU can access each memory location in a constant amount of time
+
+
+In practice, a _memory system_ is a hieararchy of storage devices with
+- different capacities
+- costs
+- access times
+
+
+Here's the list of memory devices with speed from fast to slow
+
+| device       | CPU cycle to read |
+|--------------+-------------------|
+| CPU register |                 0 |
+| Cache memory |              1-30 |
+| Main memory  |            50-200 |
+| Disk         |             10^10 |
+
+
+#+begin_quote
+The overall effect is a large pool of memory that costs as much as the
+cheap storage near the bottom of the hierarchy, but that serves data
+to programs at the rate of the fast storage near the top of the hierarchy.
+#+end_quote
+
+
+**locality** : programs with good locality tend to access more data
+items from the upper levels of the memory hierarchy than programs with
+poor locality, and thus run faster.
+
+
+Topics of this chapter
+- Basic storage technologies
+  - SRAM
+  - DRAM
+  - ROM
+  - rotating and solid state disks
+- cache memory as staging area between CPU and main memory
+- analyze locality, how to improve the locality in your programs
+- "memory mountain"
+
 ** TODO Storage Techonologies
 ** TODO Locality
 ** TODO The Memory Hierarchy
