@@ -685,7 +685,8 @@ memory controller communicate with DRAM chip to get/put w bits at one time
 1. 8bit data wire
 2. 2bit addr wire
 
-[[file:img/read-dram-supercell.png][reading the contents of a DRAM supercell]]
+#+CAPTION: reading the contents of a DRAM supercell
+[[./img/read-dram-supercell.png]]
 
 **** TODO Memory Modules
 
