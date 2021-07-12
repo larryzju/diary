@@ -656,7 +656,7 @@ Topics of this chapter
 - "memory mountain"
 
 ** TODO [0/4] Storage Techonologies
-*** TODO [5/7] Random-Access Memory
+*** TODO [6/7] Random-Access Memory
 
 Two varieties
 1. static (faster and expensive, used for cache memory, both on/off CPU cihp)
@@ -735,8 +735,28 @@ History
 - SDRAMs 1995-2002
 - By 2010, DDR3 SDRAM  (Intel Core i7 supports only DDR3 SDRAM)
 
-**** TODO Nonvolatile Memory
+**** DONE Nonvolatile Memory
 
+Nonvolatile memory is the one can retain their information even when
+power is off.
+
+It is named ROM (read-only memory), even though some types of ROMs can
+be written to as well as read.
+
+ROMs are distinguished by the number of times they can be rewrite, and
+the mechansim for reprogramming them:
+- programmable ROM (PROM) :: be programmed exactly once, a sort of fuse
+- erasable programmable ROM (EPROM) :: erase by shining ultraviolet
+  light, can rewrite 1000 times
+- eletrically erasable PROM (EEPROM) :: up to 10^5 times rewrite
+- flash memory :: SSD
+
+
+Firmware: program stored in ROM device
+- PC BIOS
+- graphics card/disk driver controller firmware to translate I/OI
+  request from CPU
+  
 **** TODO Accessing Main Memory
 
 
