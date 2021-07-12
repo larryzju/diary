@@ -656,7 +656,48 @@ Topics of this chapter
 - "memory mountain"
 
 ** TODO [0/4] Storage Techonologies
-*** TODO Random-Access Memory
+*** TODO [3/7] Random-Access Memory
+
+Two varieties
+1. static (faster and expensive, used for cache memory, both on/off CPU cihp)
+2. dynamic (main memory, frame buffer of graphic display)
+   
+**** DONE Static RAM
+
+- 6-transistor circuit for each cell
+- bistable: only two types of voltage configurations, or *state*
+- retain its value indefinitely, as long as it is kept powered
+
+**** DONE Dynamic RAM
+
+- store bit as charge on a capacitor with a single access transistor
+- very sensitive to any disturbance (exposure to light rays will cause change)
+- current leakage, OS need to refresh every bit of memory
+
+**** DONE Conventional DRAMs
+
+supercell
+- cells are partitioned into d supercells
+- each supercell has w DRAM cells
+- supercells are organized as a rectangular array with r rows and c columns
+
+memory controller communicate with DRAM chip to get/put w bits at one time
+1. 8bit data wire
+2. 2bit addr wire
+
+[[file:img/read-dram-supercell.png][reading the contents of a DRAM supercell]]
+
+**** TODO Memory Modules
+
+**** TODO Enhanced DRAMs
+
+**** TODO Nonvolatile Memory
+
+**** TODO Accessing Main Memory
+
+
+
+
 *** TODO Disk Storage
 *** TODO Solid State Disks
 *** TODO Storage Technology Trends
