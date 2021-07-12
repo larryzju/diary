@@ -656,7 +656,7 @@ Topics of this chapter
 - "memory mountain"
 
 ** TODO [0/4] Storage Techonologies
-*** TODO [3/7] Random-Access Memory
+*** TODO [4/7] Random-Access Memory
 
 Two varieties
 1. static (faster and expensive, used for cache memory, both on/off CPU cihp)
@@ -688,7 +688,33 @@ memory controller communicate with DRAM chip to get/put w bits at one time
 #+CAPTION: reading the contents of a DRAM supercell
 [[./img/read-dram-supercell.png]]
 
-**** TODO Memory Modules
+**** DONE Memory Modules
+
+DRAM chips are packaged in memory modules that can be plug into motherboard.
+
+There are two types of interface
+1. DIMM (dual inline memory module) 168-pin, transfer in 64-bit chunk
+2. SIMM (single inline memory module) 72-pin, transfer in 32-bit chunk
+
+#+CAPTION: read via memory module
+[[./img/memory-module.png]]
+
+In above figure,
+- 8 DRAM chips, each has 8M storage
+- each supercell store 1 byte of main memory
+- bytes from same position (i,j) of every chip build into a doubleword (64-bits)
+- memory controller communicate with 8 DRAM chips and return 64-bit doubleword to CPU
+
+
+***** Practice Problem 6.1 (?)
+
+| Organization |    r | c | $b_r$ | $b_c$ | $max(b_r, b_c)$ |
+|--------------+------+---+-------+-------+-----------------|
+|         16x1 |   16 | 1 |     4 |     1 |               4 |
+|         16x4 |   16 | 4 |     4 |     2 |               4 |
+|        128x8 |  128 | 8 |     7 |     3 |               7 |
+|        512x4 |  512 | 4 |     9 |     2 |               9 |
+|       1024x4 | 1024 | 4 |    10 |     2 |              10 |
 
 **** TODO Enhanced DRAMs
 
