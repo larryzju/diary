@@ -655,26 +655,26 @@ Topics of this chapter
 - analyze locality, how to improve the locality in your programs
 - "memory mountain"
 
-** TODO [0/4] Storage Techonologies
-*** TODO [6/7] Random-Access Memory
+** TODO [1/4] Storage Techonologies
+*** DONE Random-Access Memory
 
 Two varieties
 1. static (faster and expensive, used for cache memory, both on/off CPU cihp)
 2. dynamic (main memory, frame buffer of graphic display)
    
-**** DONE Static RAM
+**** Static RAM
 
 - 6-transistor circuit for each cell
 - bistable: only two types of voltage configurations, or *state*
 - retain its value indefinitely, as long as it is kept powered
 
-**** DONE Dynamic RAM
+**** Dynamic RAM
 
 - store bit as charge on a capacitor with a single access transistor
 - very sensitive to any disturbance (exposure to light rays will cause change)
 - current leakage, OS need to refresh every bit of memory
 
-**** DONE Conventional DRAMs
+**** Conventional DRAMs
 
 supercell
 - cells are partitioned into d supercells
@@ -688,7 +688,7 @@ memory controller communicate with DRAM chip to get/put w bits at one time
 #+CAPTION: reading the contents of a DRAM supercell
 [[./img/read-dram-supercell.png]]
 
-**** DONE Memory Modules
+**** Memory Modules
 
 DRAM chips are packaged in memory modules that can be plug into motherboard.
 
@@ -716,7 +716,7 @@ In above figure,
 |        512x4 |  512 | 4 |     9 |     2 |               9 |
 |       1024x4 | 1024 | 4 |    10 |     2 |              10 |
 
-**** DONE Enhanced DRAMs
+**** Enhanced DRAMs
 
 Types of new DRAMs
 - Fast page mode DRAM (FPM DRAM) :: optimize read consecutive columns in same row
@@ -735,7 +735,7 @@ History
 - SDRAMs 1995-2002
 - By 2010, DDR3 SDRAM  (Intel Core i7 supports only DDR3 SDRAM)
 
-**** DONE Nonvolatile Memory
+**** Nonvolatile Memory
 
 Nonvolatile memory is the one can retain their information even when
 power is off.
@@ -757,7 +757,49 @@ Firmware: program stored in ROM device
 - graphics card/disk driver controller firmware to translate I/OI
   request from CPU
   
-**** TODO Accessing Main Memory
+**** Accessing Main Memory
+
+bus connects CPU and DRAM
+- read transaction: transfers data from the main memory to the CPU
+- write transaction: transfers data from the CPU to the main memory
+
+there are three types of bus
+1. address bus
+2. data bus
+3. control bus (can share the data bus): carry signals to sync the transition and identify what kind of transaction is
+   1. to main memory, or to some other I/O device, such as a disk controller
+   2. read or write
+   3. address or data item?
+
+[[[[./img/bus-between-cpu-and-memory.png]]]]
+
+As shown in above figure
+- system bus connects the CPU to the I/O bridge
+- memory bus connects the I/O bridge to the main memory
+- I/O bridge includes the memory controller, tranlate the electrical signals
+- I/O bridge also connects with other I/O devices such as disks and graphics cards
+
+#+BEGIN_VERSE
+For Intel system, CPU connects to I/O or memory device via northbridge and southbridge
+#+END_VERSE
+
+#+BEGIN_SRC 
+movq A, %rax
+#+END_SRC
+For the above operation, the following steps are done to read data from memory to register
+1. CPU places address A on system bus
+2. I/O bridge passes the signal along to memory bus
+3. main memory read address from memory bus, fetches data from DRAM, write the data to the memory bus
+4. I/O bridge translate data on memory bus to system bus
+5. CPU read data from bus
+
+
+#+BEGIN_SRC 
+movq %rax, A
+#+END_SRC
+- CPU write address to bus
+- CPU write data to bus
+
 
 
 
