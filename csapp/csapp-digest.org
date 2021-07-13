@@ -804,7 +804,33 @@ movq %rax, A
 
 
 
-*** TODO Disk Storage
+*** TODO [1/6] Disk Storage
+
+read disk is 10^5 slower than ready from DRAM, 10^9 slower than ready from SRAM.
+
+**** DONE Disk Geometry
+
+[[file:img/disk-geometry.png]]
+
+- Disk is consists of platters, called *disk drive*
+- platter consists of two sides, or surfaces, coated with magnetic recording material
+- rotating *spindle* spins at a fixed *rotation rate* (5400, or 15000 RPM)
+- each surface consists of collection of concentric rings called *tracks*
+- track is partitioned into a collection of *sectors*
+- sectors are separated by *gaps*
+- gaps store formatting bits that identify sectors
+- cylinders: multiple-platter drives (includes track of all the surfaces)
+
+**** TODO Disk Capacity
+
+**** TODO Disk Operation
+
+**** TODO Logical Disk Blocks
+
+**** TODO Connecting I/O Devices
+
+**** TODO Accessing Disks
+
 *** TODO Solid State Disks
 *** TODO Storage Technology Trends
 ** TODO Locality
