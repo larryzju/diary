@@ -771,7 +771,7 @@ there are three types of bus
    2. read or write
    3. address or data item?
 
-[[[[./img/bus-between-cpu-and-memory.png]]]]
+[[./img/bus-between-cpu-and-memory.png]]
 
 As shown in above figure
 - system bus connects the CPU to the I/O bridge
@@ -804,7 +804,7 @@ movq %rax, A
 
 
 
-*** TODO [1/6] Disk Storage
+*** TODO [2/6] Disk Storage
 
 read disk is 10^5 slower than ready from DRAM, 10^9 slower than ready from SRAM.
 
@@ -821,7 +821,27 @@ read disk is 10^5 slower than ready from DRAM, 10^9 slower than ready from SRAM.
 - gaps store formatting bits that identify sectors
 - cylinders: multiple-platter drives (includes track of all the surfaces)
 
-**** TODO Disk Capacity
+**** DONE Disk Capacity
+
+Disk capacity is determined by the following factors
+- recording density (bits/in) :: bits per inch segment of a track
+- track density (tracks/in) :: tracks per 1 inch segment of the radius extending from the center of the platter
+- areal density (bits/in^2) :: recording-density * track-density
+
+Note that secters of tracks are same. The sectors on the innermost
+track are much tighter than the ones on the outermost track. (larger gap)
+
+$
+Capacity = \frac{#byes}{sector} 
+           \time \frac{average # sectors}{track} 
+           \time \frac{#tracks}{surface} 
+           \time \frac{#surfaces}{platter} 
+           \time \frac{#platters}{disk}
+$
+
+***** Practice Problem 6.2 
+
+Capacity = 15,000 * 6 * 500 * 1024 ~= 45GB
 
 **** TODO Disk Operation
 
