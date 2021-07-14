@@ -804,7 +804,7 @@ movq %rax, A
 
 
 
-*** TODO [4/6] Disk Storage
+*** TODO [5/6] Disk Storage
 
 read disk is 10^5 slower than ready from DRAM, 10^9 slower than ready from SRAM.
 
@@ -882,7 +882,17 @@ Disk can be used to store data after disk controller format it
 3. set spare cylinder for fallback usage
 #+END_VERSE
 
-**** TODO Connecting I/O Devices
+**** DONE Connecting I/O Devices
+
+Unlike the system bus and memory bus, I/O buses are designed to be independent to the underlying CPU
+
+[[file:img/io-bus.png]]
+
+For example
+- USB controller: 625 MB/s bandwidth for USB 3.0, 1,250 MB/s bandwidth for USB 3.1
+- graphic card (adapter)
+- host bus adapter: SCSI (can support multiple disk drives), SATA
+- network adapter
 
 **** TODO Accessing Disks
 
