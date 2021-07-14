@@ -804,7 +804,7 @@ movq %rax, A
 
 
 
-*** TODO [3/6] Disk Storage
+*** TODO [4/6] Disk Storage
 
 read disk is 10^5 slower than ready from DRAM, 10^9 slower than ready from SRAM.
 
@@ -867,7 +867,20 @@ $ T_{avg-transfer} = 60/12000/300*1000 = 0.0167ms $
 
 $ T_{access} = 2.5ms + 0.0167ms + 5ms = 7.5167ms $
 
-**** TODO Logical Disk Blocks
+**** DONE Logical Disk Blocks
+
+In disk, *disk controller* maps the physical sectors to logical blocks.
+
+OS send command to disk controller to read/write from a particular
+logical block (index N). The disk controller translate the request into
+(surface, rtack, sector) triple and make the action.
+
+#+BEGIN_VERSE
+Disk can be used to store data after disk controller format it
+1. filling in gaps betwee nsectors
+2. take defected cylinders out of action
+3. set spare cylinder for fallback usage
+#+END_VERSE
 
 **** TODO Connecting I/O Devices
 
