@@ -804,7 +804,7 @@ movq %rax, A
 
 
 
-*** TODO [2/6] Disk Storage
+*** TODO [3/6] Disk Storage
 
 read disk is 10^5 slower than ready from DRAM, 10^9 slower than ready from SRAM.
 
@@ -843,7 +843,29 @@ $
 
 Capacity = 15,000 * 6 * 500 * 1024 ~= 45GB
 
-**** TODO Disk Operation
+**** DONE Disk Operation
+
+Disk read and write bits stored on the magnetic surface using a
+*read/write head* connected to the end of an *actuator arm*
+
+[[file:img/disk-read-write.png]]
+
+Disks with multiple platters have a separate read/write head for each
+surface.
+
+Access time for a sector have 3 main components
+- seek time :: move arm to target sector, usually 3-9ms, maximum 20ms
+- rational latency :: go up to the first bit
+- transfer time :: time for read all bits of sector (per track)
+
+
+***** Practic Problem 6.3 
+
+$ T_{avg-rotation} = 0.5*60/12000*1000 = 2.5ms $
+
+$ T_{avg-transfer} = 60/12000/300*1000 = 0.0167ms $
+
+$ T_{access} = 2.5ms + 0.0167ms + 5ms = 7.5167ms $
 
 **** TODO Logical Disk Blocks
 
