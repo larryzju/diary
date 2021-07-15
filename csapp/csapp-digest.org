@@ -655,7 +655,7 @@ Topics of this chapter
 - analyze locality, how to improve the locality in your programs
 - "memory mountain"
 
-** TODO [2/4] Storage Techonologies
+** TODO [3/4] Storage Techonologies
 *** DONE Random-Access Memory
 
 Two varieties
@@ -909,7 +909,45 @@ Example
 
 
 
-*** TODO Solid State Disks
+*** DONE Solid State Disks
+
+[[file:img/ssd.png]]
+
+features:
+- reading is much faster than writeing
+- write/read in units of page
+- page can be written only after the entire block has been erased
+- a block wears out after 100,000 repeated writes
+
+
+why random writes are slower
+1. erase a block take a relatively long time
+2. block must be copied to another block before changing
+
+
+advantages over rotating disks
+- no moving parts
+- faster random access times
+- use less power
+- more rugged
+
+
+disadvantages
+- wear out after repated writes (flash translation layer attempts to maximize the lifetime of writing)
+- 30 times expensive per byte than rotating disks
+
+
+**** Practice Problem 6.5
+
+- worst case for sequential writes: 8.65 years
+- worse case for random writes: 13.4 years
+- average cases: 17534.25 years
+
+
+
+
+
+
 *** TODO Storage Technology Trends
 ** TODO Locality
 ** TODO The Memory Hierarchy
