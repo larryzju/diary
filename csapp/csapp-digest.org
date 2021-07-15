@@ -609,7 +609,7 @@ IA32 是一个比较大众的 ISA，被多家厂商使用与支持。
 
 ** TODO Summary
 
-* [0/0] The Memory Hierarchy
+* [1/7] The Memory Hierarchy
 
 Simple mode of a computer
 1. CPU executes instructions
@@ -655,8 +655,8 @@ Topics of this chapter
 - analyze locality, how to improve the locality in your programs
 - "memory mountain"
 
-** TODO [3/4] Storage Techonologies
-*** DONE Random-Access Memory
+** DONE Storage Techonologies
+*** Random-Access Memory
 
 Two varieties
 1. static (faster and expensive, used for cache memory, both on/off CPU cihp)
@@ -804,7 +804,7 @@ movq %rax, A
 
 
 
-*** DONE Disk Storage
+*** Disk Storage
 
 read disk is 10^5 slower than ready from DRAM, 10^9 slower than ready from SRAM.
 
@@ -909,7 +909,7 @@ Example
 
 
 
-*** DONE Solid State Disks
+*** Solid State Disks
 
 [[file:img/ssd.png]]
 
@@ -948,7 +948,35 @@ disadvantages
 
 
 
-*** TODO Storage Technology Trends
+*** Storage Technology Trends
+
+Different storage technologies have different price and performance trade-offs
+- speed: SRAM > DRAM > disk
+- prices: SRAM > DRAM > SSD > disk
+
+The price and performance properties of different storage technologies
+are changing at dramatically different rates.
+- it is much easier to increase density (and thereby reduce cost) than to decrease access time
+- DRAM and disk performance are lagging behind CPU performance
+
+Modern computers make heavy use of SRAM-based caches to try to bridge
+the processor-memory gap.
+
+#+BEGIN_VERSE
+Critical events in history change the industry and the workd
+- 1950s Fortran
+- 1960s IBM 360
+- 1970s ARPANET
+- 1980s IBM PC
+- 1990s World Wide Web
+
+Early in 21st centry, manufacturers could no longer increase CPU clock frequencies because it consume too much power.
+The solution is to introduce multiple smaller processor cores.
+
+Computers will get faster not because the clock frequency increases but because the number of cores in each processor increases,
+and because architectural innovations increase the efficiency of programs running on those cores.
+#+END_VERSE
+
 ** TODO Locality
 ** TODO The Memory Hierarchy
 ** TODO Cache Memories
