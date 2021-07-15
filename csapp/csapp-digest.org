@@ -655,7 +655,7 @@ Topics of this chapter
 - analyze locality, how to improve the locality in your programs
 - "memory mountain"
 
-** TODO [1/4] Storage Techonologies
+** TODO [2/4] Storage Techonologies
 *** DONE Random-Access Memory
 
 Two varieties
@@ -804,11 +804,11 @@ movq %rax, A
 
 
 
-*** TODO [5/6] Disk Storage
+*** DONE Disk Storage
 
 read disk is 10^5 slower than ready from DRAM, 10^9 slower than ready from SRAM.
 
-**** DONE Disk Geometry
+**** Disk Geometry
 
 [[file:img/disk-geometry.png]]
 
@@ -821,7 +821,7 @@ read disk is 10^5 slower than ready from DRAM, 10^9 slower than ready from SRAM.
 - gaps store formatting bits that identify sectors
 - cylinders: multiple-platter drives (includes track of all the surfaces)
 
-**** DONE Disk Capacity
+**** Disk Capacity
 
 Disk capacity is determined by the following factors
 - recording density (bits/in) :: bits per inch segment of a track
@@ -843,7 +843,7 @@ $
 
 Capacity = 15,000 * 6 * 500 * 1024 ~= 45GB
 
-**** DONE Disk Operation
+**** Disk Operation
 
 Disk read and write bits stored on the magnetic surface using a
 *read/write head* connected to the end of an *actuator arm*
@@ -867,7 +867,7 @@ $ T_{avg-transfer} = 60/12000/300*1000 = 0.0167ms $
 
 $ T_{access} = 2.5ms + 0.0167ms + 5ms = 7.5167ms $
 
-**** DONE Logical Disk Blocks
+**** Logical Disk Blocks
 
 In disk, *disk controller* maps the physical sectors to logical blocks.
 
@@ -882,7 +882,7 @@ Disk can be used to store data after disk controller format it
 3. set spare cylinder for fallback usage
 #+END_VERSE
 
-**** DONE Connecting I/O Devices
+**** Connecting I/O Devices
 
 Unlike the system bus and memory bus, I/O buses are designed to be independent to the underlying CPU
 
@@ -894,7 +894,20 @@ For example
 - host bus adapter: SCSI (can support multiple disk drives), SATA
 - network adapter
 
-**** TODO Accessing Disks
+**** Accessing Disks
+
+CPU access I/O devices by visiting certain address space, which is
+mapping to I/O device. Called *memory-mapped I/O*.
+
+Example
+1. CPU write read command to 0xa0 (mapped to disk controller)
+2. CPU write logical block number to read
+3. CPU write the main memory address the disk controller to write back
+4. disk drive write back content to memory (DMA: direct memory access)
+5. disk drive send interrupt to CPU
+6. CPU stop currently job and read the content from main memory
+
+
 
 *** TODO Solid State Disks
 *** TODO Storage Technology Trends
