@@ -609,7 +609,7 @@ IA32 是一个比较大众的 ISA，被多家厂商使用与支持。
 
 ** TODO Summary
 
-* [1/7] The Memory Hierarchy
+* [2/7] The Memory Hierarchy
 
 Simple mode of a computer
 1. CPU executes instructions
@@ -977,7 +977,7 @@ Computers will get faster not because the clock frequency increases but because 
 and because architectural innovations increase the efficiency of programs running on those cores.
 #+END_VERSE
 
-** TODO [1/3] Locality
+** DONE Locality
 
 *the principle of locality* has two aspects:
 - temporal locality :: memory location is referenced once is likely to
@@ -997,7 +997,7 @@ Examples
 - Web browser cache recently referenced documents on a local disk
 - Web server cache requested document in front-end disk caches
 
-*** DONE Locality of References to Program Data 
+*** Locality of References to Program Data 
 
 #+BEGIN_SRC c
   int sumvec(int v[N]) {
@@ -1034,9 +1034,25 @@ locality.
 
 #+END_SRC
 
-*** TODO Locality of Instruction Fetches
+*** Locality of Instruction Fetches
 
-*** TODO Summary of Locality
+Instructions are stored in memory, and are rarely overwritten
+- =for= loop executes in sequential memory order, is good spatial locality
+- loop body is executed multiple times, it also enjoys good temporal locality
+
+*** Summary of Locality
+
+Summary
+1. program repeatedly reference the same variables enjoy good temporal locality
+2. for stride-k reference patterns, the smaller the stride, the better
+   the spatial locality.
+3. loops have good temporal and spatial locality with respect to
+   instruction fetches. The smaller the loop body and the greater the
+   number of loop iterations, the better the locality.
+
+**** DONE Practice Problem 6.8 
+
+Ranks of spatial locality: b > c > d
 
 ** TODO The Memory Hierarchy
 ** TODO Cache Memories
