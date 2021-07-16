@@ -977,7 +977,32 @@ Computers will get faster not because the clock frequency increases but because 
 and because architectural innovations increase the efficiency of programs running on those cores.
 #+END_VERSE
 
-** TODO Locality
+** TODO [0/2] Locality
+
+*the principle of locality* has two aspects:
+- temporal locality :: memory location is referenced once is likely to
+     be referenced again multiple times in the near future
+- spatial locality :: if a memory location is referenced once, then
+     the program is likely to reference a nearby memory location in
+     the near feature.
+
+In general, programs with good locality run faster than programs with
+poor locality.
+
+Examples
+- cache memory to hold recently referenced instructions and data items
+- OS use main memory as a cache of the most recently referenced chunks
+  of the virtual address space
+- OS use main memory to cache disk blocks
+- Web browser cache recently referenced documents on a local disk
+- Web server cache requested document in front-end disk caches
+
+*** TODO Locality of References to Program Data 
+
+*** TODO Locality of Instruction Fetches
+
+*** TODO Summary of Locality
+
 ** TODO The Memory Hierarchy
 ** TODO Cache Memories
 ** TODO Writing Cache-friendly Code
