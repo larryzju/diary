@@ -1,0 +1,91 @@
+* types of input method
+
+X11 supports four types of input method
+
+1. on the spot: application display the pre-edit data, directed by IM server (with the help of input method's callback)
+2. off the spot: application display the pre-edit data, directed by input method
+3. over the spot: input method display the pre-edit data over the text insertion position
+4. root window: input method has its own input area
+
+
+* Architecture
+
+** implementation model
+
+   - client/server model :: IM Server process input and handle
+     preediting, converting, and commiting; application receive the
+     committed string
+
+   - library model :: no IM Server. Application can handle this
+
+
+   Most complex language needs the Client/Server architecture
+
+   
+** Structure of IM
+
+   - client call XOpenIM to initial connection with locale
+   - client holds multiple input fields (Input Context, or IC for short)
+     + IC specifies the type of IM (?)
+     + server send string to client via IC
+   - The focused input field can be announced to server by =XSetICFocus()=
+
+     
+** Event Handling Model
+
+Input methods support one or two methods
+- FrontEnd
+- BackEnd (default)
+
+*** BackEnd method
+
+IM library (in Application) forwards all KeyPress and KeyRelease
+events to the IM Server
+
+
+**** TODO Filtering Events
+     
+*** FrontEnd method
+
+May have synchronization problems. X Server will send input events of
+client window to both the IM Server and IM library.
+
+It useful to have IM server in local machine, while client application
+running on another host.
+
+It's prefer to use the backend method.
+
+** Event Flow Control
+
+   Two models
+   1. static event flow: always send to IM server from the client
+   2. dynamic event flow: only needed events will be send to IM server
+
+
+   For dynamic event flow, ASCII character will not be sent to the IM
+   server, only Chinese characters will be sent to the IM server.
+
+   #+begin_quote
+   By adopting the Dynamic Event Flow, the number of requests among
+   the X Server, the client, and the IM server is significantly
+   reduced, and the number of context switches is also reduced,
+   resulting in improved performance.
+   #+end_quote
+
+   IM Server acna send =XIM_REGISTER_TRIGGERKEYS= messages in order to
+   switch the event flow in the Dynamic Event Flow.
+
+
+*** TODO Event Flow Control Protocol
+
+
+
+
+    
+* Emacs code notes
+
+src/xterm.c call XOpenIM()
+1. set the locale of the client
+2. sets a locale modifer
+
+src/xfns.c call XCreateIC() to create Input Context
