@@ -81,7 +81,27 @@ It's prefer to use the backend method.
 
 
 
-    
+* Default Preconnection Convention
+
+
+  Each IM Servers can register themselves (with ATOM name) into
+  #+begin_src
+  ((screen:0, directory:XIM_SERVERS) -> (transport address, locales).
+  #+end_src
+
+  If there's an owner for the ATOM name, the IM server ia active.
+
+  ??
+  #+begin_quote
+  The basic semantics to determine the IM server if there are multiple
+  ATOMs are found in =XIM_SERVERS= property, is first fit if the IM
+  server name is not given as a X modifier's category =im=
+  #+end_quote
+
+  
+** Transport List
+
+  
 * Emacs code notes
 
 src/xterm.c call XOpenIM()
@@ -89,3 +109,9 @@ src/xterm.c call XOpenIM()
 2. sets a locale modifer
 
 src/xfns.c call XCreateIC() to create Input Context
+
+
+* Question
+
+- Is fcitx the IM Server?
+- How to check /X directory property/
