@@ -60,3 +60,12 @@ Outlines
 19. advance topics: unsafe rust, macro, etc.
 20. web server
 
+
+* [0/3] Getting Started
+
+** TODO Installation
+
+** TODO hello, World!
+
+** TODO Hello, Cargo!
+
