@@ -61,9 +61,16 @@ Outlines
 20. web server
 
 
-* [0/3] Getting Started
+* [1/3] Getting Started
 
-** TODO Installation
+** DONE Installation
+
+Use =rustup= command line tool to manage rust versions and associated tools
+
+- =rustup update=
+- =rustup self uninstall=
+- =rustc --version= check version
+- =rustup doc= open local documentation in your browser
 
 ** TODO hello, World!
 
