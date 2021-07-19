@@ -60,10 +60,9 @@ Outlines
 19. advance topics: unsafe rust, macro, etc.
 20. web server
 
+* Getting Started
 
-* [2/3] Getting Started
-
-** DONE Installation
+** Installation
 
 Use =rustup= command line tool to manage rust versions and associated tools
 
@@ -72,7 +71,7 @@ Use =rustup= command line tool to manage rust versions and associated tools
 - =rustc --version= check version
 - =rustup doc= open local documentation in your browser
 
-** DONE hello, World!
+** hello, World!
 
 Steps
 1. create project directory
@@ -87,9 +86,27 @@ Explain
 - ~println!~ is a macro
 - compile /ahead-of-time/
 
-#+BEGIN_VERSE
+#+BEGIN_QUOTE
 Everything is a trade-off in language design.
-#+END_VERSE
+#+END_QUOTE
 
-** TODO Hello, Cargo!
+** Hello, Cargo!
+
+Cargo is the build system and package manager.
+
+Use =cargo --version= to check the version.
+
+Commands
+- create project with =cargo new hello=
+  1. =Cargo.toml= is the configuration of project (like go.mod for golang)
+     1. package info
+     2. dependencies: refer to crates (library)
+  2. =src/main.rs= contain a simple hello world program already
+- build with =cargo build=
+  1. binary is generate at =target/debug/hello=
+  2. =Cargo.lock= keeps track of the exact version of dependencies
+- or we can run the code directly with =cargo run=
+- use =cargo check= to validate code (faster)
+- =cargo build --release= to generate final binary (with optimization)
+
 
