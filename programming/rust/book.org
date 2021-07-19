@@ -110,3 +110,17 @@ Commands
 - =cargo build --release= to generate final binary (with optimization)
 
 
+
+* TODO Programming a Guessing Game
+
+* [0/5] Common Programming Concepts
+
+** TODO Variables and Mutability
+
+** TODO Data Types
+
+** TODO Functions
+
+** TODO Comments
+
+** TODO Control Flow
