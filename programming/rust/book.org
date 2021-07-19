@@ -12,6 +12,51 @@ Breaks down barriers
 - guide you naturally towards reliable code, efficient in terms of speed and memory usage
 - introduce parallelism with low-risk
 
+* introduction
 
+Over all of Rust
+- help you write faster, more reliable software
+- high-level ergonomic with low-level control support
 
+** Who Rust is For
+
+- teams of developers: compiler can detect elusive bugs, including concurrency bugs
+  + cargo: dependency manager and build tool
+  + rustfmt: format to certain coding style
+  + IDE integration
+- student: to learn about operation system development
+- companies: cli, web service, devops tool, embedded device, audio/video analysis, IoT, matchines learning
+- open source developer
+
+** Who This Book Is For
+
+** How to Use This Book
+
+Reading in sequence from front to back.
+
+Two types of chapter
+1. concept chapter (chapter 2, 12, 20)
+2. project chapter
+
+Outlines
+1. install rust, how to use cargo, run "hello world" program
+2. introduction to rust
+3. dedicated features of rust
+4. ownership system
+5. structures and methods
+6. enum, =match= expression, =if let= control flow construct
+7. module system, privacy rule, API
+8. data structure of stdlib: vectors, strings, hash maps
+9. error-handling
+10. generics, traits, lifetimes
+11. testing
+12. =grep=
+13. closure and iterators
+14. cargo in deep
+15. smart pointers
+16. concurrent programming
+17. rust idioms (vs OOP)
+18. patterns and matches
+19. advance topics: unsafe rust, macro, etc.
+20. web server
 
