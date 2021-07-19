@@ -1,0 +1,17 @@
+* foreword
+
+#+BEGIN_QUOTE
+No mater what kind of code you are writing now, Rust empowers you to
+reach farther, to program with confidence in a wider variety of
+domains that you did before.
+#+END_QUOTE
+
+Breaks down barriers
+- eliminate the old pitfalls (memory mamangement, concurrency, data representation)
+- providing a friendly, polished set of tools
+- guide you naturally towards reliable code, efficient in terms of speed and memory usage
+- introduce parallelism with low-risk
+
+
+
+
