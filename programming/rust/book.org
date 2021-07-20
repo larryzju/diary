@@ -113,9 +113,66 @@ Commands
 
 * TODO Programming a Guessing Game
 
-* [0/5] Common Programming Concepts
+* [1/5] Common Programming Concepts
 
-** TODO Variables and Mutability
+** DONE Variables and Mutability
+
+Variables are immutable by default. The advantages are
+- safety: once bound to a name, you can't change the value
+- easy concurrency that Rust offers
+
+Assign value to immutable variable gets compile-time error.  This
+makes sure you don't need to keep track of how and where value might
+change. Your code is thus easier to reason through.
+
+#+BEGIN_QUOTE
+Even though compiler errors can be frustrating, they only mean your
+program isn't safely doing what you want it to do yet; they do not 
+mean that you're not a good programmer!
+#+END_QUOTE
+
+You can declare variable as mutable
+#+BEGIN_SRC 
+let mut x = 5;
+#+END_SRC
+
+Using mutable variables might make the code more convenient to write.
+For example, to reduce copying, implement data structure
+
+#+BEGIN_QUOTE
+There are multiple trade-offs to consider in addition to the
+prevention of bugs.
+#+END_QUOTE
+
+
+*** Differences Between Variables and Constants
+
+1. cannot modify constants with =mut=
+2. constant is declared with =constant= while variable is declared with =let=
+3. constant must declared with type of the value ~const MAX_POINT: u32 = 100_000;~
+4. constant can be declared in any scope (global or local)
+5. constant can only be set to a constant expression (compile time)
+6. constant variable name is usually named in UPPERCASE with underscores
+
+*** Shadowing
+
+Declare variable with =let= for multiple times, the previous one will
+be shadowed.
+
+It's different from the =mut= but defines multiple variables shadowing
+each ones appeared before. The variable is still immutable.
+
+It's legal to define variables in the same name but with different
+types.
+
+#+BEGIN_NOTE
+It seems a bit weird to define variables in different types with the
+same name.  
+
+It works like C++, the overloaded variable has suffix =_str= or =int=
+underlying, but can be accessed with the raw name.
+#+END_NOTE
+
 
 ** TODO Data Types
 
