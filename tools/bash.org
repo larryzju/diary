@@ -92,3 +92,19 @@ echo ${b#*=} -> bar
 #+END_SRC
 
 =##= 表示最大匹配， =#= 为最小长度匹配
+* set
+
+=set= has 3 differnet usage
+1. change the values of shell options
+2. set the positional parameter
+3. display the names and values of shell variables (called directly)
+
+
+=set -<option>-= set options on while ~set +<options>~ set options off
+| option      | description                                            |
+|-------------+--------------------------------------------------------|
+| -e          | exit immediately if pipeline returns a non-zero status |
+| -o pipefail | return error at the first failure                      |
+| -u          | treat unset variable/paraemters as an error            |
+| -x          | print a trace of simple command                        |
+| -E          | inherit any trap on 'ERR' in shell function            |
