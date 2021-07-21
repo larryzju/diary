@@ -113,7 +113,7 @@ Commands
 
 * TODO Programming a Guessing Game
 
-* [1/5] Common Programming Concepts
+* [2/5] Common Programming Concepts
 
 ** DONE Variables and Mutability
 
@@ -174,7 +174,151 @@ underlying, but can be accessed with the raw name.
 #+END_NOTE
 
 
-** TODO Data Types
+** DONE Data Types
+
+Data types tells Rust what kind of data is being specified so it knows
+how to work with that data.
+
+There are two data type subsets
+1. scalar
+2. compound
+
+Rust is a /statically typed/ language, it know the types of all
+variables at compile time.
+
+You must add a type annotation. Otherwise compile will complain =no_type_annotation=
+#+BEGIN_SRC rust
+let guess: u32 = "42".parse().expect("Not a number!");
+#+END_SRC
+
+*** Scalar Types
+
+Rust has 4 primary scalar types
+1. integers
+2. floating-point
+3. boolean
+4. characters
+
+**** Integer Types
+
+| length  | signed | unsigned |
+|---------+--------+----------|
+| 8-bit   | i8     | u8       |
+| 16-bit  | i16    | u16      |
+| 32-bit  | i32    | u32      |
+| 64-bit  | i64    | u64      |
+| 128-bit | i128   | u128     |
+| arch    | isize  | usize    |
+
+Note on signed and unsigned types
+- =i8= can store numbers from $-(2^7)$ to $2^7 -1$
+- =u8= can store numbers from $0$ to $2^n - 1$
+
+Integer literal can be wrote like
+- =98_222= (=_= is a visual separator)
+- =0xff=
+- =0o77=
+- =0b1111_0000=
+- =b'A'= (u8 only)
+
+Rust checks integer overflow under debug mode, throw panic if it
+happens. For release mode, Rust performs /two's complement wrapping/.
+- use =wrapping_*= method to do calculate in wrap mode explicitly
+- use =checked_*= methods to check overflow
+- use =overflowing_*= methods to wrap values and get if it's overflow
+- use =saturating_*= methods to saturate at the value's minimum or
+  maximum values
+
+
+**** Floating-Point Types
+
+Two subsets
+- =f32=
+- =f64= (default, on modern CPUs it's roughly the same speed as =f32=
+  but is capable of more precision)
+
+
+#+BEGIN_SRC rust
+  fn main() {
+      let x = 2.0; // f64
+      let y: f32 = 3.0; // f32
+  }
+#+END_SRC
+
+
+**** Numeric Operations
+
+operations: =+=, =-=, =*=, ~/~, ~%~
+
+**** The Boolean Type
+
+Booleans are one byte in size: true or false
+
+#+BEGIN_SRC rust
+  fn main() {
+      let t = true;
+      let f: bool = false; // with explicit type annotation
+  }
+#+END_SRC
+
+**** The Character Type
+
+Four bytes in size and represents a Unicode Scalar Value: 'z', '天'
+
+***** TODO character vs Unicode
+
+*** Compound Types
+
+Two primitive compound types
+- tuples
+- arrays
+
+**** The Tuple Types
+
+Features
+- fixed length
+- can have different types for each element
+- use pattern matching to destructure a tuple value; or access with the index (python attribute)
+
+Example
+#+BEGIN_SRC rust
+  fn main() {
+      let tup = (500, 6.4, 1);
+      let (x,y,z) = tup;
+      let one = tup.2;
+      print!("The value of y is: {}", y);
+  }
+#+END_SRC
+
+**** The Array Type
+
+Features
+- every element of an array must have the same type
+- fixed length (like Go)
+- allocated on the stack rather than the heap (?)
+
+Vector is a type to provide dynamic size array.
+
+
+#+BEGIN_SRC rust
+  let a: [i32; 5] = [1,1,1,1,1];  // type is i32, length is 5
+  let b: [1; 5]; // same with above one
+#+END_SRC
+
+
+***** Accessing Array Elements
+
+#+BEGIN_SRC 
+a[0];
+#+END_SRC
+
+***** Invalid Array Element Access
+
+Cause a /runtime/ error about "index out of bounds".
+
+As a low-level language, C/C++ will not capture such error. Rust
+protects you against this kind of error by immediately exiting instead
+of allowing the memory access and continuing.
 
 ** TODO Functions
 
