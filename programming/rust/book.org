@@ -113,7 +113,7 @@ Commands
 
 * TODO Programming a Guessing Game
 
-* [2/5] Common Programming Concepts
+* [3/5] Common Programming Concepts
 
 ** DONE Variables and Mutability
 
@@ -172,7 +172,6 @@ same name.
 It works like C++, the overloaded variable has suffix =_str= or =int=
 underlying, but can be accessed with the raw name.
 #+END_NOTE
-
 
 ** DONE Data Types
 
@@ -320,7 +319,76 @@ As a low-level language, C/C++ will not capture such error. Rust
 protects you against this kind of error by immediately exiting instead
 of allowing the memory access and continuing.
 
-** TODO Functions
+** DONE Functions
+
+basics
+- main is the entry point
+- define function with =fn= keyword
+- name function and variable in /snake case/ style
+- the order of function definition doesn't matter
+
+*** Function Parameters
+
+/parameters/ vs /arguments/:
+- parameter is the special variables that are part of a functions' signature
+- argument is the concrete values
+- they can be used interchangeably in casual conversation
+
+#+BEGIN_SRC rust
+  fn main() {
+      foo();
+  }
+
+  fn foo(x: i32) {
+      println!("The value of x is: {}", x);
+  }
+#+END_SRC
+
+
+*** Function Bodies Contain Statements and Expressions
+
+Rust is an expression-based language.
+
+The differences between statements and expressions are
+- statements are instructions that perform some action and do not return a value
+- expression evaluate to resulting value
+
+Example
+- ~let y = 6;~ is a statement which doesn't return values
+- function definitions are also statements
+
+Note: C and Ruby returns value of assignment. That is not the case in Rust.
+
+The following intructions are expression
+1. literal 6
+2. algorithm: =6+8=
+3. function calling
+4. macro calling
+5. block {} is an expression
+
+#+BEGIN_SRC rust
+  let y = {
+      let x = 3;
+      x + 1  // no semicolon to the end, or the block turns to be a statement, that's some wierd
+  };
+#+END_SRC
+
+
+*** Functions with Return Values 
+
+Feature
+- declare type after an arrow ~->~
+- by default return the final expression in the block of funciton body
+- or return explicitly with =return= keyword
+
+
+#+BEGIN_SRC rust
+  fn five() -> i32 {
+      5
+  }
+#+END_SRC
+
+**** TODO does Rust support multiple return values?
 
 ** TODO Comments
 
