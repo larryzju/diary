@@ -113,7 +113,7 @@ Commands
 
 * TODO Programming a Guessing Game
 
-* [3/5] Common Programming Concepts
+* [4/5] Common Programming Concepts
 
 ** DONE Variables and Mutability
 
@@ -390,6 +390,10 @@ Feature
 
 **** TODO does Rust support multiple return values?
 
-** TODO Comments
+** DONE Comments
+
+Comment with =//= prefix.
+
+Rust also has another kind of ocmment: documentation comments.
 
 ** TODO Control Flow
